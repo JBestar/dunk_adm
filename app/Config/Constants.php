@@ -112,3 +112,14 @@ defined('TM_OFFSET')    	   || define('TM_OFFSET', 20);
 
 defined('CONF_SITENAME')       || define('CONF_SITENAME', 1);
 defined('CONF_MAINTAIN')       || define('CONF_MAINTAIN', 10);
+
+defined('GAME_POWER_BALL')     || define('GAME_POWER_BALL', 1);
+defined('GAME_POWER_LADDER')   || define('GAME_POWER_LADDER', 2);
+defined('GAME_KENO_LADDER')    || define('GAME_KENO_LADDER', 3);
+defined('GAME_CASINO')         || define('GAME_CASINO', 4);
+defined('GAME_BOGLE_BALL')     || define('GAME_BOGLE_BALL', 5);
+defined('GAME_BOGLE_LADDER')   || define('GAME_BOGLE_LADDER', 6);
+
+defined('ROUND_5MIN')    || define('ROUND_5MIN', 5);
+defined('ROUND_3MIN')    || define('ROUND_3MIN', 3);
+defined('ROUND_2MIN')    || define('ROUND_2MIN', 2);
