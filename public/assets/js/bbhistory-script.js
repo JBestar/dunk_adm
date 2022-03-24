@@ -306,6 +306,7 @@ function requestTotalPage() {
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();
+                setNavBarElement();
                 requestBetHistory();
             }
         },

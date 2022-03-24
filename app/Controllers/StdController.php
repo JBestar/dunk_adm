@@ -11,7 +11,6 @@ class StdController extends BaseController
 	{
 		if(is_login())
 		{
-
 			$arrData = getSidebarLinkArray();
 			$arrData['confdropdownbtn'] = " main-dropdown-active-btn";
 			$arrData['confdropdown'] = "style=\"display:block\"";
@@ -28,9 +27,6 @@ class StdController extends BaseController
 			$arrData['site_name'] = $strSiteName;
 			if ($arrAddData !== null)
 				$arrData = $arrData + $arrAddData;
-			// echo view('header', array("site_name"=>$strSiteName));	
-			// echo view('include/sidebar', $arrData);
-			// echo view('include/main_navbar', array("mb_level"=>$objUser->mb_level));
 			
 			if ($userLevel === 0){
 				echo view($url, $arrData);
@@ -40,7 +36,6 @@ class StdController extends BaseController
 					echo view($url, $arrData);
 				} else  $this->response->redirect( base_url().'pages/nopermit', 'refresh');
 			}
-			// echo view('footer');
 		}
 		else {
 			$this->response->redirect( base_url().'pages/login', 'refresh');

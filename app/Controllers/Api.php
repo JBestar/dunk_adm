@@ -2,11 +2,15 @@
 use App\Models\Member_Model;
 use App\Models\Notice_Model;
 use App\Models\Charge_Model;
+use App\Models\Clean_model;
 use App\Models\ConfGame_model;
 use App\Models\Exchange_model;
 use App\Models\MoneyHistory_model;
 use App\Models\TransferHistory_model;
 use App\Models\ConfSite_Model;
+use App\Models\CsBet_model;
+use App\Models\SlBet_model;
+
 class Api extends BaseController{
     public function index()
 	{				
@@ -912,7 +916,7 @@ public function withdrawlist(){
 	public function calculategame(){ 
 		$jsonData = $_REQUEST['json_'];
 		$arrReqData = json_decode($jsonData, true);
-		//var_dump($arrBetData);
+		// return var_dump($arrReqData);
 		if(is_login()) {
 			//model
 			$memberModel  = new Member_Model();
@@ -951,7 +955,7 @@ public function withdrawlist(){
 				$chargeModel = new Charge_Model();
 				$exchangeModel = new Exchange_model();
 				//$objCalc = array();
-		            
+		        // return var_dump($arrEmp);
 				foreach ($arrEmp as $objEmp) {
             		$objCalc['mb_fid'] = $objEmp->mb_fid;
 		            $objCalc['mb_uid'] = $objEmp->mb_uid;
@@ -963,30 +967,37 @@ public function withdrawlist(){
 		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  //충환손익
 		            $arrEmpMoney = $memberModel->calcEmpMoney($objEmp);
 		            $arrUserMoney = $memberModel->calcUserMoney($objEmp->mb_fid);
-		            if($arrReqData['type'] == 4){
-		            	$objCalc['mb_emp_money'] =  $arrEmpMoney[1];                        //관리자보유금;
-		            	$objCalc['mb_user_money'] = $arrUserMoney[1];						//유저보유금;
-		            } else {
-		            	$objCalc['mb_emp_money'] =  $arrEmpMoney[0];                        //관리자보유금;
-		            	$objCalc['mb_user_money'] = $arrUserMoney[0];						//유저보유금;
-		            }
+					switch($arrReqData['type']){
+						case GAME_CASINO:
+							$objCalc['mb_emp_money'] =  $arrEmpMoney[1];                        //관리자보유금;
+		            		$objCalc['mb_user_money'] = $arrUserMoney[1];						//유저보유금;
+							break;
+						case GAME_SLOT:
+							$objCalc['mb_emp_money'] =  $arrEmpMoney[2];                        //관리자보유금;
+		            		$objCalc['mb_user_money'] = $arrUserMoney[2];						//유저보유금;
+							break;
+						default:
+							$objCalc['mb_emp_money'] =  $arrEmpMoney[0];                        //관리자보유금;
+							$objCalc['mb_user_money'] = $arrUserMoney[0];						//유저보유금;
+							break;
+					}
 		            $arrBetData = $memberModel->calcBetMoneysByGame($objEmp, $arrReqData);
+					
 		            if(is_null($arrBetData))	break;
 			        $objCalc['mb_bet_money'] = $arrBetData['bet_money'] ;          //베팅머니
 					$objCalc['mb_bet_win_money'] = $arrBetData['bet_win_money'] ;      //적중머니
          			$objCalc['mb_bet_benefit_money'] = $arrBetData['bet_benefit_money'];  //베팅손익
          			$objCalc['mb_rate_money'] = $arrBetData['rate_money'] ;          //수수료
          			$objCalc['mb_last_money'] = $arrBetData['last_money'] ;         //최종손익
-
-
+					//  if ($i == 1)
+					// 	  return var_dump($objCalc);
 		            $arrData[$i] = $objCalc;
 		            $i++;
             		
         		}
 			}
 
-
-
+			// return var_dump($arrData);
 			$objResult = new \StdClass;			
 			$objResult->data = $arrData;
 			$objResult->status = "success";
@@ -1062,15 +1073,15 @@ public function withdrawlist(){
 		//var_dump($arrBetData);
 		if(is_login()) {
 			//model
-			$this->load->model('csbet_model');
+			$csbetModel = new CsBet_model();
 			$memberModel  = new Member_Model();
 			
 			$strUid = $this->session->username;
 			$objAdmin = $memberModel->getInfo($strUid);
-			$arrBetResults = $this->csbet_model->search($objAdmin, $arrGetData);
+			$arrBetResults = $csbetModel->search($objAdmin, $arrGetData);
 			$arrBetAccount = null;
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
-				$arrBetAccount = $this->csbet_model->getBetAccount($arrGetData);
+				$arrBetAccount = $csbetModel->getBetAccount($arrGetData);
 			}
 			
 			//var_dump($arrBetHistory);
@@ -1098,13 +1109,79 @@ public function withdrawlist(){
 		//var_dump($arrBetData);
 		if(is_login()) {
 			//model
-			$this->load->model('csbet_model');
+			$csbetModel = new CsBet_model();
+
 			$memberModel  = new Member_Model();
 			
 			$strUid = $this->session->username;
 			$objAdmin = $memberModel->getInfo($strUid);
 
-			$objCount = $this->csbet_model->searchCount($objAdmin, $arrGetData);
+			$objCount = $csbetModel->searchCount($objAdmin, $arrGetData);
+			
+			$arrResult['data'] = $objCount;
+			$arrResult['status'] = "success";
+		
+			echo json_encode($arrResult);
+		}
+		else{
+		
+			$arrResult['status'] = "logout";
+
+			echo json_encode($arrResult);	
+		} 		
+	}
+
+	//베팅리력결과를 Ajax로 전송
+	public function slbetlist(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrGetData = json_decode($jsonData, true);
+		//var_dump($arrBetData);
+		if(is_login()) {
+			//model
+			$slbetModel = new SlBet_model();
+			$memberModel  = new Member_Model();
+			
+			$strUid = $this->session->username;
+			$objAdmin = $memberModel->getInfo($strUid);
+			$arrBetResults = $slbetModel->search($objAdmin, $arrGetData);
+			$arrBetAccount = null;
+			if($objAdmin->mb_level >= LEVEL_ADMIN){
+				$arrBetAccount = $slbetModel->getBetAccount($arrGetData);
+			}
+			
+			//var_dump($arrBetHistory);
+			$objResult = new \StdClass;
+			$objResult->data = $arrBetResults;	
+			$objResult->account = $arrBetAccount;		
+			$objResult->status = "success";
+		
+			echo json_encode($objResult);
+		}
+		else{
+		
+			$arrResult['status'] = "logout";
+
+			echo json_encode($arrResult);	
+		} 		
+	}
+
+
+
+	//베팅리력결과 개수를 Ajax로 전송
+	public function slbetlistcnt(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrGetData = json_decode($jsonData, true);
+		//var_dump($arrBetData);
+		if(is_login()) {
+			//model
+			$slbetModel = new SlBet_model();
+
+			$memberModel  = new Member_Model();
+			
+			$strUid = $this->session->username;
+			$objAdmin = $memberModel->getInfo($strUid);
+
+			$objCount = $slbetModel->searchCount($objAdmin, $arrGetData);
 			
 			$arrResult['data'] = $objCount;
 			$arrResult['status'] = "success";
@@ -1128,7 +1205,7 @@ public function withdrawlist(){
 
 		if(is_login()) {
 			$memberModel  = new Member_Model();
-			$this->load->model('clean_model');
+			$cleanModel = new Clean_model();
 
 			$strUid = $this->session->username;
 			$objAdmin = $memberModel->getInfo($strUid);
@@ -1137,9 +1214,9 @@ public function withdrawlist(){
 
 			if($objAdmin->mb_level>LEVEL_ADMIN){
 				if($arrReqData['clean'] == 0){
-					$iResult = $this->clean_model->cleanDb();
+					$iResult = $cleanModel->cleanDb();
 				} else if($arrReqData['clean'] == 1){
-					$iResult = $this->clean_model->initDb();
+					$iResult = $cleanModel->initDb();
 				}
 			} else {
 				 $iResult = 2;

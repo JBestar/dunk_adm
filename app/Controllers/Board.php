@@ -123,6 +123,9 @@ class Board extends StdController {
 
 	public function message_edit($strNoticeFid, $strUserFid)
 	{
+		if (is_login() === false){
+			return $this->response->redirect( base_url().'pages/login', 'refresh');
+		}
 		$objNotice = null;
 		if($strNoticeFid > 0)
 		{

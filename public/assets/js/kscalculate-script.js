@@ -6,6 +6,7 @@ initCalculate();
 
 function initCalculate(){
 	addButtonEvent();	
+	setNavBarElement();
 	//
 	var nEmpFid = 0;
 	var nTbRow = -1;

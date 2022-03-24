@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     addBtnEvent();
 });
 
@@ -32,6 +32,7 @@ function readConfigToObject() {
     objMember.mb_game_ps_ratio = document.getElementById("useredit-psbetrate-input-id").value;
     objMember.mb_game_ks_ratio = document.getElementById("useredit-ksbetrate-input-id").value;
     objMember.mb_game_ev_ratio = document.getElementById("useredit-evbetrate-input-id").value;
+    objMember.mb_game_sl_ratio = document.getElementById("useredit-slbetrate-input-id").value;
     objMember.mb_game_bb_ratio = document.getElementById("useredit-bbbetrate-input-id").value;
     objMember.mb_game_bb2_ratio = document.getElementById("useredit-bbbetrate2-input-id").value;
     objMember.mb_game_bs_ratio = document.getElementById("useredit-bsbetrate-input-id").value;
@@ -52,7 +53,7 @@ function readConfigToObject() {
 function addBtnEvent() {
 
     var elemOkBtn = document.getElementById("useredit-save-btn-id");
-    elemOkBtn.addEventListener("click", function() {
+    elemOkBtn.addEventListener("click", function () {
 
         var objMember = readConfigToObject();
 
@@ -105,8 +106,10 @@ function addBtnEvent() {
                 type: "POST",
                 dataType: "json",
                 url: "/userapi/modifymember",
-                data: { json_: jsonData },
-                success: function(jResult) {
+                data: {
+                    json_: jsonData
+                },
+                success: function (jResult) {
                     //console.log(jResult);
                     if (jResult.status == "success") {
                         window.location.replace('/user/agency');
@@ -115,14 +118,18 @@ function addBtnEvent() {
                     } else if (jResult.status == "fail") {
                         if (jResult.error == 2)
                             alert("중복된 아이디입니다.");
-                        else if (jResult.error == 8)
+                        else if (jResult.error == 11)
                             alert("중복된 닉네임입니다.");
                         else if (jResult.error == 3)
                             alert("등록된 본사가 아닙니다.");
-                        else if (jResult.error == 8)
-                            alert("중복된 닉네임입니다.");
                         else alert("수정이 실패되었습니다.");
-                    } else if (jResult.status == "pb_ratio_error") {
+                    }else if(jResult.status == "val_error") {
+                        var errString = '';
+                        for(property in jResult.error){
+                            errString += `${jResult.error[property]}\n`;
+                        }
+                        alert(errString);
+                    }else if (jResult.status == "pb_ratio_error") {
                         alert("파워볼 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "ps_ratio_error") {
                         alert("파워사다리 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
@@ -136,7 +143,7 @@ function addBtnEvent() {
                         alert("보글사다리 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     }
                 },
-                error: function(request, status, error) {
+                error: function (request, status, error) {
                     //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                 }
 
@@ -148,19 +155,27 @@ function addBtnEvent() {
                 type: "POST",
                 dataType: "json",
                 url: "/userapi/addmember",
-                data: { json_: jsonData },
-                success: function(jResult) {
-                    //console.log(jResult);
+                data: {
+                    json_: jsonData
+                },
+                success: function (jResult) {
+                    console.log(jResult);
                     if (jResult.status == "success") {
                         window.location.replace('/user/agency');
                     } else if (jResult.status == "logout") {
                         window.location.replace('/');
+                    } else if (jResult.status == "val_error") {
+                        var errorString = '';
+                        for (property in jResult.error) {
+                            errorString += `${jResult.error[property]}\n`;
+                        }
+                        alert(errorString);
                     } else if (jResult.status == "fail") {
                         if (jResult.error == 2)
                             alert("중복된 아이디입니다.");
                         else if (jResult.error == 3)
                             alert("등록된 본사가 아닙니다.");
-                        else if (jResult.error == 8)
+                        else if (jResult.error == 11)
                             alert("중복된 닉네임입니다.");
                         else alert("등록이 실패되었습니다.");
                     } else if (jResult.status == "pb_ratio_error") {
@@ -177,8 +192,8 @@ function addBtnEvent() {
                         alert("보글사다리 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     }
                 },
-                error: function(request, status, error) {
-                    //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                error: function (request, status, error) {
+                    // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                 }
 
             });
@@ -191,7 +206,7 @@ function addBtnEvent() {
 
 
     var elemCancelBtn = document.getElementById("useredit-cancel-btn-id");
-    elemCancelBtn.addEventListener("click", function() {
+    elemCancelBtn.addEventListener("click", function () {
         window.location.replace('/user/agency');
     });
 

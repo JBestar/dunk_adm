@@ -18,7 +18,11 @@ function readConfigToObject(){
   jsonData.bank = document.getElementById("confsite-bank-input-id").value;
   //jsonData.mainnotice = document.getElementById("confsite-mainnotice-text-id").value;
   jsonData.depositenotice = document.getElementById("confsite-deposite-text-id").value;
-  jsonData.withdrawnotice = document.getElementById("confsite-withdraw-text-id").value;
+  jsonData.depositenotice_ok = document.getElementById("confsite-deposite-check-id").checked ? 1 : 0;
+  jsonData.mainnotice = document.getElementById("confsite-mainnotice-text-id").value;
+  jsonData.mainnotice_ok = document.getElementById("confsite-mainnotice-check-id").checked ? 1 : 0;
+  jsonData.urgentnotice = document.getElementById("confsite-urgentnotice-text-id").value;
+  jsonData.urgentnotice_ok = document.getElementById("confsite-urgentnotice-check-id").checked ? 1 : 0;
   jsonData.bankmacro = $("#confsite-bankmacro-text-id").val();
   //jsonData.mainnoticeok = document.getElementById("confsite-mainnotice-check-id").checked?1:0;
 
@@ -44,7 +48,7 @@ elemOkBtn.addEventListener("click", function() {
        url:"/api/saveconfsite",
        data: {json_: jsonData},
        success: function(jResult) {
-       	//console.log(jResult);
+       	// console.log(jResult);
            if(jResult.status == "success")
            {
            		window.location.reload();
@@ -58,7 +62,7 @@ elemOkBtn.addEventListener("click", function() {
            }
        	},
        	error:function(request,status,error){
-          //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+          // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
     	}
 
    });

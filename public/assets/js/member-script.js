@@ -39,6 +39,8 @@ function showMember(arrMember, nAdminLevel) {
         strBuf += "</td> <td>";
         strBuf += parseInt(arrMember[nRow].mb_live_money).toLocaleString() + "원";
         strBuf += "</td> <td>";
+        strBuf += parseInt(arrMember[nRow].mb_slot_money).toLocaleString() + "원";
+        strBuf += "</td> <td>";
         if (arrMember[nRow].mb_state_active == 1) {
             strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\"  class=\"button-active\">승인</button>";
         } else if (arrMember[nRow].mb_state_active == 2) {
@@ -82,6 +84,11 @@ function showMember(arrMember, nAdminLevel) {
             strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\"  class=\"button-active\">카지노</button>";
         } else {
             strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\" >카지노</button>";
+        }
+        if (arrMember[nRow].mb_game_sl == 1) {
+            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\"  class=\"button-active\">슬롯</button>";
+        } else {
+            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\" >슬롯</button>";
         }
         strBuf += "</td></tr>";
     }
@@ -265,6 +272,15 @@ function addBtnEvent() {
                     requestUpdateCompany(jsonData);
                 } else {
                     var jsonData = { "mb_fid": this.name, "mb_game_ev": 1 };
+                    requestUpdateCompany(jsonData);
+                }
+            }
+            else if (this.innerHTML.search("슬롯") >= 0) {
+                if (this.className.search("button-active") >= 0) {
+                    var jsonData = { "mb_fid": this.name, "mb_game_sl": 0 };
+                    requestUpdateCompany(jsonData);
+                } else {
+                    var jsonData = { "mb_fid": this.name, "mb_game_sl": 1 };
                     requestUpdateCompany(jsonData);
                 }
             }

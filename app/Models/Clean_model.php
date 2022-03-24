@@ -4,7 +4,6 @@ use CodeIgniter\Model;
 
 class Clean_model extends Model {
 	
-	
     function __construct()
     {
         parent::__construct();
@@ -54,7 +53,7 @@ class Clean_model extends Model {
         $strSql = " DELETE FROM round_kenoladder WHERE round_date < '".$strDate."' ";
         $this -> db -> query($strSql);
 
-        $this->db->truncate("sessions");
+        $this->builder->truncate("sessions");
         
         return 1;
     }
@@ -62,16 +61,16 @@ class Clean_model extends Model {
     function initDb(){
 
 
-        $this->db->truncate("bet_casino");
-        $this->db->truncate("bet_powerball");
-        $this->db->truncate("bet_powerladder");
-        $this->db->truncate("bet_kenoladder");
-        $this->db->truncate("board_notice");
-        $this->db->truncate("member_charge");
-        $this->db->truncate("member_exchange");
-        $this->db->truncate("money_history");
-        $this->db->truncate("transfer_history");
-        $this->db->truncate("sessions");
+        $this->builder->truncate("bet_casino");
+        $this->builder->truncate("bet_powerball");
+        $this->builder->truncate("bet_powerladder");
+        $this->builder->truncate("bet_kenoladder");
+        $this->builder->truncate("board_notice");
+        $this->builder->truncate("member_charge");
+        $this->builder->truncate("member_exchange");
+        $this->builder->truncate("money_history");
+        $this->builder->truncate("transfer_history");
+        $this->builder->truncate("sessions");
         return 1;
     }
 

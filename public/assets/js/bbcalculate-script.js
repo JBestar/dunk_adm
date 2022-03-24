@@ -2,6 +2,7 @@ initCalculate();
 
 function initCalculate() {
     addButtonEvent();
+    setNavBarElement();
     //
     var nEmpFid = 0;
     var nTbRow = -1;
@@ -94,7 +95,7 @@ function requestCalculate(nFid, nRow) {
     var dtStart = document.getElementById("calculate-datestart-input-id").value;
     var dtEnd = document.getElementById("calculate-dateend-input-id").value;
 
-    var jsonData = { "mb_fid": nFid, "start": dtStart, "end": dtEnd, "type": 5 };
+    var jsonData = { "mb_fid": nFid, "start": dtStart, "end": dtEnd, "type":  5};
     jsonData = JSON.stringify(jsonData);
 
     $.ajax({
@@ -105,6 +106,7 @@ function requestCalculate(nFid, nRow) {
         success: function(jResult) {
             //console.log(jResult);
             if (jResult.status == "success") {
+                // setNavBarElement();
                 if (nRow < 0) showCalcualte(jResult.data);
                 else addRow(nRow, jResult.data);
             } else if (jResult.status == "logout") {

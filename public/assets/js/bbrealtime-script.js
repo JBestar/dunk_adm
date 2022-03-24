@@ -401,6 +401,7 @@ function requestBetRealtime() {
         success: function(jResult) {
             // console.log(jResult);
             if (jResult.status == "success") {
+                setNavBarElement();
                 ShowBetRealtime(jResult.data);
             }
         },

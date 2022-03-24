@@ -119,6 +119,7 @@ defined('GAME_KENO_LADDER')    || define('GAME_KENO_LADDER', 3);
 defined('GAME_CASINO')         || define('GAME_CASINO', 4);
 defined('GAME_BOGLE_BALL')     || define('GAME_BOGLE_BALL', 5);
 defined('GAME_BOGLE_LADDER')   || define('GAME_BOGLE_LADDER', 6);
+defined('GAME_SLOT')           || define('GAME_SLOT', 7);
 
 defined('ROUND_5MIN')    || define('ROUND_5MIN', 5);
 defined('ROUND_3MIN')    || define('ROUND_3MIN', 3);

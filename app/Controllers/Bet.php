@@ -63,6 +63,10 @@ class Bet extends StdController {
 	public function bshistory(){
 		$this->load_view_page('bet/bshistory', 'bet_history');
 	}
+	
+	public function slhistory(){
+		$this->load_view_page('bet/slhistory', 'bet_history');
+	}
 
 	public function allcalculate(){
 		$this->load_view_page('bet/allcalculate', 'bet_calculate');
@@ -83,6 +87,10 @@ class Bet extends StdController {
 	
 	public function cscalculate(){
 		$this->load_view_page('bet/cscalculate', 'bet_calculate');
+	}
+
+	public function slcalculate(){
+		$this->load_view_page('bet/slcalculate', 'bet_calculate');
 	}
 	
 	public function bbcalculate(){

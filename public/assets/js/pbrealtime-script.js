@@ -403,6 +403,7 @@ function requestBetRealtime() {
             //console.log(jResult);
             if (jResult.status == "success") {
                 //console.log(jResult.data);
+                setNavBarElement();
                 ShowBetRealtime(jResult.data);
             }
         },

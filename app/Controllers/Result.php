@@ -21,6 +21,9 @@ class Result extends StdController {
 		
 	}
 	private function result_edit_page($betModel, $roundFid, $url, $activePage, $userLevel){
+		if (is_login() === false){
+			return $this->response->redirect( base_url().'pages/login', 'refresh');
+		}
 		$objRound = null;
 		$memberModel  = new Member_Model();
 		$strUid = $this->session->username;

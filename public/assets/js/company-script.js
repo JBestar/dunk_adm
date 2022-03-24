@@ -78,6 +78,15 @@ function addBtnEvent() {
                     requestUpdateCompany(jsonData);
                 }
             }
+            else if (this.innerHTML.search("슬롯") >= 0) {
+                if (this.className.search("button-active") >= 0) {
+                    var jsonData = { "mb_fid": this.name, "mb_game_sl": 0 };
+                    requestUpdateCompany(jsonData);
+                } else {
+                    var jsonData = { "mb_fid": this.name, "mb_game_sl": 1 };
+                    requestUpdateCompany(jsonData);
+                }
+            }
         });
     }
 

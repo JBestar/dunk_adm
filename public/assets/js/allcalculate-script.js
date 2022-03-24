@@ -5,6 +5,7 @@
 initCalculate();
 
 function initCalculate(){
+	setNavBarElement();
 	addButtonEvent();	
 	//
 	var nEmpFid = 0;
@@ -106,6 +107,7 @@ function requestCalculate(nFid, nRow){
        success: function(jResult) {
           //console.log(jResult);
           if(jResult.status=="success"){
+			  // setNavBarElement();
             if(nRow<0) showCalcualte(jResult.data);
             else addRow(nRow, jResult.data);
           } else if(jResult.status=="logout"){

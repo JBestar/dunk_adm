@@ -16,6 +16,7 @@
 				<td>파워볼<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
 				<td>파워사다리<span id="main-navbar-emp_psrate-id">0 % </span></td>
 				<td>보글볼<span id="main-navbar-emp_bbrate-id">0 % | 0 %</span></td>
+				<td>슬롯<span id="main-navbar-emp_slrate-id">0 %</span></td>
 				<?php } else { ?>
 
 				<td>새 쪽지&nbsp;<a href="/board/message" id="main-navbar-newmessage-id">0 통</a></td>

@@ -48,7 +48,6 @@ class UserApi extends BaseController{
 				$strError = "";
 
 				$iResult = $memberModel->register($arrData, $strError);
-				
 				if($iResult == 1)
 					$arrResult['status'] = "success";
 				else if($iResult == 4) {
@@ -69,7 +68,11 @@ class UserApi extends BaseController{
 				} else if($iResult == 10) {
 					$arrResult['status'] = "bs_ratio_error";
 					$arrResult['error'] = $strError;				
-				} else {				
+				}else if ($iResult == -1) {
+					$arrResult['status'] = "val_error";
+					$arrResult['error'] = $strError;
+				}
+				else {				
 					$arrResult['status'] = "fail";
 					$arrResult['error'] = $iResult;	
 				}
@@ -123,13 +126,19 @@ class UserApi extends BaseController{
 				} else if($iResult == 7) {
 					$arrResult['status'] = "ev_ratio_error";
 					$arrResult['error'] = $strError;				
+				} else if($iResult == 8) {
+					$arrResult['status'] = "sl_ratio_error";
+					$arrResult['error'] = $strError;				
 				} else if($iResult == 9) {
 					$arrResult['status'] = "bb_ratio_error";
 					$arrResult['error'] = $strError;				
 				} else if($iResult == 10) {
 					$arrResult['status'] = "bs_ratio_error";
 					$arrResult['error'] = $strError;				
-				} else {
+				} else if($iResult == -1){
+					$arrResult['status'] = 'val_error';
+					$arrResult['error'] = $strError;
+				}else {
 					$arrResult['status'] = "fail";
 					$arrResult['error'] = $iResult;	
 				}

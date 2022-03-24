@@ -190,13 +190,7 @@
 			<button class="useredit-cancel-button" id="pbresult_edit-cancel-btn-id">취소</button>
 			<button class="useredit-ok-button"  id="pbresult_edit-save-btn-id">저장</button>
 		</div>
-
-
 	</div>
-
-
-
-
 <!--main_navbar.php-->
 </div>
 

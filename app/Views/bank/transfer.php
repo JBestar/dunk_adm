@@ -19,8 +19,10 @@
 
             <select class="pbresult-game-select" id="transfer-type-select-id">
 				<option value="0">::분류::</option>
-				<option value="1">카지노로 이동</option>
-				<option value="2">사이트로 이동</option>
+				<option value="1">사이트 => 카지노</option>
+				<option value="2">카지노 => 사이트</option>
+				<option value="3">사이트 => 슬롯</option>
+				<option value="4">슬롯 => 사이트</option>
 				
 			</select>
 
@@ -42,12 +44,13 @@
 					<th>아이디</th>
 					<th>현재금액</th>
 					<th>카지노금</th>
+					<th>슬롯머니</th>
 					<th>구분</th>
 					<th>이동금액</th>
 					<th>충전전 사이트머니</th>
 					<th>충전후 사이트머니</th>
-					<th>충전전 카지노머니</th>
-					<th>충전후 카지노머니</th>
+					<th>충전전 게임사머니</th>
+					<th>충전후 게임사머니</th>
 					<th>일짜</th>
 					
 				</tr>
@@ -74,5 +77,5 @@
 </div>
 
 <script src="<?php echo base_url('assets/js/page.js');?>"></script>
-<script src="<?php echo base_url('assets/js/transfer-script.js');?>"></script>
+<script src="<?php echo base_url('assets/js/transfer-script.js?v=1');?>"></script>
 <?= $this->endSection() ?>

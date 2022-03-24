@@ -146,7 +146,7 @@ function requestBetHistory() {
             }
         },
         error: function(request, status, error) {
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 
     });
@@ -154,7 +154,6 @@ function requestBetHistory() {
 
 
 function requestTotalPage() {
-
 
     var dtStart = document.getElementById("pbhistory-datestart-input-id").value;
     var dtEnd = document.getElementById("pbhistory-dateend-input-id").value;
@@ -172,15 +171,16 @@ function requestTotalPage() {
         dataType: 'json',
         type: 'post',
         success: function(jResult) {
-            //console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();
+                setNavBarElement();
                 requestBetHistory();
             }
         },
         error: function(request, status, error) {
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 
     });

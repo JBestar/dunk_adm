@@ -5,6 +5,7 @@
 initCalculate();
 
 function initCalculate(){
+	setNavBarElement();
 	addButtonEvent();	
 	//
 	var nEmpFid = 0;

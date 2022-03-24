@@ -24,6 +24,7 @@ function readConfigToObject() {
     objMember.mb_game_ps_ratio = document.getElementById("useredit-psbetrate-input-id").value;
     objMember.mb_game_ks_ratio = document.getElementById("useredit-ksbetrate-input-id").value;
     objMember.mb_game_ev_ratio = document.getElementById("useredit-evbetrate-input-id").value;
+    objMember.mb_game_sl_ratio = document.getElementById("useredit-slbetrate-input-id").value;
     objMember.mb_game_bb_ratio = document.getElementById("useredit-bbbetrate-input-id").value;
     objMember.mb_game_bb2_ratio = document.getElementById("useredit-bbbetrate2-input-id").value;
     objMember.mb_game_bs_ratio = document.getElementById("useredit-bsbetrate-input-id").value;
@@ -109,9 +110,15 @@ function addBtnEvent() {
                     } else if (jResult.status == "fail") {
                         if (jResult.error == 2)
                             alert("중복된 아이디입니다.");
-                        else if (jResult.error == 8)
+                        else if (jResult.error == 11)
                             alert("중복된 닉네임입니다.");
                         else alert("수정이 실패되었습니다.");
+                    } else if(jResult.status == "val_error") {
+                        var errString = '';
+                        for(property in jResult.error){
+                            errString += `${jResult.error[property]}\n`;
+                        }
+                        alert(errString);
                     }
                 },
                 error: function(request, status, error) {
@@ -133,10 +140,14 @@ function addBtnEvent() {
                         window.location.replace('/user/company');
                     } else if (jResult.status == "logout") {
                         window.location.replace('/');
+                    } else if (jResult.status == "val_error") {
+                        for (property in jResult.error) {
+                            alert("오류:" + `${jResult.error[property]}`);
+                        }
                     } else if (jResult.status == "fail") {
                         if (jResult.error == 2)
                             alert("중복된 아이디입니다.");
-                        else if (jResult.error == 8)
+                        else if (jResult.error == 11)
                             alert("중복된 닉네임입니다.");
                         else alert("등록이 실패되었습니다.");
                     }

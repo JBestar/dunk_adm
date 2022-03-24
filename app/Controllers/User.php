@@ -10,6 +10,10 @@ class User extends StdController
 
 	 */
 	private function user_edit_page($url, $activePage, $memberFid, $employeeLevel, $userLevel){
+		if (is_login() === false){
+			return $this->response->redirect( base_url().'pages/login', 'refresh');
+		}
+		
 		$memberModel = new Member_Model();
 		$strUid = $this->session->username;
 		$objAdmin = $memberModel->getInfo($strUid);
@@ -29,6 +33,7 @@ class User extends StdController
 				'objMember' => $objMember, 
 				'arrEmpName' => $arrEmpName,
 		]);	
+		
 	}
 	public function index()
 	{
@@ -53,7 +58,9 @@ class User extends StdController
 			'user/company', 
 			'user_company', 
 			LEVEL_COMPANY, 
-			['arrCompany' => $arrCompany]);	
+			[
+				'editUrl' => 'user/company_edit',
+				'arrMember' => $arrCompany]);	
 	}
 
 	public function company_edit($strMemberFid){
@@ -66,6 +73,9 @@ class User extends StdController
 	}
 
 	public function agency(){
+		if (is_login() === false){
+			return $this->response->redirect( base_url().'pages/login', 'refresh');
+		}
 		$memberModel = new Member_Model();
 		$strUid = $this->session->username;
 		$objAdmin = $memberModel->getInfo($strUid);
@@ -76,7 +86,9 @@ class User extends StdController
 			'user/agency', 
 			'user_agency', 
 			LEVEL_AGENCY, 
-			['arrAgency' => $arrAgency]);	
+			[
+				'editUrl' => 'user/agency_edit',
+				'arrMember' => $arrAgency]);	
 	}
 
 	public function agency_edit($strMemberFid)
@@ -90,6 +102,9 @@ class User extends StdController
 	}
 
 	public function employee(){
+		if (is_login() === false){
+			return $this->response->redirect( base_url().'pages/login', 'refresh');
+		}
 		$memberModel = new Member_Model();
 		$strUid = $this->session->username;
 		$objAdmin = $memberModel->getInfo($strUid);
@@ -105,14 +120,15 @@ class User extends StdController
 			'user_employee', 
 			LEVEL_EMPLOYEE, 
 			[
-				'arrEmployee' => $arrEmployee, 
-		]);
+				'editUrl' => 'user/employee_edit',
+				'arrMember' => $arrEmployee, 
+			]);
 	}
 
 	public function employee_edit($strMemberFid){
 		$this->user_edit_page(
 			'user/employee_edit', 
-			'employee_edit', 
+			'user_employee', 
 			$strMemberFid, 
 			LEVEL_AGENCY,
 			LEVEL_EMPLOYEE);
@@ -120,6 +136,9 @@ class User extends StdController
 
 
 	public function member(){
+		if (is_login() === false){
+			return $this->response->redirect( base_url().'pages/login', 'refresh');
+		}
 		$memberModel = new Member_Model();
 		$strUid = $this->session->username;
 		$objAdmin = $memberModel->getInfo($strUid);

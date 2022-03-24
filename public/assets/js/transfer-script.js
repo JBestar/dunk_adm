@@ -25,10 +25,20 @@ function showMoneyHistory(arrData) {
         strBuf += "</td><td>";
         strBuf += parseInt(arrData[nRow].mb_live_money).toLocaleString();
         strBuf += "</td><td>";
-        if (arrData[nRow].money_change_type == 1) {
-            strBuf += "<span style=\"color:green;\">카지노로 이동</span>";
-        } else if (arrData[nRow].money_change_type == 2) {
-            strBuf += "<span style=\"color:blue;\">사이트로 이동</span>";
+        strBuf += parseInt(arrData[nRow].mb_slot_money).toLocaleString();
+        strBuf += "</td><td>";
+        
+        switch(arrData[nRow].money_change_type){
+            case '1':
+                strBuf += "<span style=\"color:green;\">사이트=>카지노</span>";break;
+            case '2':
+                strBuf += "<span style=\"color:blue;\">카지노=>사이트</span>";break;    
+            case '3':
+                strBuf += "<span style=\"color:green;\">사이트=>슬롯</span>";break;
+            case '4':
+                strBuf += "<span style=\"color:blue;\">슬롯=>사이트</span>";break;
+            default:
+                strBuf += parseInt(arrData[nRow].money_change_type).toLocaleString();break;
         }
         strBuf += "</td><td>";
         strBuf += parseInt(arrData[nRow].money_amount).toLocaleString();

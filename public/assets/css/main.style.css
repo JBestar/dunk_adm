@@ -580,6 +580,11 @@ Style - conf_site
     overflow: auto;
 }
 
+.confsite-site-text-div div {
+    float: left;
+    width: 45%;
+}
+
 .confsite-site-text-div p {
     float: left;
     width: 80px;
@@ -610,6 +615,13 @@ Style - conf_site
     padding: 5px 5px;
     border: none;
     resize: vertical;
+}
+.confsite-site-text-div label {
+    width: 150px;
+    font-size: 12px;
+    text-align: left;
+    color: var(--bar-font-color);
+    padding: 5px 5px;
 }
 
 .confsite-site-check-div {

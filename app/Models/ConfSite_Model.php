@@ -116,7 +116,6 @@ class ConfSite_Model extends Model
         if (!array_key_exists("adminpage", $arrData)) return false;
 
         $arrBatch = array();
-        
         $updateData = array();
         $updateData['conf_id'] = 1;
         $updateData['conf_content'] = $arrData['sitename'];
@@ -136,22 +135,24 @@ class ConfSite_Model extends Model
         $updateData['conf_id'] = 4;
         $updateData['conf_content'] = $arrData['adminpage'];
         $arrBatch[3] = $updateData;
-        /*
+        
         $updateData = array();
         $updateData['conf_id'] = 5;
         $updateData['conf_content'] = $arrData['mainnotice'];
-        $updateData['conf_active'] = $arrData['mainnoticeok'];
+        $updateData['conf_active'] = $arrData['mainnotice_ok'];
         $arrBatch[4] = $updateData;
-        */
+        
+
         $updateData = array();
         $updateData['conf_id'] = 6;
         $updateData['conf_content'] = $arrData['depositenotice'];
+        $updateData['conf_active'] = $arrData['depositenotice_ok'];
         $arrBatch[5] = $updateData;
 
-        $updateData = array();
-        $updateData['conf_id'] = 7;
-        $updateData['conf_content'] = $arrData['withdrawnotice'];
-        $arrBatch[6] = $updateData;
+        // $updateData = array();
+        // $updateData['conf_id'] = 7;
+        // $updateData['conf_content'] = $arrData['withdrawnotice'];
+        // $arrBatch[6] = $updateData;
 
         $updateData = array();
         $updateData['conf_id'] = 8;
@@ -162,6 +163,12 @@ class ConfSite_Model extends Model
         $updateData['conf_id'] = 9;
         $updateData['conf_content'] = $arrData['bankmacro'];
         $arrBatch[8] = $updateData;
+
+        $updateData = array();
+        $updateData['conf_id'] = 12;
+        $updateData['conf_content'] = $arrData['urgentnotice'];
+        $updateData['conf_active'] = $arrData['urgentnotice_ok'];
+        $arrBatch[9] = $updateData;
 
 
         return  $this->builder()->updateBatch($arrBatch, 'conf_id');

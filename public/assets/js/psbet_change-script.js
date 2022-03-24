@@ -2,6 +2,7 @@ var mBetData = null;
 initBetChange();
 
 function initBetChange() {
+    setNavBarElement();
     requestBetHistory();
     addEventListner();
 }

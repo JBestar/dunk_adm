@@ -2,9 +2,8 @@
 namespace App\Models;
 use CodeIgniter\Model;
 
-class CsBet_model extends Model {
-	
-
+class CsBet_model extends Model 
+{
     protected $table = 'bet_casino';
     protected $allowedFields = [
         'bet_idx', 
@@ -19,7 +18,7 @@ class CsBet_model extends Model {
         'bet_game_id' ,
         'bet_game_type', 
         'bet_table_code', 
-        'bet_betchoice', 
+        'bet_choice', 
         'point_amount', 
         'employee_amount', 
         'agency_amount', 
@@ -108,14 +107,14 @@ class CsBet_model extends Model {
             $strSql .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
 
 
-            $strSql .= "SELECT bet_fid, bet_idx, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_type, bet_table_code, bet_betchoice, point_amount, employee_amount, agency_amount, company_amount, mb_uid, mb_nickname, name as game_name FROM ".$this->table;
+            $strSql .= "SELECT bet_fid, bet_idx, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_type, bet_table_code, bet_choice, point_amount, employee_amount, agency_amount, company_amount, mb_uid, mb_nickname, name as game_name FROM ".$this->table;
             
             $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
             $strSql .=" ) AS mb_table ";
             $strSql .=" ON ".$this->table.".bet_player_id = mb_table.mb_live_id ";
             $strSql .= " LEFT JOIN ".$this->mGameTable." ON ".$this->table.".bet_table_code = ".$this->mGameTable.".tid ";
         } else{
-            $strSql .= "SELECT  bet_fid, bet_idx, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_type, bet_table_code, bet_betchoice, point_amount, employee_amount, agency_amount, company_amount, mb_uid, mb_nickname, name as game_name FROM ".$this->table;
+            $strSql .= "SELECT  bet_fid, bet_idx, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_type, bet_table_code, bet_choice, point_amount, employee_amount, agency_amount, company_amount, mb_uid, mb_nickname, name as game_name FROM ".$this->table;
         	$strSql .= " JOIN ".$this->mMemberTable." ON ".$this->table.".bet_player_id = ".$this->mMemberTable.".mb_live_id ";
             $strSql .= " LEFT JOIN ".$this->mGameTable." ON ".$this->table.".bet_table_code = ".$this->mGameTable.".tid ";
         }

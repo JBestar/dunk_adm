@@ -167,6 +167,9 @@ function showMemberInfo(objUser) {
         strBuf = objUser.mb_game_ev_ratio + " %";
         $("#main-navbar-emp_evrate-id").text(strBuf);
 
+        strBuf = objUser.mb_game_sl_ratio + " %";
+        $("#main-navbar-emp_slrate-id").text(strBuf);
+
         strBuf = objUser.mb_game_ps_ratio + " %";
         $("#main-navbar-emp_psrate-id").text(strBuf);
 
