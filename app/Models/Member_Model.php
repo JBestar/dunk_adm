@@ -63,7 +63,6 @@ class Member_Model extends Model
         'mb_live_id',
         'mb_live_uid',
         'mb_live_money',
-        'mb_slot_id',
         'mb_slot_uid',
         'mb_slot_money',
     ];

@@ -173,9 +173,6 @@ function showMemberInfo(objUser) {
         strBuf = objUser.mb_game_ps_ratio + " %";
         $("#main-navbar-emp_psrate-id").text(strBuf);
 
-        strBuf = objUser.mb_game_ks_ratio + " %";
-        $("#main-navbar-emp_ksrate-id").text(strBuf);
-
         strBuf = objUser.mb_game_bb_ratio + " % | ";
         strBuf += objUser.mb_game_bb2_ratio + " %";
         $("#main-navbar-emp_bbrate-id").text(strBuf);
@@ -303,8 +300,8 @@ function showEmpBetInfo(arrBetInfo) {
     $("#main-navbar-psbetearn-id").text(parseInt(arrBetInfo[2][1]).toLocaleString() + " 원");
     //$("#main-navbar-psbetpress-id").text(parseInt(arrBetInfo[2][2]).toLocaleString() + " 원");
 
-    $("#main-navbar-ksbet-id").text(parseInt(arrBetInfo[3][0]).toLocaleString() + " 원");
-    $("#main-navbar-ksbetearn-id").text(parseInt(arrBetInfo[3][1]).toLocaleString() + " 원");
+    // $("#main-navbar-ksbet-id").text(parseInt(arrBetInfo[3][0]).toLocaleString() + " 원");
+    // $("#main-navbar-ksbetearn-id").text(parseInt(arrBetInfo[3][1]).toLocaleString() + " 원");
     //$("#main-navbar-ksbetpress-id").text(parseInt(arrBetInfo[3][2]).toLocaleString() + " 원");
 
     $("#main-navbar-bbbet-id").text(parseInt(arrBetInfo[4][0]).toLocaleString() + " 원");

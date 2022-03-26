@@ -5,7 +5,6 @@
 		<p><i class="glyphicon glyphicon-tag"></i> 적중특례</p>
 		<a href="<?php echo base_url().'result/pbbetchange/0/0';?>" class="sub-navbar-a" >파워볼</a>
 		<a href="<?php echo base_url().'result/psbetchange/0/0';?>" class="sub-navbar-a" >파워사다리</a>
-		<a href="<?php echo base_url().'result/ksbetchange/0/0';?>" class="sub-navbar-a" >키노사다리</a>
 		<a href="<?php echo base_url().'result/bbbetchange/0/0';?>" class="sub-navbar-a" >보글볼</a>
 		<a href="<?php echo base_url().'result/bsbetchange/0/0';?>" class="sub-navbar-a" >보글사다리</a>
 	</div>

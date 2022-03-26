@@ -14,9 +14,8 @@
 				<?php if($mb_level < LEVEL_ADMIN) {  ?>
 
 				<td>파워볼<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
-				<td>파워사다리<span id="main-navbar-emp_psrate-id">0 % </span></td>
 				<td>보글볼<span id="main-navbar-emp_bbrate-id">0 % | 0 %</span></td>
-				<td>슬롯<span id="main-navbar-emp_slrate-id">0 %</span></td>
+				<td>에볼루션<span id="main-navbar-emp_evrate-id">0 %</span></td>
 				<?php } else { ?>
 
 				<td>새 쪽지&nbsp;<a href="/board/message" id="main-navbar-newmessage-id">0 통</a></td>
@@ -31,10 +30,9 @@
 				<td>환전금액<span id="main-navbar-emp_exchange-id">0 원</span></td>
 
 				<?php if($mb_level < LEVEL_ADMIN) {  ?>
-
-				<td>에볼루션<span id="main-navbar-emp_evrate-id">0 %</span></td>
-				<td>키노사다리<span id="main-navbar-emp_ksrate-id">0 % </span></td>
+				<td>파워사다리<span id="main-navbar-emp_psrate-id">0 % </span></td>
 				<td>보글사다리<span id="main-navbar-emp_bsrate-id">0 % </span></td>
+				<td>슬롯<span id="main-navbar-emp_slrate-id">0 %</span></td>
 				<?php } else { ?>
 
 				<td>가입신청&nbsp;<a href="/user/member" id="main-navbar-user_wait-id">0 명</span></td>
@@ -66,13 +64,6 @@
 				<td>배팅<span id="main-navbar-psbet-id">0 원</span></td>
 				<td>적중<span id="main-navbar-psbetearn-id">0 원</span></td>
 				<!--<td>누름<span id="main-navbar-psbetpress-id">0 원</span></td>-->
-			</tr>
-
-			<tr>
-				<td style="font-weight: bold; color: #0090ff; font-size: 14px;">키노사다리:</td>
-				<td>배팅<span id="main-navbar-ksbet-id">0 원</span></td>
-				<td>적중<span id="main-navbar-ksbetearn-id">0 원</span></td>
-				<!--<td>누름<span id="main-navbar-ksbetpress-id">0 원</span></td>-->
 			</tr>
 
 		</Table>

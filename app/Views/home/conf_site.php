@@ -55,22 +55,6 @@
 		<input type="text" id="confsite-bank-input-id" value="<?=$arrConfig[7]['conf_content']?>">
 		<?php } ?>
 	</div>
-
-	<!--
-		<h4><i class="glyphicon glyphicon-hand-right"></i> 메인공지사항</h4>						
-		<div class="confsite-site-text-div">
-			<textarea rows="8" id="confsite-mainnotice-text-id"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[4]['conf_content']?><?php } ?></textarea>					
-		</div>
-		<div class="confsite-site-check-div">
-			<?php if(is_null($arrConfig) || $arrConfig[4]['conf_active'] != 1) {  ?>
-			<input type="checkbox" id="confsite-mainnotice-check-id">
-			<?php } else {?>
-			<input type="checkbox" id="confsite-mainnotice-check-id" checked>				
-			<?php } ?>			 
-			<label> 회원로그인시 메인공지사항 현시</label>			
-		</div>
-		-->
-	<!---->
 	
 	<h4><i class="glyphicon glyphicon-hand-right"></i> 입출금안내 </h4>
 

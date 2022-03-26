@@ -21,14 +21,13 @@
 					<th rowspan='2'>포인트</th>
 					<th rowspan='2'>카지노금</th>
 					<th rowspan='2'>슬롯머니</th>
-					<th colspan='5'>배당율</th>
+					<th colspan='4'>배당율</th>
 					<th rowspan='2'>승인</th>
 					<th rowspan='2'>게임별설정</th>
 				</tr>
 				<tr>
 					<th>파워볼</th>
 					<th>파워사</th>
-					<th>키노사</th>
 					<th>에볼</th>	
 					<th>슬롯</th>	
 				</tr>
@@ -52,9 +51,6 @@
 				</td>
 				<td>
 					<?=$objMember->mb_game_ps_ratio?> %
-				</td>
-				<td>
-					<?=$objMember->mb_game_ks_ratio?> %
 				</td>
 				<td>
 					<?=$objMember->mb_game_ev_ratio?> %
@@ -90,19 +86,13 @@
 					<button name="<?=$objMember->mb_fid?>" >파워사다리</button>
 					<?php } ?>
 
-					<?php if($objMember->mb_game_ks == 1) {  ?>
-					<button name="<?=$objMember->mb_fid?>"  class="button-active">키노사다리</button>
-					<?php } else {?>
-					<button name="<?=$objMember->mb_fid?>" >키노사다리</button>
-					<?php } ?>
-
 					<?php if($objMember->mb_game_bb == 1) {  ?>
 					<button name="<?=$objMember->mb_fid?>" class="button-active">보글볼</button>
 					<?php } else {?>
 					<button name="<?=$objMember->mb_fid?>">보글볼</button>
 					<?php } ?>
 
-                                   <?php if($objMember->mb_game_bs == 1) {  ?>
+					<?php if($objMember->mb_game_bs == 1) {  ?>
                     <button name="<?=$objMember->mb_fid?>" class="button-active">보글사다리</button>
                     <?php } else {?>
                     <button name="<?=$objMember->mb_fid?>">보글사다리</button>

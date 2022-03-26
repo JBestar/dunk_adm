@@ -95,8 +95,8 @@ class SlBet_model extends Model
     function search($objEmp, $arrReqData)
     {
 
-        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_slot_id ";
-        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_nickname, r.mb_slot_id ";
+        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_slot_uid ";
+        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_nickname, r.mb_slot_uid ";
 
          $strSql = "";
         if($objEmp->mb_level < LEVEL_ADMIN){
@@ -112,11 +112,11 @@ class SlBet_model extends Model
             
             $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
             $strSql .=" ) AS mb_table ";
-            $strSql .=" ON ".$this->table.".bet_player_id = mb_table.mb_slot_id ";
+            $strSql .=" ON ".$this->table.".bet_player_id = mb_table.mb_slot_uid ";
             $strSql .= " LEFT JOIN ".$this->mGameTable." ON ".$this->table.".bet_table_code = ".$this->mGameTable.".tid ";
         } else{
             $strSql .= "SELECT  bet_fid, bet_idx, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_type, bet_table_code, bet_choice, point_amount, employee_amount, agency_amount, company_amount, mb_uid, mb_nickname, name as game_name FROM ".$this->table;
-        	$strSql .= " JOIN ".$this->mMemberTable." ON ".$this->table.".bet_player_id = ".$this->mMemberTable.".mb_slot_id ";
+        	$strSql .= " JOIN ".$this->mMemberTable." ON ".$this->table.".bet_player_id = ".$this->mMemberTable.".mb_slot_uid ";
             $strSql .= " LEFT JOIN ".$this->mGameTable." ON ".$this->table.".bet_table_code = ".$this->mGameTable.".tid ";
         }
 
@@ -158,8 +158,8 @@ class SlBet_model extends Model
 
     function searchCount($objEmp, $arrReqData)
     {
-        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_slot_id ";
-        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_slot_id ";
+        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_slot_uid ";
+        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_slot_uid ";
 
          $strSql = "";
         if($objEmp->mb_level < LEVEL_ADMIN){
@@ -174,10 +174,10 @@ class SlBet_model extends Model
 
             $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";         
             $strSql .=" ) AS mb_table ";
-            $strSql .=" ON ".$this->table.".bet_player_id = mb_table.mb_slot_id ";
+            $strSql .=" ON ".$this->table.".bet_player_id = mb_table.mb_slot_uid ";
         } else {
             $strSql .= "SELECT count(*) as count  FROM ".$this->table;
-            $strSql .= " JOIN member ON ".$this->table.".bet_player_id = ".$this->mMemberTable.".mb_slot_id ";
+            $strSql .= " JOIN member ON ".$this->table.".bet_player_id = ".$this->mMemberTable.".mb_slot_uid ";
         }
 
 

@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
     addBtnEvent();
 });
 
@@ -30,7 +30,7 @@ function readConfigToObject() {
     objMember.mb_game_pb_ratio = document.getElementById("useredit-pbbetrate-input-id").value;
     objMember.mb_game_pb2_ratio = document.getElementById("useredit-pbbetrate2-input-id").value;
     objMember.mb_game_ps_ratio = document.getElementById("useredit-psbetrate-input-id").value;
-    objMember.mb_game_ks_ratio = document.getElementById("useredit-ksbetrate-input-id").value;
+    objMember.mb_game_ks_ratio = 0;
     objMember.mb_game_ev_ratio = document.getElementById("useredit-evbetrate-input-id").value;
     objMember.mb_game_sl_ratio = document.getElementById("useredit-slbetrate-input-id").value;
     objMember.mb_game_bb_ratio = document.getElementById("useredit-bbbetrate-input-id").value;
@@ -40,7 +40,7 @@ function readConfigToObject() {
     objMember.mb_game_pb_percent = document.getElementById("useredit-pbbetpercent-input-id").value;
     objMember.mb_game_pb2_percent = document.getElementById("useredit-pbbetpercent2-input-id").value;
     objMember.mb_game_ps_percent = document.getElementById("useredit-psbetpercent-input-id").value;
-    objMember.mb_game_ks_percent = document.getElementById("useredit-ksbetpercent-input-id").value;
+    objMember.mb_game_ks_percent = 0;
     objMember.mb_game_bb_percent = document.getElementById("useredit-bbbetpercent-input-id").value;
     objMember.mb_game_bb2_percent = document.getElementById("useredit-bbbetpercent2-input-id").value;
     objMember.mb_game_bs_percent = document.getElementById("useredit-bsbetpercent-input-id").value;
@@ -53,7 +53,7 @@ function readConfigToObject() {
 function addBtnEvent() {
 
     var elemOkBtn = document.getElementById("useredit-save-btn-id");
-    elemOkBtn.addEventListener("click", function () {
+    elemOkBtn.addEventListener("click", function() {
 
         var objMember = readConfigToObject();
 
@@ -109,7 +109,7 @@ function addBtnEvent() {
                 data: {
                     json_: jsonData
                 },
-                success: function (jResult) {
+                success: function(jResult) {
                     //console.log(jResult);
                     if (jResult.status == "success") {
                         window.location.replace('/user/agency');
@@ -123,18 +123,16 @@ function addBtnEvent() {
                         else if (jResult.error == 3)
                             alert("등록된 본사가 아닙니다.");
                         else alert("수정이 실패되었습니다.");
-                    }else if(jResult.status == "val_error") {
+                    } else if (jResult.status == "val_error") {
                         var errString = '';
-                        for(property in jResult.error){
+                        for (property in jResult.error) {
                             errString += `${jResult.error[property]}\n`;
                         }
                         alert(errString);
-                    }else if (jResult.status == "pb_ratio_error") {
+                    } else if (jResult.status == "pb_ratio_error") {
                         alert("파워볼 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "ps_ratio_error") {
                         alert("파워사다리 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
-                    } else if (jResult.status == "ks_ratio_error") {
-                        alert("키노사다리 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "ev_ratio_error") {
                         alert("에볼루션 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "bb_ratio_error") {
@@ -143,7 +141,7 @@ function addBtnEvent() {
                         alert("보글사다리 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     }
                 },
-                error: function (request, status, error) {
+                error: function(request, status, error) {
                     //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                 }
 
@@ -158,7 +156,7 @@ function addBtnEvent() {
                 data: {
                     json_: jsonData
                 },
-                success: function (jResult) {
+                success: function(jResult) {
                     console.log(jResult);
                     if (jResult.status == "success") {
                         window.location.replace('/user/agency');
@@ -182,8 +180,6 @@ function addBtnEvent() {
                         alert("파워볼 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "ps_ratio_error") {
                         alert("파워사다리 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
-                    } else if (jResult.status == "ks_ratio_error") {
-                        alert("키노사다리 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "ev_ratio_error") {
                         alert("에볼루션 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "bb_ratio_error") {
@@ -192,7 +188,7 @@ function addBtnEvent() {
                         alert("보글사다리 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     }
                 },
-                error: function (request, status, error) {
+                error: function(request, status, error) {
                     // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                 }
 
@@ -206,7 +202,7 @@ function addBtnEvent() {
 
 
     var elemCancelBtn = document.getElementById("useredit-cancel-btn-id");
-    elemCancelBtn.addEventListener("click", function () {
+    elemCancelBtn.addEventListener("click", function() {
         window.location.replace('/user/agency');
     });
 

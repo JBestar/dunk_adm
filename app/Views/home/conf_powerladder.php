@@ -5,7 +5,6 @@
 		<p><i class="glyphicon glyphicon-play-circle"></i> 기본설정::배팅설정</p>
 		<a href="<?php echo base_url().'home/conf_powerball';?>" class="sub-navbar-a" >파워볼</a>
 		<a href="<?php echo base_url().'home/conf_powerladder';?>" class="sub-navbar-a active" >파워사다리</a>
-		<a href="<?php echo base_url().'home/conf_kenoladder';?>" class="sub-navbar-a" >키노사다리</a>
 		<a href="<?php echo base_url().'home/conf_bogleball';?>" class="sub-navbar-a" >보글파워볼</a>
 		<a href="<?php echo base_url().'home/conf_bogleladder';?>" class="sub-navbar-a" >보글사다리</a>
 	</div>

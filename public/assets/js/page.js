@@ -2,17 +2,15 @@ var TotalCount = 0;
 var CountPerPage = 20;
 var ViewPage = 5;
 
-function setNavBarElement(){
+function setNavBarElement() {
     var activeGame = $(".sub-navbar").attr("value");
-    console.log("activeGame:" + activeGame);
-    if (typeof activeGame !== typeof undefined && activeGame !== false){
+    // console.log("activeGame:" + activeGame);
+    if (typeof activeGame !== typeof undefined && activeGame !== false) {
         var navbarlist = $(".sub-navbar-a");
-        console.log("activeGame:" + activeGame + "navbar length:" + navbarlist.length);
-        for (var i = 0; i < navbarlist.length; i ++)
-        {
-            console.log("activeGame:" + activeGame + "navbarText:" + $(navbarlist[i]).text());
-            if (activeGame == $(navbarlist[i]).text())
-            {
+        // console.log("activeGame:" + activeGame + "navbar length:" + navbarlist.length);
+        for (var i = 0; i < navbarlist.length; i++) {
+            // console.log("activeGame:" + activeGame + "navbarText:" + $(navbarlist[i]).text());
+            if (activeGame == $(navbarlist[i]).text()) {
                 $(navbarlist[i]).attr("class", "sub-navbar-a active");
             }
         }

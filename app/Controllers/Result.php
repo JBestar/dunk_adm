@@ -84,26 +84,6 @@ class Result extends StdController {
 			LEVEL_ADMIN);	
 	}
 
-
-
-	public function ksresult()
-	{
-		$this->load_view_page('result/ksresult', 'gameresult');			
-	}
-
-
-	public function ksresult_edit($strRoundFid)
-	{		
-		$ksroundModel = new KsRound_model();
-		$this->result_edit_page(
-			$ksroundModel, 
-			$strRoundFid, 
-			'result/ksresult_edit', 
-			'gameresult', 
-			LEVEL_ADMIN);		
-	}
-
-
 	public function bbresult()
 	{
 		$this->load_view_page('result/bbresult', 'gameresult');			

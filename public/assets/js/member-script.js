@@ -27,7 +27,7 @@ function showMember(arrMember, nAdminLevel) {
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_nickname;
         strBuf += "</td> <td>";
-        strBuf += parseInt(arrMember[nRow].mb_level).toLocaleString() + "레벨" ;
+        strBuf += parseInt(arrMember[nRow].mb_level).toLocaleString() + "레벨";
         strBuf += "</td> <td>";
         strBuf += parseInt(arrMember[nRow].mb_money_charge).toLocaleString() + "원";
         strBuf += "</td> <td>";
@@ -64,11 +64,6 @@ function showMember(arrMember, nAdminLevel) {
             strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\"  class=\"button-active\">파워사다리</button>";
         } else {
             strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\" >파워사다리</button>";
-        }
-        if (arrMember[nRow].mb_game_ks == 1) {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\"  class=\"button-active\">키노사다리</button>";
-        } else {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\" >키노사다리</button>";
         }
         if (arrMember[nRow].mb_game_bb == 1) {
             strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\"  class=\"button-active\">보글볼</button>";
@@ -111,7 +106,7 @@ function addEventListner() {
     });
 
     var selectLevel = document.getElementById("userpanel-level-select-id");
-    selectLevel.addEventListener("change", function(){
+    selectLevel.addEventListener("change", function() {
         requestTotalPage();
     });
 
@@ -181,7 +176,7 @@ function requestTotalPage() {
         dataType: 'json',
         type: 'post',
         success: function(jResult) {
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();
@@ -274,8 +269,7 @@ function addBtnEvent() {
                     var jsonData = { "mb_fid": this.name, "mb_game_ev": 1 };
                     requestUpdateCompany(jsonData);
                 }
-            }
-            else if (this.innerHTML.search("슬롯") >= 0) {
+            } else if (this.innerHTML.search("슬롯") >= 0) {
                 if (this.className.search("button-active") >= 0) {
                     var jsonData = { "mb_fid": this.name, "mb_game_sl": 0 };
                     requestUpdateCompany(jsonData);

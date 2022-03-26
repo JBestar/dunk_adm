@@ -5,10 +5,9 @@
 		<p><i class="glyphicon glyphicon-book"></i> 배팅내역</p>
 		<a href="<?php echo base_url().'bet/pbhistory';?>" class="sub-navbar-a" >파워볼</a>
 		<a href="<?php echo base_url().'bet/pshistory';?>" class="sub-navbar-a" >파워사다리</a>
-		<a href="<?php echo base_url().'bet/kshistory';?>" class="sub-navbar-a" >키노사다리</a>
-		<a href="<?php echo base_url().'bet/cshistory';?>" class="sub-navbar-a" >에볼루션</a>
 		<a href="<?php echo base_url().'bet/bbhistory';?>" class="sub-navbar-a" >보글볼</a>
 		<a href="<?php echo base_url().'bet/bshistory';?>" class="sub-navbar-a" >보글사다리</a>
+		<a href="<?php echo base_url().'bet/cshistory';?>" class="sub-navbar-a" >에볼루션</a>
         <a href="<?php echo base_url().'bet/slhistory';?>" class="sub-navbar-a" >슬롯</a>
 	</div>
 

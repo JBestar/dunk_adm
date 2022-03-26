@@ -5,7 +5,6 @@
 		<p><i class="glyphicon glyphicon-book"></i> 게임결과</p>
 		<a href="<?php echo base_url().'result/pbresult';?>" class="sub-navbar-a" >파워볼</a>
 		<a href="<?php echo base_url().'result/psresult';?>" class="sub-navbar-a" >파워사다리</a>
-		<a href="<?php echo base_url().'result/ksresult';?>" class="sub-navbar-a" >키노사다리</a>
 		<a href="<?php echo base_url().'result/bbresult';?>" class="sub-navbar-a" >보글볼</a>
 		<a href="<?php echo base_url().'result/bsresult';?>" class="sub-navbar-a" >보글사다리</a>
 	</div>

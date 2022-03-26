@@ -5,7 +5,6 @@
 		<p><i class="glyphicon glyphicon-dashboard"></i> 실시간배팅</p>
 		<a href="<?php echo base_url().'bet/pbrealtime';?>" class="sub-navbar-a" >파워볼</a>
 		<a href="<?php echo base_url().'bet/psrealtime';?>" class="sub-navbar-a" >파워사다리</a>
-		<a href="<?php echo base_url().'bet/ksrealtime';?>" class="sub-navbar-a" >키노사다리</a>
 		<a href="<?php echo base_url().'bet/bbrealtime';?>" class="sub-navbar-a" >보글볼</a>
 		<a href="<?php echo base_url().'bet/bsrealtime';?>" class="sub-navbar-a" >보글사다리</a>
 	</div>

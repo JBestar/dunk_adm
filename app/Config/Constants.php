@@ -122,3 +122,18 @@ defined('GAME_SLOT')           || define('GAME_SLOT', 7);
 defined('ROUND_5MIN')    || define('ROUND_5MIN', 5);
 defined('ROUND_3MIN')    || define('ROUND_3MIN', 3);
 defined('ROUND_2MIN')    || define('ROUND_2MIN', 2);
+
+//money change type
+defined('MONEYCHANGE_CHARGE')    || define('MONEYCHANGE_CHARGE', 1);   
+defined('MONEYCHANGE_EXCHANGE')  || define('MONEYCHANGE_EXCHANGE', 2); 
+defined('POINTCHANGE_EXCHANGE')  || define('POINTCHANGE_EXCHANGE', 3); 
+defined('MONEYCHANGE_BET_PB')    || define('MONEYCHANGE_BET_PB', 4);
+defined('MONEYCHANGE_WIN_PB')    || define('MONEYCHANGE_WIN_PB', 6);
+defined('MONEYCHANGE_BET_PS')    || define('MONEYCHANGE_BET_PS', 7);
+defined('MONEYCHANGE_WIN_PS')    || define('MONEYCHANGE_WIN_PS', 9);
+defined('MONEYCHANGE_BET_KS')    || define('MONEYCHANGE_BET_KS', 10);
+defined('MONEYCHANGE_WIN_KS')    || define('MONEYCHANGE_WIN_KS', 12);
+defined('MONEYCHANGE_BET_BB')    || define('MONEYCHANGE_BET_BB', 13);
+defined('MONEYCHANGE_WIN_BB')    || define('MONEYCHANGE_WIN_BB', 15);
+defined('MONEYCHANGE_BET_BS')    || define('MONEYCHANGE_BET_BS', 16);
+defined('MONEYCHANGE_WIN_BS')    || define('MONEYCHANGE_WIN_BS', 18);

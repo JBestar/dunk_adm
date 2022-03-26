@@ -161,24 +161,6 @@
 			<?php } ?>
 		</div>
 		<div class="useredit-percent-div">
-			<p>키노사다리:</p>			 
-			
-			<label> 배당율(%)</label>
-			<?php if(is_null($objMember)) {  ?>
-			<input type = "number" step="0.1" id="useredit-ksbetrate-input-id" value="0" >
-			<?php } else {?>
-			<input type = "number" step="0.1" id="useredit-ksbetrate-input-id" value="<?=$objMember->mb_game_ks_ratio?>">
-			<?php } ?>
-
-			<label> 누르기율(%)</label>
-			<?php if(is_null($objMember)) {  ?>
-			<input type = "number" step="1" id="useredit-ksbetpercent-input-id" value="100">
-			<?php } else {?>
-			<input type = "number" step="1" id="useredit-ksbetpercent-input-id" value="<?=$objMember->mb_game_ks_percent?>">
-			<?php } ?>
-
-		</div>
-		<div class="useredit-percent-div">
 			<p>보글볼단폴:</p> 
 			<label> 배당율(%)</label>
 			<?php if(is_null($objMember)) {  ?>

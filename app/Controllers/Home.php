@@ -39,10 +39,6 @@ class Home extends StdController
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN);		
 	}
 
-	public function conf_kenoladder(){
-		$this->load_view_page('home/conf_kenoladder', 'conf_game', LEVEL_ADMIN);
-	}
-
 	public function conf_powerladder(){
 		$this->load_view_page('home/conf_powerladder', 'conf_game', LEVEL_ADMIN);
 	}

@@ -24,19 +24,11 @@
 				<option value="6">파워볼정산</option>
 				<option value="7">파워사다리배팅</option>
 				<option value="9">파워사다리정산</option>
-				<option value="10">키노사다리배팅</option>
-				<option value="12">키노사다리정산</option>
 				<option value="13">보글볼배팅</option>				
 				<option value="15">보글볼정산</option>
 				<option value="16">보글사다리배팅</option>
 				<option value="18">보글사다리정산</option>
 				
-				<!--
-				<option value="5">파워볼자동배팅</option>
-				<option value="8">파워사다리 자동배팅</option>
-				<option value="11">키노사다리 자동배팅</option>
-				-->
-
 			</select>
 
 			<select name="pbresult-number" class="pbresult-number-select" id="exchange-number-select-id">

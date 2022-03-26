@@ -6,7 +6,6 @@
 		<a href="<?php echo base_url().'bet/allcalculate';?>" class="sub-navbar-a" >전체</a>
 		<a href="<?php echo base_url().'bet/pbcalculate';?>" class="sub-navbar-a" >파워볼</a>
 		<a href="<?php echo base_url().'bet/pscalculate';?>" class="sub-navbar-a" >파워사다리</a>
-		<a href="<?php echo base_url().'bet/kscalculate';?>" class="sub-navbar-a" >키노사다리</a>
 		<a href="<?php echo base_url().'bet/bbcalculate';?>" class="sub-navbar-a" >보글볼</a>
 		<a href="<?php echo base_url().'bet/bscalculate';?>" class="sub-navbar-a" >보글사다리</a>
 		<a href="<?php echo base_url().'bet/cscalculate';?>" class="sub-navbar-a" >에볼루션</a>

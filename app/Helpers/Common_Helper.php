@@ -53,8 +53,6 @@
     
     //회차유효성 검사 함수
     function isEnablePbRound(&$arrRoundInfo, $roundMin){
-      //date_default_timezone_set('Asia/Seoul');
-
       
       if($arrRoundInfo['round_num'] < 1 || $arrRoundInfo['round_num'] > 1440/$roundMin)
         return false;
@@ -90,13 +88,10 @@
     //회차번호로부터 회차시작시간과 마감시간, 배팅초과시간 계산하는 함수-파워볼, 파워사다리
     function getPbRoundInfo(){
 
-      //date_default_timezone_set('Asia/Seoul');
-
       $tmNow = time()+TM_OFFSET;
       
       $nHour = date("G",$tmNow);
       $nMin = date("i",$tmNow);
-      //$second = date("s",$tmNow);
 
       $nSumMinutes = $nHour * 60 + $nMin ;
       $nRoundNo = floor($nSumMinutes / 5) ;
@@ -131,18 +126,14 @@
       
       return $arrRoundInfo;
     }
-    
 
      //회차번호로부터 회차시작시간과 마감시간,계산하는 함수-키노사다리
     function getKsRoundInfo(){
 
-      //date_default_timezone_set('Asia/Seoul');
-      
       $tmNow = time()+TM_OFFSET;
       
       $nHour = date("G",$tmNow);
       $nMin = date("i",$tmNow);
-      //$second = date("s",$tmNow);
 
       $nSumMinutes = $nHour * 60 + $nMin ;
       $nRoundNo = floor($nSumMinutes / 5) ;

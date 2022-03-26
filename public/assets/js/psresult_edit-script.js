@@ -77,7 +77,7 @@ function addBtnEvent() {
                 url: "/psapi/registerround",
                 data: { json_: jsonData },
                 success: function(jResult) {
-                    console.log(jResult);
+                    // console.log(jResult);
                     if (jResult.status == "success") {
                         alert("저장되었습니다.");
                     } else if (jResult.status == "logout") {

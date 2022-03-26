@@ -27,10 +27,6 @@ class Bet extends StdController {
 		$this->load_view_page('bet/psrealtime', 'bet_realtime', LEVEL_COMPANY);
 	}
 
-	public function ksrealtime(){
-		$this->load_view_page('bet/ksrealtime', 'bet_realtime', LEVEL_COMPANY);
-	}
-
 	public function bbrealtime(){
 		$this->load_view_page('bet/bbrealtime', 'bet_realtime', LEVEL_COMPANY);
 	}
@@ -45,10 +41,6 @@ class Bet extends StdController {
 
 	public function pshistory(){
 		$this->load_view_page('bet/pshistory', 'bet_history');
-	}
-
-	public function kshistory(){
-		$this->load_view_page('bet/kshistory', 'bet_history');	
 	}
 	
 	public function cshistory(){
@@ -79,10 +71,6 @@ class Bet extends StdController {
 
 	public function pscalculate(){
 		$this->load_view_page('bet/pscalculate', 'bet_calculate');
-	}
-
-	public function kscalculate(){
-		$this->load_view_page('bet/kscalculate', 'bet_calculate');
 	}
 	
 	public function cscalculate(){
