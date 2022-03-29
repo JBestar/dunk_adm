@@ -30,7 +30,7 @@ class Api extends BaseController{
         $model = new Member_Model();
         $userData = $model->where('mb_uid', $arrLoginData['username'])->first();
         $result = false;
-        if ($userData != null && $userData['mb_pwd'] == $arrLoginData['password'])
+        if ($userData != null && $userData['mb_pwd'] === $arrLoginData['password'])
         {
             if ($userData['mb_level'] >= 7 && $userData['mb_state_active'] == 1){
                 $sessData = [
@@ -666,7 +666,7 @@ public function withdrawlist(){
 			}			
 
 			if($bPermit){
-				if($arrData['notice_mb_uid'] == '*'){
+				if($arrData['notice_mb_uid'] === '*'){
 					$arrData['notice_read_count'] = 1;
 					$iInsFid = $noticeModel->addNotice($arrData);
 					if($iInsFid > 0){
@@ -995,8 +995,7 @@ public function withdrawlist(){
          			$objCalc['mb_bet_benefit_money'] = $arrBetData['bet_benefit_money'];  //베팅손익
          			$objCalc['mb_rate_money'] = $arrBetData['rate_money'] ;          //수수료
          			$objCalc['mb_last_money'] = $arrBetData['last_money'] ;         //최종손익
-					//  if ($i == 1)
-					// 	  return var_dump($objCalc);
+
 		            $arrData[$i] = $objCalc;
 		            $i++;
             		

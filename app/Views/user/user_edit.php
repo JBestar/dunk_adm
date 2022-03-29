@@ -215,7 +215,7 @@
 			<?php if(is_null($objMember)) {  ?>
 			<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="0" >
 			<?php } else {?>
-			<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="<?=$objMember->mb_game_ev_ratio?>">
+			<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="<?=$objMember->mb_game_cs_ratio?>">
 			<?php } ?>
 		</div>
 

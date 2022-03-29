@@ -83,13 +83,25 @@ defined('BASEURL') || define('BASEURL', $base_url);
 defined('DOWNLOADDIR')         || define('DOWNLOADDIR', "download");
 defined('DOWNLOADROOT')        || define('DOWNLOADROOT', ROOTPATH."public".DIRECTORY_SEPARATOR.DOWNLOADDIR.DIRECTORY_SEPARATOR);
 
-defined('LEVEL_ADMIN')         || define('LEVEL_ADMIN', 10);
-defined('LEVEL_COMPANY')       || define('LEVEL_COMPANY', 9);
-defined('LEVEL_AGENCY')        || define('LEVEL_AGENCY', 8);
-defined('LEVEL_EMPLOYEE')      || define('LEVEL_EMPLOYEE', 7);
-defined('LEVEL_USER')          || define('LEVEL_USER', 1);
+defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);
+defined('LEVEL_ADMIN')         || define('LEVEL_ADMIN', 100);
+defined('LEVEL_COMPANY')       || define('LEVEL_COMPANY', 99);
+defined('LEVEL_AGENCY')        || define('LEVEL_AGENCY', 98);
+defined('LEVEL_EMPLOYEE')      || define('LEVEL_EMPLOYEE', 97);
+defined('LEVEL_MIN')           || define('LEVEL_MIN', 1);
+
+defined('GRADE_ADMIN')         || define('GRADE_ADMIN', 20);
+defined('GRADE_COMPANY')       || define('GRADE_COMPANY', 19);
+defined('GRADE_AGENCY')        || define('GRADE_AGENCY', 18);
+defined('GRADE_EMPLOYEE')      || define('GRADE_EMPLOYEE', 17);
+defined('GRADE_1')             || define('GRADE_1', 1);
+
+//status
+defined('STATE_DISABLE')      || define('STATE_DISABLE', 0);
+defined('STATE_ACTIVE')       || define('STATE_ACTIVE', 1);
 
 //permit state
+defined('PERMIT_CANCEL')       || define('PERMIT_CANCEL', 0);
 defined('PERMIT_OK')           || define('PERMIT_OK', 1);
 defined('PERMIT_WAIT')         || define('PERMIT_WAIT', 2);
 

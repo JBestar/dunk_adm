@@ -7,7 +7,6 @@ use App\Models\ConfSite_Model;
 use App\Models\Charge_Model;
 use App\Models\ConfGame_model;
 use App\Models\Exchange_model;
-use App\Models\KsBet_model;
 use App\Models\Notice_Model;
 use App\Models\PbBet_model;
 use App\Models\PsBet_model;
@@ -354,7 +353,6 @@ class UserApi extends BaseController{
             $confgameModel = new ConfGame_model();
             $pbbetModel = new PbBet_model();       
             $psbetModel = new PsBet_model();
-            $ksbetModel = new KsBet_model();
             $bbbetModel = new BbBet_model();
             $bsbetModel = new BsBet_model();
 			
@@ -373,16 +371,13 @@ class UserApi extends BaseController{
 				$objConfPs = $confgameModel->getByIndex(GAME_POWER_LADDER);
 				$arrSumData[2] = $psbetModel->getBetSumByDay($arrReqData, $objConfPs);
 				
-				$objConfKs = $confgameModel->getByIndex(GAME_KENO_LADDER);
-				$arrSumData[3] = $ksbetModel->getBetSumByDay($arrReqData, $objConfKs);
-				 
 				$objConfBb = $confgameModel->getByIndex(GAME_BOGLE_BALL);
 				$arrSum = $bbbetModel->getBetSumByDay($arrReqData, $objConfBb);
-				$arrSumData[4] = $arrSum[0];
-				$arrSumData[5] = $arrSum[1];
+				$arrSumData[3] = $arrSum[0];
+				$arrSumData[4] = $arrSum[1];
 
 				$objConfBs = $confgameModel->getByIndex(GAME_BOGLE_LADDER);
-				$arrSumData[6] = $bsbetModel->getBetSumByDay($arrReqData, $objConfBs);
+				$arrSumData[5] = $bsbetModel->getBetSumByDay($arrReqData, $objConfBs);
 				 
 				$objResult->data = $arrSumData;
 				$objResult->status = "success";

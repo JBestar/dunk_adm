@@ -53,7 +53,7 @@
 					<?=$objMember->mb_game_ps_ratio?> %
 				</td>
 				<td>
-					<?=$objMember->mb_game_ev_ratio?> %
+					<?=$objMember->mb_game_cs_ratio?> %
 				</td>
 				<td>
 					<?=$objMember->mb_game_sl_ratio?> %
@@ -98,7 +98,7 @@
                     <button name="<?=$objMember->mb_fid?>">보글사다리</button>
                     <?php } ?>
 
-                    <?php if($objMember->mb_game_ev == 1) {  ?>
+                    <?php if($objMember->mb_game_cs == 1) {  ?>
                     <button name="<?=$objMember->mb_fid?>" class="button-active">카지노</button>
                     <?php } else {?>
                     <button name="<?=$objMember->mb_fid?>">카지노</button>

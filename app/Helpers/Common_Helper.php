@@ -127,43 +127,7 @@
       return $arrRoundInfo;
     }
 
-     //회차번호로부터 회차시작시간과 마감시간,계산하는 함수-키노사다리
-    function getKsRoundInfo(){
-
-      $tmNow = time()+TM_OFFSET;
-      
-      $nHour = date("G",$tmNow);
-      $nMin = date("i",$tmNow);
-
-      $nSumMinutes = $nHour * 60 + $nMin ;
-      $nRoundNo = floor($nSumMinutes / 5) ;
-      $nRoundNo = $nRoundNo % 288 + 1;
-      $arrRoundInfo['round_no'] = $nRoundNo;
-
-      $strDate = date( 'Y-m-d', $tmNow );
-      
-      $nSumMinutes = $nRoundNo * 5 ;
-      $nHour = $nSumMinutes / 60;
-      $nHour = floor($nHour);
-      $nMinute = $nSumMinutes % 60;
-
-      //현재시간설정      
-      $tmRoundCurrent = date("Y-m-d H:i:s", $tmNow);        
-      $arrRoundInfo['round_current'] = $tmRoundCurrent;
-
-      //회차 마감시간설정
-      $strRoundEnd = $strDate." ".$nHour.":".$nMinute.":"."0";
-      $tmRoundEnd = strtotime($strRoundEnd);
-      $arrRoundInfo['round_end'] = date("Y-m-d H:i:s", $tmRoundEnd);
-      
-      //회차 시작시간설정
-      $tmRoundStart = strtotime("-5 minutes", $tmRoundEnd);
-      $arrRoundInfo['round_start'] = date("Y-m-d H:i:s", $tmRoundStart);
-      
-      
-      return $arrRoundInfo;
-    }
-
+     
     //회차번호로부터 회차시작시간과 마감시간, 배팅초과시간 계산하는 함수-보글파워볼, 보글사다리
     function getBRoundInfo($roundMin){
 
@@ -220,20 +184,6 @@
       else {
         $strDate = date("Y-m-d", $tmDate);
       }
-      return $strDate;
-
-    }
-
-
-    //베팅시간으로부터 정확한 회차날자 얻기
-    function getKsRoundDate($strDateTime){
-      //2021-01-33 23:33:33
-      if(strlen($strDateTime) < 1)
-        return "";
-      
-      $tmDate = strtotime($strDateTime);
-      $strDate = date("Y-m-d", $tmDate);
-
       return $strDate;
 
     }

@@ -65,10 +65,10 @@ function addBtnEvent() {
                 }
             } else if (this.innerHTML.search("카지노") >= 0) {
                 if (this.className.search("button-active") >= 0) {
-                    var jsonData = { "mb_fid": this.name, "mb_game_ev": 0 };
+                    var jsonData = { "mb_fid": this.name, "mb_game_cs": 0 };
                     requestUpdateCompany(jsonData);
                 } else {
-                    var jsonData = { "mb_fid": this.name, "mb_game_ev": 1 };
+                    var jsonData = { "mb_fid": this.name, "mb_game_cs": 1 };
                     requestUpdateCompany(jsonData);
                 }
             } else if (this.innerHTML.search("슬롯") >= 0) {

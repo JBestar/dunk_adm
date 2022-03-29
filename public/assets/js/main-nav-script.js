@@ -164,7 +164,7 @@ function showMemberInfo(objUser) {
         strBuf += objUser.mb_game_pb2_ratio + " %";
         $("#main-navbar-emp_pbrate-id").text(strBuf);
 
-        strBuf = objUser.mb_game_ev_ratio + " %";
+        strBuf = objUser.mb_game_cs_ratio + " %";
         $("#main-navbar-emp_evrate-id").text(strBuf);
 
         strBuf = objUser.mb_game_sl_ratio + " %";
@@ -300,18 +300,14 @@ function showEmpBetInfo(arrBetInfo) {
     $("#main-navbar-psbetearn-id").text(parseInt(arrBetInfo[2][1]).toLocaleString() + " 원");
     //$("#main-navbar-psbetpress-id").text(parseInt(arrBetInfo[2][2]).toLocaleString() + " 원");
 
-    // $("#main-navbar-ksbet-id").text(parseInt(arrBetInfo[3][0]).toLocaleString() + " 원");
-    // $("#main-navbar-ksbetearn-id").text(parseInt(arrBetInfo[3][1]).toLocaleString() + " 원");
-    //$("#main-navbar-ksbetpress-id").text(parseInt(arrBetInfo[3][2]).toLocaleString() + " 원");
+    $("#main-navbar-bbbet-id").text(parseInt(arrBetInfo[3][0]).toLocaleString() + " 원");
+    $("#main-navbar-bbbetearn-id").text(parseInt(arrBetInfo[3][1]).toLocaleString() + " 원");
 
-    $("#main-navbar-bbbet-id").text(parseInt(arrBetInfo[4][0]).toLocaleString() + " 원");
-    $("#main-navbar-bbbetearn-id").text(parseInt(arrBetInfo[4][1]).toLocaleString() + " 원");
+    $("#main-navbar-bb2bet-id").text(parseInt(arrBetInfo[4][0]).toLocaleString() + " 원");
+    $("#main-navbar-bb2betearn-id").text(parseInt(arrBetInfo[4][1]).toLocaleString() + " 원");
 
-    $("#main-navbar-bb2bet-id").text(parseInt(arrBetInfo[5][0]).toLocaleString() + " 원");
-    $("#main-navbar-bb2betearn-id").text(parseInt(arrBetInfo[5][1]).toLocaleString() + " 원");
-
-    $("#main-navbar-bsbet-id").text(parseInt(arrBetInfo[6][0]).toLocaleString() + " 원");
-    $("#main-navbar-bsbetearn-id").text(parseInt(arrBetInfo[6][1]).toLocaleString() + " 원");
+    $("#main-navbar-bsbet-id").text(parseInt(arrBetInfo[5][0]).toLocaleString() + " 원");
+    $("#main-navbar-bsbetearn-id").text(parseInt(arrBetInfo[5][1]).toLocaleString() + " 원");
 
 }
 

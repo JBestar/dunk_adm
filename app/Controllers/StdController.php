@@ -28,7 +28,7 @@ class StdController extends BaseController
 			if ($arrAddData !== null)
 				$arrData = $arrData + $arrAddData;
 			
-			if ($userLevel === 0){
+			if ($userLevel == 0){
 				echo view($url, $arrData);
 			}
 			else {
