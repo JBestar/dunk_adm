@@ -32,7 +32,7 @@ class Api extends BaseController{
         $result = false;
         if ($userData != null && $userData['mb_pwd'] === $arrLoginData['password'])
         {
-            if ($userData['mb_level'] >= 7 && $userData['mb_state_active'] == 1){
+            if ($userData['mb_level'] >= LEVEL_MIN && $userData['mb_state_active'] == STATE_ACTIVE){
                 $sessData = [
                     'user_id' => $userData['mb_uid'], 
                     'logged_in' => TRUE, 

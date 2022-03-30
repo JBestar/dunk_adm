@@ -362,15 +362,15 @@ class Member_Model extends Model
             $arrBetData['bet_win_money'] = $arrBetData['bet_win_money'] + $objResult->bet_win_money;
         }
 
-        if (9 == $objEmp->mb_level) {
+        if (LEVEL_COMPANY == $objEmp->mb_level) {
             if (!is_null($objResult->company_amount)) {
                 $arrBetData['rate_money'] = $arrBetData['rate_money'] + $objResult->company_amount;
             }
-        } elseif (8 == $objEmp->mb_level) {
+        } elseif (LEVEL_AGENCY == $objEmp->mb_level) {
             if (!is_null($objResult->agency_amount)) {
                 $arrBetData['rate_money'] = $arrBetData['rate_money'] + $objResult->agency_amount;
             }
-        } elseif (7 == $objEmp->mb_level) {
+        } elseif (LEVEL_EMPLOYEE == $objEmp->mb_level) {
             if (!is_null($objResult->employee_amount)) {
                 $arrBetData['rate_money'] = $arrBetData['rate_money'] + $objResult->employee_amount;
             }
@@ -439,15 +439,15 @@ class Member_Model extends Model
             $arrBetData['bet_win_money'] = $arrBetData['bet_win_money'] + $objResult->bet_win_money;
         }
 
-        if (9 == $objEmp->mb_level) {
+        if (LEVEL_COMPANY == $objEmp->mb_level) {
             if (!is_null($objResult->company_amount)) {
                 $arrBetData['rate_money'] = $arrBetData['rate_money'] + $objResult->company_amount;
             }
-        } elseif (8 == $objEmp->mb_level) {
+        } elseif (LEVEL_AGENCY == $objEmp->mb_level) {
             if (!is_null($objResult->agency_amount)) {
                 $arrBetData['rate_money'] = $arrBetData['rate_money'] + $objResult->agency_amount;
             }
-        } elseif (7 == $objEmp->mb_level) {
+        } elseif (LEVEL_EMPLOYEE == $objEmp->mb_level) {
             if (!is_null($objResult->employee_amount)) {
                 $arrBetData['rate_money'] = $arrBetData['rate_money'] + $objResult->employee_amount;
             }
@@ -578,7 +578,7 @@ class Member_Model extends Model
         }
 
         // 9레벨일때
-        if ($objMember->mb_level >= 9) {
+        if ($objMember->mb_level >= LEVEL_COMPANY) {
             return $objMember->mb_nickname;
         }
 
@@ -589,7 +589,7 @@ class Member_Model extends Model
             return '';
         }
         $strBuf = $objEmp->mb_nickname;
-        if (8 == $objMember->mb_level) {
+        if (LEVEL_AGENCY == $objMember->mb_level) {
             return $strBuf.'::'.$objMember->mb_nickname;
         }
 
@@ -599,7 +599,7 @@ class Member_Model extends Model
             return '';
         }
         $strBuf = $objEmp->mb_nickname.'::'.$strBuf;
-        if (7 == $objMember->mb_level) {
+        if (LEVEL_EMPLOYEE == $objMember->mb_level) {
             return $strBuf.'::'.$objMember->mb_nickname;
         }
 
@@ -724,16 +724,16 @@ class Member_Model extends Model
                 return 3;
             }
 
-            if (8 == $arrRegData['mb_level']) {
-                if (9 != $objEmployee->mb_level) {
+            if (LEVEL_AGENCY == $arrRegData['mb_level']) {
+                if (LEVEL_COMPANY != $objEmployee->mb_level) {
                     return 3;
                 }
-            } elseif (7 == $arrRegData['mb_level']) {
-                if (8 != $objEmployee->mb_level) {
+            } elseif (LEVEL_EMPLOYEE == $arrRegData['mb_level']) {
+                if (LEVEL_AGENCY != $objEmployee->mb_level) {
                     return 3;
                 }
-            } elseif ($arrRegData['mb_level'] < 7) {
-                if (7 != $objEmployee->mb_level) {
+            } elseif ($arrRegData['mb_level'] < LEVEL_EMPLOYEE) {
+                if (LEVEL_EMPLOYEE != $objEmployee->mb_level) {
                     return 3;
                 }
             }
@@ -742,7 +742,7 @@ class Member_Model extends Model
             if (1 != $ratioResult) {
                 return $ratioResult;
             }
-            if ($arrRegData['mb_level'] < 7) {
+            if ($arrRegData['mb_level'] < LEVEL_EMPLOYEE) {
                 if (!array_key_exists('mb_color', $arrRegData)) {
                     $arrRegData['mb_color'] = $objEmployee->mb_color;
                 } elseif (0 != strcmp($arrRegData['mb_color'], $objEmployee->mb_color)) {
@@ -973,7 +973,7 @@ class Member_Model extends Model
         $strSql = 'SELECT count(*) as count FROM '.$this->table;
 
         if (0 == $arrReqData['mb_level']) {
-            $strSql .= " WHERE mb_level < '7' ";
+            $strSql .= " WHERE mb_level < '".LEVEL_EMPLOYEE."' ";
         } else {
             $strSql .= " WHERE mb_level = '".$arrReqData['mb_level']."' ";
         }
@@ -1004,8 +1004,8 @@ class Member_Model extends Model
             $strSQL .= ' UNION ALL SELECT '.$strTbRColum.' FROM '.$this->table.' r ';
             $strSQL .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
             $strSQL .= ' SELECT COUNT(*) as count FROM tbmember where ';
-            if (0 == $arrReqData['mb_level']) {
-                $strSQL .= " mb_level < '7' ";
+            if (LEVEL_MIN > $arrReqData['mb_level']) {
+                $strSQL .= " mb_level < '".LEVEL_EMPLOYEE."' ";
             } else {
                 $strSQL .= " mb_level = '".$arrReqData['mb_level']."' ";
             }
@@ -1162,7 +1162,7 @@ class Member_Model extends Model
             $strSQL .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
             $strSQL .= ' SELECT * FROM tbmember where ';
             if (0 == $arrReqData['mb_level']) {
-                $strSQL .= " mb_level < '7' ";
+                $strSQL .= " mb_level < '".LEVEL_EMPLOYEE."' ";
             } else {
                 $strSQL .= " mb_level = '".$arrReqData['mb_level']."' ";
             }

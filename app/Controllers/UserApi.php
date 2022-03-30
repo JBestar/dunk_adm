@@ -238,7 +238,6 @@ class UserApi extends BaseController{
 				if($objReqUser->mb_state_active != 2){
 					$bPermit = false;
 				}
-				//if($objUser['mb_level'] >= LEVEL_ADMIN )
 				else if($objUser->mb_level > $objReqUser->mb_level )
 					$bPermit = true;					
 			}
