@@ -1,5 +1,6 @@
 <?php
 namespace App\Controllers;
+use App\Models\SlotPrd_Model;
 
 class Bet extends StdController {
 
@@ -57,7 +58,32 @@ class Bet extends StdController {
 	}
 	
 	public function slhistory(){
-		$this->load_view_page('bet/slhistory', 'bet_history');
+		$modelSlotprd = new SlotPrd_Model();
+		$gameId = GAME_SLOT_1;
+		$arrPrd = $modelSlotprd->gets($gameId);
+
+		$param = [
+			'game_name' => "슬롯게임",
+			'game_id' => $gameId,
+			'prds' => $arrPrd,
+		];
+
+		$this->load_view_page('bet/slhistory', 'bet_history', 0, $param);
+	}
+
+	public function fslhistory(){
+		
+		$modelSlotprd = new SlotPrd_Model();
+		$gameId = GAME_SLOT_2;
+		$arrPrd = $modelSlotprd->gets($gameId);
+
+		$param = [
+			'game_name' => "네츄럴슬롯",
+			'game_id' => $gameId,
+			'prds' => $arrPrd,
+		];
+
+		$this->load_view_page('bet/slhistory', 'bet_history', 0, $param);
 	}
 
 	public function allcalculate(){
@@ -78,9 +104,23 @@ class Bet extends StdController {
 	}
 
 	public function slcalculate(){
-		$this->load_view_page('bet/slcalculate', 'bet_calculate');
+		$param = [
+			'game_name' => "슬롯게임",
+			'game_id' => GAME_SLOT_1,
+		];
+
+		$this->load_view_page('bet/slcalculate', 'bet_calculate', 0, $param);
 	}
 	
+	public function fslcalculate(){
+		$param = [
+			'game_name' => "네츄럴슬롯",
+			'game_id' => GAME_SLOT_2,
+		];
+
+		$this->load_view_page('bet/slcalculate', 'bet_calculate', 0, $param);
+	}
+
 	public function bbcalculate(){
 		$this->load_view_page('bet/bbcalculate', 'bet_calculate');
 	}

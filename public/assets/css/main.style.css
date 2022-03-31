@@ -616,6 +616,7 @@ Style - conf_site
     border: none;
     resize: vertical;
 }
+
 .confsite-site-text-div label {
     width: 150px;
     font-size: 12px;
@@ -929,7 +930,6 @@ Style - powerball
     /*#5668f6*/
 }
 
-
 .user-table a {
     background-color: var(--main-bg-color);
     padding: 7px 10px;
@@ -945,7 +945,6 @@ Style - powerball
 .user-table a:hover {
     background-color: #eee;
 }
-
 
 
 /******************************
@@ -1592,16 +1591,44 @@ Style - powerball
     cursor: pointer;
 }
 
-.calculate-table .tr-company-color {
+.calculate-table .tr-level0-color {
     background-color: #ffcdcd;
 }
 
-.calculate-table .tr-agency-color {
+.calculate-table .tr-level1-color {
+    background-color: #cdffcf;
+}
+
+.calculate-table .tr-level2-color {
     background-color: #cdcdff;
 }
 
-.calculate-table .tr-employee-color {
-    background-color: #cdffcd;
+.calculate-table .tr-level3-color {
+    background-color: #f4ffb6;
+}
+
+.calculate-table .tr-level4-color {
+    background-color: #ffcdf3;
+}
+
+.calculate-table .tr-level5-color {
+    background-color: #71e99b;
+}
+
+.calculate-table .tr-level6-color {
+    background-color: #80fbff;
+}
+
+.calculate-table .tr-level7-color {
+    background-color: #f3e38c;
+}
+
+.calculate-table .tr-level8-color {
+    background-color: #66abb5;
+}
+
+.calculate-table .tr-level9-color {
+    background-color: #98ec67;
 }
 
 

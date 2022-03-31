@@ -371,7 +371,7 @@ class PbBet_model extends Model {
             $strSql .=" ON ".$this->table.".bet_mb_uid = mb_table.mb_uid ";
             //Join bet_reward
             $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->table.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
-                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".GAME_BOGLE_BALL."' ";
+                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".GAME_POWER_BALL."' ";
                 $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = '".$objEmp->mb_uid."' ";
             
         } else{

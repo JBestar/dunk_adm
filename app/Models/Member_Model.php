@@ -236,17 +236,17 @@ class Member_Model extends Model
 
     public function calcMemberMoney($strMemFid, $upLevel)
     {
-        $arrTotalMoney = [0, 0, 0];
+        $arrTotalMoney = [0, 0, 0, 0];
 
-        $strTbColum = ' mb_fid, mb_uid, mb_level, mb_emp_fid, mb_money, mb_live_money, mb_slot_money ';
-        $strTbRColum = ' r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid , r.mb_money, r.mb_live_money, r.mb_slot_money ';
+        $strTbColum = ' mb_fid, mb_uid, mb_level, mb_emp_fid, mb_money, mb_live_money, mb_slot_money, mb_fslot_money ';
+        $strTbRColum = ' r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid , r.mb_money, r.mb_live_money, r.mb_slot_money, r.mb_fslot_money ';
 
         $strSQL = 'WITH RECURSIVE tbmember ('.$strTbColum.') AS';
         $strSQL .= ' ( SELECT '.$strTbColum.' FROM '.$this->table." WHERE mb_emp_fid = '".$strMemFid."'";
         $strSQL .= ' UNION ALL SELECT '.$strTbRColum.' FROM '.$this->table.' r ';
         $strSQL .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
 
-        $strSQL .= ' SELECT SUM(mb_money) AS mb_money, SUM(mb_live_money) AS mb_live_money, SUM(mb_slot_money) AS mb_slot_money FROM tbmember where ';
+        $strSQL .= ' SELECT SUM(mb_money) AS mb_money, SUM(mb_live_money) AS mb_live_money, SUM(mb_slot_money) AS mb_slot_money, SUM(mb_fslot_money) AS mb_fslot_money FROM tbmember where ';
         if ($upLevel) {
             $strSQL .= " mb_level >= '".LEVEL_EMPLOYEE."' ";
         } else {
@@ -264,6 +264,9 @@ class Member_Model extends Model
         if (!is_null($objResult->mb_slot_money)) {
             $arrTotalMoney[2] = $objResult->mb_slot_money;
         }
+        if (!is_null($objResult->mb_fslot_money)) {
+            $arrTotalMoney[3] = $objResult->mb_fslot_money;
+        }
 
         return $arrTotalMoney;
     }
@@ -277,12 +280,13 @@ class Member_Model extends Model
     // 직원별 보유금
     public function calcEmpMoney($objEmp)
     {
-        $arrTotalMoney = [0, 0, 0];
+        $arrTotalMoney = [0, 0, 0, 0];
         if ($objEmp->mb_level >= LEVEL_EMPLOYEE) {
             $arrResult = $this->calcMemberMoney($objEmp->mb_fid, true);
             $arrTotalMoney[0] = $arrResult[0] + $objEmp->mb_money;
             $arrTotalMoney[1] = $arrResult[1] + $objEmp->mb_live_money;
             $arrTotalMoney[2] = $arrResult[2] + $objEmp->mb_slot_money;
+            $arrTotalMoney[3] = $arrResult[3] + $objEmp->mb_fslot_money;
         }
 
         return $arrTotalMoney;
@@ -413,13 +417,16 @@ class Member_Model extends Model
             $strSQL .= ' bet_bogleball ';
         } elseif (GAME_BOGLE_LADDER == $arrReqData['type']) {
             $strSQL .= ' bet_bogleladder ';
-        } elseif (GAME_SLOT_1 == $arrReqData['type']) {
+        } elseif (GAME_SLOT_1 == $arrReqData['type'] || GAME_SLOT_2 == $arrReqData['type']) {
             $strSQL .= ' bet_slot ';
         } else {
             return null;
         }
         if (strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
             $strSQL .= " WHERE bet_time >= '".$arrReqData['start']." 0:0:0' AND bet_time <= '".$arrReqData['end']." 23:59:59' ";
+        }
+        if (GAME_SLOT_1 == $arrReqData['type'] || GAME_SLOT_2 == $arrReqData['type']){
+            $strSQL .= " AND bet_game_id = '".$arrReqData['type']."' ";
         }
         $strSQL .= ' GROUP BY bet_mb_uid ';
         $strSQL .= ' )AS bet_table ON bet_table.bet_mb_uid = mb_table.mb_uid ';
@@ -507,12 +514,12 @@ class Member_Model extends Model
             $strTbColum = ' mb_fid, mb_uid, mb_level, mb_emp_fid, mb_emp_permit, mb_nickname, mb_email, mb_phone, mb_money, mb_point, ';
             $strTbColum .= ' mb_money_charge, mb_money_exchange, mb_color, mb_state_active, mb_state_bet, mb_state_alarm, ';
             $strTbColum .= ' mb_game_pb, mb_game_ps, mb_game_bb, mb_game_bs, mb_game_cs, mb_game_sl, mb_game_pb_ratio, mb_game_pb2_ratio, mb_game_ps_ratio, ';
-            $strTbColum .= ' mb_game_bb_ratio, mb_game_bb2_ratio, mb_game_bs_ratio, mb_game_cs_ratio, mb_game_sl_ratio, mb_live_money, mb_slot_money';
+            $strTbColum .= ' mb_game_bb_ratio, mb_game_bb2_ratio, mb_game_bs_ratio, mb_game_cs_ratio, mb_game_sl_ratio, mb_live_money, mb_slot_money, mb_fslot_money';
 
             $strTbRColum = ' r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_emp_permit, r.mb_nickname, r.mb_email, r.mb_phone, r.mb_money, r.mb_point, ';
             $strTbRColum .= ' r.mb_money_charge, r.mb_money_exchange, r.mb_color, r.mb_state_active, r.mb_state_bet, r.mb_state_alarm, ';
             $strTbRColum .= ' r.mb_game_pb, r.mb_game_ps, r.mb_game_bb, r.mb_game_bs, r.mb_game_cs, r.mb_game_sl, r.mb_game_pb_ratio, r.mb_game_pb2_ratio, r.mb_game_ps_ratio, ';
-            $strTbRColum .= ' r.mb_game_bb_ratio, r.mb_game_bb2_ratio, r.mb_game_bs_ratio, r.mb_game_cs_ratio, r.mb_game_sl_ratio, r.mb_live_money, r.mb_slot_money ';
+            $strTbRColum .= ' r.mb_game_bb_ratio, r.mb_game_bb2_ratio, r.mb_game_bs_ratio, r.mb_game_cs_ratio, r.mb_game_sl_ratio, r.mb_live_money, r.mb_slot_money, r.mb_fslot_money ';
 
             $strSQL = 'WITH RECURSIVE tbmember ('.$strTbColum.') AS';
             $strSQL .= ' ( SELECT '.$strTbColum.' FROM '.$this->table." WHERE mb_emp_fid = '".$nEmpFid."'";
@@ -1099,7 +1106,7 @@ class Member_Model extends Model
     public function searchMemberByLevel($arrReqData)
     {
         $strSql = 'SELECT mb_fid, mb_uid, mb_level, mb_emp_fid, mb_emp_permit, mb_nickname, mb_time_join, mb_time_last, mb_ip_join, mb_ip_last, mb_money, mb_point, mb_money_charge, mb_money_exchange, ';
-        $strSql .= 'mb_color, mb_state_active, mb_game_pb, mb_game_ps, mb_game_bb, mb_game_bs, mb_game_cs, mb_game_sl, mb_live_money, mb_slot_money FROM '.$this->table;
+        $strSql .= 'mb_color, mb_state_active, mb_game_pb, mb_game_ps, mb_game_bb, mb_game_bs, mb_game_cs, mb_game_sl, mb_live_money, mb_slot_money, mb_fslot_money FROM '.$this->table;
         if (0 == $arrReqData['mb_level']) {
             $strSql .= " WHERE mb_level < '".LEVEL_EMPLOYEE."' ";
         } else {

@@ -22,5 +22,6 @@
 	<th>최종손익</th>				
 <?= $this->endSection() ?>
 <?= $this->section('calculate-script') ?>
-<script src="<?php echo base_url('assets/js/cscalculate-script.js?v=2');?>"></script>
+<script>var mGameId = <?=GAME_CASINO_EVOL?></script>
+<script src="<?php echo base_url('assets/js/calculate-script.js?v=2');?>"></script>
 <?= $this->endSection() ?>

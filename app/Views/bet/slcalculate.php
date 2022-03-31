@@ -1,9 +1,9 @@
 <?= $this->extend('/bet/calculate') ?>
 <?= $this->section('calculate-active') ?>
-"슬롯"
+"<?=$game_name?>"
 <?= $this->endSection() ?>
 <?= $this->section('calculate-title') ?>
-슬롯 정산내역
+<?=$game_name?> 정산내역
 <?= $this->endSection() ?>
 <?= $this->section('calculate-table-header') ?>
 	<th></th>
@@ -22,5 +22,6 @@
 	<th>최종손익</th>				
 <?= $this->endSection() ?>
 <?= $this->section('calculate-script') ?>
-<script src="<?php echo base_url('assets/js/slcalculate-script.js?v=1');?>"></script>
+<script>var mGameId = <?=$game_id?> </script>
+<script src="<?php echo base_url('assets/js/calculate-script.js?v=1');?>"></script>
 <?= $this->endSection() ?>

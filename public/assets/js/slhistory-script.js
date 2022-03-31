@@ -10,12 +10,22 @@ function requestPageInfo() {
 
 
 //Function to Show Betting History
-function ShowBetHistory(jsonBetData) {
+function ShowBetHistory(jsonBetData, hasPoint) {
     var elemBetDataTb = document.getElementById("pbbet-table-id");
     var strBuf = "";
 
+    var tHead = "";
+    if (hasPoint == 1) {
+        tHead = "<th>ID</th> <th>아이디</th> <th>닉네임</th> <th>배팅시간</th> <th>구분</th>";
+        tHead += "<th>게임</th> <th>배팅금액</th> <th>배팅결과</th> <th>당첨금액</th> <th>포인트</th>";
+    } else {
+        tHead = "<th>ID</th> <th>아이디</th> <th>닉네임</th> <th>배팅시간</th> <th>구분</th>";
+        tHead += "<th>게임</th> <th>배팅금액</th> <th>배팅결과</th> <th>당첨금액</th> ";
+    }
+    $(".bet-table thead tr").html(tHead);
+
+
     var strWinMoney = "";
-    var strGameType = "";
     for (nRow in jsonBetData) {
 
         strBuf += "<tr><td>";
@@ -27,7 +37,9 @@ function ShowBetHistory(jsonBetData) {
         strBuf += "</td><td>";
         strBuf += jsonBetData[nRow].bet_time;
         strBuf += "</td><td>";
-        strBuf += getGameName(jsonBetData[nRow].bet_game_type);
+        if (jsonBetData[nRow].prd_name != null)
+            strBuf += jsonBetData[nRow].prd_name;
+        else strBuf += jsonBetData[nRow].bet_game_type;
         strBuf += "</td><td>";
         if (jsonBetData[nRow].game_name != null)
             strBuf += jsonBetData[nRow].game_name;
@@ -47,22 +59,22 @@ function ShowBetHistory(jsonBetData) {
             strResult = "<td  class = \"pb-home-table-betstate-wait\">비김";
         } else {
             strResult = "<td  class = \"pb-home-table-betstate-loss\">미적중"; //
+            strWinMoney = (parseInt(jsonBetData[nRow].bet_win_money) - parseInt(jsonBetData[nRow].bet_money)).toLocaleString() + "원";
         }
 
         strBuf += strResult;
         strBuf += "</td><td>";
         strBuf += strWinMoney;
-        strBuf += "</td><td>";
-        strBuf += jsonBetData[nRow].point_amount;
-        strBuf += "</td><td>";
-        strBuf += jsonBetData[nRow].employee_amount;
-        strBuf += "</td><td>";
-        strBuf += jsonBetData[nRow].agency_amount;
-        strBuf += "</td><td>";
-        strBuf += jsonBetData[nRow].company_amount;
+        if (hasPoint == 1) {
+            strBuf += "</td><td>";
+            if (jsonBetData[nRow].rw_point != null)
+                strBuf += jsonBetData[nRow].rw_point;
+            else strBuf += "0";
+        }
         strBuf += "</td></tr>";
 
     }
+
     if (strBuf.length < 1) {
         strBuf = "<tr><td colspan='15'>자료가 없습니다.</td></tr>";
     }
@@ -125,12 +137,23 @@ function requestBetHistory() {
 
     var dtStart = document.getElementById("pbhistory-datestart-input-id").value;
     var dtEnd = document.getElementById("pbhistory-dateend-input-id").value;
-    var strRound = ""; //document.getElementById("pbhistory-roundid-input-id").value;  
     var strUser = document.getElementById("pbhistory-userid-input-id").value;
     var nMode = document.getElementById("pbhistory-game-select-id").value;
     var nPage = getActivePage();
-
-    var jsonData = { "count": CountPerPage, "page": nPage, "start": dtStart, "end": dtEnd, "user": strUser, "round": strRound, "mode": nMode };
+    var strEmp = "";
+    if ($("#pbhistory-empid-input-id").length > 0) {
+        strEmp = $("#pbhistory-empid-input-id").val();
+    }
+    var jsonData = {
+        "count": CountPerPage,
+        "page": nPage,
+        "start": dtStart,
+        "end": dtEnd,
+        "emp": strEmp,
+        "user": strUser,
+        "mode": nMode,
+        "game": mGameId
+    };
     jsonData = JSON.stringify(jsonData);
 
     $.ajax({
@@ -141,7 +164,7 @@ function requestBetHistory() {
         success: function(jResult) {
             // console.log(jResult);
             if (jResult.status == "success") {
-                ShowBetHistory(jResult.data);
+                ShowBetHistory(jResult.data, jResult.point);
                 ShowBetAccount(jResult.account);
             }
         },
@@ -158,11 +181,22 @@ function requestTotalPage() {
     var dtStart = document.getElementById("pbhistory-datestart-input-id").value;
     var dtEnd = document.getElementById("pbhistory-dateend-input-id").value;
     CountPerPage = document.getElementById("pbhistory-number-select-id").value;
-    var strRound = ""; //document.getElementById("pbhistory-roundid-input-id").value;  
     var strUser = document.getElementById("pbhistory-userid-input-id").value;
     var nMode = document.getElementById("pbhistory-game-select-id").value;
+    var strEmp = "";
+    if ($("#pbhistory-empid-input-id").length > 0) {
+        strEmp = $("#pbhistory-empid-input-id").val();
+    }
 
-    var jsonData = { "count": CountPerPage, "start": dtStart, "end": dtEnd, "user": strUser, "round": strRound, "mode": nMode };
+    var jsonData = {
+        "count": CountPerPage,
+        "start": dtStart,
+        "end": dtEnd,
+        "emp": strEmp,
+        "user": strUser,
+        "mode": nMode,
+        "game": mGameId
+    };
     jsonData = JSON.stringify(jsonData);
 
     $.ajax({
@@ -180,7 +214,7 @@ function requestTotalPage() {
             }
         },
         error: function(request, status, error) {
-            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });

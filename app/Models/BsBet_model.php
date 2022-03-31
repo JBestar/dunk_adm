@@ -34,6 +34,7 @@ class BsBet_model extends Model {
     ];
     protected $primaryKey = 'bet_fid';
     private $mMemberTable = 'member';
+    private $mRewardTable = 'bet_reward';
 
     function gets($nCount)
     {
@@ -306,12 +307,20 @@ class BsBet_model extends Model {
             $strSql .= " UNION ALL SELECT ".$strTbRColum." FROM ".$this->mMemberTable." r ";
             $strSql .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
 
-            $strSql .= "SELECT bet_fid, bet_state, bet_emp_fid, bet_mb_uid, bet_round_fid, bet_round_no, bet_time, bet_mode, bet_target, bet_ratio, bet_money, bet_result, bet_win_money, point_amount, employee_amount, agency_amount, company_amount FROM ".$this->table;
+            $strSql .= ' SELECT bet_fid, bet_state, bet_emp_fid, bet_mb_uid, bet_round_fid, bet_round_no, bet_time, ';
+            $strSql .= ' bet_mode, bet_target, bet_ratio, bet_money, bet_result, bet_win_money, rw_mb_uid, rw_point  FROM '.$this->table;
+            
             $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
             $strSql .=" ) AS mb_table ";
             $strSql .=" ON ".$this->table.".bet_mb_uid = mb_table.mb_uid ";
+
+            //Join bet_reward
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->table.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
+                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".GAME_BOGLE_LADDER."' ";
+                $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = '".$objEmp->mb_uid."' ";
+            
         }else {
-            $strSql .= "SELECT bet_fid, bet_state, bet_emp_fid, bet_mb_uid, bet_round_fid, bet_round_no, bet_time, bet_mode, bet_target, bet_ratio, bet_money, bet_result, bet_win_money, point_amount, employee_amount, agency_amount, company_amount FROM ".$this->table;
+            $strSql .= "SELECT bet_fid, bet_state, bet_emp_fid, bet_mb_uid, bet_round_fid, bet_round_no, bet_time, bet_mode, bet_target, bet_ratio, bet_money, bet_result, bet_win_money FROM ".$this->table;
         }
 
         $bWhere = false;

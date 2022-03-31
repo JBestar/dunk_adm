@@ -20,9 +20,6 @@
 	<th>배팅결과</th>
 	<th>당첨금액</th>
 	<th>포인트</th>
-	<th>매장</th>
-	<th>총판</th>
-	<th>부본사</th>
 <?= $this->endSection() ?>
 <?= $this->section('history_script') ?>
 <script src="<?php echo base_url('assets/js/cshistory-script.js?v=1	');?>"></script>

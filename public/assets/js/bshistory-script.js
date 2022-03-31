@@ -188,8 +188,21 @@ function requestBetHistory() {
     var strUser = document.getElementById("pbhistory-userid-input-id").value;
     var nMode = document.getElementById("pbhistory-game-select-id").value;
     var nPage = getActivePage();
+    var strEmp = "";
+    if ($("#pbhistory-empid-input-id").length > 0) {
+        strEmp = $("#pbhistory-empid-input-id").val();
+    }
 
-    var jsonData = { "count": CountPerPage, "page": nPage, "start": dtStart, "end": dtEnd, "user": strUser, "round": strRound, "mode": nMode };
+    var jsonData = {
+        "count": CountPerPage,
+        "page": nPage,
+        "start": dtStart,
+        "end": dtEnd,
+        "emp": strEmp,
+        "user": strUser,
+        "round": strRound,
+        "mode": nMode
+    };
     jsonData = JSON.stringify(jsonData);
 
     $.ajax({
@@ -221,8 +234,19 @@ function requestTotalPage() {
     var strRound = document.getElementById("pbhistory-roundid-input-id").value;
     var strUser = document.getElementById("pbhistory-userid-input-id").value;
     var nMode = document.getElementById("pbhistory-game-select-id").value;
-
-    var jsonData = { "count": CountPerPage, "start": dtStart, "end": dtEnd, "user": strUser, "round": strRound, "mode": nMode };
+    var strEmp = "";
+    if ($("#pbhistory-empid-input-id").length > 0) {
+        strEmp = $("#pbhistory-empid-input-id").val();
+    }
+    var jsonData = {
+        "count": CountPerPage,
+        "start": dtStart,
+        "end": dtEnd,
+        "emp": strEmp,
+        "user": strUser,
+        "round": strRound,
+        "mode": nMode
+    };
     jsonData = JSON.stringify(jsonData);
 
     $.ajax({
@@ -231,7 +255,7 @@ function requestTotalPage() {
         dataType: 'json',
         type: 'post',
         success: function(jResult) {
-            // console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();
@@ -240,7 +264,7 @@ function requestTotalPage() {
             }
         },
         error: function(request, status, error) {
-            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });

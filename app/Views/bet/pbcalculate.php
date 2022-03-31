@@ -9,7 +9,7 @@
 	<th></th>
 	<th>ID</th>
 	<th>닉네임</th>
-	<th>본사구분</th>
+	<th>구분</th>
 	<th>충전</th>
 	<th>환전</th>
 	<th>충환손익</th>
@@ -22,5 +22,6 @@
 	<th>최종손익</th>				
 <?= $this->endSection() ?>
 <?= $this->section('calculate-script') ?>
-	<script src="<?php echo base_url('assets/js/pbcalculate-script.js?v=2');?>"></script>
+	<script>var mGameId = <?=GAME_POWER_BALL?></script>
+	<script src="<?php echo base_url('assets/js/calculate-script.js?v=2');?>"></script>
 <?= $this->endSection() ?>

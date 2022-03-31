@@ -12,22 +12,15 @@ function initCalculate() {
 
 
 function showCalcualte(arrCalcData) {
-    /*
-  var elemBetDataTb = document.getElementById("calculate-table-id");
-  var strBuf = "";
-  strBuf = "<thead><tr><th>ID</th> <th>닉네임</th><th>본사구분</th><th>충전</th><th>환전</th><th>충환손익</th><th>관리자보유금<br>(하부합산)</th>"
-  strBuf += "<th>유저보유금</th><th>배팅<br>(하부포함)</th><th>적중<br>(하부포함)</th><th>배팅손익</th><th>수수료<br>(하부포함)</th><th>최종손익</th></tr><thead>";
-  	*/
+
     var strBuf = "";
+    var colorLv = 0;
     var elemDataTbBody = document.getElementById("calculate-table-tbody-id");
     for (nRow in arrCalcData) {
         strBuf += "<tr";
-        if (arrCalcData[nRow].mb_level % 3 == 0)
-            strBuf += " class=\"tr-company-color\"";
-        else if (arrCalcData[nRow].mb_level % 3 == 2)
-            strBuf += " class=\"tr-agency-color\"";
-        else if (arrCalcData[nRow].mb_level % 3 == 1)
-            strBuf += " class=\"tr-employee-color\"";
+
+        colorLv = arrCalcData[nRow].mb_level % 10;
+        strBuf += " class=\"tr-level" + colorLv + "-color\"";
 
         strBuf += "><td>";
         if (arrCalcData[nRow].mb_level > LEVEL_MIN)
@@ -106,7 +99,7 @@ function requestCalculate(nFid, nRow) {
             if (jResult.status == "success") {
                 // setNavBarElement();
                 if (nRow < 0) showCalcualte(jResult.data);
-                else addRow(nRow, jResult.data);
+                else addRow(nRow, jResult.data, jResult.level);
             } else if (jResult.status == "logout") {
                 window.location.replace('/');
             }
@@ -158,24 +151,21 @@ function rowEventHander() {
 
 
 
-function addRow(nTbRow, arrCalcData) {
+function addRow(nTbRow, arrCalcData, level) {
     var elemDataTb = document.getElementById("calculate-table-tbody-id");
 
     var strBuf = "";
+    var colorLv = 0;
     for (nRow in arrCalcData) {
 
         var elemNewRow = elemDataTb.insertRow(nTbRow);
         nTbRow++;
 
-        if (arrCalcData[nRow].mb_level % 3 == 0)
-            elemNewRow.className = "tr-company-color";
-        else if (arrCalcData[nRow].mb_level % 3 == 2)
-            elemNewRow.className = "tr-agency-color";
-        else if (arrCalcData[nRow].mb_level % 3 == 1)
-            elemNewRow.className = "tr-employee-color";
+        colorLv = arrCalcData[nRow].mb_level % 10;
+        elemNewRow.className = "tr-level" + colorLv + "-color";
 
         var elemCell0 = elemNewRow.insertCell(0);
-        if (arrCalcData[nRow].mb_level > LEVEL_MIN)
+        if (arrCalcData[nRow].mb_level > LEVEL_MIN && level > LEVEL_COMPANY)
             strBuf = "<i class=\"glyphicon glyphicon-triangle-right\"></i>"
         strBuf += "<p hidden>" + arrCalcData[nRow].mb_fid + "</p>";
         strBuf += "<p hidden>" + arrCalcData[nRow].mb_emp_fid + "</p>";

@@ -1,8 +1,8 @@
 initCalculate();
 
 function initCalculate() {
-    addButtonEvent();
     setNavBarElement();
+    addButtonEvent();
     //
     var nEmpFid = 0;
     var nTbRow = -1;
@@ -13,25 +13,18 @@ function initCalculate() {
 
 
 function showCalcualte(arrCalcData) {
-    /*
-  var elemBetDataTb = document.getElementById("calculate-table-id");
-  var strBuf = "";
-  strBuf = "<thead><tr><th>ID</th> <th>닉네임</th><th>본사구분</th><th>충전</th><th>환전</th><th>충환손익</th><th>관리자보유금<br>(하부합산)</th>"
-  strBuf += "<th>유저보유금</th><th>배팅<br>(하부포함)</th><th>적중<br>(하부포함)</th><th>배팅손익</th><th>수수료<br>(하부포함)</th><th>최종손익</th></tr><thead>";
-  	*/
+
     var strBuf = "";
+    var colorLv = 0;
     var elemDataTbBody = document.getElementById("calculate-table-tbody-id");
     for (nRow in arrCalcData) {
         strBuf += "<tr";
-        if (arrCalcData[nRow].mb_level == LEVEL_COMPANY)
-            strBuf += " class=\"tr-company-color\"";
-        else if (arrCalcData[nRow].mb_level == LEVEL_AGENCY)
-            strBuf += " class=\"tr-agency-color\"";
-        else if (arrCalcData[nRow].mb_level == LEVEL_EMPLOYEE)
-            strBuf += " class=\"tr-employee-color\"";
+
+        colorLv = arrCalcData[nRow].mb_level % 10;
+        strBuf += " class=\"tr-level" + colorLv + "-color\"";
 
         strBuf += "><td>";
-        if (arrCalcData[nRow].mb_level > LEVEL_EMPLOYEE)
+        if (arrCalcData[nRow].mb_level > LEVEL_MIN)
             strBuf += "<i class=\"glyphicon glyphicon-triangle-right\"></i>"
         strBuf += "<p hidden>" + arrCalcData[nRow].mb_fid + "</p>";
         strBuf += "<p hidden>" + arrCalcData[nRow].mb_emp_fid + "</p>";
@@ -92,10 +85,10 @@ function addButtonEvent() {
 //Function to Request Betting History to WebServer
 function requestCalculate(nFid, nRow) {
 
-    var dtStart = document.getElementById("calculate-datestart-input-id").value;
-    var dtEnd = document.getElementById("calculate-dateend-input-id").value;
+    var dtStart = $("#calculate-datestart-input-id").val();
+    var dtEnd = $("#calculate-dateend-input-id").val();
 
-    var jsonData = { "mb_fid": nFid, "start": dtStart, "end": dtEnd, "type":  5};
+    var jsonData = { "mb_fid": nFid, "start": dtStart, "end": dtEnd, "type": mGameId };
     jsonData = JSON.stringify(jsonData);
 
     $.ajax({
@@ -104,17 +97,16 @@ function requestCalculate(nFid, nRow) {
         type: 'post',
         dataType: "json",
         success: function(jResult) {
-            //console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
-                // setNavBarElement();
                 if (nRow < 0) showCalcualte(jResult.data);
-                else addRow(nRow, jResult.data);
+                else addRow(nRow, jResult.data, jResult.level);
             } else if (jResult.status == "logout") {
                 window.location.replace('/');
             }
         },
         error: function(request, status, error) {
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });
@@ -163,24 +155,22 @@ function rowEventHander() {
 
 
 
-function addRow(nTbRow, arrCalcData) {
+function addRow(nTbRow, arrCalcData, level) {
     var elemDataTb = document.getElementById("calculate-table-tbody-id");
 
     var strBuf = "";
+    var colorLv = 0;
+
     for (nRow in arrCalcData) {
 
         var elemNewRow = elemDataTb.insertRow(nTbRow);
         nTbRow++;
 
-        if (arrCalcData[nRow].mb_level == LEVEL_COMPANY)
-            elemNewRow.className = "tr-company-color";
-        else if (arrCalcData[nRow].mb_level == LEVEL_AGENCY)
-            elemNewRow.className = "tr-agency-color";
-        else if (arrCalcData[nRow].mb_level == LEVEL_EMPLOYEE)
-            elemNewRow.className = "tr-employee-color";
+        colorLv = arrCalcData[nRow].mb_level % 10;
+        elemNewRow.className = "tr-level" + colorLv + "-color";
 
         var elemCell0 = elemNewRow.insertCell(0);
-        if (arrCalcData[nRow].mb_level > LEVEL_EMPLOYEE)
+        if (arrCalcData[nRow].mb_level > LEVEL_MIN && level > LEVEL_COMPANY)
             strBuf = "<i class=\"glyphicon glyphicon-triangle-right\"></i>"
         strBuf += "<p hidden>" + arrCalcData[nRow].mb_fid + "</p>";
         strBuf += "<p hidden>" + arrCalcData[nRow].mb_emp_fid + "</p>";

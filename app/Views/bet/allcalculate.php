@@ -9,7 +9,7 @@
 	<th></th>
 	<th>ID</th>
 	<th>닉네임</th>
-	<th>본사구분</th>
+	<th>구분</th>
 	<th>충전</th>
 	<th>환전</th>
 	<th>충환손익</th>
