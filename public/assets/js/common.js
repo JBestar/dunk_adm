@@ -1,0 +1,4 @@
+const LEVEL_ADMIN = 100;
+const LEVEL_COMPANY = 99;
+const LEVEL_AGENCY = 98;
+const LEVEL_EMPLOYEE = 97;
