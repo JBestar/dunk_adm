@@ -106,7 +106,7 @@ class CsBet_model extends Model
 
 
             $strSql .= "SELECT bet_fid, bet_idx, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_type, bet_table_code, ";
-            $strSql .= " bet_choice, point_amount, employee_amount, agency_amount, company_amount, mb_uid, mb_nickname, name as game_name FROM ".$this->table;
+            $strSql .= " bet_choice, mb_uid, mb_nickname, name as game_name, rw_mb_uid, rw_point FROM ".$this->table;
             
             $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
             $strSql .=" ) AS mb_table ";
@@ -120,10 +120,16 @@ class CsBet_model extends Model
             
         } else{
             $strSql .= "SELECT  bet_fid, bet_idx, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_type, bet_table_code, ";
-            $strSql .= " bet_choice, point_amount, employee_amount, agency_amount, company_amount, mb_uid, mb_nickname, name as game_name FROM ".$this->table;
+            $strSql .= " bet_choice, mb_uid, mb_nickname, name as game_name, rw_mb_uid, rw_point FROM ".$this->table;
 
         	$strSql .= " JOIN ".$this->mMemberTable." ON ".$this->table.".bet_player_id = ".$this->mMemberTable.".mb_live_id ";
             $strSql .= " LEFT JOIN ".$this->mGameTable." ON ".$this->table.".bet_table_code = ".$this->mGameTable.".tid ";
+        
+            //Join bet_reward
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->table.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
+                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".GAME_CASINO_EVOL."' ";
+                $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = ".$this->table.".bet_mb_uid ";
+            
         }
 
         $bWhere = false;

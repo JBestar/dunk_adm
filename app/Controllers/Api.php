@@ -62,11 +62,33 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
+			$gameId = intval($arrData['game_index']);
 			//model
 			$confgameModel = new ConfGame_model();
-			$objConfig = $confgameModel->getByIndex($arrData['game_index']);
-		
+			$confsiteModel = new ConfSite_Model();
+			$objConfig = $confgameModel->getByIndex($gameId);
+			
+			$agConf = null;
+			if($gameId == GAME_CASINO_EVOL){
+				$agConf = $confsiteModel->getConf(CONF_CASINO_EVOL);
+			} else if($gameId == GAME_SLOT_1){
+				$agConf = $confsiteModel->getConf(CONF_SLOT_1);
+			} else if($gameId == GAME_SLOT_2){
+				$agConf = $confsiteModel->getConf(CONF_SLOT_2);
+			}
+			
+			$agInfo = null;
+			if(!is_null($agConf)){
+				$arrInfo = explode("#", $agConf['conf_content']);
+				if(count($arrInfo) >= 3){ //0-host, 1-ag_code, 2-ag_token
+					$agInfo['code'] = $arrInfo[1];
+					$agInfo['egg'] = $agConf['conf_active'];
+				}	
+				
+			}
+
 			$objResult->data = $objConfig;
+			$objResult->agent = $agInfo;
 			$objResult->status = "success";
 		}
 		else {

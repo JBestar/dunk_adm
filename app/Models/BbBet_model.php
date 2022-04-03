@@ -66,63 +66,6 @@ class BbBet_model extends Model
         return $result;
     }
 
-    public function addBetRound($arrBetData, $objUser, $objConf)
-    {
-        $strRatio = '1.95';
-        if (1 == $arrBetData['mode']) {
-            $strRatio = $objConf->game_ratio_1;
-        } elseif (2 == $arrBetData['mode']) {
-            $strRatio = $objConf->game_ratio_2;
-        } elseif (3 == $arrBetData['mode']) {
-            $strRatio = $objConf->game_ratio_3;
-        } elseif (4 == $arrBetData['mode']) {
-            $strRatio = $objConf->game_ratio_4;
-        } else {
-            return false;
-        }
-
-        if ($strRatio < 1) {
-            return false;
-        }
-
-        if (!('P' == $arrBetData['target'] || 'B' == $arrBetData['target'])) {
-            return false;
-        }
-
-        $nBetStatus = 1;
-        $this->builder()->set('bet_state', $nBetStatus);
-
-        $nBetEmpFid = $objUser->mb_emp_fid;
-        $this->builder()->set('bet_emp_fid', $nBetEmpFid);
-
-        $strBetMemberId = $objUser->mb_uid;
-        $this->builder()->set('bet_mb_uid', $strBetMemberId);
-
-        $this->builder()->set('bet_round_fid', $arrBetData['roundid']);
-        $this->builder()->set('bet_round_no', $arrBetData['roundno']);
-        $this->builder()->set('bet_time', 'NOW()', false);
-        $this->builder()->set('bet_mode', $arrBetData['mode']);
-        $this->builder()->set('bet_target', $arrBetData['target']);
-
-        $this->builder()->set('bet_ratio', $strRatio);
-
-        $this->builder()->set('bet_money', $arrBetData['amount']);
-
-        $nBonus = 0;
-        $this->builder()->set('bet_bonnus', $nBonus);
-
-        $nUserBeforeMoney = 0;
-        $this->builder()->set('user_before_money', $objUser->mb_money);
-
-        $nAutoConfigId = 0;
-        $this->builder()->set('auto_config_id', $nAutoConfigId);
-
-        $nPoint = $arrBetData['amount'] / 100;
-        $this->builder()->set('point_amount', $nPoint);
-
-        return $this->builder()->insert();
-    }
-
     public function getBetSumByMode($arrRoundInfo, $objConf)
     {
         $arrSumData = [];
@@ -370,7 +313,13 @@ class BbBet_model extends Model
             
         } else {
             $strSql .= 'SELECT bet_fid, bet_state, bet_emp_fid, bet_mb_uid, bet_round_fid, bet_round_no, bet_time, ';
-            $strSql .= 'bet_mode, bet_target, bet_ratio, bet_money, bet_result, bet_win_money FROM '.$this->table;
+            $strSql .= "bet_mode, bet_target, bet_ratio, bet_money, bet_result, bet_win_money, rw_mb_uid, rw_point FROM ".$this->table;
+
+            //Join bet_reward
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->table.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
+                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".GAME_BOGLE_BALL."' ";
+                $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = ".$this->table.".bet_mb_uid ";
+            
         }
 
         $bWhere = false;

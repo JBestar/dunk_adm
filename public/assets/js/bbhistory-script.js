@@ -14,15 +14,9 @@ function ShowBetHistory(jsonBetData, hasPoint) {
     var strBuf = "";
 
     var tHead = "";
-    if (hasPoint == 1) {
-        tHead = "<th>ID</th> <th>배팅시간</th> <th>회차</th> <th>아이디</th> <th>구분</th>";
-        tHead += "<th>배팅금액</th> <th>배당율</th> <th>배팅선택</th> <th>경기결과</th>";
-        tHead += "<th>당첨금액</th> <th>배팅결과</th> <th>포인트</th>";
-    } else {
-        tHead = "<th>ID</th> <th>배팅시간</th> <th>회차</th> <th>아이디</th> <th>구분</th>";
-        tHead += "<th>배팅금액</th> <th>배당율</th> <th>배팅선택</th> <th>경기결과</th>";
-        tHead += "<th>당첨금액</th> <th>배팅결과</th>";
-    }
+    tHead = "<th>ID</th> <th>배팅시간</th> <th>회차</th> <th>아이디</th> <th>구분</th>";
+    tHead += "<th>배팅금액</th> <th>배당율</th> <th>배팅선택</th> <th>경기결과</th>";
+    tHead += "<th>당첨금액</th> <th>배팅결과</th> <th>포인트</th>";
     $(".bet-table thead tr").html(tHead);
 
     var strBetMode = "";
@@ -71,7 +65,7 @@ function ShowBetHistory(jsonBetData, hasPoint) {
                 strResultTarget = getHtmlByBet("1", jsonBetData[nRow].bet_result.charAt(0)) + getHtmlByBet("2", jsonBetData[nRow].bet_result.charAt(1));
             }
             if (jsonBetData[nRow].bet_mode == 5 || jsonBetData[nRow].bet_mode == 9) {
-                strBetTarget = getHtmlByBet(1, "P") + getHtmlByBet(1, "P");
+                strBetTarget = getHtmlByBet(1, "P") + getHtmlByBet(2, "P");
 
             } else if (jsonBetData[nRow].bet_mode == 6 || jsonBetData[nRow].bet_mode == 10) {
                 strBetTarget = getHtmlByBet("1", "P") + getHtmlByBet("2", "B");
@@ -152,13 +146,13 @@ function ShowBetHistory(jsonBetData, hasPoint) {
             } else if (jsonBetData[nRow].bet_mode == 34) {
                 strBetTarget = getHtmlByBet("1", "P") + getHtmlByBet("2", "B") + getHtmlByBet("1", "B");
             } else if (jsonBetData[nRow].bet_mode == 35) {
-                strBetTarget = getHtmlByBet("1", "B") + getHtmlByBet("1", "P") + getHtmlByBet("1", "P");
+                strBetTarget = getHtmlByBet("1", "B") + getHtmlByBet("2", "P") + getHtmlByBet("1", "P");
             } else if (jsonBetData[nRow].bet_mode == 36) {
-                strBetTarget = getHtmlByBet("1", "B") + getHtmlByBet("1", "P") + getHtmlByBet("1", "B");
+                strBetTarget = getHtmlByBet("1", "B") + getHtmlByBet("2", "P") + getHtmlByBet("1", "B");
             } else if (jsonBetData[nRow].bet_mode == 37) {
-                strBetTarget = getHtmlByBet("1", "B") + getHtmlByBet("1", "B") + getHtmlByBet("1", "P");
+                strBetTarget = getHtmlByBet("1", "B") + getHtmlByBet("2", "B") + getHtmlByBet("1", "P");
             } else if (jsonBetData[nRow].bet_mode == 38) {
-                strBetTarget = getHtmlByBet("1", "B") + getHtmlByBet("1", "B") + getHtmlByBet("1", "B");
+                strBetTarget = getHtmlByBet("1", "B") + getHtmlByBet("2", "B") + getHtmlByBet("1", "B");
             }
         }
 
@@ -189,12 +183,10 @@ function ShowBetHistory(jsonBetData, hasPoint) {
         strBuf += strWinMoney;
         strBuf += "</td>";
         strBuf += strResult;
-        if (hasPoint == 1) {
-            strBuf += "</td><td>";
-            if (jsonBetData[nRow].rw_point != null)
-                strBuf += jsonBetData[nRow].rw_point;
-            else strBuf += "0";
-        }
+        strBuf += "</td><td>";
+        if (jsonBetData[nRow].rw_point != null)
+            strBuf += jsonBetData[nRow].rw_point;
+        else strBuf += "0";
         strBuf += "</td></tr>";
 
     }

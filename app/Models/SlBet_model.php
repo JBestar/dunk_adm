@@ -127,7 +127,7 @@ class SlBet_model extends Model
             
         } else{
             $strSql .= "SELECT  bet_fid, bet_idx, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_type, ";
-            $strSql .= " bet_table_code, bet_choice, mb_uid, mb_nickname, ";
+            $strSql .= " bet_table_code, bet_choice, mb_uid, mb_nickname, rw_mb_uid, rw_point, ";
         	$strSql .= $this->mPrdTable.".name as prd_name, name_ko as game_name";
             $strSql .= " FROM ".$this->table;
             
@@ -136,6 +136,11 @@ class SlBet_model extends Model
             else 
                 $strSql .= " JOIN ".$this->mMemberTable." ON ".$this->table.".bet_player_id = ".$this->mMemberTable.".mb_fslot_id ";
             
+            //Join bet_reward
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->table.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
+            $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".$arrReqData['game']."' ";
+            $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = ".$this->table.".bet_mb_uid ";
+        
         }
         if($arrReqData['game'] == GAME_SLOT_1)
             $strSql .= " LEFT JOIN ".$this->mGameTable." ON ".$this->table.".bet_table_code = ".$this->mGameTable.".uuid ";

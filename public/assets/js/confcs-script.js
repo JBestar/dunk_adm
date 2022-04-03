@@ -3,7 +3,7 @@ $(document).ready(function() {
     addBtnEvent();
 });
 
-function showConfPowerball(objConfig) {
+function showConfPowerball(objConfig, objAgent) {
 
     if (objConfig.game_bet_permit == 1)
         $("#confpb-bet-check-id").prop('checked', true);
@@ -11,7 +11,10 @@ function showConfPowerball(objConfig) {
 
     $("#confpb-minmoney-input-id").val(objConfig.game_min_bet_money);
 
-
+    if (objAgent != null) {
+        $("#confpb-agent-code-id").val(objAgent.code);
+        $("#confpb-agent-egg-id").val(parseInt(objAgent.egg).toLocaleString());
+    }
 }
 
 function requestConfPowerball() {
@@ -26,15 +29,15 @@ function requestConfPowerball() {
         url: "/api/conf_game",
         data: { json_: jsonData },
         success: function(jResult) {
-            //console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
-                showConfPowerball(jResult.data);
+                showConfPowerball(jResult.data, jResult.agent);
             } else if (jResult.status == "fail") {
 
             }
         },
         error: function(request, status, error) {
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });

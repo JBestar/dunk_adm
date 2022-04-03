@@ -14,16 +14,9 @@ function ShowBetHistory(jsonBetData, hasPoint) {
     var elemBetDataTb = document.getElementById("pbbet-table-id");
     var strBuf = "";
 
-    var tHead = "";
-    if (hasPoint == 1) {
-        tHead = "<th>ID</th> <th>아이디</th> <th>닉네임</th> <th>배팅시간</th> <th>구분</th>";
-        tHead += "<th>게임방</th> <th>배팅금액</th> <th>배팅결과</th> <th>당첨금액</th> <th>포인트</th>";
-    } else {
-        tHead = "<th>ID</th> <th>아이디</th> <th>닉네임</th> <th>배팅시간</th> <th>구분</th>";
-        tHead += "<th>게임방</th> <th>배팅금액</th> <th>배팅결과</th> <th>당첨금액</th> ";
-    }
+    var tHead = "<th>ID</th> <th>아이디</th> <th>닉네임</th> <th>배팅시간</th> <th>구분</th>";
+    tHead += "<th>게임방</th> <th>배팅금액</th> <th>배팅결과</th> <th>당첨금액</th> <th>포인트</th>";
     $(".bet-table thead tr").html(tHead);
-
 
     var strWinMoney = "";
     for (nRow in jsonBetData) {
@@ -62,12 +55,10 @@ function ShowBetHistory(jsonBetData, hasPoint) {
         strBuf += strResult;
         strBuf += "</td><td>";
         strBuf += strWinMoney;
-        if (hasPoint == 1) {
-            strBuf += "</td><td>";
-            if (jsonBetData[nRow].rw_point != null)
-                strBuf += jsonBetData[nRow].rw_point;
-            else strBuf += "0";
-        }
+        strBuf += "</td><td>";
+        if (jsonBetData[nRow].rw_point != null)
+            strBuf += jsonBetData[nRow].rw_point;
+        else strBuf += "0";
         strBuf += "</td></tr>";
 
     }
@@ -162,14 +153,14 @@ function requestBetHistory() {
         type: 'post',
         dataType: "json",
         success: function(jResult) {
-            // console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
-                ShowBetHistory(jResult.data, jResult.point);
+                ShowBetHistory(jResult.data, 1);
                 ShowBetAccount(jResult.account);
             }
         },
         error: function(request, status, error) {
-            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });

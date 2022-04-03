@@ -15,14 +15,22 @@
 	<div class="confsite-game-panel" id="<?=$game_id?>">
 		<!---->
 		<h4><i class="glyphicon glyphicon-hand-right"></i> <?=$game_name?> 게임관련 설정</h4>	
-		
 		<div class="confsite-game-text-div">
 			<p>유저 게임승인:</p> 
 			<input type="checkbox" id="confpb-bet-check-id"><label> 유저게임승인</label>
 		</div>
 		<div class="confsite-game-text-div">
+			<p>에이젼트 코드:</p> 
+			<input type = "text" class="conf-text-input" style="min-width:200px;"  id="confpb-agent-code-id" disabled>
+		</div>
+		<div class="confsite-game-text-div">
+			<p>에이젼트 보유알:</p> 
+			<input type = "text" class="conf-text-input" style="min-width:200px;" id="confpb-agent-egg-id"  disabled>
+		</div>
+		
+		<div class="confsite-game-text-div">
 			<p>입금 금액:</p> 
-			<input type = "text" class="conf-text-input"  id="confpb-minmoney-input-id"><label> 원 / 회</label>
+			<input type = "text" class="conf-text-input"  style="min-width:200px;" id="confpb-minmoney-input-id"><label> 원 / 회</label>
 		</div>
 		
 		<div class = "confsite-button-group" style="margin-top:50px;">
@@ -36,5 +44,5 @@
 <!--main_navbar.php-->
 </div>
 
-<script src="<?php echo base_url('assets/js/confcs-script.js');?>"></script>
+<script src="<?php echo base_url('assets/js/confcs-script.js?v=1');?>"></script>
 <?= $this->endSection() ?>

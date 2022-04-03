@@ -83,6 +83,26 @@ defined('BASEURL') || define('BASEURL', $base_url);
 defined('DOWNLOADDIR')         || define('DOWNLOADDIR', "download");
 defined('DOWNLOADROOT')        || define('DOWNLOADROOT', ROOTPATH."public".DIRECTORY_SEPARATOR.DOWNLOADDIR.DIRECTORY_SEPARATOR);
 
+//config site index
+defined('CONF_SITENAME')       || define('CONF_SITENAME', 1);
+defined('CONF_DOMAIN')         || define('CONF_DOMAIN', 2);
+defined('CONF_USERPAGE')       || define('CONF_USERPAGE', 3);
+defined('CONF_ADMINPAGE')      || define('CONF_ADMINPAGE', 4);
+defined('CONF_NOTICE_MAIN')    || define('CONF_NOTICE_MAIN', 5);
+defined('CONF_NOTICE_BANK')    || define('CONF_NOTICE_BANK', 6);
+defined('CONF_CHARGEINFO')     || define('CONF_CHARGEINFO', 8);
+defined('CONF_CHARGEMACRO')    || define('CONF_CHARGEMACRO', 9);
+defined('CONF_MAINTAIN')       || define('CONF_MAINTAIN', 10);
+defined('CONF_BETSITE')        || define('CONF_BETSITE', 11);
+defined('CONF_NOTICE_URGENT')  || define('CONF_NOTICE_URGENT', 12);
+defined('CONF_SOUND_1')        || define('CONF_SOUND_1', 15);
+defined('CONF_SOUND_2')        || define('CONF_SOUND_2', 16);
+defined('CONF_SOUND_3')        || define('CONF_SOUND_3', 17);
+defined('CONF_SOUND_4')        || define('CONF_SOUND_4', 18);
+defined('CONF_CASINO_EVOL')    || define('CONF_CASINO_EVOL', 21);
+defined('CONF_SLOT_1')         || define('CONF_SLOT_1', 22);
+defined('CONF_SLOT_2')         || define('CONF_SLOT_2', 23);
+
 defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);
 defined('LEVEL_ADMIN')         || define('LEVEL_ADMIN', 100);
 defined('LEVEL_COMPANY')       || define('LEVEL_COMPANY', 99);

@@ -9,7 +9,7 @@ class ConfSite_Model extends Model
     protected $allowedFields = ['conf_memo', 'conf_content', 'conf_active'];
     protected $primaryKey = 'conf_id';
 
-    private function getConf($conf_id)
+    public function getConf($conf_id)
     {
         
         try { 
@@ -23,7 +23,7 @@ class ConfSite_Model extends Model
     public function getSiteName():string
     {
 
-        $objConf = $this->getConf(1);
+        $objConf = $this->getConf(CONF_SITENAME);
         $strSiteName = "";
         if(!is_null($objConf)){
             $strSiteName = $objConf['conf_content'];
@@ -33,27 +33,13 @@ class ConfSite_Model extends Model
 
     public function getMaintainConfig(){
         //점검관련 정보
-        return $this->getConf(10);
+        return $this->getConf(CONF_MAINTAIN);
     }
 
-    public function getLiveConfig(){
-        //라이브게임 에이전트아이디 정보
-        $this->builder()->where('conf_id = 13');
-        return $this->builder()->get()->getRow();
-    }
-
-    public function setLiveConfigId($nPlayerId){
-        //라이브게임 에이전트아이디 정보
-        
-        $this->builder()->set('conf_active', $nPlayerId);
-
-        $this->builder()->where('conf_id', 13);
-        
-        return $this->builder()->update();
-    }
+    
     public function getBetSite($nLevel){
 
-        $nConfigId = 11;
+        $nConfigId = CONF_BETSITE;
         $arrSiteInfo = ["", "", "", "", "", "" ];
 
         $objConfig = $this->asObject()->where(array('conf_id'=>$nConfigId))->first();
@@ -117,34 +103,34 @@ class ConfSite_Model extends Model
 
         $arrBatch = array();
         $updateData = array();
-        $updateData['conf_id'] = 1;
+        $updateData['conf_id'] = CONF_SITENAME;
         $updateData['conf_content'] = $arrData['sitename'];
         $arrBatch[0] = $updateData;
 
         $updateData = array();
-        $updateData['conf_id'] = 2;
+        $updateData['conf_id'] = CONF_DOMAIN;
         $updateData['conf_content'] = $arrData['domainname'];
         $arrBatch[1] = $updateData;
 
         $updateData = array();
-        $updateData['conf_id'] = 3;
+        $updateData['conf_id'] = CONF_USERPAGE;
         $updateData['conf_content'] = $arrData['homepage'];
         $arrBatch[2] = $updateData;
         
         $updateData = array();
-        $updateData['conf_id'] = 4;
+        $updateData['conf_id'] = CONF_ADMINPAGE;
         $updateData['conf_content'] = $arrData['adminpage'];
         $arrBatch[3] = $updateData;
         
         $updateData = array();
-        $updateData['conf_id'] = 5;
+        $updateData['conf_id'] = CONF_NOTICE_MAIN;
         $updateData['conf_content'] = $arrData['mainnotice'];
         $updateData['conf_active'] = $arrData['mainnotice_ok'];
         $arrBatch[4] = $updateData;
         
 
         $updateData = array();
-        $updateData['conf_id'] = 6;
+        $updateData['conf_id'] = CONF_NOTICE_BANK;
         $updateData['conf_content'] = $arrData['depositenotice'];
         $updateData['conf_active'] = $arrData['depositenotice_ok'];
         $arrBatch[5] = $updateData;
@@ -155,17 +141,17 @@ class ConfSite_Model extends Model
         // $arrBatch[6] = $updateData;
 
         $updateData = array();
-        $updateData['conf_id'] = 8;
+        $updateData['conf_id'] = CONF_CHARGEINFO;
         $updateData['conf_content'] = $arrData['bank'];
         $arrBatch[7] = $updateData;
 
         $updateData = array();
-        $updateData['conf_id'] = 9;
+        $updateData['conf_id'] = CONF_CHARGEMACRO;
         $updateData['conf_content'] = $arrData['bankmacro'];
         $arrBatch[8] = $updateData;
 
         $updateData = array();
-        $updateData['conf_id'] = 12;
+        $updateData['conf_id'] = CONF_NOTICE_URGENT;
         $updateData['conf_content'] = $arrData['urgentnotice'];
         $updateData['conf_active'] = $arrData['urgentnotice_ok'];
         $arrBatch[9] = $updateData;
@@ -184,7 +170,7 @@ class ConfSite_Model extends Model
         
         $arrBatch = array();
         
-        $updateData['conf_id'] = 10;
+        $updateData['conf_id'] = CONF_MAINTAIN;
         $updateData['conf_content'] = $arrData['content'];
         $updateData['conf_active'] = $arrData['maintain'];
         $arrBatch[0] = $updateData;
@@ -200,7 +186,7 @@ class ConfSite_Model extends Model
 
             $arrSound = ["", 0];
 
-            $nConfigId = 15 + $i;    
+            $nConfigId = CONF_SOUND_1 + $i;    
             $objConfig = $this->asObject()->where(array('conf_id'=>$nConfigId))->first();
             if(!is_null($objConfig)){
                 $arrSound[0] = $objConfig->conf_content;
@@ -223,7 +209,7 @@ class ConfSite_Model extends Model
 
             $arrUpdateData = array();   
             
-            $arrUpdateData['conf_id'] = 15+$i;
+            $arrUpdateData['conf_id'] = CONF_SOUND_1+$i;
             $arrUpdateData['conf_content'] = $arrSoundData[$i][0];
             $arrUpdateData['conf_active'] = $arrSoundData[$i][1];
             array_push($arrBatch, $arrUpdateData);

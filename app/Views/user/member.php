@@ -24,12 +24,12 @@
 			<?php if($mb_level >= LEVEL_ADMIN) {  ?>
 			<a href="<?php echo base_url().'user/member_edit/0';?>" class="user-panel-add-a" >회원 등록</a>
 			<?php } ?>
-			<label>아이디</label>
-            <input type="text" class="pbresult-text-input" id="userpanel-userid-input-id" >
 			<?php if ($mb_level >= LEVEL_ADMIN) {?>	
 			<label>추천인</label>
             <input type="text" class="pbresult-text-input" id="userpanel-empid-input-id" value= "<?=$emp_uid ?>">
 			<?php } ?>
+			<label>아이디</label>
+            <input type="text" class="pbresult-text-input" id="userpanel-userid-input-id" >
 			
 			<select name="pbresult-level" class="pbresult-number-select" id="userpanel-level-select-id">
 				<option value="0">::레벨::</option>

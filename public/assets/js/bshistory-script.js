@@ -15,15 +15,10 @@ function ShowBetHistory(jsonBetData, hasPoint) {
     var strBuf = "";
 
     var tHead = "";
-    if (hasPoint == 1) {
-        tHead = "<th>ID</th> <th>배팅시간</th> <th>회차</th> <th>아이디</th> <th>구분</th>";
-        tHead += "<th>배팅금액</th> <th>배당율</th> <th>배팅선택</th> <th>경기결과</th>";
-        tHead += "<th>당첨금액</th> <th>배팅결과</th> <th>포인트</th>";
-    } else {
-        tHead = "<th>ID</th> <th>배팅시간</th> <th>회차</th> <th>아이디</th> <th>구분</th>";
-        tHead += "<th>배팅금액</th> <th>배당율</th> <th>배팅선택</th> <th>경기결과</th>";
-        tHead += "<th>당첨금액</th> <th>배팅결과</th>";
-    }
+    tHead = "<th>ID</th> <th>배팅시간</th> <th>회차</th> <th>아이디</th> <th>구분</th>";
+    tHead += "<th>배팅금액</th> <th>배당율</th> <th>배팅선택</th> <th>경기결과</th>";
+    tHead += "<th>당첨금액</th> <th>배팅결과</th> <th>포인트</th>";
+
     $(".bet-table thead tr").html(tHead);
 
     var strBetMode = "";
@@ -104,12 +99,10 @@ function ShowBetHistory(jsonBetData, hasPoint) {
         strBuf += strWinMoney;
         strBuf += "</td>";
         strBuf += strResult;
-        if (hasPoint == 1) {
-            strBuf += "</td><td>";
-            if (jsonBetData[nRow].rw_point != null)
-                strBuf += jsonBetData[nRow].rw_point;
-            else strBuf += "0";
-        }
+        strBuf += "</td><td>";
+        if (jsonBetData[nRow].rw_point != null)
+            strBuf += jsonBetData[nRow].rw_point;
+        else strBuf += "0";
         strBuf += "</td></tr>";
 
     }

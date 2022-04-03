@@ -29,5 +29,5 @@
 <?= $this->endSection() ?>
 <?= $this->section('history_script') ?>
 	<script> var mPath = "pbapi"; </script>
-	<script src="<?php echo base_url('assets/js/bbhistory-script.js?v=3');?>"></script>
+	<script src="<?php echo base_url('assets/js/bbhistory-script.js?v=4');?>"></script>
 <?= $this->endSection() ?>
