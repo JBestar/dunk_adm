@@ -6,7 +6,8 @@ $(document).ready(function() {
 function requestPageInfo() {
     requestMember();
 }
-function getMemberLevelString(nLevel){
+
+function getMemberLevelString(nLevel) {
     if (nLevel == LEVEL_ADMIN)
         return "관리자";
     else if (nLevel == LEVEL_COMPANY)
@@ -15,49 +16,48 @@ function getMemberLevelString(nLevel){
         return "총판";
     else if (nLevel == LEVEL_EMPLOYEE)
         return "매장";
-    
+
     return null;
 }
-function updateMember(arrMember, nAdminLevel){
+
+/*
+function updateMember(arrMember, nAdminLevel) {
     var tableEle = document.getElementById("user-member-table-id");
-    
+
     var trEleList = tableEle.getElementsByTagName("tr");
-    
+
     var curPage = getActivePage();
     var firstIdx = (curPage - 1) * CountPerPage;
-    for (var nRow in trEleList){
-        if (trEleList[nRow].getAttribute('id') != arrMember.mb_fid){
+    for (var nRow in trEleList) {
+        if (trEleList[nRow].getAttribute('id') != arrMember.mb_fid) {
             continue;
         }
         strBuf = "<td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td> <td>";
-        if (nAdminLevel == LEVEL_ADMIN){
-            strBuf += "<a href=\"/user/member/";
+        if (nAdminLevel == LEVEL_ADMIN) {
+            strBuf += "<a href='/user/member/";
             strBuf += arrMember.mb_emp_fid;
-            strBuf += "\" class=\"class1\">"
+            strBuf += "' class='link-member'>"
             strBuf += arrMember.mb_empname;
             strBuf += "</a>";
-        }
-        else {
+        } else {
             strBuf += arrMember.mb_empname;
         }
-        
+
         strBuf += "</td> <td>";
-        if (nAdminLevel == LEVEL_ADMIN)
-        {
-            strBuf += "<a href=\"/user/member/";
+        if (nAdminLevel == LEVEL_ADMIN) {
+            strBuf += "<a href='/user/member/";
             strBuf += arrMember.mb_fid;
-            strBuf += "\" class=\"class1\">"
+            strBuf += "' class='link-member'>"
             strBuf += arrMember.mb_uid;
             if (getMemberLevelString(arrMember.mb_level) != null)
                 strBuf += " | " + getMemberLevelString(arrMember.mb_level);
             strBuf += "</a>";
-        }
-        else {
+        } else {
             strBuf += arrMember.mb_uid;
         }
-        
+
         strBuf += "</td> <td>";
         strBuf += arrMember.mb_nickname;
         strBuf += "</td> <td>";
@@ -76,57 +76,59 @@ function updateMember(arrMember, nAdminLevel){
         strBuf += parseInt(arrMember.mb_slot_money).toLocaleString() + "원";
         strBuf += "</td> <td>";
         if (arrMember.mb_state_active == 1) {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\"  class=\"button-active\">승인</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "'  class='button-active'>승인</button>";
         } else if (arrMember.mb_state_active == 2) {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\" >대기</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "' >대기</button>";
         } else {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\" >차단</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "' >차단</button>";
         }
-        strBuf += "<a href=\"/user/member_edit/" + arrMember.mb_fid + "\" >수정</a>";
+        strBuf += "<a href='/user/member_edit/" + arrMember.mb_fid + "' >수정</a>";
         if (nAdminLevel > LEVEL_COMPANY) {
             var strEncodeURI = "/board/message_edit/0/" + arrMember.mb_fid;
-            strBuf += "<a href=\"" + strEncodeURI + "\" >쪽지</a>";
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\">삭제</button>   ";
+            strBuf += "<a href='" + strEncodeURI + "' >쪽지</a>";
+            strBuf += "<button name='" + arrMember.mb_fid + "'>삭제</button>   ";
         }
         strBuf += "</td> <td>";
         if (arrMember.mb_game_pb == 1) {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\"  class=\"button-active\">파워볼</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "'  class='button-active'>파워볼</button>";
         } else {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\" >파워볼</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "' >파워볼</button>";
         }
         if (arrMember.mb_game_ps == 1) {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\"  class=\"button-active\">파워사다리</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "'  class='button-active'>파워사다리</button>";
         } else {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\" >파워사다리</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "' >파워사다리</button>";
         }
         if (arrMember.mb_game_bb == 1) {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\"  class=\"button-active\">보글볼</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "'  class='button-active'>보글볼</button>";
         } else {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\" >보글볼</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "' >보글볼</button>";
         }
         if (arrMember.mb_game_bs == 1) {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\"  class=\"button-active\">보글사다리</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "'  class='button-active'>보글사다리</button>";
         } else {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\" >보글사다리</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "' >보글사다리</button>";
         }
         if (arrMember.mb_game_cs == 1) {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\"  class=\"button-active\">카지노</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "'  class='button-active'>카지노</button>";
         } else {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\" >카지노</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "' >카지노</button>";
         }
         if (arrMember.mb_game_sl == 1) {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\"  class=\"button-active\">슬롯</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "'  class='button-active'>슬롯</button>";
         } else {
-            strBuf += "<button name=\"" + arrMember.mb_fid + "\" >슬롯</button>";
+            strBuf += "<button name='" + arrMember.mb_fid + "' >슬롯</button>";
         }
         strBuf += "</td>";
         trEleList[nRow].innerHTML = strBuf;
         addBtnEventByEle(trEleList[nRow]);
         break;
     }
-    
+
 
 }
+*/
+
 function showMember(arrMember, nAdminLevel) {
 
     var strBuf = "";
@@ -135,99 +137,100 @@ function showMember(arrMember, nAdminLevel) {
     var firstIdx = (curPage - 1) * CountPerPage;
 
     for (var nRow in arrMember) {
-        strBuf += "<tr id =\"" + arrMember[nRow].mb_fid +"\"";
+        strBuf += "<tr id ='" + arrMember[nRow].mb_fid + "'";
         if (arrMember[nRow].mb_color != null)
-            strBuf += " bgcolor=\"" + arrMember[nRow].mb_color + "\"";
+            strBuf += " bgcolor='" + arrMember[nRow].mb_color + "'";
         strBuf += ">";
         strBuf += "<td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td> <td>";
-        if (nAdminLevel == LEVEL_ADMIN){
-            strBuf += "<a href=\"/user/member/";
+        if (nAdminLevel == LEVEL_ADMIN) {
+            strBuf += "<a href='/user/member/";
             strBuf += arrMember[nRow].mb_emp_fid;
-            strBuf += "\" class=\"class1\">"
+            strBuf += "' class='link-member'>"
             strBuf += arrMember[nRow].mb_empname;
             strBuf += "</a>";
-        }
-        else {
+        } else {
             strBuf += arrMember[nRow].mb_empname;
         }
-        
+
         strBuf += "</td> <td>";
-        if (nAdminLevel == LEVEL_ADMIN)
-        {
-            strBuf += "<a href=\"/user/member/";
+        if (nAdminLevel == LEVEL_ADMIN) {
+            strBuf += "<a href='/user/member/";
             strBuf += arrMember[nRow].mb_fid;
-            strBuf += "\" class=\"class1\">"
+            strBuf += "' class='link-member'>"
             strBuf += arrMember[nRow].mb_uid;
             if (getMemberLevelString(arrMember[nRow].mb_level) != null)
                 strBuf += " | " + getMemberLevelString(arrMember[nRow].mb_level);
             strBuf += "</a>";
-        }
-        else {
+        } else {
             strBuf += arrMember[nRow].mb_uid;
         }
-        
+
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_nickname;
         strBuf += "</td> <td>";
         strBuf += parseInt(arrMember[nRow].mb_grade).toLocaleString() + "레벨";
         strBuf += "</td> <td>";
-        strBuf += parseInt(arrMember[nRow].mb_money_charge).toLocaleString() + "원";
-        strBuf += "</td> <td>";
-        strBuf += parseInt(arrMember[nRow].mb_money_exchange).toLocaleString() + "원";
-        strBuf += "</td> <td>";
         strBuf += parseInt(arrMember[nRow].mb_money).toLocaleString() + "원";
         strBuf += "</td> <td>";
         strBuf += parseInt(arrMember[nRow].mb_point).toLocaleString();
         strBuf += "</td> <td>";
-        strBuf += parseInt(arrMember[nRow].mb_live_money).toLocaleString() + "원";
+        strBuf += "에볼: " + parseInt(arrMember[nRow].mb_live_money).toLocaleString() + "<br>";
+        strBuf += "슬롯: " + parseInt(arrMember[nRow].mb_slot_money).toLocaleString() + "<br>";
+        strBuf += "네츄럴슬롯: " + parseInt(arrMember[nRow].mb_fslot_money).toLocaleString() + "<br>";
         strBuf += "</td> <td>";
-        strBuf += parseInt(arrMember[nRow].mb_slot_money).toLocaleString() + "원";
+        strBuf += "파워볼: " + arrMember[nRow].mb_game_pb_ratio + "% / " + arrMember[nRow].mb_game_pb2_ratio + "% <br>";
+        strBuf += "파워사다리: " + arrMember[nRow].mb_game_ps_ratio + "% <br>";
+        strBuf += "보글볼: " + arrMember[nRow].mb_game_bb_ratio + "% / " + arrMember[nRow].mb_game_bb2_ratio + "% <br>";
+        strBuf += "보글사다리: " + arrMember[nRow].mb_game_bs_ratio + "% <br>";
+        strBuf += "카지노: " + arrMember[nRow].mb_game_cs_ratio + "% <br>";
+        strBuf += "슬롯: " + arrMember[nRow].mb_game_sl_ratio + "% <br>";
+
         strBuf += "</td> <td>";
         if (arrMember[nRow].mb_state_active == 1) {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\"  class=\"button-active\">승인</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>승인</button>";
         } else if (arrMember[nRow].mb_state_active == 2) {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\" >대기</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >대기</button>";
         } else {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\" >차단</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >차단</button>";
         }
-        strBuf += "<a href=\"/user/member_edit/" + arrMember[nRow].mb_fid + "\" >수정</a>";
+        strBuf += "<a href='/user/member_edit/" + arrMember[nRow].mb_fid + "' >수정</a>";
         if (nAdminLevel > LEVEL_COMPANY) {
             var strEncodeURI = "/board/message_edit/0/" + arrMember[nRow].mb_fid;
-            strBuf += "<a href=\"" + strEncodeURI + "\" >쪽지</a>";
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\">삭제</button>   ";
+            strBuf += "<a href='" + strEncodeURI + "' >쪽지</a>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'>삭제</button>   ";
         }
         strBuf += "</td> <td>";
         if (arrMember[nRow].mb_game_pb == 1) {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\"  class=\"button-active\">파워볼</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>파워볼</button>";
         } else {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\" >파워볼</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >파워볼</button>";
         }
         if (arrMember[nRow].mb_game_ps == 1) {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\"  class=\"button-active\">파워사다리</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>파워사다리</button>";
         } else {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\" >파워사다리</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >파워사다리</button>";
         }
         if (arrMember[nRow].mb_game_bb == 1) {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\"  class=\"button-active\">보글볼</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>보글볼</button>";
         } else {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\" >보글볼</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >보글볼</button>";
         }
         if (arrMember[nRow].mb_game_bs == 1) {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\"  class=\"button-active\">보글사다리</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>보글사다리</button>";
         } else {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\" >보글사다리</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >보글사다리</button>";
         }
         if (arrMember[nRow].mb_game_cs == 1) {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\"  class=\"button-active\">카지노</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>카지노</button>";
         } else {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\" >카지노</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >카지노</button>";
         }
         if (arrMember[nRow].mb_game_sl == 1) {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\"  class=\"button-active\">슬롯</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>슬롯</button>";
         } else {
-            strBuf += "<button name=\"" + arrMember[nRow].mb_fid + "\" >슬롯</button>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >슬롯</button>";
         }
         strBuf += "</td></tr>";
     }
@@ -243,20 +246,15 @@ function showMember(arrMember, nAdminLevel) {
 
 
 function addEventListner() {
-    var butView = document.getElementById("userpanel-list-view-but-id");
-    butView.addEventListener("click", function() {
-
+    $("#userpanel-list-view-but-id").click(function() {
         requestTotalPage();
     });
 
-    var selectLevel = document.getElementById("userpanel-level-select-id");
-    selectLevel.addEventListener("change", function() {
+    $("#userpanel-level-select-id").change(function() {
         requestTotalPage();
     });
 
-    var selectView = document.getElementById("userpanel-number-select-id");
-    selectView.addEventListener("change", function() {
-
+    $("#userpanel-number-select-id").change(function() {
         requestTotalPage();
     });
 }
@@ -266,13 +264,13 @@ function addEventListner() {
 function requestMember() {
 
     var nPage = getActivePage();
-    var userGrad = document.getElementById("userpanel-level-select-id").value;
-    var strMbUid = document.getElementById("userpanel-userid-input-id").value;
+    var userGrad = $("#userpanel-level-select-id").val();
+    var strMbUid = $("#userpanel-userid-input-id").val();
     var empIdEle = document.getElementById("userpanel-empid-input-id");
     var strEmpUid = "";
-    if (typeof (empIdEle) != undefined && empIdEle != null)
+    if (typeof(empIdEle) != undefined && empIdEle != null)
         strEmpUid = empIdEle.value;
-    var jsonData = { "count": CountPerPage, "page": nPage, "mb_grade": userGrad, "mb_uid": strMbUid, "mb_emp_uid":strEmpUid};
+    var jsonData = { "count": CountPerPage, "page": nPage, "mb_grade": userGrad, "mb_uid": strMbUid, "mb_emp_uid": strEmpUid };
 
 
     jsonData = JSON.stringify(jsonData);
@@ -302,14 +300,14 @@ function requestMember() {
 
 //Function to Request Game Result History to WebServer
 function requestTotalPage() {
-    CountPerPage = document.getElementById("userpanel-number-select-id").value;
-    var userGrad = document.getElementById("userpanel-level-select-id").value;
-    var strMbUid = document.getElementById("userpanel-userid-input-id").value;
+    CountPerPage = $("#userpanel-number-select-id").val();
+    var userGrad = $("#userpanel-level-select-id").val();
+    var strMbUid = $("#userpanel-userid-input-id").val();
     var empIdEle = document.getElementById("userpanel-empid-input-id");
     var strEmpUid = "";
-    if (typeof (empIdEle) != undefined && empIdEle != null)
+    if (typeof(empIdEle) != undefined && empIdEle != null)
         strEmpUid = empIdEle.value;
-    var jsonData = { "count": CountPerPage, "mb_grade": userGrad, "mb_uid": strMbUid, "mb_emp_uid":strEmpUid};
+    var jsonData = { "count": CountPerPage, "mb_grade": userGrad, "mb_uid": strMbUid, "mb_emp_uid": strEmpUid };
 
     jsonData = JSON.stringify(jsonData);
 
@@ -334,7 +332,7 @@ function requestTotalPage() {
 }
 
 
-function addButtonElementListener(buttonElement){
+function addButtonElementListener(buttonElement) {
     buttonElement.addEventListener("click", function() {
 
         if (this.innerHTML.search("삭제") >= 0) {
@@ -417,18 +415,6 @@ function addBtnEvent() {
     }
 }
 
-function addBtnEventByEle(element){
-
-    var btnEleList = element.getElementsByTagName("button");
-    if (btnEleList == null)
-        return;
-
-    for (var index in btnEleList) {
-        addButtonElementListener(btnEleList[index]);
-    }
-}
-
-
 function requestWaitToPermit(elemBut, jsData) {
 
     if (mAudio != undefined && mAudio != null) {
@@ -480,12 +466,11 @@ function requestUpdateCompany(jsData) {
         url: "/userapi/updatemember",
         data: { json_: jsonData },
         success: function(jResult) {
-            //console.log(jResult);
+            console.log(jResult);
 
             if (jResult.status == "success") {
-                // requestMember();
-                updateMember(jResult.data, jResult.level);
-
+                requestMember();
+                // updateMember(jResult.data, jResult.level);
             } else if (jResult.status == "fail") {
 
             } else if (jResult.status == "nopermit") {

@@ -23,23 +23,23 @@ function ShowGameResult(jsonRoundResults) {
         strBuf += jsonRoundResults[nRow].round_num;
         strBuf += "</td><td>";
         if (jsonRoundResults[nRow].round_result_1 == 'P')
-            strBuf += "<span class=\"pbresult-rule-odd-span\">좌</span>";
+            strBuf += "<span class='pbresult-rule-odd-span'>좌</span>";
         else if (jsonRoundResults[nRow].round_result_1 == 'B')
-            strBuf += "<span class=\"pbresult-rule-even-span\">우</span>";
+            strBuf += "<span class='pbresult-rule-even-span'>우</span>";
         strBuf += "</td><td>";
         if (jsonRoundResults[nRow].round_result_2 == 'P')
-            strBuf += "<span class=\"pbresult-rule-odd-span\"> 3줄 </span>";
+            strBuf += "<span class='pbresult-rule-odd-span'> 3줄 </span>";
         else if (jsonRoundResults[nRow].round_result_2 == 'B')
-            strBuf += "<span class=\"pbresult-rule-even-span\">4줄</span>";
+            strBuf += "<span class='pbresult-rule-even-span'>4줄</span>";
         strBuf += "</td><td>";
         if (jsonRoundResults[nRow].round_result_3 == 'P')
-            strBuf += "<span class=\"pbresult-rule-odd-span\">홀</span>";
+            strBuf += "<span class='pbresult-rule-odd-span'>홀</span>";
         else if (jsonRoundResults[nRow].round_result_3 == 'B')
-            strBuf += "<span class=\"pbresult-rule-even-span\">짝</span>";
+            strBuf += "<span class='pbresult-rule-even-span'>짝</span>";
 
         strBuf += "</td><td>";
-        strBuf += "<a href=\"/result/bsresult_edit/" + jsonRoundResults[nRow].round_fid + "\" >수정</a>";
-        strBuf += "<a href=\"/result/bsbetchange/" + jsonRoundResults[nRow].round_date + "/" + jsonRoundResults[nRow].round_num + "\" >적특</a>";
+        strBuf += "<a href='/result/bsresult_edit/" + jsonRoundResults[nRow].round_fid + "' >수정</a>";
+        strBuf += "<a href='/result/bsbetchange/" + jsonRoundResults[nRow].round_date + "/" + jsonRoundResults[nRow].round_num + "' >적특</a>";
         strBuf += "</td></tr>";
 
     }

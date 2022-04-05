@@ -12,6 +12,7 @@ use App\Models\Member_Model;
 use App\Models\Notice_Model;
 use App\Models\PbBet_model;
 use App\Models\PsBet_model;
+use App\Models\MoneyHistory_Model;
 
 class UserApi extends BaseController
 {
@@ -69,6 +70,9 @@ class UserApi extends BaseController
                     $arrResult['error'] = $strError;
                 } elseif (7 == $iResult) {
                     $arrResult['status'] = 'ev_ratio_error';
+                    $arrResult['error'] = $strError;
+                } elseif (8 == $iResult) {
+                    $arrResult['status'] = 'sl_ratio_error';
                     $arrResult['error'] = $strError;
                 } elseif (9 == $iResult) {
                     $arrResult['status'] = 'bb_ratio_error';
@@ -192,6 +196,7 @@ class UserApi extends BaseController
                 $bResult = $memberModel->updateMemberByFid($arrData);
 
                 if ($bResult) {
+                    /*
                     $arrUserData = $memberModel->find($arrData['mb_fid']);
                     $arrUserData['mb_empname'] = '';
                     if ($arrUserData['mb_emp_fid'] != 0){
@@ -201,9 +206,10 @@ class UserApi extends BaseController
                             $arrUserData['mb_empname'] = $arrEmpInfo['mb_uid'];
                         }
                     }
+                    */
                     $arrResult['status'] = 'success';
-                    $arrResult['level'] = $objUser->mb_level;
-                    $arrResult['data'] = $arrUserData;                    
+                    // $arrResult['level'] = $objUser->mb_level;
+                    // $arrResult['data'] = $arrUserData;                    
                 } else {
                     $arrResult['status'] = 'fail';
                 }
@@ -430,7 +436,7 @@ class UserApi extends BaseController
             $strUid = $this->session->user_id;
             $objUser = $memberModel->getInfo($strUid);
 			$empFid = 0;
-			if ($objUser->mb_level == LEVEL_ADMIN){
+			if ($objUser->mb_level >= LEVEL_ADMIN){
 				if (strlen($arrData['mb_emp_uid']) > 0){
 					$objEmp = $memberModel->getInfo($arrData['mb_emp_uid']);
 					if ($objEmp == null){
@@ -445,28 +451,24 @@ class UserApi extends BaseController
 				$empFid = $objUser->mb_fid;
 			}
             
-            // if ($objUser->mb_level > $arrData['mb_level']) {
-                $arrMember = $memberModel->searchMemberByEmpFid($empFid, $objUser->mb_level, $arrData);
-                if (is_null($arrMember)) {
-                    $arrMember = [];
+            $arrMember = $memberModel->searchMemberByEmpFid($empFid, $objUser->mb_level, $arrData);
+            if (is_null($arrMember)) {
+                $arrMember = [];
+            }
+            foreach ($arrMember as $objMember) {
+                $arrEmpInfo = $memberModel->find($objMember->mb_emp_fid);
+                if ($arrEmpInfo != null){
+                    $objMember->mb_empname = $arrEmpInfo['mb_uid'];
                 }
-                foreach ($arrMember as $objMember) {
-					$arrEmpInfo = $memberModel->find($objMember->mb_emp_fid);
-					if ($arrEmpInfo != null){
-						$objMember->mb_empname = $arrEmpInfo['mb_uid'];
-					}
-					else {
-						$objMember->mb_empname = '';
-					}
-                    
+                else {
+                    $objMember->mb_empname = '';
                 }
+                
+            }
 
-                $objResult->status = 'success';
-                $objResult->level = $objUser->mb_level;
-                $objResult->data = $arrMember;
-            // } else {
-            //     $objResult->status = 'fail';
-            // }
+            $objResult->status = 'success';
+            $objResult->level = $objUser->mb_level;
+            $objResult->data = $arrMember;
 
             echo json_encode($objResult);
         } else {
@@ -542,4 +544,50 @@ class UserApi extends BaseController
             echo json_encode($arrResult);
         }
     }
+
+
+    
+    public function transfer()
+    {
+        $jsonData = $_REQUEST['json_'];
+        $arrData = json_decode($jsonData, true);
+
+        if (is_login()) {
+            // model
+            $memberModel = new Member_Model();
+            $moneyhistoryModel = new MoneyHistory_Model();
+
+            $strUid = $this->session->user_id;
+            $objEmp = $memberModel->getInfo($strUid);
+            $objMember = $memberModel->getInfoByFid($arrData['mb_fid']);
+
+            $objResult = new \stdClass();
+
+            if(is_null($objMember)){
+                $objResult->status = 'fail';
+            } else if($objMember->mb_emp_fid !== $objEmp->mb_fid){
+                $objResult->status = 'fail';
+            } else if($arrData['amount'] > $objEmp->mb_money){
+                $objResult->status = 'fail';
+                $objResult->msg = '이송금액이 보유금액을 초화하셧습니다.';
+            }
+            else if($memberModel->trasferMoney($objEmp, $objMember, $arrData['amount'])){
+
+                $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, 0-$arrData['amount'], MONEYCHANGE_TRANS_S);
+                $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, $arrData['amount'], MONEYCHANGE_TRANS_R);
+                $objResult->status = 'success';
+            } else{
+                $objResult->status = 'fail';
+
+            }
+
+            echo json_encode($objResult);
+        } else {
+            $arrResult['status'] = 'logout';
+            echo json_encode($arrResult);
+        }
+    }
+
+
+
 }

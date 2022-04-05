@@ -15,7 +15,7 @@
 
 				<td>파워볼<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
 				<td>보글볼<span id="main-navbar-emp_bbrate-id">0 % | 0 %</span></td>
-				<td>에볼루션<span id="main-navbar-emp_evrate-id">0 %</span></td>
+				<td>카지노<span id="main-navbar-emp_evrate-id">0 %</span></td>
 				<?php } else { ?>
 
 				<td>새 쪽지&nbsp;<a href="/board/message" id="main-navbar-newmessage-id">0 통</a></td>

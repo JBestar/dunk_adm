@@ -91,68 +91,71 @@ class CsBet_model extends Model
 
     function search($objEmp, $arrReqData)
     {
+        $gameId = GAME_CASINO_EVOL;
 
         $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_live_id ";
         $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_nickname, r.mb_live_id ";
 
-         $strSql = "";
+        $bWhere = false;
+        $strWhere="";
+        if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
+            $strWhere.=" WHERE bet_time >= '".$arrReqData['start']." 0:0:0' AND bet_time <= '".$arrReqData['end']." 23:59:59'" ;
+            $bWhere = true;            
+        }
+        if(strlen($arrReqData['user']) > 0){
+            if($bWhere) $strWhere.= " AND ";
+            else $strWhere.= " WHERE ";
+            $strWhere.=" bet_mb_uid = '".$arrReqData['user']."' ";
+            $bWhere = true;
+        }
+        if(intval($arrReqData['mode']) > 0){
+            if($bWhere) $strWhere.= " AND ";
+            else $strWhere.= " WHERE ";
+            $strWhere.=" bet_game_type = '".$arrReqData['mode']."' ";
+        }
+        $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
+        $strWhere.=" ORDER BY bet_fid DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
+        
+        $strSql = "";
+        $strSql .= "SELECT bet_fid, bet_idx, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_type, bet_table_code, ";
+        $strSql .= " bet_choice, mb_uid, mb_nickname, name as game_name, rw_mb_uid, rw_point ";
+        $strSql .= " FROM ( ";
+
+        $tbBetSearch = "bet_search";
+
         if($objEmp->mb_level < LEVEL_ADMIN){
 
-
-            $strSql = "WITH RECURSIVE tbmember (".$strTbColum.") AS";
+            $strSql .= " WITH RECURSIVE tbmember (".$strTbColum.") AS";
             $strSql .= " ( SELECT ".$strTbColum." FROM ".$this->mMemberTable." WHERE mb_emp_fid = '".$objEmp->mb_fid."'";
             $strSql .= " UNION ALL SELECT ".$strTbRColum." FROM ".$this->mMemberTable." r ";
             $strSql .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
 
-
-            $strSql .= "SELECT bet_fid, bet_idx, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_type, bet_table_code, ";
-            $strSql .= " bet_choice, mb_uid, mb_nickname, name as game_name, rw_mb_uid, rw_point FROM ".$this->table;
-            
+            $strSql .= " SELECT * FROM ".$this->table;  
             $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
             $strSql .=" ) AS mb_table ";
             $strSql .=" ON ".$this->table.".bet_player_id = mb_table.mb_live_id ";
-            $strSql .= " LEFT JOIN ".$this->mGameTable." ON ".$this->table.".bet_table_code = ".$this->mGameTable.".tid ";
+            $strSql .=$strWhere.") ".$tbBetSearch;
 
             //Join bet_reward
-            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->table.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
-                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".GAME_CASINO_EVOL."' ";
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
+                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".$gameId."' ";
                 $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = '".$objEmp->mb_uid."' ";
             
         } else{
-            $strSql .= "SELECT  bet_fid, bet_idx, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_type, bet_table_code, ";
-            $strSql .= " bet_choice, mb_uid, mb_nickname, name as game_name, rw_mb_uid, rw_point FROM ".$this->table;
-
+            
+            $strSql .= " SELECT * FROM ".$this->table;  
         	$strSql .= " JOIN ".$this->mMemberTable." ON ".$this->table.".bet_player_id = ".$this->mMemberTable.".mb_live_id ";
-            $strSql .= " LEFT JOIN ".$this->mGameTable." ON ".$this->table.".bet_table_code = ".$this->mGameTable.".tid ";
-        
+            $strSql .=$strWhere.") ".$tbBetSearch;
+
             //Join bet_reward
-            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->table.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
-                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".GAME_CASINO_EVOL."' ";
-                $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = ".$this->table.".bet_mb_uid ";
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
+                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".$gameId."' ";
+                $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = ".$tbBetSearch.".bet_mb_uid ";
             
         }
+        $strSql .= " LEFT JOIN ".$this->mGameTable." ON ".$tbBetSearch.".bet_table_code = ".$this->mGameTable.".tid ";
+        $strSql .= " ORDER BY bet_fid ";
 
-        $bWhere = false;
-
-        if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSql.=" WHERE bet_time >= '".$arrReqData['start']." 0:0:0' AND bet_time <= '".$arrReqData['end']." 23:59:59'" ;
-            $bWhere = true;            
-        }
-        if(strlen($arrReqData['user']) > 0){
-            
-            if($bWhere) $strSql.= " AND ";
-            else $strSql.= " WHERE ";
-            $strSql.=" bet_mb_uid = '".$arrReqData['user']."' ";
-            $bWhere = true;
-        }
-        if(intval($arrReqData['mode']) > 0){
-            if($bWhere) $strSql.= " AND ";
-            else $strSql.= " WHERE ";
-            $strSql.=" bet_game_type = '".$arrReqData['mode']."' ";
-        }
-
-        $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
-        $strSql.=" ORDER BY bet_fid DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();
         

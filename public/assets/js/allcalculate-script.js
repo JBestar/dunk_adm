@@ -20,11 +20,11 @@ function showCalcualte(arrCalcData) {
         strBuf += "<tr";
 
         colorLv = arrCalcData[nRow].mb_level % 10;
-        strBuf += " class=\"tr-level" + colorLv + "-color\"";
+        strBuf += " class='tr-level" + colorLv + "-color'";
 
         strBuf += "><td>";
         if (arrCalcData[nRow].mb_level > LEVEL_MIN)
-            strBuf += "<i class=\"glyphicon glyphicon-triangle-right\"></i>"
+            strBuf += "<i class='glyphicon glyphicon-triangle-right'></i>"
         strBuf += "<p hidden>" + arrCalcData[nRow].mb_fid + "</p>";
         strBuf += "<p hidden>" + arrCalcData[nRow].mb_emp_fid + "</p>";
         strBuf += "<p hidden>" + arrCalcData[nRow].mb_level + "</p>";
@@ -69,8 +69,8 @@ function showCalcualte(arrCalcData) {
 
 
 function addButtonEvent() {
-    var butView = document.getElementById("calculate-list-view-but-id");
-    butView.addEventListener("click", function() {
+
+    $("#calculate-list-view-but-id").click(function() {
         var nEmpFid = 0;
         var nTbRow = -1;
         requestCalculate(nEmpFid, nTbRow);
@@ -166,7 +166,7 @@ function addRow(nTbRow, arrCalcData, level) {
 
         var elemCell0 = elemNewRow.insertCell(0);
         if (arrCalcData[nRow].mb_level > LEVEL_MIN && level > LEVEL_COMPANY)
-            strBuf = "<i class=\"glyphicon glyphicon-triangle-right\"></i>"
+            strBuf = "<i class='glyphicon glyphicon-triangle-right'></i>"
         strBuf += "<p hidden>" + arrCalcData[nRow].mb_fid + "</p>";
         strBuf += "<p hidden>" + arrCalcData[nRow].mb_emp_fid + "</p>";
         strBuf += "<p hidden>" + arrCalcData[nRow].mb_level + "</p>";

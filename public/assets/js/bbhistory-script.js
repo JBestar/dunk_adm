@@ -39,21 +39,21 @@ function ShowBetHistory(jsonBetData, hasPoint) {
         jsonBetData[nRow].bet_mode = parseInt(jsonBetData[nRow].bet_mode);
         strBetMode = "<td>";
         if (jsonBetData[nRow].bet_mode == 1 || jsonBetData[nRow].bet_mode == 2) {
-            strBetMode = "<td class = \"pb-home-table-betmode-power\"> 파워볼";
+            strBetMode = "<td class = 'pb-home-table-betmode-power'> 파워볼";
         } else if (jsonBetData[nRow].bet_mode == 3 || jsonBetData[nRow].bet_mode == 4) {
-            strBetMode = "<td class = \"pb-home-table-betmode-normal\"> 일반볼";
+            strBetMode = "<td class = 'pb-home-table-betmode-normal'> 일반볼";
         } else if (jsonBetData[nRow].bet_mode >= 5 && jsonBetData[nRow].bet_mode <= 8) {
-            strBetMode = "<td class = \"pb-home-table-betmode-power\"> 파워볼조합";
+            strBetMode = "<td class = 'pb-home-table-betmode-power'> 파워볼조합";
         } else if (jsonBetData[nRow].bet_mode >= 9 && jsonBetData[nRow].bet_mode <= 12) {
-            strBetMode = "<td class = \"pb-home-table-betmode-normal\"> 일반볼조합";
+            strBetMode = "<td class = 'pb-home-table-betmode-normal'> 일반볼조합";
         } else if (jsonBetData[nRow].bet_mode >= 13 && jsonBetData[nRow].bet_mode <= 20) {
-            strBetMode = "<td class = \"pb-home-table-betmode-line\"> 일반+파워조합";
+            strBetMode = "<td class = 'pb-home-table-betmode-line'> 일반+파워조합";
         } else if (jsonBetData[nRow].bet_mode >= 21 && jsonBetData[nRow].bet_mode <= 29) {
-            strBetMode = "<td class = \"pb-home-table-betmode-line\"> 일반볼대중소";
+            strBetMode = "<td class = 'pb-home-table-betmode-line'> 일반볼대중소";
         } else if (jsonBetData[nRow].bet_mode >= 31 && jsonBetData[nRow].bet_mode <= 38) {
-            strBetMode = "<td class = \"pb-home-table-betmode-line\"> 일반조합+파워홀짝";
+            strBetMode = "<td class = 'pb-home-table-betmode-line'> 일반조합+파워홀짝";
         } else if (jsonBetData[nRow].bet_mode == 30) {
-            strBetMode = "<td class = \"pb-home-table-betmode-line\"> 파워볼 숫자";
+            strBetMode = "<td class = 'pb-home-table-betmode-line'> 파워볼 숫자";
         }
         strBetTarget = "";
         strResultTarget = "";
@@ -170,14 +170,14 @@ function ShowBetHistory(jsonBetData, hasPoint) {
         strWinMoney = "";
         strResult = "<td>";
         if (jsonBetData[nRow].bet_state == "1") {
-            strResult = "<td  class = \"pb-home-table-betstate-wait\">대기중";
+            strResult = "<td  class = 'pb-home-table-betstate-wait'>대기중";
         } else if (jsonBetData[nRow].bet_state == "2") {
-            strResult = "<td  class = \"pb-home-table-betstate-loss\">미적중"; //
+            strResult = "<td  class = 'pb-home-table-betstate-loss'>미적중"; //
         } else if (jsonBetData[nRow].bet_state == "3") {
-            strResult = "<td  class = \"pb-home-table-betstate-earn\">적중";
+            strResult = "<td  class = 'pb-home-table-betstate-earn'>적중";
             strWinMoney = parseInt(jsonBetData[nRow].bet_win_money - jsonBetData[nRow].bet_money).toLocaleString() + "원";
         } else if (jsonBetData[nRow].bet_state == "4") {
-            strResult = "<td  class = \"pb-home-table-betstate-wait\">무효";
+            strResult = "<td  class = 'pb-home-table-betstate-wait'>무효";
         }
 
         strBuf += strWinMoney;
@@ -202,21 +202,21 @@ function getHtmlByBet(strMode, strTarget) {
     iMode = parseInt(strMode);
     if (iMode == 1 || iMode == 3) {
         if (strTarget == "P")
-            strResult = "<div  class = \"pb-home-odd-span\">홀</div> "
+            strResult = "<div  class = 'pb-home-odd-span'>홀</div> "
         else if (strTarget == "B")
-            strResult = "<div  class = \"pb-home-even-span\">짝</div> ";
+            strResult = "<div  class = 'pb-home-even-span'>짝</div> ";
     } else if (iMode == 2 || iMode == 4) {
         if (strTarget == "P")
-            strResult = "<div  class = \"pb-home-odd-span\"><i class=\"glyphicon glyphicon-arrow-down\"></i></div> ";
+            strResult = "<div  class = 'pb-home-odd-span'><i class='glyphicon glyphicon-arrow-down'></i></div> ";
         else if (strTarget == "B")
-            strResult = "<div  class = \"pb-home-even-span\"><i class=\"glyphicon glyphicon-arrow-up\"></i></div> ";
+            strResult = "<div  class = 'pb-home-even-span'><i class='glyphicon glyphicon-arrow-up'></i></div> ";
     } else if (iMode == 5) {
-        if (strTarget == 'L') strResult = "<div  class = \"pb-home-mid-span\">대</div> ";
-        else if (strTarget == 'M') strResult = "<div  class = \"pb-home-mid-span\">중</div> ";
-        else if (strTarget == 'S') strResult = "<div  class = \"pb-home-mid-span\">소</div> ";
+        if (strTarget == 'L') strResult = "<div  class = 'pb-home-mid-span'>대</div> ";
+        else if (strTarget == 'M') strResult = "<div  class = 'pb-home-mid-span'>중</div> ";
+        else if (strTarget == 'S') strResult = "<div  class = 'pb-home-mid-span'>소</div> ";
     } else if (iMode == 6) {
         if (strTarget.length > 0)
-            strResult = "<div  class = \"pb-home-mid-span\">" + strTarget + "</div> ";
+            strResult = "<div  class = 'pb-home-mid-span'>" + strTarget + "</div> ";
     }
     return strResult;
 }
@@ -243,13 +243,12 @@ function ShowBetAccount(arrBetAccount) {
 }
 
 function addEventListner() {
-    var butView = document.getElementById("pbhistory-list-view-but-id");
-    butView.addEventListener("click", function() {
+    $("#pbhistory-list-view-but-id").click(function() {
         requestTotalPage();
     });
 
-    var selectView = document.getElementById("pbhistory-number-select-id");
-    selectView.addEventListener("change", function() {
+    $("#pbhistory-number-select-id").change(function() {
+
         requestTotalPage();
     });
 
@@ -281,21 +280,20 @@ function requestBetHistory() {
         "mode": nMode
     };
     jsonData = JSON.stringify(jsonData);
-    console.log(jsonData);
     $.ajax({
         url: '/' + mPath + '/betlist',
         data: { json_: jsonData },
         type: 'post',
         dataType: "json",
         success: function(jResult) {
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 ShowBetHistory(jResult.data, jResult.point);
                 ShowBetAccount(jResult.account);
             }
         },
         error: function(request, status, error) {
-            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });
@@ -334,7 +332,7 @@ function requestTotalPage() {
         dataType: 'json',
         type: 'post',
         success: function(jResult) {
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();
@@ -343,7 +341,7 @@ function requestTotalPage() {
             }
         },
         error: function(request, status, error) {
-            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });

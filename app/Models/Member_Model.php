@@ -64,14 +64,23 @@ class Member_Model extends Model
         'mb_fslot_uid',
         'mb_fslot_money',
     ];
+
+    
+    private $getFields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid', 'mb_emp_permit', 'mb_nickname', 
+        'mb_email', 'mb_phone', 'mb_bank_name', 'mb_bank_own', 'mb_bank_num', 'mb_bank_pwd',
+        'mb_money', 'mb_point', 'mb_money_charge', 'mb_money_exchange', 'mb_grade', 'mb_state_active', 
+        'mb_game_pb', 'mb_game_ps', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 
+        'mb_game_pb_ratio', 'mb_game_pb2_ratio','mb_game_ps_ratio', 'mb_game_bb_ratio', 'mb_game_bb2_ratio', 
+        'mb_game_bs_ratio', 'mb_game_cs_ratio', 'mb_game_sl_ratio', 
+        'mb_game_pb_percent', 'mb_game_pb2_percent', 'mb_game_ps_percent', 'mb_game_bb_percent',
+        'mb_game_bb2_percent', 'mb_game_bs_percent',
+        'mb_live_id', 'mb_live_uid', 'mb_live_money', 
+        'mb_slot_uid', 'mb_slot_money', 
+        'mb_fslot_id', 'mb_fslot_uid', 'mb_fslot_money' ];
+
     protected $primaryKey = 'mb_fid';
 
-    public function getLiveMaxId()
-    {
-        $this->builder()->selectMax('mb_live_id', 'mb_live_maxid');
-
-        return $this->builder()->get()->getRow();
-    }
+    
     protected $validationRules = [
         'mb_uid' => 'required|alpha_numeric|is_unique[member.mb_uid, mb_fid, {mb_fid}]',
         'mb_nickname' => 'required|min_length[3]|max_length[20]|is_unique[member.mb_nickname, mb_fid, {mb_fid}]',
@@ -163,7 +172,7 @@ class Member_Model extends Model
         return $this->builder()
             ->where([
             'mb_uid' => $strUserId,
-            'mb_pwd' => $strPwd, ])
+            'mb_pwd' => $strPwd ])
             ->get()->getRow();
     }
 
@@ -216,6 +225,34 @@ class Member_Model extends Model
         } else {
             $this->db->transCommit();
             $objUser->mb_money = $objResult->mb_money;
+            $bResult = true;
+        }
+
+        return $bResult;
+    }
+
+    public function trasferMoney($objSender, $objReceiver, $amount){
+
+        if($amount <= 0)
+            return false;
+        
+        $this->db->transBegin();
+
+        $strSql1 = 'UPDATE '.$this->table.' SET ';
+        $strSql1 .= 'mb_money = mb_money-'.$amount;
+        $strSql1 .= ' WHERE mb_fid='.$objSender->mb_fid;
+        $this->db->query($strSql1);
+
+        $strSql2 = 'UPDATE '.$this->table.' SET ';
+        $strSql2 .= 'mb_money = mb_money+'.$amount;
+        $strSql2 .= ' WHERE mb_fid='.$objReceiver->mb_fid;
+        $this->db->query($strSql2);
+        
+        if ($this->db->transStatus() === false) {
+            $this->db->transRollback();
+            $bResult = false;
+        } else {
+            $this->db->transCommit();
             $bResult = true;
         }
 
@@ -500,10 +537,11 @@ class Member_Model extends Model
         return $query->findAll();
     }
 
-    public function getMemberByFid($strFid)
+    public function getMemberByFid($strFid, $bAll = false)
     {
-        return $this->asObject()->find($strFid);
-        // return $this->asObject()->where('mb_fid', $strFid)->first();
+        if($bAll)
+            return $this->asObject()->find($strFid);
+        else return $this->asObject()->select($this->getFields)->find($strFid);
     }
 
     public function getMemberByEmpFid($nEmpFid, $nReqLevel, $nEmpLev = LEVEL_AGENCY, $bLowLev = false)
@@ -622,17 +660,17 @@ class Member_Model extends Model
 
     public function getInfoByFid($strFid)
     {
-        return $this->asObject()->where('mb_fid', $strFid)->first();
+        return $this->asObject()->select($this->getFields)->find($strFid);
     }
 
     public function getInfo($strId)
     {
-        return $this->asObject()->where('mb_uid', $strId)->first();
+        return $this->asObject()->select($this->getFields)->where('mb_uid', $strId)->first();
     }
 
     public function getByNickname($strName)
     {
-        return $this->asObject()->where('mb_nickname', $strName)->first();
+        return $this->asObject()->select($this->getFields)->where('mb_nickname', $strName)->first();
     }
 
     private function checkGameRatio($objEmployee, $arrRegData, &$strError)
@@ -740,17 +778,17 @@ class Member_Model extends Model
             if (1 != $ratioResult) {
                 return $ratioResult;
             }
-            if ($arrRegData['mb_level'] < LEVEL_EMPLOYEE) {
-                if (!array_key_exists('mb_color', $arrRegData)) {
-                    $arrRegData['mb_color'] = $objEmployee->mb_color;
-                } elseif (0 != strcmp($arrRegData['mb_color'], $objEmployee->mb_color)) {
-                    $arrRegData['mb_color'] = $objEmployee->mb_color;
-                }
+            // if ($arrRegData['mb_level'] < LEVEL_EMPLOYEE) {
+            //     if (!array_key_exists('mb_color', $arrRegData)) {
+            //         $arrRegData['mb_color'] = $objEmployee->mb_color;
+            //     } elseif (0 != strcmp($arrRegData['mb_color'], $objEmployee->mb_color)) {
+            //         $arrRegData['mb_color'] = $objEmployee->mb_color;
+            //     }
 
-                if (!array_key_exists('mb_emp_permit', $arrRegData)) {
-                    $arrRegData['mb_emp_permit'] = 0;
-                }
-            }
+            //     if (!array_key_exists('mb_emp_permit', $arrRegData)) {
+            //         $arrRegData['mb_emp_permit'] = 0;
+            //     }
+            // }
         } else {
             return 0;
         }
@@ -811,23 +849,6 @@ class Member_Model extends Model
                 return 3;
             }
 
-            // if (LEVEL_AGENCY == $objMember->mb_level) {
-            //     if (LEVEL_COMPANY != $objEmployee->mb_level) {
-            //         return 3;
-            //     }
-            // } elseif (LEVEL_EMPLOYEE == $objMember->mb_level) {
-            //     if (LEVEL_AGENCY != $objEmployee->mb_level) {
-            //         return 3;
-            //     }
-            // } else
-            if ($objMember->mb_level < LEVEL_EMPLOYEE) {
-                // if (LEVEL_EMPLOYEE != $objEmployee->mb_level) {
-                //     return 3;
-                // }
-
-                $arrData['mb_color'] = $objEmployee->mb_color;
-            }
-
             // 닉네임 검사
             if ($objMember->mb_level >= LEVEL_EMPLOYEE) {
                 $objUser = $this->getByNickname($arrData['mb_nickname']);
@@ -869,13 +890,14 @@ class Member_Model extends Model
         $arrData['mb_bank_num'] = trim($arrData['mb_bank_num']);
 
         $bResult = $this->update($arrData['mb_fid'], $arrData);
+        
         if ($bResult) {
             // 하부 회원색 변경
-            if (array_key_exists('mb_color', $arrData) && $objMember->mb_level >= LEVEL_EMPLOYEE) {
-                $this->builder()->set('mb_color', $arrData['mb_color']);
-                $this->builder()->where('mb_emp_fid', $arrData['mb_fid']);
-                $this->builder()->update();
-            }
+            // if (array_key_exists('mb_color', $arrData) && $objMember->mb_level >= LEVEL_EMPLOYEE) {
+            //     $this->builder()->set('mb_color', $arrData['mb_color']);
+            //     $this->builder()->where('mb_emp_fid', $arrData['mb_fid']);
+            //     $this->builder()->update();
+            // }
 
             return 1;
         }
@@ -930,6 +952,8 @@ class Member_Model extends Model
         if (strlen($arrData['mb_game_bs_percent']) < 1) {
             $arrData['mb_game_bs_percent'] = 0;
         }
+
+        $this->builder()->set('mb_color', $arrData['mb_color']);
 
         $this->builderSetGameRatioAndPercent($arrData);
 

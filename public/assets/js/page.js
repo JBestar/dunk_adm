@@ -41,7 +41,7 @@ function setFirstPage() {
 
     for (var page = 1; page <= pageCnt; page++) {
         if (page == 1)
-            tHtml += "<button class=\"active\">";
+            tHtml += "<button class='active'>";
         else tHtml += "<button>";
 
         tHtml += page.toString();
@@ -115,7 +115,7 @@ function prevPage() {
     firstPage -= ViewPage;
     for (var page = 1; page <= pageCnt; page++) {
         if (page == 1)
-            tHtml += "<button class=\"active\">";
+            tHtml += "<button class='active'>";
         else tHtml += "<button>";
 
         tHtml += (firstPage + page - 1).toString();
@@ -162,7 +162,7 @@ function nextPage() {
     firstPage += ViewPage;
     for (var page = 1; page <= pageCnt; page++) {
         if (page == 1)
-            tHtml += "<button class=\"active\">";
+            tHtml += "<button class='active'>";
         else tHtml += "<button>";
 
         tHtml += (firstPage + page - 1).toString();

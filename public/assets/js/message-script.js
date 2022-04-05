@@ -25,14 +25,14 @@ function showNotice(arrNotice) {
         strBuf += "</td> <td>";
         if (arrNotice[nRow].notice_type == 0) {
             if (arrNotice[nRow].notice_state_active == 1)
-                strBuf += "<button name=\"" + arrNotice[nRow].notice_fid + "\"  class=\"button-active\">발송</button>";
+                strBuf += "<button name='" + arrNotice[nRow].notice_fid + "'  class='button-active'>발송</button>";
             else if (arrNotice[nRow].notice_state_active == 0)
-                strBuf += "<button name=\"" + arrNotice[nRow].notice_fid + "\" >대기</button>";
+                strBuf += "<button name='" + arrNotice[nRow].notice_fid + "' >대기</button>";
         } else if (arrNotice[nRow].notice_type == 3) {
             if (arrNotice[nRow].notice_read_count == 0)
-                strBuf += "<span style=\"color:red;\">읽지 않음<span>";
+                strBuf += "<span style='color:red;'>읽지 않음<span>";
             else if (arrNotice[nRow].notice_state_active == 0)
-                strBuf += "<span  style=\"color:#ff9241;\">답변 미정<span>";
+                strBuf += "<span  style='color:#ff9241;'>답변 미정<span>";
             else strBuf += "답변 완료";
         }
         strBuf += "</td> <td>";
@@ -45,11 +45,11 @@ function showNotice(arrNotice) {
         else strBuf += arrNotice[nRow].notice_mb_uid;
         strBuf += "</td> <td>";
         if (arrNotice[nRow].notice_type == 0)
-            strBuf += "<a href=\"/board/message_edit/" + arrNotice[nRow].notice_fid + "/0\" >수정</a>";
+            strBuf += "<a href='/board/message_edit/" + arrNotice[nRow].notice_fid + "/0' >수정</a>";
         else if (arrNotice[nRow].notice_type == 3)
-            strBuf += "<a href=\"/board/message_edit/" + arrNotice[nRow].notice_fid + "/0\" >보기</a>";
+            strBuf += "<a href='/board/message_edit/" + arrNotice[nRow].notice_fid + "/0' >보기</a>";
 
-        strBuf += "<button name=\"" + arrNotice[nRow].notice_fid + "\">삭제</button>   ";
+        strBuf += "<button name='" + arrNotice[nRow].notice_fid + "'>삭제</button>   ";
 
         strBuf += "</td></tr>";
     }
@@ -64,21 +64,16 @@ function showNotice(arrNotice) {
 
 
 function addEventListner() {
-    var butView = document.getElementById("message-list-view-but-id");
-    butView.addEventListener("click", function() {
-        // requestNotice();
+    $("#message-list-view-but-id").click(function() {
         requestTotalPage();
     });
 
     var selectView = document.getElementById("message-number-select-id");
-    selectView.addEventListener("change", function() {
-        // requestNotice();
+    $("#message-number-select-id").change(function() {
         requestTotalPage();
     });
 
-    var selectType = document.getElementById("message-type-select-id");
-    selectType.addEventListener("change", function() {
-        // requestNotice();
+    $("#message-type-select-id").change(function() {
         requestTotalPage();
     });
 }

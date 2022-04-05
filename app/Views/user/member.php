@@ -1,7 +1,7 @@
 <?= $this->extend('header') ?>
 <?= $this->section('content') ?>
 	<style>
-		.user-table a.class1 {
+		.user-table a.link-member {
 			color: blue;
 			border: none;
 			background-color: transparent;
@@ -9,7 +9,7 @@
 			font-weight: lighter;
 		}
 
-		.user-table a.class1:hover {
+		.user-table a.link-member:hover {
 			text-decoration: underline;
 			color: blue;
 		}
@@ -60,12 +60,10 @@
 					<th>아이디</th>
 					<th>닉네임</th>
 					<th>레벨</th>
-					<th>충전금액</th>
-					<th>환전금액</th>
 					<th>현재금액</th>
 					<th>포인트</th>
-					<th>카지노금</th>
-					<th>슬롯머니</th>
+					<th>게임사별<br>보유알</th>
+					<th>배당율</th>
 					<th>승인</th>
 					<th>게임별설정</th>
 				</tr>
@@ -96,5 +94,5 @@
 </div>
 
 <script src="<?php echo base_url('assets/js/page.js');?>"></script>
-<script src="<?php echo base_url('assets/js/member-script.js?v=3');?>"></script>
+<script src="<?php echo base_url('assets/js/member-script.js?v=4');?>"></script>
 <?= $this->endSection() ?>

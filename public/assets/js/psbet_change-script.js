@@ -35,32 +35,32 @@ function ShowBetHistory(jsonBetData) {
 
         strBetMode = "<td>";
         if (jsonBetData[nRow].bet_mode == "1") {
-            strBetMode = "<td class = \"pb-home-table-betmode-power\"> 좌우";
+            strBetMode = "<td class = 'pb-home-table-betmode-power'> 좌우";
         } else if (jsonBetData[nRow].bet_mode == "2") {
-            strBetMode = "<td class = \"pb-home-table-betmode-line\"> 줄수";
+            strBetMode = "<td class = 'pb-home-table-betmode-line'> 줄수";
         } else if (jsonBetData[nRow].bet_mode == "3") {
-            strBetMode = "<td class = \"pb-home-table-betmode-normal\"> 홀짝";
+            strBetMode = "<td class = 'pb-home-table-betmode-normal'> 홀짝";
         }
         strBetTarget = "";
         strResultTarget = "";
         if (jsonBetData[nRow].bet_mode == "1") {
-            strBetTarget = jsonBetData[nRow].bet_target == "P" ? "<div  class = \"pb-home-odd-span\">좌</div>" : "<div  class = \"pb-home-even-span\">우</div>";
+            strBetTarget = jsonBetData[nRow].bet_target == "P" ? "<div  class = 'pb-home-odd-span'>좌</div>" : "<div  class = 'pb-home-even-span'>우</div>";
             if (jsonBetData[nRow].bet_result == "P")
-                strResultTarget = "<div  class = \"pb-home-odd-span\">좌</div>";
+                strResultTarget = "<div  class = 'pb-home-odd-span'>좌</div>";
             else if (jsonBetData[nRow].bet_result == "B")
-                strResultTarget = "<div  class = \"pb-home-even-span\">우</div>";
+                strResultTarget = "<div  class = 'pb-home-even-span'>우</div>";
         } else if (jsonBetData[nRow].bet_mode == "2") {
-            strBetTarget = jsonBetData[nRow].bet_target == "P" ? "<div  class = \"pb-home-odd-span\">3</div>" : "<div  class = \"pb-home-even-span\">4</div>";
+            strBetTarget = jsonBetData[nRow].bet_target == "P" ? "<div  class = 'pb-home-odd-span'>3</div>" : "<div  class = 'pb-home-even-span'>4</div>";
             if (jsonBetData[nRow].bet_result == "P")
-                strResultTarget = "<div  class = \"pb-home-odd-span\">3</div>";
+                strResultTarget = "<div  class = 'pb-home-odd-span'>3</div>";
             else if (jsonBetData[nRow].bet_result == "B")
-                strResultTarget = "<div  class = \"pb-home-even-span\">4</div>";
+                strResultTarget = "<div  class = 'pb-home-even-span'>4</div>";
         } else if (jsonBetData[nRow].bet_mode == "3") {
-            strBetTarget = jsonBetData[nRow].bet_target == "P" ? "<div  class = \"pb-home-odd-span\">홀</div>" : "<div  class = \"pb-home-even-span\">짝</div>";
+            strBetTarget = jsonBetData[nRow].bet_target == "P" ? "<div  class = 'pb-home-odd-span'>홀</div>" : "<div  class = 'pb-home-even-span'>짝</div>";
             if (jsonBetData[nRow].bet_result == "P")
-                strResultTarget = "<div  class = \"pb-home-odd-span\">홀</div>";
+                strResultTarget = "<div  class = 'pb-home-odd-span'>홀</div>";
             else if (jsonBetData[nRow].bet_result == "B")
-                strResultTarget = "<div  class = \"pb-home-even-span\">짝</div>";
+                strResultTarget = "<div  class = 'pb-home-even-span'>짝</div>";
         }
 
         strBuf += strBetMode;
@@ -77,14 +77,14 @@ function ShowBetHistory(jsonBetData) {
         strWinMoney = "";
         strResult = "<td>";
         if (jsonBetData[nRow].bet_state == "1") {
-            strResult = "<td  class = \"pb-home-table-betstate-wait\">대기중";
+            strResult = "<td  class = 'pb-home-table-betstate-wait'>대기중";
         } else if (jsonBetData[nRow].bet_state == "2") {
-            strResult = "<td  class = \"pb-home-table-betstate-loss\">미적중"; //
+            strResult = "<td  class = 'pb-home-table-betstate-loss'>미적중"; //
         } else if (jsonBetData[nRow].bet_state == "3") {
-            strResult = "<td  class = \"pb-home-table-betstate-earn\">적중";
+            strResult = "<td  class = 'pb-home-table-betstate-earn'>적중";
             strWinMoney = parseInt(jsonBetData[nRow].bet_win_money - jsonBetData[nRow].bet_money).toLocaleString() + "원";
         } else if (jsonBetData[nRow].bet_state == "4") {
-            strResult = "<td  class = \"pb-home-table-betstate-wait\">무효";
+            strResult = "<td  class = 'pb-home-table-betstate-wait'>무효";
         }
 
         strBuf += strWinMoney;
@@ -92,10 +92,10 @@ function ShowBetHistory(jsonBetData) {
         strBuf += strResult;
         strBuf += "</td><td>";
         if (jsonBetData[nRow].bet_state == "4") {
-            strBuf += "<button name=\"" + jsonBetData[nRow].bet_fid + "\">복구처리</button>   ";
+            strBuf += "<button name='" + jsonBetData[nRow].bet_fid + "'>복구처리</button>   ";
         } else {
-            strBuf += "<button name=\"" + jsonBetData[nRow].bet_fid + "\">결과처리</button>   ";
-            strBuf += "<button name=\"" + jsonBetData[nRow].bet_fid + "\">무효처리</button>   ";
+            strBuf += "<button name='" + jsonBetData[nRow].bet_fid + "'>결과처리</button>   ";
+            strBuf += "<button name='" + jsonBetData[nRow].bet_fid + "'>무효처리</button>   ";
         }
         strBuf += "</td></tr>";
 
@@ -135,25 +135,25 @@ function addTableBtnEvent() {
 function getHtmlByBet(strMode, strTarget) {
     var strResult = "";
     if (strMode == "1" || strMode == "3") {
-        strResult = strTarget == "P" ? "<div  class = \"pb-home-odd-span\">홀</div> " : "<div  class = \"pb-home-even-span\">짝</div> ";
+        strResult = strTarget == "P" ? "<div  class = 'pb-home-odd-span'>홀</div> " : "<div  class = 'pb-home-even-span'>짝</div> ";
     } else if (strMode == "2" || strMode == "4") {
-        strResult = strTarget == "P" ? "<div  class = \"pb-home-odd-span\"><i class=\"glyphicon glyphicon-arrow-down\"></i></div> " : "<div  class = \"pb-home-even-span\"><i class=\"glyphicon glyphicon-arrow-up\"></i></div> ";
+        strResult = strTarget == "P" ? "<div  class = 'pb-home-odd-span'><i class='glyphicon glyphicon-arrow-down'></i></div> " : "<div  class = 'pb-home-even-span'><i class='glyphicon glyphicon-arrow-up'></i></div> ";
     } else {
-        if (strTarget == 'L') strResult = "<div  class = \"pb-home-even-span\">대</div> ";
-        else if (strTarget == 'M') strResult = "<div  class = \"pb-home-mid-span\">중</div> ";
-        else if (strTarget == 'S') strResult = "<div  class = \"pb-home-odd-span\">소</div> ";
+        if (strTarget == 'L') strResult = "<div  class = 'pb-home-even-span'>대</div> ";
+        else if (strTarget == 'M') strResult = "<div  class = 'pb-home-mid-span'>중</div> ";
+        else if (strTarget == 'S') strResult = "<div  class = 'pb-home-odd-span'>소</div> ";
     }
     return strResult;
 }
 
 function addEventListner() {
-    var butView = document.getElementById("pbbetchange-view-but-id");
-    butView.addEventListener("click", function() {
+    $("#pbbetchange-view-but-id").click(function() {
+
         requestBetHistory();
     });
 
-    var butAllIgnore = document.getElementById("pbbetchange-ignore-but-id");
-    butAllIgnore.addEventListener("click", function() {
+    $("#pbbetchange-ignore-but-id").click(function() {
+
         if (mBetData == null) return;
         if (mBetData.length < 1) return;
 
@@ -164,9 +164,8 @@ function addEventListner() {
         requestBetIgnore(jsData);
     });
 
+    $("#pbbetchange-process-but-id").click(function() {
 
-    var butAllProcess = document.getElementById("pbbetchange-process-but-id");
-    butAllProcess.addEventListener("click", function() {
         if (mBetData == null) return;
         if (mBetData.length < 1) return;
 
@@ -182,10 +181,10 @@ function addEventListner() {
 //Function to Request Betting History to WebServer
 function requestBetHistory() {
 
-    var dtStart = document.getElementById("pbbetchange-date-input-id").value;
-    var dtEnd = document.getElementById("pbbetchange-date-input-id").value;
+    var dtStart = $("#pbbetchange-date-input-id").val();
+    var dtEnd = $("#pbbetchange-date-input-id").val();
     var nCount = 1000;
-    var strRound = document.getElementById("pbbetchange-round-input-id").value;
+    var strRound = $("#pbbetchange-round-input-id").val();
     var nMode = 0;
     var nPage = 1;
     var strUser = "";

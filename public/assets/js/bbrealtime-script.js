@@ -124,113 +124,113 @@ function ShowBetRealtime(jRealBet) {
         strBuf += "</td><td>";
         switch (i) {
             case 0:
-                strBuf += "<div  class = \"pb-home-odd-span\">홀</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>홀</div>";
                 break;
             case 1:
-                strBuf += "<div  class = \"pb-home-even-span\">짝</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>짝</div>";
                 break;
             case 2:
-                strBuf += "<div  class = \"pb-home-odd-span\"><i class=\"glyphicon glyphicon-arrow-down\"></i></div>";
+                strBuf += "<div  class = 'pb-home-odd-span'><i class='glyphicon glyphicon-arrow-down'></i></div>";
                 break;
             case 3:
-                strBuf += "<div  class = \"pb-home-even-span\"><i class=\"glyphicon glyphicon-arrow-up\"></i></div>";
+                strBuf += "<div  class = 'pb-home-even-span'><i class='glyphicon glyphicon-arrow-up'></i></div>";
                 break;
             case 4:
-                strBuf += "<div  class = \"pb-home-odd-span\">홀</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>홀</div>";
                 break;
             case 5:
-                strBuf += "<div  class = \"pb-home-even-span\">짝</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>짝</div>";
                 break;
             case 6:
-                strBuf += "<div  class = \"pb-home-odd-span\"><i class=\"glyphicon glyphicon-arrow-down\"></i></div>";
+                strBuf += "<div  class = 'pb-home-odd-span'><i class='glyphicon glyphicon-arrow-down'></i></div>";
                 break;
             case 7:
-                strBuf += "<div  class = \"pb-home-even-span\"><i class=\"glyphicon glyphicon-arrow-up\"></i></div>";
+                strBuf += "<div  class = 'pb-home-even-span'><i class='glyphicon glyphicon-arrow-up'></i></div>";
                 break;
             case 8:
             case 12:
-                strBuf += "<div  class = \"pb-home-odd-span\">홀</div>";
-                strBuf += "<div  class = \"pb-home-odd-span\"><i class=\"glyphicon glyphicon-arrow-down\"></i></div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>홀</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'><i class='glyphicon glyphicon-arrow-down'></i></div>";
                 break;
             case 9:
             case 13:
-                strBuf += "<div  class = \"pb-home-odd-span\">홀</div>";
-                strBuf += "<div  class = \"pb-home-even-span\"><i class=\"glyphicon glyphicon-arrow-up\"></i></div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>홀</div>";
+                strBuf += "<div  class = 'pb-home-even-span'><i class='glyphicon glyphicon-arrow-up'></i></div>";
                 break;
             case 10:
             case 14:
-                strBuf += "<div  class = \"pb-home-even-span\">짝</div>";
-                strBuf += "<div  class = \"pb-home-odd-span\"><i class=\"glyphicon glyphicon-arrow-down\"></i></div>";
+                strBuf += "<div  class = 'pb-home-even-span'>짝</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'><i class='glyphicon glyphicon-arrow-down'></i></div>";
                 break;
             case 11:
             case 15:
-                strBuf += "<div  class = \"pb-home-even-span\">짝</div>";
-                strBuf += "<div  class = \"pb-home-even-span\"><i class=\"glyphicon glyphicon-arrow-up\"></i></div>";
+                strBuf += "<div  class = 'pb-home-even-span'>짝</div>";
+                strBuf += "<div  class = 'pb-home-even-span'><i class='glyphicon glyphicon-arrow-up'></i></div>";
                 break;
             case 16:
-                strBuf += "<div  class = \"pb-home-odd-span\">홀</div>";
-                strBuf += "<div  class = \"pb-home-odd-span\">홀</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>홀</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>홀</div>";
                 break;
             case 17:
-                strBuf += "<div  class = \"pb-home-odd-span\">홀</div>";
-                strBuf += "<div  class = \"pb-home-even-span\">짝</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>홀</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>짝</div>";
                 break;
             case 18:
-                strBuf += "<div  class = \"pb-home-even-span\">짝</div>";
-                strBuf += "<div  class = \"pb-home-odd-span\">홀</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>짝</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>홀</div>";
                 break;
             case 19:
-                strBuf += "<div  class = \"pb-home-even-span\">짝</div>";
-                strBuf += "<div  class = \"pb-home-even-span\">짝</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>짝</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>짝</div>";
                 break;
             case 20:
-                strBuf += "<div  class = \"pb-home-odd-span\"><i class=\"glyphicon glyphicon-arrow-down\"></i></div>";
-                strBuf += "<div  class = \"pb-home-odd-span\"><i class=\"glyphicon glyphicon-arrow-down\"></i></div>";
+                strBuf += "<div  class = 'pb-home-odd-span'><i class='glyphicon glyphicon-arrow-down'></i></div>";
+                strBuf += "<div  class = 'pb-home-odd-span'><i class='glyphicon glyphicon-arrow-down'></i></div>";
                 break;
             case 21:
-                strBuf += "<div  class = \"pb-home-odd-span\"><i class=\"glyphicon glyphicon-arrow-down\"></i></div>";
-                strBuf += "<div  class = \"pb-home-even-span\"><i class=\"glyphicon glyphicon-arrow-up\"></i></div>";
+                strBuf += "<div  class = 'pb-home-odd-span'><i class='glyphicon glyphicon-arrow-down'></i></div>";
+                strBuf += "<div  class = 'pb-home-even-span'><i class='glyphicon glyphicon-arrow-up'></i></div>";
                 break;
             case 22:
-                strBuf += "<div  class = \"pb-home-even-span\"><i class=\"glyphicon glyphicon-arrow-up\"></i></div>";
-                strBuf += "<div  class = \"pb-home-odd-span\"><i class=\"glyphicon glyphicon-arrow-down\"></i></div>";
+                strBuf += "<div  class = 'pb-home-even-span'><i class='glyphicon glyphicon-arrow-up'></i></div>";
+                strBuf += "<div  class = 'pb-home-odd-span'><i class='glyphicon glyphicon-arrow-down'></i></div>";
                 break;
             case 23:
-                strBuf += "<div  class = \"pb-home-even-span\"><i class=\"glyphicon glyphicon-arrow-up\"></i></div>";
-                strBuf += "<div  class = \"pb-home-even-span\"><i class=\"glyphicon glyphicon-arrow-up\"></i></div>";
+                strBuf += "<div  class = 'pb-home-even-span'><i class='glyphicon glyphicon-arrow-up'></i></div>";
+                strBuf += "<div  class = 'pb-home-even-span'><i class='glyphicon glyphicon-arrow-up'></i></div>";
                 break;
             case 24:
-                strBuf += "<div  class = \"pb-home-odd-span\">홀</div>";
-                strBuf += "<div  class = \"pb-home-even-span\">대</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>홀</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>대</div>";
                 break;
             case 25:
-                strBuf += "<div  class = \"pb-home-odd-span\">홀</div>";
-                strBuf += "<div  class = \"pb-home-mid-span\">중</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>홀</div>";
+                strBuf += "<div  class = 'pb-home-mid-span'>중</div>";
                 break;
             case 26:
-                strBuf += "<div  class = \"pb-home-odd-span\">홀</div>";
-                strBuf += "<div  class = \"pb-home-odd-span\">소</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>홀</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>소</div>";
                 break;
             case 27:
-                strBuf += "<div  class = \"pb-home-even-span\">짝</div>";
-                strBuf += "<div  class = \"pb-home-even-span\">대</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>짝</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>대</div>";
                 break;
             case 28:
-                strBuf += "<div  class = \"pb-home-even-span\">짝</div>";
-                strBuf += "<div  class = \"pb-home-mid-span\">중</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>짝</div>";
+                strBuf += "<div  class = 'pb-home-mid-span'>중</div>";
                 break;
             case 29:
-                strBuf += "<div  class = \"pb-home-even-span\">짝</div>";
-                strBuf += "<div  class = \"pb-home-odd-span\">소</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>짝</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>소</div>";
                 break;
             case 30:
-                strBuf += "<div  class = \"pb-home-mid-span\">대</div>";
+                strBuf += "<div  class = 'pb-home-mid-span'>대</div>";
                 break;
             case 31:
-                strBuf += "<div  class = \"pb-home-mid-span\">중</div>";
+                strBuf += "<div  class = 'pb-home-mid-span'>중</div>";
                 break;
             case 32:
-                strBuf += "<div  class = \"pb-home-mid-span\">소</div>";
+                strBuf += "<div  class = 'pb-home-mid-span'>소</div>";
                 break;
 
             default:

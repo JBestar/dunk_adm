@@ -8,13 +8,11 @@ function requestPageInfo() {
 }
 
 function addEventListner() {
-    var butView = document.getElementById("deposit-list-view-but-id");
-    butView.addEventListener("click", function() {
+    $("#deposit-list-view-but-id").click(function() {
         requestTotalPage();
     });
 
-    var selectView = document.getElementById("deposit-number-select-id");
-    selectView.addEventListener("change", function() {
+    $("#deposit-number-select-id").change(function() {
         requestTotalPage();
     });
 }
@@ -46,11 +44,11 @@ function showDepositList(arrData) {
         if (arrData[nRow].charge_action_state == 1)
             strBuf += "<td>승인대기";
         else if (arrData[nRow].charge_action_state == 2)
-            strBuf += "<td style=\"color:blue;\">충전완료";
+            strBuf += "<td style='color:blue;'>충전완료";
         else if (arrData[nRow].charge_action_state == 3)
-            strBuf += "<td style=\"color:red;\">충전취소";
+            strBuf += "<td style='color:red;'>충전취소";
         else if (arrData[nRow].charge_action_state == 4)
-            strBuf += "<td style=\"color:#aab000;\">임시대기";
+            strBuf += "<td style='color:#aab000;'>임시대기";
         else strBuf += "<td>";
 
         strBuf += "</td><td>";
@@ -61,16 +59,16 @@ function showDepositList(arrData) {
             strBuf += arrData[nRow].charge_action_uid;
         strBuf += "</td><td>";
         if (arrData[nRow].charge_action_state == 1) {
-            strBuf += "<button name=\"" + arrData[nRow].charge_fid + "\" >승인</button>";
-            strBuf += "<button name=\"" + arrData[nRow].charge_fid + "\" >거절</button>";
-            strBuf += "<button name=\"" + arrData[nRow].charge_fid + "\" >대기</button>";
+            strBuf += "<button name='" + arrData[nRow].charge_fid + "' >승인</button>";
+            strBuf += "<button name='" + arrData[nRow].charge_fid + "' >거절</button>";
+            strBuf += "<button name='" + arrData[nRow].charge_fid + "' >대기</button>";
         } else if (arrData[nRow].charge_action_state == 2) {
-            strBuf += "<button name=\"" + arrData[nRow].charge_fid + "\" >취소</button>";
+            strBuf += "<button name='" + arrData[nRow].charge_fid + "' >취소</button>";
         } else if (arrData[nRow].charge_action_state == 3) {
-            strBuf += "<button name=\"" + arrData[nRow].charge_fid + "\" >승인</button>";
+            strBuf += "<button name='" + arrData[nRow].charge_fid + "' >승인</button>";
         } else if (arrData[nRow].charge_action_state == 4) {
-            strBuf += "<button name=\"" + arrData[nRow].charge_fid + "\" >승인</button>";
-            strBuf += "<button name=\"" + arrData[nRow].charge_fid + "\" >거절</button>";
+            strBuf += "<button name='" + arrData[nRow].charge_fid + "' >승인</button>";
+            strBuf += "<button name='" + arrData[nRow].charge_fid + "' >거절</button>";
 
         }
         strBuf += "</td></tr>";
@@ -135,9 +133,9 @@ function addButtonEvent() {
 
 function requestDepositList() {
 
-    var strUid = document.getElementById("deposit-userid-input-id").value;
-    var dtStart = document.getElementById("deposit-datestart-input-id").value;
-    var dtEnd = document.getElementById("deposit-dateend-input-id").value;
+    var strUid = $("#deposit-userid-input-id").val();
+    var dtStart = $("#deposit-datestart-input-id").val();
+    var dtEnd = $("#deposit-dateend-input-id").val();
     var nPage = getActivePage();
 
     var jsonData = { "count": CountPerPage, "page": nPage, "mb_uid": strUid, "start": dtStart, "end": dtEnd };
@@ -171,10 +169,10 @@ function requestDepositList() {
 
 function requestTotalPage() {
 
-    var strUid = document.getElementById("deposit-userid-input-id").value;
-    var dtStart = document.getElementById("deposit-datestart-input-id").value;
-    var dtEnd = document.getElementById("deposit-dateend-input-id").value;
-    CountPerPage = document.getElementById("deposit-number-select-id").value;
+    var strUid = $("#deposit-userid-input-id").val();
+    var dtStart = $("#deposit-datestart-input-id").val();
+    var dtEnd = $("#deposit-dateend-input-id").val();
+    CountPerPage = $("#deposit-number-select-id").val();
 
     var jsonData = { "count": CountPerPage, "mb_uid": strUid, "start": dtStart, "end": dtEnd };
     jsonData = JSON.stringify(jsonData);

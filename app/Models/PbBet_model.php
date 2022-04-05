@@ -295,83 +295,99 @@ class PbBet_model extends Model {
 
     function search($objEmp, $arrReqData)
     {
-
-        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid ";
-        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid ";
-
-         $strSql = "";
-        if($objEmp->mb_level < LEVEL_ADMIN){
-
-
-            $strSql = "WITH RECURSIVE tbmember (".$strTbColum.") AS";
-            $strSql .= " ( SELECT ".$strTbColum." FROM ".$this->mMemberTable." WHERE mb_emp_fid = '".$objEmp->mb_fid."'";
-            $strSql .= " UNION ALL SELECT ".$strTbRColum." FROM ".$this->mMemberTable." r ";
-            $strSql .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
-
-            $strSql .= ' SELECT bet_fid, bet_state, bet_emp_fid, bet_mb_uid, bet_round_fid, bet_round_no, bet_time, ';
-            $strSql .= ' bet_mode, bet_target, bet_ratio, bet_money, bet_result, bet_win_money, rw_mb_uid, rw_point  FROM '.$this->table;
+        if(is_null($objEmp))
+            return [];
+        $gameId = GAME_POWER_BALL;
             
-            $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
-            $strSql .=" ) AS mb_table ";
-            $strSql .=" ON ".$this->table.".bet_mb_uid = mb_table.mb_uid ";
-            //Join bet_reward
-            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->table.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
-                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".GAME_POWER_BALL."' ";
-                $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = '".$objEmp->mb_uid."' ";
-            
-        } else{
-            $strSql .= "SELECT bet_fid, bet_state, bet_emp_fid, bet_mb_uid, bet_round_fid, bet_round_no, bet_time, ";
-            $strSql .= "bet_mode, bet_target, bet_ratio, bet_money, bet_result, bet_win_money, rw_mb_uid, rw_point FROM ".$this->table;
-
-            //Join bet_reward
-            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->table.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
-                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".GAME_POWER_BALL."' ";
-                $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = ".$this->table.".bet_mb_uid ";
-            
-        }
+        $strTbColum = ' mb_fid, mb_uid, mb_level, mb_emp_fid ';
+        $strTbRColum = ' r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid ';
 
         $bWhere = false;
+        $strWhere="";
+        if (strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
+            $strWhere .= " WHERE bet_time >= '".$arrReqData['start']." 0:0:0' AND bet_time <= '".$arrReqData['end']." 23:59:59'";
+            $bWhere = true;
+        }
+        if (strlen($arrReqData['user']) > 0) {
+            if ($bWhere) {
+                $strWhere .= ' AND ';
+            } else {
+                $strWhere .= ' WHERE ';
+            }
+            $strWhere .= " bet_mb_uid = '".$arrReqData['user']."' ";
+            $bWhere = true;
+        }
+        if (strlen($arrReqData['round']) > 0) {
+            if ($bWhere) {
+                $strWhere .= ' AND ';
+            } else {
+                $strWhere .= ' WHERE ';
+            }
+            $strWhere .= " bet_round_no = '".$arrReqData['round']."' ";
+            $bWhere = true;
+        }
+        if ((int) $arrReqData['mode'] > 0) {
+            if ($bWhere) {
+                $strWhere .= ' AND ';
+            } else {
+                $strWhere .= ' WHERE ';
+            }
 
-        if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSql.=" WHERE bet_time >= '".$arrReqData['start']." 0:0:0' AND bet_time <= '".$arrReqData['end']." 23:59:59'" ;
-            $bWhere = true;            
-        }
-        if(strlen($arrReqData['user']) > 0){
-            
-            if($bWhere) $strSql.= " AND ";
-            else $strSql.= " WHERE ";
-            $strSql.=" bet_mb_uid = '".$arrReqData['user']."' ";
-            $bWhere = true;
-        }
-        if(strlen($arrReqData['round']) > 0){
-            
-            if($bWhere) $strSql.= " AND ";
-            else $strSql.= " WHERE ";            
-            $strSql.=" bet_round_no = '".$arrReqData['round']."' ";
-            $bWhere = true;
-        }
-        if((int)$arrReqData['mode'] > 0){
-            if($bWhere) $strSql.= " AND ";
-            else $strSql.= " WHERE ";
-            
-            if($arrReqData['mode'] == 1)
-                $strSql.=" bet_mode >= 1 AND bet_mode <= 4 ";
-            else if($arrReqData['mode'] == 2)
-                $strSql.=" bet_mode >= 5 AND bet_mode <= 20 ";
-            else if($arrReqData['mode'] == 3)
-                $strSql.=" bet_mode >= 21 AND bet_mode <= 29 ";
-            else if($arrReqData['mode'] == 4)
-                $strSql.=" bet_mode >= 31 AND bet_mode <= 38 ";
+            if (1 == $arrReqData['mode']) {
+                $strWhere .= ' bet_mode >= 1 AND bet_mode <= 4 ';
+            } elseif (2 == $arrReqData['mode']) {
+                $strWhere .= ' bet_mode >= 5 AND bet_mode <= 20 ';
+            } elseif (3 == $arrReqData['mode']) {
+                $strWhere .= ' bet_mode >= 21 AND bet_mode <= 29 ';
+            } else if($arrReqData['mode'] == 4)
+                $strWhere.=" bet_mode >= 31 AND bet_mode <= 38 ";
             else if($arrReqData['mode'] == 5)
-                $strSql.=" bet_mode = 30 ";
+                $strWhere.=" bet_mode = 30 ";
         }
-
-        $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
-        $strSql.=" ORDER BY bet_fid DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
-        $query = $this -> db -> query($strSql);
-        $result = $query -> getResult();
+        $nStartRow = ($arrReqData['page'] - 1) * $arrReqData['count'];
+        $strWhere .= ' ORDER BY bet_fid DESC LIMIT '.$nStartRow.', '.$arrReqData['count'];
         
-        return $result; 
+
+        $strSql = '';
+        $strSql .= ' SELECT bet_fid, bet_state, bet_emp_fid, bet_mb_uid, bet_round_fid, bet_round_no, bet_time, ';
+        $strSql .= ' bet_mode, bet_target, bet_ratio, bet_money, bet_result, bet_win_money, rw_mb_uid, rw_point  ';
+        $strSql .= " FROM ( ";
+
+        $tbBetSearch = "bet_search";
+
+        if ($objEmp->mb_level < LEVEL_ADMIN) {
+            $strSql .= ' WITH RECURSIVE tbmember ('.$strTbColum.') AS';
+            $strSql .= ' ( SELECT '.$strTbColum.' FROM '.$this->mMemberTable." WHERE mb_emp_fid = '".$objEmp->mb_fid."'";
+            $strSql .= ' UNION ALL SELECT '.$strTbRColum.' FROM '.$this->mMemberTable.' r ';
+            $strSql .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
+
+            $strSql .= " SELECT * FROM ".$this->table;  
+            $strSql .= '  JOIN (SELECT  * FROM tbmember UNION SELECT '.$strTbColum.' FROM '.$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";
+            $strSql .= ' ) AS mb_table ';
+            $strSql .= ' ON '.$this->table.'.bet_mb_uid = mb_table.mb_uid ';
+            $strSql .=$strWhere.") ".$tbBetSearch;
+
+            //Join bet_reward
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
+                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".$gameId."' ";
+                $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = '".$objEmp->mb_uid."' ";
+            
+        } else {
+            $strSql .= " SELECT * FROM ".$this->table;  
+            $strSql .=$strWhere.") ".$tbBetSearch;
+
+            //Join bet_reward
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
+                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".$gameId."' ";
+                $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = ".$tbBetSearch.".bet_mb_uid ";
+            
+        }
+        $strSql .= " ORDER BY bet_fid ";
+        
+        $query = $this->db->query($strSql);
+        $result = $query->getResult();
+
+        return $result;
 
     }
 

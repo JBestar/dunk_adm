@@ -43,15 +43,8 @@
 	<input type="color" value="<?php echo $objMember->mb_color; ?>" id="useredit-color-input-id">
 	<?php } ?>
 </div>
-<div class="useredit-check-div">
-	<?php if (is_null($objMember) || 0 == $objMember->mb_emp_permit) {  ?>
-	<input type="checkbox" id="useredit-modify-check-id">
-	<?php } else {?>
-	<input type="checkbox" id="useredit-modify-check-id" checked>
-	<?php } ?>
-	<label> 하부매장회원정보수정</label>
-</div>
+
 <?php echo $this->endSection(); ?>
 <?php echo $this->section('user-edit-script'); ?>
-<script src="<?php echo base_url('assets/js/member_edit-script.js?v=3'); ?>"></script>
+<script src="<?php echo base_url('assets/js/member_edit-script.js?v=4'); ?>"></script>
 <?php echo $this->endSection(); ?>

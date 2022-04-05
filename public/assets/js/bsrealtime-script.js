@@ -59,38 +59,38 @@ function ShowBetRealtime(jRealBet) {
         strBuf += "</td><td>";
         switch (i) {
             case 0:
-                strBuf += "<div  class = \"pb-home-odd-span\">좌</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>좌</div>";
                 break;
             case 1:
-                strBuf += "<div  class = \"pb-home-even-span\">우</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>우</div>";
                 break;
             case 2:
-                strBuf += "<div  class = \"pb-home-odd-span\">3</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>3</div>";
                 break;
             case 3:
-                strBuf += "<div  class = \"pb-home-even-span\">4</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>4</div>";
                 break;
             case 4:
-                strBuf += "<div  class = \"pb-home-odd-span\">홀</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>홀</div>";
                 break;
             case 5:
-                strBuf += "<div  class = \"pb-home-even-span\">짝</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>짝</div>";
                 break;
             case 6:
-                strBuf += "<div  class = \"pb-home-odd-span\">좌</div>";
-                strBuf += "<div  class = \"pb-home-odd-span\">3</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>좌</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>3</div>";
                 break;
             case 7:
-                strBuf += "<div  class = \"pb-home-odd-span\">좌</div>";
-                strBuf += "<div  class = \"pb-home-even-span\">4</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>좌</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>4</div>";
                 break;
             case 8:
-                strBuf += "<div  class = \"pb-home-even-span\">우</div>";
-                strBuf += "<div  class = \"pb-home-odd-span\">3</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>우</div>";
+                strBuf += "<div  class = 'pb-home-odd-span'>3</div>";
                 break;
             case 9:
-                strBuf += "<div  class = \"pb-home-even-span\">우</div>";
-                strBuf += "<div  class = \"pb-home-even-span\">4</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>우</div>";
+                strBuf += "<div  class = 'pb-home-even-span'>4</div>";
                 break;
 
             default:

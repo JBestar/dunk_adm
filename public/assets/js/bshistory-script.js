@@ -42,13 +42,13 @@ function ShowBetHistory(jsonBetData, hasPoint) {
 
         strBetMode = "<td>";
         if (jsonBetData[nRow].bet_mode == 1) {
-            strBetMode = "<td class = \"pb-home-table-betmode-power\"> 좌우";
+            strBetMode = "<td class = 'pb-home-table-betmode-power'> 좌우";
         } else if (jsonBetData[nRow].bet_mode == 2) {
-            strBetMode = "<td class = \"pb-home-table-betmode-line\"> 줄수";
+            strBetMode = "<td class = 'pb-home-table-betmode-line'> 줄수";
         } else if (jsonBetData[nRow].bet_mode == 3) {
-            strBetMode = "<td class = \"pb-home-table-betmode-normal\"> 홀짝";
+            strBetMode = "<td class = 'pb-home-table-betmode-normal'> 홀짝";
         } else {
-            strBetMode = "<td class = \"pb-home-table-betmode-line\"> 조합";
+            strBetMode = "<td class = 'pb-home-table-betmode-line'> 조합";
         }
 
         strBetTarget = "";
@@ -86,14 +86,14 @@ function ShowBetHistory(jsonBetData, hasPoint) {
         strWinMoney = "";
         strResult = "<td>";
         if (jsonBetData[nRow].bet_state == "1") {
-            strResult = "<td  class = \"pb-home-table-betstate-wait\">대기중";
+            strResult = "<td  class = 'pb-home-table-betstate-wait'>대기중";
         } else if (jsonBetData[nRow].bet_state == "2") {
-            strResult = "<td  class = \"pb-home-table-betstate-loss\">미적중";
+            strResult = "<td  class = 'pb-home-table-betstate-loss'>미적중";
         } else if (jsonBetData[nRow].bet_state == "3") {
-            strResult = "<td  class = \"pb-home-table-betstate-earn\">적중";
+            strResult = "<td  class = 'pb-home-table-betstate-earn'>적중";
             strWinMoney = parseInt(jsonBetData[nRow].bet_win_money - jsonBetData[nRow].bet_money).toLocaleString() + "원";
         } else if (jsonBetData[nRow].bet_state == "4") {
-            strResult = "<td  class = \"pb-home-table-betstate-wait\">무효";
+            strResult = "<td  class = 'pb-home-table-betstate-wait'>무효";
         }
 
         strBuf += strWinMoney;
@@ -119,19 +119,19 @@ function getHtmlByBet(strMode, strTarget) {
     iMode = parseInt(strMode);
     if (iMode == 1) {
         if (strTarget == "P")
-            strResult = "<div  class = \"pb-home-odd-span\">좌</div> "
+            strResult = "<div  class = 'pb-home-odd-span'>좌</div> "
         else if (strTarget == "B")
-            strResult = "<div  class = \"pb-home-even-span\">우</div> ";
+            strResult = "<div  class = 'pb-home-even-span'>우</div> ";
     } else if (iMode == 2) {
         if (strTarget == "P")
-            strResult = "<div  class = \"pb-home-odd-span\">3</div> "
+            strResult = "<div  class = 'pb-home-odd-span'>3</div> "
         else if (strTarget == "B")
-            strResult = "<div  class = \"pb-home-even-span\">4</div> ";
+            strResult = "<div  class = 'pb-home-even-span'>4</div> ";
     } else if (iMode == 3) {
         if (strTarget == "P")
-            strResult = "<div  class = \"pb-home-odd-span\">홀</div> "
+            strResult = "<div  class = 'pb-home-odd-span'>홀</div> "
         else if (strTarget == "B")
-            strResult = "<div  class = \"pb-home-even-span\">짝</div> ";
+            strResult = "<div  class = 'pb-home-even-span'>짝</div> ";
     }
     return strResult;
 }
@@ -160,26 +160,23 @@ function ShowBetAccount(arrBetAccount) {
 
 
 function addEventListner() {
-    var butView = document.getElementById("pbhistory-list-view-but-id");
-    butView.addEventListener("click", function() {
-        // requestBetHistory();
+    $("#pbhistory-list-view-but-id").click(function() {
+
         requestTotalPage();
     });
 
-    var selectView = document.getElementById("pbhistory-number-select-id");
-    selectView.addEventListener("change", function() {
-        // requestBetHistory();
+    $("#pbhistory-number-select-id").change(function() {
         requestTotalPage();
     });
 }
 //Function to Request Betting History to WebServer
 function requestBetHistory() {
 
-    var dtStart = document.getElementById("pbhistory-datestart-input-id").value;
-    var dtEnd = document.getElementById("pbhistory-dateend-input-id").value;
-    var strRound = document.getElementById("pbhistory-roundid-input-id").value;
-    var strUser = document.getElementById("pbhistory-userid-input-id").value;
-    var nMode = document.getElementById("pbhistory-game-select-id").value;
+    var dtStart = $("#pbhistory-datestart-input-id").val();
+    var dtEnd = $("#pbhistory-dateend-input-id").val();
+    var strRound = $("#pbhistory-roundid-input-id").val();
+    var strUser = $("#pbhistory-userid-input-id").val();
+    var nMode = $("#pbhistory-game-select-id").val();
     var nPage = getActivePage();
     var strEmp = "";
     if ($("#pbhistory-empid-input-id").length > 0) {
@@ -221,12 +218,12 @@ function requestBetHistory() {
 function requestTotalPage() {
 
 
-    var dtStart = document.getElementById("pbhistory-datestart-input-id").value;
-    var dtEnd = document.getElementById("pbhistory-dateend-input-id").value;
-    CountPerPage = document.getElementById("pbhistory-number-select-id").value;
-    var strRound = document.getElementById("pbhistory-roundid-input-id").value;
-    var strUser = document.getElementById("pbhistory-userid-input-id").value;
-    var nMode = document.getElementById("pbhistory-game-select-id").value;
+    var dtStart = $("#pbhistory-datestart-input-id").val();
+    var dtEnd = $("#pbhistory-dateend-input-id").val();
+    CountPerPage = $("#pbhistory-number-select-id").val();
+    var strRound = $("#pbhistory-roundid-input-id").val();
+    var strUser = $("#pbhistory-userid-input-id").val();
+    var nMode = $("#pbhistory-game-select-id").val();
     var strEmp = "";
     if ($("#pbhistory-empid-input-id").length > 0) {
         strEmp = $("#pbhistory-empid-input-id").val();

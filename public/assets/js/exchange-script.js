@@ -71,14 +71,21 @@ function showMoneyHistory(jsonBetData) {
             strBuf += "보글사다리 배팅";
         } else if (jsonBetData[nRow].money_change_type == 18) {
             strBuf += "보글사다리 정산";
+        } else if (jsonBetData[nRow].money_change_type == 19) {
+            strBuf += "머니충전";
+        } else if (jsonBetData[nRow].money_change_type == 20) {
+            strBuf += "머니이송";
         } else if (jsonBetData[nRow].money_change_type == 21) {
             strBuf += "입금취소";
         } else if (jsonBetData[nRow].money_change_type == 22) {
             strBuf += "출금취소";
         }
         strBuf += "</td><td>";
-        if (jsonBetData[nRow].money_bet_round > 0)
-            strBuf += jsonBetData[nRow].money_bet_round;
+        if (jsonBetData[nRow].money_change_type == 19) {
+            strBuf += jsonBetData[nRow].money_bet_target;
+        } else if (jsonBetData[nRow].money_change_type == 20) {
+            strBuf += jsonBetData[nRow].money_bet_target;
+        }
         strBuf += "</td></tr>";
 
     }
@@ -93,13 +100,11 @@ function showMoneyHistory(jsonBetData) {
 
 
 function addEventListner() {
-    var butView = document.getElementById("exchange-list-view-but-id");
-    butView.addEventListener("click", function() {
+    $("#exchange-list-view-but-id").click(function() {
         requestTotalPage();
     });
 
-    var selectView = document.getElementById("exchange-number-select-id");
-    selectView.addEventListener("change", function() {
+    $("#exchange-number-select-id").change(function() {
         requestTotalPage();
     });
 }
@@ -107,10 +112,10 @@ function addEventListner() {
 //Function to Request Betting History to WebServer
 function requestMoneyHistory() {
 
-    var dtStart = document.getElementById("exchange-datestart-input-id").value;
-    var dtEnd = document.getElementById("exchange-dateend-input-id").value;
-    var strUser = document.getElementById("exchange-userid-input-id").value;
-    var nMode = document.getElementById("exchange-game-select-id").value;
+    var dtStart = $("#exchange-datestart-input-id").val();
+    var dtEnd = $("#exchange-dateend-input-id").val();
+    var strUser = $("#exchange-userid-input-id").val();
+    var nMode = $("#exchange-game-select-id").val();
     var nPage = getActivePage();
 
     var jsonData = { "count": CountPerPage, "page": nPage, "start": dtStart, "end": dtEnd, "user": strUser, "mode": nMode };
@@ -122,7 +127,7 @@ function requestMoneyHistory() {
         type: 'post',
         dataType: "json",
         success: function(jResult) {
-            //console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 showMoneyHistory(jResult.data);
             }
@@ -138,11 +143,11 @@ function requestMoneyHistory() {
 function requestTotalPage() {
 
 
-    var dtStart = document.getElementById("exchange-datestart-input-id").value;
-    var dtEnd = document.getElementById("exchange-dateend-input-id").value;
-    CountPerPage = document.getElementById("exchange-number-select-id").value;
-    var strUser = document.getElementById("exchange-userid-input-id").value;
-    var nMode = document.getElementById("exchange-game-select-id").value;
+    var dtStart = $("#exchange-datestart-input-id").val();
+    var dtEnd = $("#exchange-dateend-input-id").val();
+    CountPerPage = $("#exchange-number-select-id").val();
+    var strUser = $("#exchange-userid-input-id").val();
+    var nMode = $("#exchange-game-select-id").val();
 
     var jsonData = { "count": CountPerPage, "start": dtStart, "end": dtEnd, "user": strUser, "mode": nMode };
     jsonData = JSON.stringify(jsonData);

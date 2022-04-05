@@ -43,13 +43,13 @@ function ShowBetHistory(jsonBetData, hasPoint) {
         strResult = "<td>";
         strWinMoney = "";
         if (parseInt(jsonBetData[nRow].bet_win_money) > parseInt(jsonBetData[nRow].bet_money)) {
-            strResult = "<td  class = \"pb-home-table-betstate-earn\">적중";
+            strResult = "<td  class = 'pb-home-table-betstate-earn'>적중";
             strWinMoney = (parseInt(jsonBetData[nRow].bet_win_money) - parseInt(jsonBetData[nRow].bet_money)).toLocaleString() + "원";
 
         } else if (jsonBetData[nRow].bet_win_money == jsonBetData[nRow].bet_money) {
-            strResult = "<td  class = \"pb-home-table-betstate-wait\">비김";
+            strResult = "<td  class = 'pb-home-table-betstate-wait'>비김";
         } else {
-            strResult = "<td  class = \"pb-home-table-betstate-loss\">미적중"; //
+            strResult = "<td  class = 'pb-home-table-betstate-loss'>미적중"; //
         }
 
         strBuf += strResult;
@@ -112,13 +112,12 @@ function ShowBetAccount(arrBetAccount) {
 
 
 function addEventListner() {
-    var butView = document.getElementById("pbhistory-list-view-but-id");
-    butView.addEventListener("click", function() {
+
+    $("#pbhistory-list-view-but-id").click(function() {
         requestTotalPage();
     });
 
-    var selectView = document.getElementById("pbhistory-number-select-id");
-    selectView.addEventListener("change", function() {
+    $("#pbhistory-number-select-id").change(function() {
         requestTotalPage();
     });
 }
@@ -126,10 +125,10 @@ function addEventListner() {
 //Function to Request Betting History to WebServer
 function requestBetHistory() {
 
-    var dtStart = document.getElementById("pbhistory-datestart-input-id").value;
-    var dtEnd = document.getElementById("pbhistory-dateend-input-id").value;
-    var strUser = document.getElementById("pbhistory-userid-input-id").value;
-    var nMode = document.getElementById("pbhistory-game-select-id").value;
+    var dtStart = $("#pbhistory-datestart-input-id").val();
+    var dtEnd = $("#pbhistory-dateend-input-id").val();
+    var strUser = $("#pbhistory-userid-input-id").val();
+    var nMode = $("#pbhistory-game-select-id").val();
     var nPage = getActivePage();
     var strEmp = "";
     if ($("#pbhistory-empid-input-id").length > 0) {
@@ -153,14 +152,14 @@ function requestBetHistory() {
         type: 'post',
         dataType: "json",
         success: function(jResult) {
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 ShowBetHistory(jResult.data, 1);
                 ShowBetAccount(jResult.account);
             }
         },
         error: function(request, status, error) {
-            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });
@@ -169,11 +168,11 @@ function requestBetHistory() {
 
 function requestTotalPage() {
 
-    var dtStart = document.getElementById("pbhistory-datestart-input-id").value;
-    var dtEnd = document.getElementById("pbhistory-dateend-input-id").value;
-    CountPerPage = document.getElementById("pbhistory-number-select-id").value;
-    var strUser = document.getElementById("pbhistory-userid-input-id").value;
-    var nMode = document.getElementById("pbhistory-game-select-id").value;
+    var dtStart = $("#pbhistory-datestart-input-id").val();
+    var dtEnd = $("#pbhistory-dateend-input-id").val();
+    CountPerPage = $("#pbhistory-number-select-id").val();
+    var strUser = $("#pbhistory-userid-input-id").val();
+    var nMode = $("#pbhistory-game-select-id").val();
     var strEmp = "";
     if ($("#pbhistory-empid-input-id").length > 0) {
         strEmp = $("#pbhistory-empid-input-id").val();

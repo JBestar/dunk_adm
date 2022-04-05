@@ -6,12 +6,11 @@ use CodeIgniter\Model;
 class ConfSite_Model extends Model 
 {
     protected $table = 'conf_site';
-    protected $allowedFields = ['conf_memo', 'conf_content', 'conf_active'];
+    protected $allowedFields = ['conf_memo', 'conf_content', 'conf_active', 'conf_update', 'conf_idx'];
     protected $primaryKey = 'conf_id';
 
     public function getConf($conf_id)
     {
-        
         try { 
             $data = $this->find($conf_id);
             return $data;       
@@ -20,6 +19,11 @@ class ConfSite_Model extends Model
         }
         return NULL;
     }
+
+    public function updateLast($objConf){
+        
+    }
+
     public function getSiteName():string
     {
 
@@ -213,7 +217,6 @@ class ConfSite_Model extends Model
             $arrUpdateData['conf_content'] = $arrSoundData[$i][0];
             $arrUpdateData['conf_active'] = $arrSoundData[$i][1];
             array_push($arrBatch, $arrUpdateData);
-
             
         }
        

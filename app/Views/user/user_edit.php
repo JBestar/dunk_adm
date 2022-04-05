@@ -17,7 +17,7 @@
 	<!--Site Setting-->
 	<div class="useredit-panel">
 		<!---->
-		<p><?= $this->renderSection('user-edit-form-section0') ?>		
+		<?= $this->renderSection('user-edit-form-section0') ?>		
 		<!---->
 		<div class="useredit-text-div">
 			<p><?= $this->renderSection('user-edit-title') ?> 아이디:</p> 
@@ -44,7 +44,7 @@
 		</div>
 		<!---->
         <?php $this->renderSection('user-edit-check-level')  ?>
-		
+		<?php if ($mb_level == LEVEL_ADMIN) {?>
 		<div class="useredit-text-div">
 			<p>비밀번호:</p> 
 			<?php if(is_null($objMember)) {  ?>	
@@ -53,6 +53,7 @@
 			<input type = "text" id="useredit-pwd-input-id" value="<?=$objMember->mb_pwd?>" >
 			<?php } ?>
 		</div>
+		<?php }?>
 		<!---->
         <?= $this->renderSection('user-edit-form-section1') ?>
 		<!---->
@@ -212,7 +213,7 @@
 			<?php } ?>
 		</div>	
 		<div class="useredit-percent-div">
-			<p>에볼루션:</p>			 
+			<p>카지노:</p>			 
 			<label> 배당율(%)</label>
 			<?php if(is_null($objMember)) {  ?>
 			<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="0" >
@@ -233,9 +234,12 @@
 		
 		<?php $this->renderSection('user-edit-check-level')  ?>
         
-		<p class="useredit-seperate-div">
+		
 		</p>
 		<!---->
+		<?php if ($mb_level >= LEVEL_ADMIN) { ?>
+		<p class="useredit-seperate-div">
+
 		<?php if(!is_null($objMember)) {  ?>
 		<div class="useredit-text-div">
 			<p>충전금액:</p> 
@@ -258,7 +262,7 @@
 		</div>
 		<?php } ?>
 		<!---->
-		<?php if ($mb_level == LEVEL_ADMIN) { ?>
+		
 		<div class="useredit-text-div">
 			<p>현재금액:</p> 
 			<?php if(is_null($objMember)) {  ?>	
@@ -277,8 +281,24 @@
 			<?php } ?>
 			<label>원</label>
 		</div>
-		<?php } ?>
+		<?php } else {?>
 		
+			<?php if(!is_null($objMember)) {  ?>
+				<p class="useredit-seperate-div">
+				<div class="useredit-text-div">
+					<p>현재금액:</p> 
+					<input type = "number" id="useredit-money-input-id" value="<?=$objMember->mb_money?>"  disabled>
+					<label>원</label>
+				</div>
+				<div class="useredit-text-div">
+					<p>이송금액:</p> 
+					<input type = "number" id="useredit-transfer-input-id" value="0" >
+					<label>원</label>
+					<button class="pbresult-list-view-but" id="useredit-transfer-but-id">이송</button>  
+				</div>
+
+			<?php } ?>
+		<?php } ?>
 
 		<div class = "useredit-button-group">
 			<button class="useredit-cancel-button" id="useredit-cancel-btn-id">취소</button>

@@ -5,7 +5,7 @@ use App\Models\BsBet_model;
 use App\Models\BsRound_model;
 use App\Models\ConfGame_model;
 use App\Models\Member_Model;
-use App\Models\MoneyHistory_model;
+use App\Models\MoneyHistory_Model;
 
 class BsApi extends BaseController {
 
@@ -267,7 +267,7 @@ class BsApi extends BaseController {
 			//model
 			$memberModel  = new Member_Model();
 			$bsbetModel = new BsBet_model();
-			$moneyhistoryModel = new MoneyHistory_model();
+			$moneyhistoryModel = new MoneyHistory_Model();
 			
 			$strUid = $this->session->user_id;
 			$objUser = $memberModel->getInfo($strUid);
@@ -320,7 +320,7 @@ class BsApi extends BaseController {
 			$memberModel  = new Member_Model();
 			$bsroundModel = new BsRound_model();
 			$bsbetModel = new BsBet_model();
-			$moneyhistoryModel = new MoneyHistory_model();
+			$moneyhistoryModel = new MoneyHistory_Model();
 
 			$strUid = $this->session->user_id;
 			$objUser = $memberModel->getInfo($strUid);

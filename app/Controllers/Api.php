@@ -5,11 +5,12 @@ use App\Models\Charge_Model;
 use App\Models\Clean_model;
 use App\Models\ConfGame_model;
 use App\Models\Exchange_model;
-use App\Models\MoneyHistory_model;
+use App\Models\MoneyHistory_Model;
 use App\Models\TransferHistory_model;
 use App\Models\ConfSite_Model;
 use App\Models\CsBet_model;
 use App\Models\SlBet_model;
+use App\Models\SlotPrd_Model;
 
 class Api extends BaseController{
     public function index()
@@ -389,7 +390,7 @@ public function depositproc(){
 			$strUid = $this->session->user_id;
 			$chargeModel = new Charge_Model();
 			$memberModel  = new Member_Model();
-			$moneyhistoryModel = new MoneyHistory_model();
+			$moneyhistoryModel = new MoneyHistory_Model();
 			$bResult = false;
 			$objAdmin = $memberModel->getInfo($strUid);
 
@@ -513,7 +514,7 @@ public function withdrawlist(){
 			$strUid = $this->session->user_id;
 			$exchangeModel = new Exchange_model();
 			$memberModel  = new Member_Model();
-			$moneyhistoryModel = new MoneyHistory_model();
+			$moneyhistoryModel = new MoneyHistory_Model();
 			$bResult = false;
 			
 			$objAdmin = $memberModel->getInfo($strUid);
@@ -739,7 +740,7 @@ public function withdrawlist(){
 		//var_dump($arrBetData);
 		if(is_login()) {
 			//model
-			$moneyhistoryModel = new MoneyHistory_model();
+			$moneyhistoryModel = new MoneyHistory_Model();
 			$memberModel  = new Member_Model();
 			
 			$strUid = $this->session->user_id;
@@ -771,7 +772,7 @@ public function withdrawlist(){
 		//var_dump($arrBetData);
 		if(is_login()) {
 			//model
-			$moneyhistoryModel = new MoneyHistory_model();
+			$moneyhistoryModel = new MoneyHistory_Model();
 			$memberModel  = new Member_Model();
 			
 			$strUid = $this->session->user_id;
@@ -1107,7 +1108,7 @@ public function withdrawlist(){
 	public function csbetlist(){ 
 		$jsonData = $_REQUEST['json_'];
 		$arrGetData = json_decode($jsonData, true);
-		//var_dump($arrBetData);
+
 		if(is_login()) {
 			//model
 			$csbetModel = new CsBet_model();
@@ -1153,7 +1154,7 @@ public function withdrawlist(){
 	public function csbetlistcnt(){ 
 		$jsonData = $_REQUEST['json_'];
 		$arrGetData = json_decode($jsonData, true);
-		//var_dump($arrBetData);
+
 		if(is_login()) {
 			//model
 			$csbetModel = new CsBet_model();
@@ -1183,7 +1184,7 @@ public function withdrawlist(){
 	public function slbetlist(){ 
 		$jsonData = $_REQUEST['json_'];
 		$arrGetData = json_decode($jsonData, true);
-		//var_dump($arrBetData);
+
 		if(is_login()) {
 			//model
 			$slbetModel = new SlBet_model();
@@ -1290,6 +1291,7 @@ public function withdrawlist(){
 			echo json_encode($arrResult);	
 		}
 	}
+
 
 }
     

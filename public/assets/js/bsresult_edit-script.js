@@ -25,11 +25,9 @@ function readConfigToObject() {
 function addBtnEvent() {
 
     var elemOkBtn = document.getElementById("pbresult_edit-save-btn-id");
-    elemOkBtn.addEventListener("click", function() {
+    $("#pbresult_edit-save-but-id").click(function() {
 
         var jsonData = readConfigToObject();
-        //console.log(jsonData);
-
 
         if (jsonData.round_date.length < 1) {
             alert("게임날짜는 필수정보입니다.");
@@ -77,7 +75,7 @@ function addBtnEvent() {
                 url: "/bsapi/registerround",
                 data: { json_: jsonData },
                 success: function(jResult) {
-                    console.log(jResult);
+                    // console.log(jResult);
                     if (jResult.status == "success") {
                         alert("저장되었습니다.");
                     } else if (jResult.status == "logout") {
@@ -105,8 +103,7 @@ function addBtnEvent() {
     });
 
 
-    var elemCancelBtn = document.getElementById("pbresult_edit-cancel-btn-id");
-    elemCancelBtn.addEventListener("click", function() {
+    $("#pbresult_edit-cancel-but-id").click(function() {
         window.location.replace('/result/bsresult');
     });
 

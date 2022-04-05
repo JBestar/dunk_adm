@@ -3,7 +3,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\ConfGame_model;
 use App\Models\Member_Model;
-use App\Models\MoneyHistory_model;
+use App\Models\MoneyHistory_Model;
 use App\Models\PsBet_model;
 use App\Models\PsRound_model;
 
@@ -267,7 +267,7 @@ class PsApi extends BaseController {
 			//model
 			$memberModel  = new Member_Model();
 			$psbetModel = new PsBet_model();
-			$moneyhistoryModel = new MoneyHistory_model();
+			$moneyhistoryModel = new MoneyHistory_Model();
 			
 			$strUid = $this->session->user_id;
 			$objUser = $memberModel->getInfo($strUid);
@@ -320,7 +320,7 @@ class PsApi extends BaseController {
 			$memberModel  = new Member_Model();
 			$psroundModel = new PsRound_model();;
 			$psbetModel = new PsBet_model();
-			$moneyhistoryModel = new MoneyHistory_model();
+			$moneyhistoryModel = new MoneyHistory_Model();
 
 			$strUid = $this->session->user_id;
 			$objUser = $memberModel->getInfo($strUid);

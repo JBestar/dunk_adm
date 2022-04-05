@@ -20,7 +20,7 @@ class User extends StdController
 		$objMember = null;
 		if($memberFid > 0)
 		{
-			$objMember = $memberModel->getMemberByFid($memberFid);					
+			$objMember = $memberModel->getMemberByFid($memberFid, true);					
 		}
 		$empUid = '';
 		// if ($userLevel != LEVEL_COMPANY)
@@ -53,7 +53,7 @@ class User extends StdController
 		
 	}
 
-
+	/*
 	public function company()
 	{
 		$memberModel = new Member_Model();
@@ -139,18 +139,7 @@ class User extends StdController
 			LEVEL_AGENCY,
 			LEVEL_EMPLOYEE);
 	}
-
-
-	// public function member(){
-	// 	if (is_login() === false){
-	// 		return $this->response->redirect( base_url().'pages/login', 'refresh');
-	// 	}
-	// 	$this->load_view_page(
-	// 		'user/member', 
-	// 		'user_member', 
-	// 		LEVEL_EMPLOYEE, 
-	// 		['emp_uid' => ""]);
-	// }
+	*/
 
 	function member($strEmpFid){
 		if (is_login() === false){

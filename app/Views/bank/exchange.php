@@ -28,7 +28,8 @@
 				<option value="15">보글볼정산</option>
 				<option value="16">보글사다리배팅</option>
 				<option value="18">보글사다리정산</option>
-				
+				<option value="19">머니충전</option>
+				<option value="20">머니이송</option>
 			</select>
 
 			<select name="pbresult-number" class="pbresult-number-select" id="exchange-number-select-id">
@@ -48,12 +49,12 @@
 				<th>닉네임</th>
 				<th>아이디</th>
 				<th>현재금액</th>
-				<th>충전금액</th>
-				<th>충전전 머니</th>
-				<th>충전후 머니</th>
+				<th>거래금액</th>
+				<th>거래전 머니</th>
+				<th>거래후 머니</th>
 				<th>일짜</th>
 				<th>구분</th>
-				<th>배팅번호</th>
+				<th>설명</th>
 			</tr>
 			</thead>
 			<tbody id="bank-exchange-table-id">
@@ -79,5 +80,5 @@
 </div>
 
 <script src="<?php echo base_url('assets/js/page.js');?>"></script>
-<script src="<?php echo base_url('assets/js/exchange-script.js?v=1');?>"></script>
+<script src="<?php echo base_url('assets/js/exchange-script.js?v=2');?>"></script>
 <?= $this->endSection() ?>

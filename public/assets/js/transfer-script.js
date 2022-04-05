@@ -30,22 +30,22 @@ function showMoneyHistory(arrData) {
 
         switch (arrData[nRow].money_change_type) {
             case '1':
-                strBuf += "<span style=\"color:green;\">사이트 => 카지노</span>";
+                strBuf += "<span style='color:green;'>사이트 => 카지노</span>";
                 break;
             case '2':
-                strBuf += "<span style=\"color:blue;\">카지노 => 사이트</span>";
+                strBuf += "<span style='color:blue;'>카지노 => 사이트</span>";
                 break;
             case '3':
-                strBuf += "<span style=\"color:green;\">사이트 => 슬롯</span>";
+                strBuf += "<span style='color:green;'>사이트 => 슬롯</span>";
                 break;
             case '4':
-                strBuf += "<span style=\"color:blue;\">슬롯 => 사이트</span>";
+                strBuf += "<span style='color:blue;'>슬롯 => 사이트</span>";
                 break;
             case '5':
-                strBuf += "<span style=\"color:blue;\">사이트 => 네츄럴슬롯</span>";
+                strBuf += "<span style='color:blue;'>사이트 => 네츄럴슬롯</span>";
                 break;
             case '6':
-                strBuf += "<span style=\"color:blue;\">네츄럴슬롯 => 사이트</span>";
+                strBuf += "<span style='color:blue;'>네츄럴슬롯 => 사이트</span>";
                 break;
             default:
                 strBuf += parseInt(arrData[nRow].money_change_type).toLocaleString();
@@ -78,13 +78,11 @@ function showMoneyHistory(arrData) {
 
 
 function addEventListner() {
-    var butView = document.getElementById("transfer-list-view-but-id");
-    butView.addEventListener("click", function() {
+    $("#transfer-list-view-but-id").click(function() {
         requestTotalPage();
     });
 
-    var selectView = document.getElementById("transfer-number-select-id");
-    selectView.addEventListener("change", function() {
+    $("#transfer-number-select-id").change(function() {
         requestTotalPage();
     });
 
@@ -94,10 +92,10 @@ function addEventListner() {
 //Function to Request Betting History to WebServer
 function requestTransferHistory() {
 
-    var dtStart = document.getElementById("transfer-datestart-input-id").value;
-    var dtEnd = document.getElementById("transfer-dateend-input-id").value;
-    var strUser = document.getElementById("transfer-userid-input-id").value;
-    var nMode = document.getElementById("transfer-type-select-id").value;
+    var dtStart = $("#transfer-datestart-input-id").val();
+    var dtEnd = $("#transfer-dateend-input-id").val();
+    var strUser = $("#transfer-userid-input-id").val();
+    var nMode = $("#transfer-type-select-id").val();
     var nPage = getActivePage();
 
     var jsonData = { "count": CountPerPage, "page": nPage, "start": dtStart, "end": dtEnd, "user": strUser, "mode": nMode };
@@ -125,11 +123,11 @@ function requestTransferHistory() {
 function requestTotalPage() {
 
 
-    var dtStart = document.getElementById("transfer-datestart-input-id").value;
-    var dtEnd = document.getElementById("transfer-dateend-input-id").value;
-    CountPerPage = document.getElementById("transfer-number-select-id").value;
-    var strUser = document.getElementById("transfer-userid-input-id").value;
-    var nMode = document.getElementById("transfer-type-select-id").value;
+    var dtStart = $("#transfer-datestart-input-id").val();
+    var dtEnd = $("#transfer-dateend-input-id").val();
+    CountPerPage = $("#transfer-number-select-id").val();
+    var strUser = $("#transfer-userid-input-id").val();
+    var nMode = $("#transfer-type-select-id").val();
 
     var jsonData = { "count": CountPerPage, "start": dtStart, "end": dtEnd, "user": strUser, "mode": nMode };
     jsonData = JSON.stringify(jsonData);

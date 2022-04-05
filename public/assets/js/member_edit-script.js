@@ -8,14 +8,15 @@ function readConfigToObject() {
     objMember.admin_level = $("#subnavbar-emplevel-p-id").text();
 
     objMember.mb_fid = document.getElementById("subnavbar-fid-p-id").innerHTML;
-    objMember.mb_uid = document.getElementById("useredit-id-input-id").value;
+    objMember.mb_uid = $("#useredit-id-input-id").val();
     var elemLevelSelect = document.getElementById("useredit-level-select-id");
     objMember.mb_grade = elemLevelSelect.options[elemLevelSelect.selectedIndex].value;
-    objMember.mb_nickname = document.getElementById("useredit-nickname-input-id").value;
+    objMember.mb_nickname = $("#useredit-nickname-input-id").val();
+    objMember.mb_color = $("#useredit-color-input-id").val();
 
-    if (objMember.admin_level > 99) {
-        objMember.mb_pwd = document.getElementById("useredit-pwd-input-id").value;
-        objMember.mb_emp_uid = document.getElementById("useredit-sort-select-id").value;
+    if (objMember.admin_level > LEVEL_COMPANY) {
+        objMember.mb_pwd = $("#useredit-pwd-input-id").val();
+        objMember.mb_emp_uid = $("#useredit-sort-select-id").val();
         var elePhoneInput = document.getElementById("useredit-phone-input-id");
         if (typeof(elePhoneInput) != undefined && elePhoneInput != null)
             objMember.mb_phone = elePhoneInput.value;
@@ -31,24 +32,24 @@ function readConfigToObject() {
         var eleBankPwdInput = document.getElementById("useredit-bankpwd-input-id");
         if (typeof(eleBankPwdInput) != undefined && eleBankPwdInput != null)
             objMember.mb_bank_pwd = eleBankPwdInput.value;
-        objMember.mb_money = document.getElementById("useredit-money-input-id").value;
-        objMember.mb_point = document.getElementById("useredit-point-input-id").value;
+        objMember.mb_money = $("#useredit-money-input-id").val();
+        objMember.mb_point = $("#useredit-point-input-id").val();
     }
-    objMember.mb_game_pb_ratio = document.getElementById("useredit-pbbetrate-input-id").value;
-    objMember.mb_game_pb2_ratio = document.getElementById("useredit-pbbetrate2-input-id").value;
-    objMember.mb_game_ps_ratio = document.getElementById("useredit-psbetrate-input-id").value;
-    objMember.mb_game_cs_ratio = document.getElementById("useredit-evbetrate-input-id").value;
-    objMember.mb_game_sl_ratio = document.getElementById("useredit-slbetrate-input-id").value;
-    objMember.mb_game_bb_ratio = document.getElementById("useredit-bbbetrate-input-id").value;
-    objMember.mb_game_bb2_ratio = document.getElementById("useredit-bbbetrate2-input-id").value;
-    objMember.mb_game_bs_ratio = document.getElementById("useredit-bsbetrate-input-id").value;
+    objMember.mb_game_pb_ratio = $("#useredit-pbbetrate-input-id").val();
+    objMember.mb_game_pb2_ratio = $("#useredit-pbbetrate2-input-id").val();
+    objMember.mb_game_ps_ratio = $("#useredit-psbetrate-input-id").val();
+    objMember.mb_game_cs_ratio = $("#useredit-evbetrate-input-id").val();
+    objMember.mb_game_sl_ratio = $("#useredit-slbetrate-input-id").val();
+    objMember.mb_game_bb_ratio = $("#useredit-bbbetrate-input-id").val();
+    objMember.mb_game_bb2_ratio = $("#useredit-bbbetrate2-input-id").val();
+    objMember.mb_game_bs_ratio = $("#useredit-bsbetrate-input-id").val();
 
-    objMember.mb_game_pb_percent = document.getElementById("useredit-pbbetpercent-input-id").value;
-    objMember.mb_game_pb2_percent = document.getElementById("useredit-pbbetpercent2-input-id").value;
-    objMember.mb_game_ps_percent = document.getElementById("useredit-psbetpercent-input-id").value;
-    objMember.mb_game_bb_percent = document.getElementById("useredit-bbbetpercent-input-id").value;
-    objMember.mb_game_bb2_percent = document.getElementById("useredit-bbbetpercent2-input-id").value;
-    objMember.mb_game_bs_percent = document.getElementById("useredit-bsbetpercent-input-id").value;
+    objMember.mb_game_pb_percent = $("#useredit-pbbetpercent-input-id").val();
+    objMember.mb_game_pb2_percent = $("#useredit-pbbetpercent2-input-id").val();
+    objMember.mb_game_ps_percent = $("#useredit-psbetpercent-input-id").val();
+    objMember.mb_game_bb_percent = $("#useredit-bbbetpercent-input-id").val();
+    objMember.mb_game_bb2_percent = $("#useredit-bbbetpercent2-input-id").val();
+    objMember.mb_game_bs_percent = $("#useredit-bsbetpercent-input-id").val();
 
     return objMember;
 
@@ -56,19 +57,16 @@ function readConfigToObject() {
 
 function addBtnEvent() {
 
-    var elemOkBtn = document.getElementById("useredit-save-btn-id");
-    elemOkBtn.addEventListener("click", function() {
+    $("#useredit-save-btn-id").click(function() {
 
         var objMember = readConfigToObject();
-        //console.log(objMember);
-
 
         if (objMember.mb_uid.length < 1) {
             alert("아이디는 필수정보입니다.");
             return;
         }
 
-        if (objMember.admin_level > 99) {
+        if (objMember.admin_level > LEVEL_COMPANY) {
             if (objMember.mb_pwd.length < 1) {
                 alert("비밀번호는 필수정보입니다.");
                 return;
@@ -132,21 +130,23 @@ function addBtnEvent() {
                         }
                         alert(errString);
                     } else if (jResult.status == "pb_ratio_error") {
-                        alert("파워볼 배당율이 매장설정값 " + jResult.error + "보다 높게 설정되었습니다.");
+                        alert("파워볼 배당율이 추천인설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "ps_ratio_error") {
-                        alert("파워사다리 배당율이 매장설정값 " + jResult.error + "보다 높게 설정되었습니다.");
+                        alert("파워사다리 배당율이 추천인설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "ev_ratio_error") {
-                        alert("에볼루션 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
+                        alert("카지노 배당율이 추천인설정값 " + jResult.error + "보다 높게 설정되었습니다.");
+                    } else if (jResult.status == "sl_ratio_error") {
+                        alert("슬롯 배당율이 추천인설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "bb_ratio_error") {
-                        alert("보글볼 배당율이 매장설정값 " + jResult.error + "보다 높게 설정되었습니다.");
+                        alert("보글볼 배당율이 추천인설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "bs_ratio_error") {
-                        alert("보글사다리 배당율이 매장설정값 " + jResult.error + "보다 높게 설정되었습니다.");
+                        alert("보글사다리 배당율이 추천인설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "employee_error") {
                         alert("추천인 아이디가 존재하지 않습니다.");
                     }
                 },
                 error: function(request, status, error) {
-                    console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                    // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                 }
 
             });
@@ -176,18 +176,20 @@ function addBtnEvent() {
                         else if (jResult.error == 11)
                             alert("중복된 닉네임입니다.");
                         else if (jResult.error == 3)
-                            alert("등록된 매장이 아닙니다.");
+                            alert("등록된 추천인이 아닙니다.");
                         else alert("등록이 실패되었습니다.");
                     } else if (jResult.status == "pb_ratio_error") {
-                        alert("파워볼 배당율이 매장설정값 " + jResult.error + "보다 높게 설정되었습니다.");
+                        alert("파워볼 배당율이 추천인설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "ps_ratio_error") {
-                        alert("파워사다리 배당율이 매장설정값 " + jResult.error + "보다 높게 설정되었습니다.");
+                        alert("파워사다리 배당율이 추천인설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "ev_ratio_error") {
-                        alert("에볼루션 배당율이 본사설정값 " + jResult.error + "보다 높게 설정되었습니다.");
+                        alert("카지노 배당율이 추천인설정값 " + jResult.error + "보다 높게 설정되었습니다.");
+                    } else if (jResult.status == "sl_ratio_error") {
+                        alert("슬롯 배당율이 추천인설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "bb_ratio_error") {
-                        alert("보글볼 배당율이 매장설정값 " + jResult.error + "보다 높게 설정되었습니다.");
+                        alert("보글볼 배당율이 추천인설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "bs_ratio_error") {
-                        alert("보글사다리 배당율이 매장설정값 " + jResult.error + "보다 높게 설정되었습니다.");
+                        alert("보글사다리 배당율이 추천인설정값 " + jResult.error + "보다 높게 설정되었습니다.");
                     } else if (jResult.status == "employee_error") {
                         alert("추천인 아이디가 존재하지 않습니다.");
                     }
@@ -199,15 +201,49 @@ function addBtnEvent() {
             });
         }
 
-
-
-
     });
 
 
-    var elemCancelBtn = document.getElementById("useredit-cancel-btn-id");
-    elemCancelBtn.addEventListener("click", function() {
+    $("#useredit-cancel-btn-id").click(function() {
         window.location.replace('/user/member/0');
     });
+
+    $("#useredit-transfer-but-id").click(function() {
+        var nAmount = $("#useredit-transfer-input-id").val();
+        if (nAmount <= 0)
+            return;
+        nAmount = parseInt(nAmount);
+
+        if (!confirm(nAmount.toLocaleString() + "원을 회원에게 이송하시겠습니까"))
+            return;
+        var jsonData = {
+            'mb_fid': $("#subnavbar-fid-p-id").html(),
+            'amount': nAmount
+        }
+        jsonData = JSON.stringify(jsonData);
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/userapi/transfer",
+            data: { json_: jsonData },
+            success: function(jResult) {
+                console.log(jResult);
+                if (jResult.status == "success") {
+                    location.reload();
+                } else if (jResult.status == "logout") {
+                    window.location.replace('/');
+                } else if (jResult.status == "fail") {
+                    if (jResult.msg) {
+                        alert(jResult.msg);
+                    } else alert("머니 이송이 실패되었습니다.")
+                }
+            },
+            error: function(request, status, error) {
+                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+
+        });
+    });
+
 
 }

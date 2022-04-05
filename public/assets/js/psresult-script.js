@@ -22,23 +22,23 @@ function ShowGameResult(jsonRoundResults) {
         strBuf += jsonRoundResults[nRow].round_num;
         strBuf += "</td><td>";
         if (jsonRoundResults[nRow].round_result_1 == 'P')
-            strBuf += "<span class=\"pbresult-rule-odd-span\">좌</span>";
+            strBuf += "<span class='pbresult-rule-odd-span'>좌</span>";
         else if (jsonRoundResults[nRow].round_result_1 == 'B')
-            strBuf += "<span class=\"pbresult-rule-even-span\">우</span>";
+            strBuf += "<span class='pbresult-rule-even-span'>우</span>";
         strBuf += "</td><td>";
         if (jsonRoundResults[nRow].round_result_2 == 'P')
-            strBuf += "<span class=\"pbresult-rule-odd-span\"> 3줄 </span>";
+            strBuf += "<span class='pbresult-rule-odd-span'> 3줄 </span>";
         else if (jsonRoundResults[nRow].round_result_2 == 'B')
-            strBuf += "<span class=\"pbresult-rule-even-span\">4줄</span>";
+            strBuf += "<span class='pbresult-rule-even-span'>4줄</span>";
         strBuf += "</td><td>";
         if (jsonRoundResults[nRow].round_result_3 == 'P')
-            strBuf += "<span class=\"pbresult-rule-odd-span\">홀</span>";
+            strBuf += "<span class='pbresult-rule-odd-span'>홀</span>";
         else if (jsonRoundResults[nRow].round_result_3 == 'B')
-            strBuf += "<span class=\"pbresult-rule-even-span\">짝</span>";
+            strBuf += "<span class='pbresult-rule-even-span'>짝</span>";
 
         strBuf += "</td><td>";
-        strBuf += "<a href=\"/result/psresult_edit/" + jsonRoundResults[nRow].round_fid + "\" >수정</a>";
-        strBuf += "<a href=\"/result/psbetchange/" + jsonRoundResults[nRow].round_date + "/" + jsonRoundResults[nRow].round_num + "\" >적특</a>";
+        strBuf += "<a href='/result/psresult_edit/" + jsonRoundResults[nRow].round_fid + "' >수정</a>";
+        strBuf += "<a href='/result/psbetchange/" + jsonRoundResults[nRow].round_date + "/" + jsonRoundResults[nRow].round_num + "' >적특</a>";
         strBuf += "</td></tr>";
 
     }
@@ -51,13 +51,12 @@ function ShowGameResult(jsonRoundResults) {
 }
 
 function addEventListner() {
-    var butView = document.getElementById("pbresult-list-view-but-id");
-    butView.addEventListener("click", function() {
+
+    $("#pbresult-list-view-but-id").click(function() {
         requestTotalPage();
     });
 
-    var selectView = document.getElementById("pbresult-number-select-id");
-    selectView.addEventListener("change", function() {
+    $("#pbresult-number-select-id").change(function() {
         requestTotalPage();
     });
 }
@@ -65,9 +64,9 @@ function addEventListner() {
 //Function to Request Game Result History to WebServer
 function requestGameResult() {
 
-    var dtStart = document.getElementById("pbresult-datestart-input-id").value;
-    var dtEnd = document.getElementById("pbresult-dateend-input-id").value;
-    var nRound = document.getElementById("pbresult-round-input-id").value;
+    var dtStart = $("#pbresult-datestart-input-id").val();
+    var dtEnd = $("#pbresult-dateend-input-id").val();
+    var nRound = $("#pbresult-round-input-id").val();
     var nPage = getActivePage();
 
     var jsonData = { "count": CountPerPage, "page": nPage, "start": dtStart, "end": dtEnd, "round": nRound };
@@ -95,10 +94,10 @@ function requestGameResult() {
 //Function to Request Game Result History to WebServer
 function requestTotalPage() {
 
-    var dtStart = document.getElementById("pbresult-datestart-input-id").value;
-    var dtEnd = document.getElementById("pbresult-dateend-input-id").value;
-    CountPerPage = document.getElementById("pbresult-number-select-id").value;
-    var nRound = document.getElementById("pbresult-round-input-id").value;
+    var dtStart = $("#pbresult-datestart-input-id").val();
+    var dtEnd = $("#pbresult-dateend-input-id").val();
+    CountPerPage = $("#pbresult-number-select-id").val();
+    var nRound = $("#pbresult-round-input-id").val();
 
     var jsonData = { "count": CountPerPage, "start": dtStart, "end": dtEnd, "round": nRound };
     jsonData = JSON.stringify(jsonData);

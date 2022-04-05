@@ -9,13 +9,11 @@ function requestPageInfo() {
 
 
 function addEventListner() {
-    var butView = document.getElementById("withdraw-list-view-but-id");
-    butView.addEventListener("click", function() {
+    $("#withdraw-list-view-but-id").click(function() {
         requestTotalPage();
     });
 
-    var selectView = document.getElementById("withdraw-number-select-id");
-    selectView.addEventListener("change", function() {
+    $("#withdraw-number-select-id").change(function() {
         requestTotalPage();
     });
 }
@@ -46,11 +44,11 @@ function showWithdrawList(arrData) {
         if (arrData[nRow].exchange_action_state == 1)
             strBuf += "<td>승인대기";
         else if (arrData[nRow].exchange_action_state == 2)
-            strBuf += "<td style=\"color:blue;\">환전완료";
+            strBuf += "<td style='color:blue;'>환전완료";
         else if (arrData[nRow].exchange_action_state == 3)
-            strBuf += "<td style=\"color:red;\">환전취소";
+            strBuf += "<td style='color:red;'>환전취소";
         else if (arrData[nRow].exchange_action_state == 4)
-            strBuf += "<td style=\"color:#aab000;\">임시대기";
+            strBuf += "<td style='color:#aab000;'>임시대기";
         else strBuf += "<td>";
         strBuf += "</td><td>";
         if (arrData[nRow].exchange_time_process != null)
@@ -60,17 +58,17 @@ function showWithdrawList(arrData) {
             strBuf += arrData[nRow].exchange_action_uid;
         strBuf += "</td><td>";
         if (arrData[nRow].exchange_action_state == 1) {
-            strBuf += "<button name=\"" + arrData[nRow].exchange_fid + "\" >승인</button>";
-            strBuf += "<button name=\"" + arrData[nRow].exchange_fid + "\" >거절</button>";
-            strBuf += "<button name=\"" + arrData[nRow].exchange_fid + "\" >대기</button>";
+            strBuf += "<button name='" + arrData[nRow].exchange_fid + "' >승인</button>";
+            strBuf += "<button name='" + arrData[nRow].exchange_fid + "' >거절</button>";
+            strBuf += "<button name='" + arrData[nRow].exchange_fid + "' >대기</button>";
         } else if (arrData[nRow].exchange_action_state == 2) {
-            strBuf += "<button name=\"" + arrData[nRow].exchange_fid + "\" >취소</button>";
+            strBuf += "<button name='" + arrData[nRow].exchange_fid + "' >취소</button>";
         } else if (arrData[nRow].exchange_action_state == 3) {
-            strBuf += "<button name=\"" + arrData[nRow].exchange_fid + "\" >승인</button>";
+            strBuf += "<button name='" + arrData[nRow].exchange_fid + "' >승인</button>";
         }
         if (arrData[nRow].exchange_action_state == 4) {
-            strBuf += "<button name=\"" + arrData[nRow].exchange_fid + "\" >승인</button>";
-            strBuf += "<button name=\"" + arrData[nRow].exchange_fid + "\" >거절</button>";
+            strBuf += "<button name='" + arrData[nRow].exchange_fid + "' >승인</button>";
+            strBuf += "<button name='" + arrData[nRow].exchange_fid + "' >거절</button>";
         }
         strBuf += "</td></tr>";
 

@@ -138,9 +138,9 @@ defined('RESULT_EMP_ERROR')    || define('RESULT_EMP_ERROR', 8);
 
 defined('TM_OFFSET')    	   || define('TM_OFFSET', 20);
 
+defined('LOG_WRITE')            || define('LOG_WRITE', true);
+defined('LOG_FILE')             || define('LOG_FILE', ROOTPATH."logs".DIRECTORY_SEPARATOR);
 
-defined('CONF_SITENAME')       || define('CONF_SITENAME', 1);
-defined('CONF_MAINTAIN')       || define('CONF_MAINTAIN', 10);
 
 //game type
 defined('GAME_POWER_BALL')     || define('GAME_POWER_BALL', 1);
@@ -171,3 +171,14 @@ defined('MONEYCHANGE_BET_BB')    || define('MONEYCHANGE_BET_BB', 13);
 defined('MONEYCHANGE_WIN_BB')    || define('MONEYCHANGE_WIN_BB', 15);
 defined('MONEYCHANGE_BET_BS')    || define('MONEYCHANGE_BET_BS', 16);
 defined('MONEYCHANGE_WIN_BS')    || define('MONEYCHANGE_WIN_BS', 18);
+defined('MONEYCHANGE_TRANS_R')   || define('MONEYCHANGE_TRANS_R', 19);
+defined('MONEYCHANGE_TRANS_S')   || define('MONEYCHANGE_TRANS_S', 20);
+defined('MONEYCANCEL_CHARGE')    || define('MONEYCANCEL_CHARGE', 21);   
+defined('MONEYCANCEL_EXCHANGE')  || define('MONEYCANCEL_EXCHANGE', 22); 
+
+defined('TRANS_SITE_EVOL')      || define('TRANS_SITE_EVOL', 1); 
+defined('TRANS_EVOL_SITE')      || define('TRANS_EVOL_SITE', 2); 
+defined('TRANS_SITE_SLOT')      || define('TRANS_SITE_SLOT', 3); 
+defined('TRANS_SLOT_SITE')      || define('TRANS_SLOT_SITE', 4); 
+defined('TRANS_SITE_FSLOT')     || define('TRANS_SITE_FSLOT', 5); 
+defined('TRANS_FSLOT_SITE')     || define('TRANS_FSLOT_SITE', 6); 

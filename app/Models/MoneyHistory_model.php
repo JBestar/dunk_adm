@@ -2,7 +2,7 @@
 namespace App\Models;
 use CodeIgniter\Model;
 
-class MoneyHistory_model extends Model 
+class MoneyHistory_Model extends Model 
 {
     protected $table = 'money_history';
     protected $allowedFields = [
@@ -35,7 +35,7 @@ class MoneyHistory_model extends Model
         $this->builder()->set('money_amount', $nChargeMoney);
         $this->builder()->set('money_before', $objUser->mb_money);
         $this->builder()->set('money_after', $objUser->mb_money+$nChargeMoney);
-        $this->builder()->set('money_change_type', 1);     //충전일때
+        $this->builder()->set('money_change_type', MONEYCHANGE_CHARGE);     //충전일때
         $this->builder()->set('money_update_time', 'NOW()', false);
         
         return $this->builder()->insert();
@@ -52,7 +52,7 @@ class MoneyHistory_model extends Model
         $this->builder()->set('money_amount', (-1) * $nChargeMoney);
         $this->builder()->set('money_before', $objUser->mb_money);
         $this->builder()->set('money_after', $objUser->mb_money-$nChargeMoney);
-        $this->builder()->set('money_change_type', 21);     //충전취소일때
+        $this->builder()->set('money_change_type', MONEYCANCEL_CHARGE);     //충전취소일때
         $this->builder()->set('money_update_time', 'NOW()', false);
         
         return $this->builder()->insert();
@@ -69,7 +69,7 @@ class MoneyHistory_model extends Model
         $this->builder()->set('money_amount', (-1) * $nExchangeMoney);
         $this->builder()->set('money_before', $objUser->mb_money);
         $this->builder()->set('money_after', $objUser->mb_money-$nExchangeMoney);
-        $this->builder()->set('money_change_type', 2);     //환전일때
+        $this->builder()->set('money_change_type', MONEYCHANGE_EXCHANGE);     //환전일때
         $this->builder()->set('money_update_time', 'NOW()', false);
         
         return $this->builder()->insert();
@@ -87,7 +87,24 @@ class MoneyHistory_model extends Model
         $this->builder()->set('money_amount', $nExchangeMoney);
         $this->builder()->set('money_before', $objUser->mb_money);
         $this->builder()->set('money_after', $objUser->mb_money+$nExchangeMoney);
-        $this->builder()->set('money_change_type', 22);     //환전취소일때
+        $this->builder()->set('money_change_type', MONEYCANCEL_EXCHANGE);     //환전취소일때
+        $this->builder()->set('money_update_time', 'NOW()', false);
+        
+        return $this->builder()->insert();
+    }
+
+    function registerTransfer($objUser, $userId, $nAmount, $type)
+    {
+        if(is_null($objUser)) return false;
+
+        $this->builder()->set('money_mb_fid', $objUser->mb_fid);
+        $this->builder()->set('money_mb_uid', $objUser->mb_uid);
+        $this->builder()->set('money_mb_emp_fid', $objUser->mb_emp_fid);        
+        $this->builder()->set('money_amount', $nAmount);
+        $this->builder()->set('money_before', $objUser->mb_money);
+        $this->builder()->set('money_after', $objUser->mb_money+$nAmount);
+        $this->builder()->set('money_change_type', $type);   
+        $this->builder()->set('money_bet_target', $userId);     
         $this->builder()->set('money_update_time', 'NOW()', false);
         
         return $this->builder()->insert();
