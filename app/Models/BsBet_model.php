@@ -325,7 +325,7 @@ class BsBet_model extends Model {
                 $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = ".$tbBetSearch.".bet_mb_uid ";
             
         }
-        $strSql .= " ORDER BY bet_fid ";
+        $strSql .= " ORDER BY bet_fid  DESC";
 
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();

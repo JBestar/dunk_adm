@@ -467,7 +467,7 @@ function requestUpdateCompany(jsData) {
         url: "/userapi/updatemember",
         data: { json_: jsonData },
         success: function(jResult) {
-            console.log(jResult);
+            // console.log(jResult);
 
             if (jResult.status == "success") {
                 requestMember();

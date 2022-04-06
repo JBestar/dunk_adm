@@ -160,7 +160,7 @@ class SlBet_model extends Model
             $strSql .= " LEFT JOIN ".$this->mGameTable." ON ".$tbBetSearch.".bet_table_code = ".$this->mGameTable.".game_code ";
             
         $strSql .= " LEFT JOIN ".$this->mPrdTable." ON ".$tbBetSearch.".bet_game_type = ".$this->mPrdTable.".code ";
-        $strSql .= " ORDER BY bet_fid ";
+        $strSql .= " ORDER BY bet_fid  DESC";
 
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();
