@@ -22,22 +22,26 @@
 		</div>
 		<div class="confsite-game-text-div">
 			<p>배팅 마감시간:</p> 
-			<input type = "text" class="conf-seconds-input" id="confpb-endsec-input-id"><label> 초</label>
+			<input type = "number" class="conf-seconds-input" id="confpb-endsec-input-id"><label> 초</label>
 		</div>
 		<div class="confsite-game-text-div">
 			<p>배팅 최소금액:</p> 
-			<input type = "text" class="conf-text-input"  id="confpb-minmoney-input-id"><label> 원</label>
+			<input type = "number" class="conf-text-input"  id="confpb-minmoney-input-id"><label> 원</label>
 		</div>
 		<div class="confsite-game-text-div">
 			<p>배팅 최대금액:</p> 
-			<input type = "text" class="conf-text-input"  id="confpb-maxmoney-input-id"><label> 원</label>
+			<input type = "number" class="conf-text-input"  id="confpb-maxmoney-input-id"><label> 원</label>
 		</div>
 		<div class="confsite-game-text-div">
   			<p>적중 최대금액:</p>
-  			<input type="text" class="conf-text-input" id="confpb-winmoney-input-id"><label> 원</label>
+  			<input type="number" class="conf-text-input" id="confpb-winmoney-input-id"><label> 원</label>
   		</div>
-		  <div class="confsite-game-text-div">
-  			<p style="font-size: 16px; font-weight: bold;"><?=$game_name?> 단폴</p>
+		<div class="confsite-game-text-div">
+			<p>누르기율:</p> 
+			<input type = "number" class="conf-text-input"  id="confpb-percent-input-id"><label> %</label>
+		</div>
+		<div class="confsite-game-text-div">
+		<p style="font-size: 16px; font-weight: bold;"><?=$game_name?> 단폴</p>
 
   		</div>
 		<div class="confsite-game-text-div">
@@ -88,5 +92,5 @@
 <!--main_navbar.php-->
 </div>
 
-<script src="<?php echo base_url('assets/js/confps-script.js?v=1');?>"></script>
+<script src="<?php echo base_url('assets/js/confps-script.js?v=2');?>"></script>
 <?= $this->endSection() ?>

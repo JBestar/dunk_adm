@@ -54,6 +54,14 @@ class Api extends BaseController{
 			$arrResult['status'] = "fail";
         return $this->response->setJSON($arrResult);
 	}
+
+	public function logout()
+	{
+		$this->session->destroy();
+		
+		$arrResult['status'] = "success";
+		echo json_encode($arrResult);
+	}
 	//게임설정 
 	public function conf_game(){
 		$jsonData = $_REQUEST['json_'];
@@ -120,11 +128,9 @@ class Api extends BaseController{
 			if($bPermit){
 				//model
 				$confsiteModel = new ConfSite_Model();
-				$bResult = $confsiteModel->saveData($arrData);
+				$confsiteModel->saveData($arrData);
 			
-				if($bResult)
-					$arrResult['status'] = "success";
-				else $arrResult['status'] = "fail";
+				$arrResult['status'] = "success";
 			} else $arrResult['status'] = "nopermit";
 		}
 		else {
@@ -188,11 +194,9 @@ class Api extends BaseController{
 			if($bPermit){
 				//model
 				$confgameModel = new ConfGame_model();
-				$bResult = $confgameModel->saveData($arrData);
+				$confgameModel->saveData($arrData);
 			
-				if($bResult)
-					$arrResult['status'] = "success";
-				else $arrResult['status'] = "fail";
+				$arrResult['status'] = "success";
 			} else $arrResult['status'] = "nopermit";
 		}
 		else {

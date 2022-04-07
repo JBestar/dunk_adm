@@ -12,7 +12,7 @@
 	<div class="confsite-game-panel">
 		<!---->
 		<h4><i class="glyphicon glyphicon-hand-right"></i> 배팅계정설정</h4>
-		<?php if($mb_level > LEVEL_ADMIN) {  ?>
+		<?php if($mb_level >= LEVEL_ADMIN) {  ?>
 		<div class="confsite-game-text-div">
 			<p>배팅사이트명:</p> 
 			<input type = "text" class="conf-text-input"  id="conf-betsite-input-id">
@@ -28,15 +28,19 @@
 		</div>
 		<div class="confsite-game-text-div">
 			<p>파워볼 누르기율:</p> 
-			<input type = "text" class="conf-text-input"  id="conf-pball-input-id"><label> %</label>
+			<input type = "number" class="conf-text-input"  id="conf-pball-input-id"><label> %</label>
 		</div>
 		<div class="confsite-game-text-div">
 			<p>파워사다리 누르기율:</p> 
-			<input type = "text" class="conf-text-input"  id="conf-pladder-input-id"><label> %</label>
+			<input type = "number" class="conf-text-input"  id="conf-pladder-input-id"><label> %</label>
 		</div>
 		<div class="confsite-game-text-div">
-			<p>키노사다리 누르기율:</p> 
-			<input type = "text" class="conf-text-input"  id="conf-kladder-input-id"><label> %</label>
+			<p>보글파워볼 누르기율:</p> 
+			<input type = "number" class="conf-text-input"  id="conf-bball-input-id"><label> %</label>
+		</div>
+		<div class="confsite-game-text-div">
+			<p>보글사다리 누르기율:</p> 
+			<input type = "number" class="conf-text-input"  id="conf-bladder-input-id"><label> %</label>
 		</div>
 		<div class = "confsite-button-group">
 			<button class="confsite-cancel-button"  id="confsite-cancel-btn-id">취소</button>
@@ -47,6 +51,6 @@
 </div>
 
 
-<script src="<?php echo base_url('assets/js/conf_betsite-script.js');?>"></script>
+<script src="<?php echo base_url('assets/js/conf_betsite-script.js?v=1');?>"></script>
 
 <?= $this->endSection() ?>
