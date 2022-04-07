@@ -15,17 +15,18 @@
 		<?php if($mb_level >= LEVEL_ADMIN) {  ?>
 		<div class="confsite-game-text-div">
 			<p>배팅사이트명:</p> 
-			<input type = "text" class="conf-text-input"  id="conf-betsite-input-id">
+			<input type = "text" class="conf-text-input" style="min-width:200px;" id="conf-betsite-input-id">
 		</div>
 		<?php } ?>
 		<div class="confsite-game-text-div">
 			<p>배팅계정 아이디:</p> 
-			<input type = "text" class="conf-text-input"  id="conf-userid-input-id">
+			<input type = "text" class="conf-text-input"  style="min-width:200px;" id="conf-userid-input-id">
 		</div>
 		<div class="confsite-game-text-div">
 			<p>배팅계정 비밀번호:</p> 
-			<input type = "text" class="conf-text-input"  id="conf-userpwd-input-id">
+			<input type = "text" class="conf-text-input"  style="min-width:200px;" id="conf-userpwd-input-id">
 		</div>
+		<!--
 		<div class="confsite-game-text-div">
 			<p>파워볼 누르기율:</p> 
 			<input type = "number" class="conf-text-input"  id="conf-pball-input-id"><label> %</label>
@@ -42,6 +43,7 @@
 			<p>보글사다리 누르기율:</p> 
 			<input type = "number" class="conf-text-input"  id="conf-bladder-input-id"><label> %</label>
 		</div>
+		-->
 		<div class = "confsite-button-group">
 			<button class="confsite-cancel-button"  id="confsite-cancel-btn-id">취소</button>
 			<button class="confsite-ok-button" id="confsite-ok-btn-id">저장</button>
@@ -51,6 +53,6 @@
 </div>
 
 
-<script src="<?php echo base_url('assets/js/conf_betsite-script.js?v=1');?>"></script>
+<script src="<?php echo base_url('assets/js/conf_betsite-script.js?v=2');?>"></script>
 
 <?= $this->endSection() ?>

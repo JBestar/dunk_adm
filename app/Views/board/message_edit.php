@@ -5,7 +5,7 @@
 		<?php if(is_null($objNotice)) {  ?>
 			<p><i class="glyphicon glyphicon-info-sign"></i> 쪽지 작성</p>		
 		<?php } else if($objNotice->notice_type == 3) {  ?>
-			<p><i class="glyphicon glyphicon-info-sign"></i> 고객문의 해답</p>
+			<p><i class="glyphicon glyphicon-info-sign"></i> 고객문의 회답</p>
 		<?php } else {?>
 			<p><i class="glyphicon glyphicon-info-sign"></i> 쪽지 수정</p>
 		<?php } ?>
@@ -61,7 +61,7 @@
 		</div>
 	
 		<div class="useredit-text-div">
-			<p>해답내용:</p> 
+			<p>회답내용:</p> 
 			<textarea rows="8" id="notice-answer-text-id" style="width:60%;"><?php if(!is_null($objNotice)) {  ?><?=$objNotice->notice_answer?><?php } ?></textarea>	
 		</div>
 		<?php } else {?>
@@ -77,7 +77,7 @@
 			<?php if(is_null($objNotice) || $objNotice->notice_type==0) {  ?>
 			<button class="useredit-ok-button"  id="notice-save-btn-id">발송</button>			
 			<?php } else {?>
-			<button class="useredit-ok-button"  id="notice-save-btn-id">해답</button>
+			<button class="useredit-ok-button"  id="notice-save-btn-id">회답</button>
 			<?php } ?>
 			
 		</div>

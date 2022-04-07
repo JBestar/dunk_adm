@@ -15,7 +15,7 @@
 	<script src="<?php echo base_url('assets/js/jquery-ui-1.12.1.min.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/bootstrap/js/bootstrap.min.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/js/util.js'); ?>"></script>
-	<script src="<?php echo base_url('assets/js/common.js?v=3'); ?>"></script>
+	<script src="<?php echo base_url('assets/js/common.js?v=4'); ?>"></script>
 
 </head>
 <body>

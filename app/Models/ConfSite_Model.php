@@ -49,8 +49,8 @@ class ConfSite_Model extends Model
         $objConfig = $this->asObject()->where(array('conf_id'=>$nConfigId))->first();
         if(!is_null($objConfig) && $nLevel >= LEVEL_ADMIN){
             $strSite = $objConfig->conf_content;
-            $arrSiteInfo = explode('/', $strSite);
-            if(count($arrSiteInfo) >= 7){
+            $arrSiteInfo = explode('#', $strSite);
+            if(count($arrSiteInfo) >= 3){
                 return $arrSiteInfo;
             }
         }
@@ -64,25 +64,25 @@ class ConfSite_Model extends Model
 
         $strContent = "";
         if(strlen($arrReqData['site'])<1) return false;
-        $strContent .= $arrReqData['site']."/";
+        $strContent .= $arrReqData['site']."#";
         
         if(strlen($arrReqData['userid'])<1) return false;
-        $strContent .= $arrReqData['userid']."/";
+        $strContent .= $arrReqData['userid']."#";
         
         if(strlen($arrReqData['userpwd'])<1) return false;
-        $strContent .= $arrReqData['userpwd']."/";
+        $strContent .= $arrReqData['userpwd'];
         
-        if(strlen($arrReqData['pball'])<1) return false;
-        $strContent .= $arrReqData['pball']."/";
+        // if(strlen($arrReqData['pball'])<1) return false;
+        // $strContent .= $arrReqData['pball']."#";
         
-        if(strlen($arrReqData['pladder'])<1) return false;
-        $strContent .= $arrReqData['pladder']."/";
+        // if(strlen($arrReqData['pladder'])<1) return false;
+        // $strContent .= $arrReqData['pladder']."#";
         
-        if(strlen($arrReqData['bball'])<1) return false;
-        $strContent .= $arrReqData['bball']."/";
+        // if(strlen($arrReqData['bball'])<1) return false;
+        // $strContent .= $arrReqData['bball']."#";
 
-        if(strlen($arrReqData['bladder'])<1) return false;
-        $strContent .= $arrReqData['bladder'];
+        // if(strlen($arrReqData['bladder'])<1) return false;
+        // $strContent .= $arrReqData['bladder'];
 
         $this->builder()->set('conf_content', $strContent);
         $this->builder()->where('conf_id', CONF_BETSITE);

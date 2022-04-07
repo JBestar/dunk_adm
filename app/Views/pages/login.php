@@ -35,6 +35,6 @@
 		</div>
 	</div>
 
-	<script src="<?php echo base_url('assets/js/pages-script.js');?>"></script>
+	<script src="<?php echo base_url('assets/js/pages-script.js?v=1');?>"></script>
 </body>
 </html>
