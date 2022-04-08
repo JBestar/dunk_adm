@@ -8,10 +8,8 @@
 		<a href="<?php echo base_url().'home/conf_maintain';?>" class="sub-navbar-a active" >점검설정</a>
 	</div>
 
-		<!--Site Setting-->
+	<!--Site Setting-->
 	<div class="confsite-site-panel">
-
-
 
 		<h4><i class="glyphicon glyphicon-hand-right"></i> 사이트점검설정</h4>						
 		<div class="confsite-site-check-div">

@@ -8,12 +8,13 @@ $(document).ready(function() {
 
 
 function showConfSite(arrData) {
-    if (arrData.length < 3)
+    if (arrData.length < 4)
         return;
 
     $("#conf-betsite-input-id").val(arrData[0]);
     $("#conf-userid-input-id").val(arrData[1]);
     $("#conf-userpwd-input-id").val(arrData[2]);
+    $("#confpb-bet-check-id").prop('checked', arrData[3] > 0 ? true : false);
     // $("#conf-pball-input-id").val(arrData[3]);
     // $("#conf-pladder-input-id").val(arrData[4]);
     // $("#conf-bball-input-id").val(arrData[5]);
@@ -46,6 +47,7 @@ function addBtnEvent() {
             alert("계정 비밀번호를 입력하세요.");
             return;
         }
+        objData.active = $("#confpb-bet-check-id").prop('checked') ? 1 : 0;
         // objData.pball = $("#conf-pball-input-id").val();
         // if (objData.pball.length < 1) {
         //     alert("파워볼 누르기율을 입력하세요.");

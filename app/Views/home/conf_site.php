@@ -11,6 +11,9 @@
 	<button class="sub-navbar-but" onclick="cleanDb(0);">디비정리</button>
 	<?php } ?>
 </div>
+<style>
+	
+</style>
 <!--Site Setting-->
 <div class="confsite-site-panel">
 	<!---->

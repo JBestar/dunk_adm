@@ -18,7 +18,8 @@
 		
 		<div class="confsite-game-text-div">
 			<p>유저 배팅승인:</p> 
-			<input type="checkbox" id="confpb-bet-check-id"><label> 유저배팅승인</label>
+			<input type="checkbox" id="confpb-bet-check-id"  style="zoom:120%; margin-top:4px;">
+			<label style="font-size:13px; font-weight:normal; padding-top:0px;"> 유저배팅승인</label>
 		</div>
 		<div class="confsite-game-text-div">
 			<p>배팅 마감시간:</p> 

@@ -7,7 +7,7 @@
 
 	<!-- Bootstrap 3.3.7 -->
   	<link rel="stylesheet" href="<?php echo base_url('assets/bootstrap/css/bootstrap.min.css');?>">
-	<link rel="stylesheet" href="<?php echo base_url('assets/css/main.style.css?v=1');?>">
+	<link rel="stylesheet" href="<?php echo base_url('assets/css/main.style.css?v=2');?>">
 
 	<!-- JQuery 1.12.1 -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/js/jquery-ui-1.12.1.min.css'); ?>">

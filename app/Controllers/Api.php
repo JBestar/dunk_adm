@@ -1,4 +1,5 @@
 <?php namespace App\Controllers;
+
 use App\Models\Member_Model;
 use App\Models\Notice_Model;
 use App\Models\Charge_Model;
@@ -11,6 +12,7 @@ use App\Models\ConfSite_Model;
 use App\Models\CsBet_model;
 use App\Models\SlBet_model;
 use App\Models\SlotPrd_Model;
+use App\Models\SessLog_Model;
 
 class Api extends BaseController{
     public function index()
@@ -28,8 +30,8 @@ class Api extends BaseController{
 		$jsonData = $_REQUEST['json_'];
 		$arrLoginData = json_decode($jsonData, true);
 		//model
-        $model = new Member_Model();
-        $userData = $model->where('mb_uid', $arrLoginData['username'])->first();
+        $modelMember = new Member_Model();
+        $userData = $modelMember->where('mb_uid', $arrLoginData['username'])->first();
         $result = false;
         if ($userData != null && $userData['mb_pwd'] === $arrLoginData['password'])
         {
@@ -39,8 +41,13 @@ class Api extends BaseController{
                     'logged_in' => TRUE, 
                 ];
 				$this->session->set($sessData);
-				$model->updateLoginTime($userData['mb_fid'], $this->request->getIPAddress());
+				$userData['mb_ip_last'] = $this->request->getIPAddress();
+				$modelMember->updateLogin($userData);
                 $result = true;
+
+				$modelSessLog = new SessLog_Model();
+				$modelSessLog->add($userData);
+
             }
         }   
 		//결과값 
@@ -293,7 +300,7 @@ class Api extends BaseController{
 	}
 
 	//비번 변경  
-	public function changepassword(){
+	public function change_password(){
 		$jsonData = $_REQUEST['json_'];
 		$arrData = json_decode($jsonData, true);		
 

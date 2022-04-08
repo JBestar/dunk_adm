@@ -18,7 +18,13 @@
 			<p id="subnavbar-type-p-id" hidden><?=$objNotice->notice_type?></p>
 		<?php } ?>
 	</div>
-
+	<style>
+	.useredit-text-div input[type=checkbox] {
+		zoom: 130%;
+		margin-top: 5px;
+		width:20px;
+	}
+	</style>
 <!--Site Setting-->
 	<div class="useredit-panel">
 		<div class="useredit-text-div">
@@ -34,15 +40,15 @@
 		<div class="useredit-text-div">
 			<p>발송(대기):</p>
 			<?php if(is_null($objNotice)) {  ?>
-			<input type="checkbox" id="notice-state-check-id" style="width: 20px; padding-top: 5px;" name="public" checked>
+			<input type="checkbox" id="notice-state-check-id" name="public" checked>
 			<?php } else if($objNotice->notice_type == 3) {  ?>	
-			<input type="checkbox" id="notice-state-check-id" style="width: 20px; padding-top: 5px;" name="public" checked>
+			<input type="checkbox" id="notice-state-check-id" name="public" checked>
 			<?php } else if($objNotice->notice_state_active == 0) {  ?>	
-			<input type="checkbox" id="notice-state-check-id" style="width: 20px; padding-top: 5px;" name="public">
+			<input type="checkbox" id="notice-state-check-id" name="public">
 			<?php } else {?>
-			<input type="checkbox" id="notice-state-check-id" style="width: 20px; padding-top: 5px;" checked name="public">
+			<input type="checkbox" id="notice-state-check-id" checked name="public">
 			<?php } ?>
-			<label for="public">발송</label>
+			<label for="public" style="font-size:14px;">발송</label>
 		</div>
 		<div class="useredit-text-div">
 			<p>쪽지제목:</p> 

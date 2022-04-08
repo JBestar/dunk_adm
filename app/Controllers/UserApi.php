@@ -588,6 +588,31 @@ class UserApi extends BaseController
         }
     }
 
+    public function empIp()
+    {
+        if (is_login()) {
+            // model
+            $memberModel = new Member_Model();
+            $strUid = $this->session->user_id;
+            $objEmp = $memberModel->getInfo($strUid);
+
+            if(is_null($objEmp) || $objEmp->mb_level < LEVEL_ADMIN){
+                $arrResult['status'] = 'fail';
+            } else{
+                $arrInfo = [
+                    'ip_addr'  => $objEmp->mb_ip_join,
+                    'ip_check' => $objEmp->mb_state_view > 0 ? 1:0
+                ];
+                $arrResult['data'] = $arrInfo;
+                $arrResult['status'] = 'success';
+            }
+
+        } else {
+            $arrResult['status'] = 'logout';
+            
+        }
+        echo json_encode($arrResult);
+    }
 
 
 }
