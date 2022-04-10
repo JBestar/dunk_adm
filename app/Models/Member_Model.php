@@ -1043,11 +1043,13 @@ class Member_Model extends Model
         else{
             $sqlBuilder->where('mb_emp_fid', $nAdminFid);
         }
-        if (0 != $arrReqData['mb_grade']){
+        if ($arrReqData['mb_grade'] != 0){
             $sqlBuilder->where('mb_grade', $arrReqData['mb_grade']);
         }
+        if ($arrReqData['mb_state'] >= 0){
+            $sqlBuilder->where('mb_state_active', $arrReqData['mb_state']);
+        }
         if (strlen($arrReqData['mb_uid']) > 0){
-            // $sqlBuilder->where('mb_uid', $arrReqData['mb_uid']);
             $sqlBuilder->like('mb_uid', $arrReqData['mb_uid']);
         }
         return $sqlBuilder->get()->getRow();
@@ -1182,11 +1184,14 @@ class Member_Model extends Model
         if (strlen($arrReqData['mb_uid']) > 0) {
             $strQuery .= " AND mb_uid LIKE '%".$arrReqData['mb_uid']."%'";
         }
-        if (0 != $arrReqData['mb_grade']){
+        if ($arrReqData['mb_grade'] != 0){
             $strQuery .= " AND mb_grade = '".$arrReqData['mb_grade']."'";
         }
+        if ($arrReqData['mb_state'] >= 0){
+            $strQuery .= " AND mb_state_active = '".$arrReqData['mb_state']."' ";
+        }
         $strQuery .= " ORDER BY (CASE WHEN mb_state_active = 2 THEN 0 ELSE 1 END) ";
-        $strQuery .= " ,mb_level DESC";
+        $strQuery .= " , mb_level DESC";
         
         $nStartRow = ($arrReqData['page'] - 1) * $arrReqData['count'];
         $strQuery .= ' LIMIT '.$nStartRow.', '.$arrReqData['count'];

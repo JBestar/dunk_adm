@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\BbBet_model;
+use App\Models\BbBet_Model;
 use App\Models\BsBet_model;
 use App\Models\Charge_Model;
 use App\Models\ConfGame_model;
@@ -13,6 +13,7 @@ use App\Models\Notice_Model;
 use App\Models\PbBet_model;
 use App\Models\PsBet_model;
 use App\Models\MoneyHistory_Model;
+use App\Models\SessLog_Model;
 
 class UserApi extends BaseController
 {
@@ -385,7 +386,7 @@ class UserApi extends BaseController
             $confgameModel = new ConfGame_model();
             $pbbetModel = new PbBet_model();
             $psbetModel = new PsBet_model();
-            $bbbetModel = new BbBet_model();
+            $bbbetModel = new BbBet_Model();
             $bsbetModel = new BsBet_model();
 
             $objUser = $memberModel->getInfo($strUid);
@@ -545,6 +546,41 @@ class UserApi extends BaseController
         }
     }
 
+    
+	public function loglist(){
+		$jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+		if(is_login())
+		{
+            $modelSesslog = new SessLog_Model();
+
+			$arrData = $modelSesslog->search($arrReqData);
+				
+			$arrResult['data'] = $arrData;
+			$arrResult['status'] = "success";
+		}
+		else{
+			$arrResult['status'] = "logout";
+		}
+		echo json_encode($arrResult);
+	}
+
+	public function logcnt(){
+		$jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+		if(is_login())
+		{
+			$modelSesslog = new SessLog_Model();
+			$objCount = $modelSesslog->searchCount($arrReqData);
+
+			$arrResult['data'] = $objCount;
+			$arrResult['status'] = "success";
+		}
+		else{
+			$arrResult['status'] = "logout";
+		}
+		echo json_encode($arrResult);
+	}
 
     
     public function transfer()

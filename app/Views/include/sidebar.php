@@ -25,9 +25,11 @@
     <!--?php }  if($mb_level >= LEVEL_AGENCY) {  ?-->
     <!--a href="<?php echo base_url().'user/employee';?>" class="<?=$user_employee?>"><i class="glyphicon glyphicon-cd"></i>  매장</!--a-->
     <!--?php }  if($mb_level >= LEVEL_EMPLOYEE) {  ?-->
-    <?php { ?>
     <a href="<?php echo base_url().'user/member/0';?>" class="<?=$user_member?>"><i class="glyphicon glyphicon-cd"></i> 회원</a>
-    <?php } ?>
+    <?php if($mb_level >= LEVEL_ADMIN) {  ?>
+    <a href="<?php echo base_url().'user/member_log';?>" class="<?=$user_member_log?>"><i class="glyphicon glyphicon-cd"></i> 접속이력</a>
+    <?php }  ?>
+   
   </div>
   
   <button class="main-dropdown-btn <?=$bankdropdownbtn?>"><i class="glyphicon glyphicon-usd"></i>  충환전관리

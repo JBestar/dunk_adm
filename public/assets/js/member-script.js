@@ -189,6 +189,9 @@ function showMember(arrMember, nAdminLevel) {
         strBuf += "슬롯: " + arrMember[nRow].mb_game_sl_ratio + "% <br>";
         */
         strBuf += "</td> <td>";
+        strBuf += arrMember[nRow].mb_ip_last;
+        strBuf += "<br><button name='" + arrMember[nRow].mb_ip_last + "' >IP차단</button>";
+        strBuf += "</td> <td>";
         if (arrMember[nRow].mb_state_active == 1) {
             strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>승인</button>";
         } else if (arrMember[nRow].mb_state_active == 2) {
@@ -255,6 +258,10 @@ function addEventListner() {
         requestTotalPage();
     });
 
+    $("#userpanel-state-select-id").change(function() {
+        requestTotalPage();
+    });
+
     $("#userpanel-number-select-id").change(function() {
         requestTotalPage();
     });
@@ -267,11 +274,19 @@ function requestMember() {
     var nPage = getActivePage();
     var userGrad = $("#userpanel-level-select-id").val();
     var strMbUid = $("#userpanel-userid-input-id").val();
+    var iState = $("#userpanel-state-select-id").val();
     var empIdEle = document.getElementById("userpanel-empid-input-id");
     var strEmpUid = "";
     if (typeof(empIdEle) != undefined && empIdEle != null)
         strEmpUid = empIdEle.value;
-    var jsonData = { "count": CountPerPage, "page": nPage, "mb_grade": userGrad, "mb_uid": strMbUid, "mb_emp_uid": strEmpUid };
+    var jsonData = {
+        "count": CountPerPage,
+        "page": nPage,
+        "mb_grade": userGrad,
+        "mb_uid": strMbUid,
+        "mb_emp_uid": strEmpUid,
+        "mb_state": iState
+    };
 
 
     jsonData = JSON.stringify(jsonData);
@@ -290,7 +305,7 @@ function requestMember() {
             }
         },
         error: function(request, status, error) {
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });
@@ -304,11 +319,18 @@ function requestTotalPage() {
     CountPerPage = $("#userpanel-number-select-id").val();
     var userGrad = $("#userpanel-level-select-id").val();
     var strMbUid = $("#userpanel-userid-input-id").val();
+    var iState = $("#userpanel-state-select-id").val();
     var empIdEle = document.getElementById("userpanel-empid-input-id");
     var strEmpUid = "";
     if (typeof(empIdEle) != undefined && empIdEle != null)
         strEmpUid = empIdEle.value;
-    var jsonData = { "count": CountPerPage, "mb_grade": userGrad, "mb_uid": strMbUid, "mb_emp_uid": strEmpUid };
+    var jsonData = {
+        "count": CountPerPage,
+        "mb_grade": userGrad,
+        "mb_uid": strMbUid,
+        "mb_emp_uid": strEmpUid,
+        "mb_state": iState,
+    };
 
     jsonData = JSON.stringify(jsonData);
 
@@ -326,7 +348,7 @@ function requestTotalPage() {
             }
         },
         error: function(request, status, error) {
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });

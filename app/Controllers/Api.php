@@ -7,7 +7,7 @@ use App\Models\Clean_model;
 use App\Models\ConfGame_model;
 use App\Models\Exchange_model;
 use App\Models\MoneyHistory_Model;
-use App\Models\TransferHistory_model;
+use App\Models\Transfer_Model;
 use App\Models\ConfSite_Model;
 use App\Models\CsBet_model;
 use App\Models\SlBet_model;
@@ -386,13 +386,7 @@ class Api extends BaseController{
 		echo json_encode($arrResult);
 	}
 
-	public function test(){
-		$chargeModel = new Charge_Model();
-		$objCharge = $chargeModel->get(6);
-		var_dump($objCharge);
-	}
-
-public function depositproc(){
+	public function depositproc(){
 		$jsonData = $_REQUEST['json_'];
 		$arrReqData = json_decode($jsonData, true);
 
@@ -811,7 +805,7 @@ public function withdrawlist(){
 		//var_dump($arrBetData);
 		if(is_login()) {
 			//model
-			$transferhistoryModel = new TransferHistory_model();
+			$transferhistoryModel = new Transfer_Model();
 			$memberModel  = new Member_Model();
 			
 			$strUid = $this->session->user_id;
@@ -843,7 +837,7 @@ public function withdrawlist(){
 		//var_dump($arrBetData);
 		if(is_login()) {
 			//model
-			$transferhistoryModel = new TransferHistory_model();
+			$transferhistoryModel = new Transfer_Model();
 			$memberModel  = new Member_Model();
 			
 			$strUid = $this->session->user_id;

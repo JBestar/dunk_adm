@@ -22,4 +22,48 @@ class SessLog_Model extends Model {
         
         return $this->insert($data);
     }
+
+
+
+    function search($arrReqData)
+    {
+        $strSql = "SELECT ".$this->table.".*, member.mb_nickname FROM ".$this->table;
+        $strSql .= " JOIN member ON ".$this->table.".log_mb_uid = member.mb_uid ";
+        $strSql .= " WHERE log_delete = '0' ";
+        if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
+            $strSql.=" AND log_time >= '".$arrReqData['start']." 0:0:0' AND log_time <= '".$arrReqData['end']." 23:59:59'" ; 
+        }
+        if(strlen($arrReqData['mb_uid']) > 0){
+            $strSql.=" AND log_mb_uid = '".$arrReqData['mb_uid']."' ";
+        }
+        $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
+
+        $strSql.=" ORDER BY log_fid DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
+
+        $query = $this -> db -> query($strSql);
+        $result = $query -> getResult();
+        
+        return $result; 
+
+    }
+
+
+    function searchCount($arrReqData)
+    {
+        $strSql = "SELECT count(*) as count FROM ".$this->table;
+        $strSql .= " WHERE log_delete = '0' ";
+        if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
+            $strSql.=" AND log_time >= '".$arrReqData['start']." 0:0:0' AND log_time <= '".$arrReqData['end']." 23:59:59'" ; 
+        }
+        if(strlen($arrReqData['mb_uid']) > 0){
+            $strSql.=" AND log_mb_uid = '".$arrReqData['mb_uid']."' ";
+        }
+        $query = $this -> db -> query($strSql);
+        $result = $query -> getRow();
+        
+        return $result; 
+
+    }
+
+
 }
