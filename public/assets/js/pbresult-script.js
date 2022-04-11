@@ -89,19 +89,21 @@ function requestGameResult() {
 
     var jsonData = { "count": CountPerPage, "page": nPage, "start": dtStart, "end": dtEnd, "round": nRound };
     jsonData = JSON.stringify(jsonData);
-
+    $(".loading").show();
     $.ajax({
         url: '/pbapi/result',
         data: { json_: jsonData },
         type: 'post',
         dataType: 'json',
         success: function(jResult) {
+            $(".loading").hide();
             //console.log(jResult);
             if (jResult.status == "success") {
                 ShowGameResult(jResult.data);
             }
         },
         error: function(request, status, error) {
+            $(".loading").hide();
             //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 

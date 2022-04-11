@@ -285,13 +285,14 @@ function requestBetHistory() {
 
     var jsonData = { "count": nCount, "page": nPage, "start": dtStart, "end": dtEnd, "user": strUser, "round": strRound, "mode": nMode };
     jsonData = JSON.stringify(jsonData);
-
+    $(".loading").show();
     $.ajax({
         url: '/pbapi/betlist',
         data: { json_: jsonData },
         type: 'post',
         dataType: "json",
         success: function(jResult) {
+            $(".loading").hide();
             //console.log(jResult);
             if (jResult.status == "success") {
                 mBetData = jResult.data;
@@ -299,6 +300,7 @@ function requestBetHistory() {
             }
         },
         error: function(request, status, error) {
+            $(".loading").hide();
             //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 

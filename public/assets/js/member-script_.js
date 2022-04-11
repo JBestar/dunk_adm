@@ -155,7 +155,7 @@ function showMember(arrMember, nAdminLevel) {
         }
 
         strBuf += "</td> <td>";
-        if (nAdminLevel >= LEVEL_ADMIN) {
+        if (nAdminLevel == LEVEL_ADMIN) {
             strBuf += "<a href='/user/member/";
             strBuf += arrMember[nRow].mb_fid;
             strBuf += "' class='link-member'>"
@@ -179,7 +179,6 @@ function showMember(arrMember, nAdminLevel) {
         strBuf += "에볼: " + parseInt(arrMember[nRow].mb_live_money).toLocaleString() + "<br>";
         strBuf += "슬롯: " + parseInt(arrMember[nRow].mb_slot_money).toLocaleString() + "<br>";
         strBuf += "네츄럴슬롯: " + parseInt(arrMember[nRow].mb_fslot_money).toLocaleString() + "<br>";
-        /*
         strBuf += "</td> <td>";
         strBuf += "파워볼: " + arrMember[nRow].mb_game_pb_ratio + "% / " + arrMember[nRow].mb_game_pb2_ratio + "% <br>";
         strBuf += "파워사다리: " + arrMember[nRow].mb_game_ps_ratio + "% <br>";
@@ -187,16 +186,8 @@ function showMember(arrMember, nAdminLevel) {
         strBuf += "보글사다리: " + arrMember[nRow].mb_game_bs_ratio + "% <br>";
         strBuf += "카지노: " + arrMember[nRow].mb_game_cs_ratio + "% <br>";
         strBuf += "슬롯: " + arrMember[nRow].mb_game_sl_ratio + "% <br>";
-        */
+
         strBuf += "</td> <td>";
-        if (nAdminLevel >= LEVEL_ADMIN) {
-            strBuf += arrMember[nRow].mb_ip_last;
-            if (arrMember[nRow].block_state == 1) {
-                strBuf += "<br><br><button name='" + arrMember[nRow].mb_ip_last + "' >차단해제</button>";
-            } else
-                strBuf += "<br><br><button name='" + arrMember[nRow].mb_ip_last + "' >IP차단</button>";
-            strBuf += "</td> <td>";
-        }
         if (arrMember[nRow].mb_state_active == 1) {
             strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>승인</button>";
         } else if (arrMember[nRow].mb_state_active == 2) {
@@ -263,10 +254,6 @@ function addEventListner() {
         requestTotalPage();
     });
 
-    $("#userpanel-state-select-id").change(function() {
-        requestTotalPage();
-    });
-
     $("#userpanel-number-select-id").change(function() {
         requestTotalPage();
     });
@@ -279,31 +266,21 @@ function requestMember() {
     var nPage = getActivePage();
     var userGrad = $("#userpanel-level-select-id").val();
     var strMbUid = $("#userpanel-userid-input-id").val();
-    var iState = $("#userpanel-state-select-id").val();
     var empIdEle = document.getElementById("userpanel-empid-input-id");
     var strEmpUid = "";
     if (typeof(empIdEle) != undefined && empIdEle != null)
         strEmpUid = empIdEle.value;
-    var jsonData = {
-        "count": CountPerPage,
-        "page": nPage,
-        "mb_grade": userGrad,
-        "mb_uid": strMbUid,
-        "mb_emp_uid": strEmpUid,
-        "mb_state": iState
-    };
+    var jsonData = { "count": CountPerPage, "page": nPage, "mb_grade": userGrad, "mb_uid": strMbUid, "mb_emp_uid": strEmpUid };
 
 
     jsonData = JSON.stringify(jsonData);
-    $(".loading").show();
     $.ajax({
         type: "POST",
         dataType: "json",
         url: "/userapi/getmembers",
         data: { json_: jsonData },
         success: function(jResult) {
-            //console.log(jResult);            
-            $(".loading").hide();
+            // $(".loading").hide();
             //console.log(jResult);
             if (jResult.status == "success") {
                 showMember(jResult.data, jResult.level);
@@ -312,9 +289,7 @@ function requestMember() {
             }
         },
         error: function(request, status, error) {
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-            $(".loading").hide();
+            // $(".loading").hide();
             //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 
@@ -329,18 +304,11 @@ function requestTotalPage() {
     CountPerPage = $("#userpanel-number-select-id").val();
     var userGrad = $("#userpanel-level-select-id").val();
     var strMbUid = $("#userpanel-userid-input-id").val();
-    var iState = $("#userpanel-state-select-id").val();
     var empIdEle = document.getElementById("userpanel-empid-input-id");
     var strEmpUid = "";
     if (typeof(empIdEle) != undefined && empIdEle != null)
         strEmpUid = empIdEle.value;
-    var jsonData = {
-        "count": CountPerPage,
-        "mb_grade": userGrad,
-        "mb_uid": strMbUid,
-        "mb_emp_uid": strEmpUid,
-        "mb_state": iState,
-    };
+    var jsonData = { "count": CountPerPage, "mb_grade": userGrad, "mb_uid": strMbUid, "mb_emp_uid": strEmpUid };
 
     jsonData = JSON.stringify(jsonData);
 
@@ -358,7 +326,7 @@ function requestTotalPage() {
             }
         },
         error: function(request, status, error) {
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 
     });
@@ -373,12 +341,6 @@ function addButtonElementListener(buttonElement) {
                 return;
             var jsonData = { "mb_fid": this.name };
             requestDeleteCompany(jsonData);
-        } else if (this.innerHTML.search("IP차단") >= 0) {
-            var jsonData = { "block_ip": this.name, "block_state": 1 };
-            requestAddBlock(jsonData);
-        } else if (this.innerHTML.search("차단해제") >= 0) {
-            var jsonData = { "block_ip": this.name, "block_state": 0 };
-            requestAddBlock(jsonData);
         } else if (this.innerHTML.search("승인") >= 0) {
             var jsonData = { "mb_fid": this.name, "mb_state_active": 0 };
             requestUpdateCompany(jsonData);
@@ -505,7 +467,7 @@ function requestUpdateCompany(jsData) {
         url: "/userapi/updatemember",
         data: { json_: jsonData },
         success: function(jResult) {
-            // console.log(jResult);
+            console.log(jResult);
 
             if (jResult.status == "success") {
                 requestMember();
@@ -526,39 +488,6 @@ function requestUpdateCompany(jsData) {
     });
 
 }
-
-function requestAddBlock(jsData) {
-
-    var jsonData = JSON.stringify(jsData);
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: "/userapi/add_block",
-        data: { json_: jsonData },
-        success: function(jResult) {
-            // console.log(jResult);
-
-            if (jResult.status == "success") {
-                location.replace('/user/member_block');
-                // updateMember(jResult.data, jResult.level);
-            } else if (jResult.status == "fail") {
-
-            } else if (jResult.status == "nopermit") {
-                alert('변경권한이 없습니다.');
-                location.replace('/pages/nopermit');
-            } else if (jResult.status == "logout") {
-                location.replace('/');
-            }
-        },
-        error: function(request, status, error) {
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-        }
-
-    });
-
-}
-
 
 function requestDeleteCompany(jsData) {
 

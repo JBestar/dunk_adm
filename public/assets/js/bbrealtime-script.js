@@ -418,11 +418,13 @@ function ShowBetRealtime(jRealBet) {
 
 //Function to Request Betting History to WebServer
 function requestBetRealtime() {
+    $(".loading").show();
     $.ajax({
         url: '/' + mPath + '/betrealtime',
         type: 'post',
         dataType: "json",
         success: function(jResult) {
+            $(".loading").hide();
             console.log(jResult);
             if (jResult.status == "success") {
                 setNavBarElement();
@@ -430,6 +432,7 @@ function requestBetRealtime() {
             }
         },
         error: function(request, status, error) {
+            $(".loading").hide();
             //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 
