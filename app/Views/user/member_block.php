@@ -16,19 +16,15 @@
 	</style>
 	<!--Sub Navbar-->
 	<div class = "sub-navbar">
-		<p><i class="glyphicon glyphicon-user"></i> 회원관리::접속이력</p>
+		<p><i class="glyphicon glyphicon-user"></i> 회원관리::블록아이피</p>
 	</div>
 	<!--Site Setting-->
 	<div class="user-panel">	
 		<div>
 			<!-- <a href="javascript:" class="user-panel-add-a" >전체 삭제</a> -->
-			<label>아이디</label>
-            <input type="text" class="pbresult-text-input" id="userpanel-userid-input-id" >
-			<label>접속일자</label>
-			<input type="date" id="userpanel-datestart-input-id"  value="<?php echo date('Y-m-d'); ?>">
-            <label> ~ </label>
-            <input type="date" id="userpanel-dateend-input-id"  value="<?php echo date('Y-m-d'); ?>">
-            
+			<label>아이피</label>
+            <input type="text" class="pbresult-text-input" id="userpanel-ip-input-id" >
+			
 			<select name="pbresult-number" class="pbresult-number-select" id="userpanel-number-select-id">
 				<option value="10">10개</option>
 				<option value="20">20개</option>
@@ -41,11 +37,10 @@
 			<thead>
 				<tr>
 					<th>번호</th>
-					<th>아이디</th>
-					<th>닉네임</th>
-					<th>접속IP</th>
-					<th>접속시간</th>
-					<th>IP차단</th>
+					<th>아이피</th>
+					<th>일자</th>
+					<th>상태</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody  id="user-member-table-id">
@@ -74,5 +69,5 @@
 </div>
 
 <script src="<?php echo base_url('assets/js/page.js');?>"></script>
-<script src="<?php echo base_url('assets/js/member_log-script.js');?>"></script>
+<script src="<?php echo base_url('assets/js/member_block-script.js');?>"></script>
 <?= $this->endSection() ?>

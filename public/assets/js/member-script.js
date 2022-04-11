@@ -155,7 +155,7 @@ function showMember(arrMember, nAdminLevel) {
         }
 
         strBuf += "</td> <td>";
-        if (nAdminLevel == LEVEL_ADMIN) {
+        if (nAdminLevel >= LEVEL_ADMIN) {
             strBuf += "<a href='/user/member/";
             strBuf += arrMember[nRow].mb_fid;
             strBuf += "' class='link-member'>"
@@ -189,9 +189,14 @@ function showMember(arrMember, nAdminLevel) {
         strBuf += "슬롯: " + arrMember[nRow].mb_game_sl_ratio + "% <br>";
         */
         strBuf += "</td> <td>";
-        strBuf += arrMember[nRow].mb_ip_last;
-        strBuf += "<br><button name='" + arrMember[nRow].mb_ip_last + "' >IP차단</button>";
-        strBuf += "</td> <td>";
+        if (nAdminLevel >= LEVEL_ADMIN) {
+            strBuf += arrMember[nRow].mb_ip_last;
+            if (arrMember[nRow].block_state == 1) {
+                strBuf += "<br><br><button name='" + arrMember[nRow].mb_ip_last + "' >차단해제</button>";
+            } else
+                strBuf += "<br><br><button name='" + arrMember[nRow].mb_ip_last + "' >IP차단</button>";
+            strBuf += "</td> <td>";
+        }
         if (arrMember[nRow].mb_state_active == 1) {
             strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>승인</button>";
         } else if (arrMember[nRow].mb_state_active == 2) {
@@ -297,7 +302,7 @@ function requestMember() {
         url: "/userapi/getmembers",
         data: { json_: jsonData },
         success: function(jResult) {
-            //console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 showMember(jResult.data, jResult.level);
             } else if (jResult.status == "fail") {
@@ -305,7 +310,7 @@ function requestMember() {
             }
         },
         error: function(request, status, error) {
-            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });
@@ -348,7 +353,7 @@ function requestTotalPage() {
             }
         },
         error: function(request, status, error) {
-            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });
@@ -363,6 +368,12 @@ function addButtonElementListener(buttonElement) {
                 return;
             var jsonData = { "mb_fid": this.name };
             requestDeleteCompany(jsonData);
+        } else if (this.innerHTML.search("IP차단") >= 0) {
+            var jsonData = { "block_ip": this.name, "block_state": 1 };
+            requestAddBlock(jsonData);
+        } else if (this.innerHTML.search("차단해제") >= 0) {
+            var jsonData = { "block_ip": this.name, "block_state": 0 };
+            requestAddBlock(jsonData);
         } else if (this.innerHTML.search("승인") >= 0) {
             var jsonData = { "mb_fid": this.name, "mb_state_active": 0 };
             requestUpdateCompany(jsonData);
@@ -510,6 +521,39 @@ function requestUpdateCompany(jsData) {
     });
 
 }
+
+function requestAddBlock(jsData) {
+
+    var jsonData = JSON.stringify(jsData);
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "/userapi/add_block",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+
+            if (jResult.status == "success") {
+                location.replace('/user/member_block');
+                // updateMember(jResult.data, jResult.level);
+            } else if (jResult.status == "fail") {
+
+            } else if (jResult.status == "nopermit") {
+                alert('변경권한이 없습니다.');
+                location.replace('/pages/nopermit');
+            } else if (jResult.status == "logout") {
+                location.replace('/');
+            }
+        },
+        error: function(request, status, error) {
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+
+    });
+
+}
+
 
 function requestDeleteCompany(jsData) {
 

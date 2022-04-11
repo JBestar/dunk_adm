@@ -71,7 +71,9 @@
 					<th>현재금액</th>
 					<th>포인트</th>
 					<th>게임사별<br>보유알</th>
+					<?php if ($mb_level >= LEVEL_ADMIN) {?>	
 					<th>접속IP</th>
+					<?php } ?>
 					<th>승인</th>
 					<th>게임별설정</th>
 				</tr>

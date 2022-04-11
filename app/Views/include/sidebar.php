@@ -27,7 +27,8 @@
     <!--?php }  if($mb_level >= LEVEL_EMPLOYEE) {  ?-->
     <a href="<?php echo base_url().'user/member/0';?>" class="<?=$user_member?>"><i class="glyphicon glyphicon-cd"></i> 회원</a>
     <?php if($mb_level >= LEVEL_ADMIN) {  ?>
-    <a href="<?php echo base_url().'user/member_log';?>" class="<?=$user_member_log?>"><i class="glyphicon glyphicon-cd"></i> 접속이력</a>
+    <a href="<?php echo base_url().'user/member_log';?>" class="<?=$user_log?>"><i class="glyphicon glyphicon-cd"></i> 접속이력</a>
+    <a href="<?php echo base_url().'user/member_block';?>" class="<?=$user_block?>"><i class="glyphicon glyphicon-cd"></i> 아이피블록</a>
     <?php }  ?>
    
   </div>

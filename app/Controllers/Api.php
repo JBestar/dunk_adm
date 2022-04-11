@@ -13,6 +13,7 @@ use App\Models\CsBet_model;
 use App\Models\SlBet_model;
 use App\Models\SlotPrd_Model;
 use App\Models\SessLog_Model;
+use App\Models\Block_Model;
 
 class Api extends BaseController{
     public function index()
@@ -32,8 +33,13 @@ class Api extends BaseController{
 		//model
         $modelMember = new Member_Model();
         $userData = $modelMember->where('mb_uid', $arrLoginData['username'])->first();
-        $result = false;
-        if ($userData != null && $userData['mb_pwd'] === $arrLoginData['password'])
+        $iResult = 0;
+		$ip = $this->request->getIPAddress();
+
+		$modelBlock = new Block_Model();
+		if(!is_null($modelBlock->getByIp($ip, true))){
+			$iResult = 2;
+		} else if ($userData != null && $userData['mb_pwd'] === $arrLoginData['password'])
         {
             if ($userData['mb_level'] >= LEVEL_MIN && $userData['mb_state_active'] == STATE_ACTIVE){
                 $sessData = [
@@ -41,9 +47,9 @@ class Api extends BaseController{
                     'logged_in' => TRUE, 
                 ];
 				$this->session->set($sessData);
-				$userData['mb_ip_last'] = $this->request->getIPAddress();
+				$userData['mb_ip_last'] = $ip;
 				$modelMember->updateLogin($userData);
-                $result = true;
+                $iResult = 1;
 
 				$modelSessLog = new SessLog_Model();
 				$modelSessLog->add($userData);
@@ -51,14 +57,16 @@ class Api extends BaseController{
             }
         }   
 		//결과값 
- 		if($result){	
+ 		if($iResult == 1){	
 			$arrData = ['redirect' => '/'];
 
 			$arrResult['data'] = $arrData;
 			$arrResult['status'] = "success";
 		}
-		else
+		else{
 			$arrResult['status'] = "fail";
+
+		}
         return $this->response->setJSON($arrResult);
 	}
 

@@ -1177,7 +1177,21 @@ class Member_Model extends Model
 
     public function searchMemberByEmpFid($nAdminFid, $nAdminLev, $arrReqData)
     {
-        $strQuery = "SELECT * FROM $this->table WHERE mb_level != '".LEVEL_ADMIN."'";
+        $strTbColum = " ".implode(", ", $this->getFields);
+        $strTbColum.= ", block_ip, block_state ";
+
+        $strTbColum = "mb_fid, mb_uid, mb_level, mb_emp_fid, mb_emp_permit, mb_nickname,  
+	        mb_ip_join, mb_ip_last, mb_money, mb_point, mb_money_charge, mb_money_exchange, mb_grade, mb_state_active, mb_state_alarm, 
+	        mb_state_view, mb_game_pb, mb_game_ps, mb_game_bb, mb_game_bs, mb_game_cs, mb_game_sl, mb_game_pb_ratio, mb_game_pb2_ratio, 
+	        mb_game_ps_ratio, mb_game_bb_ratio, mb_game_bb2_ratio, mb_game_bs_ratio, mb_game_cs_ratio, mb_game_sl_ratio, mb_game_pb_percent, 
+	        mb_game_pb2_percent, mb_game_ps_percent, mb_game_bb_percent, mb_game_bb2_percent, mb_game_bs_percent,  
+            mb_live_money, mb_slot_money, mb_fslot_money, block_ip, block_state";
+
+        $tbBlock = "block_list";
+        $strQuery = "SELECT ".$strTbColum." FROM ".$this->table;
+        $strQuery .= ' LEFT JOIN '.$tbBlock.' ON '.$this->table.'.mb_ip_last = '.$tbBlock.'.block_ip ';
+        $strQuery.= " WHERE mb_level < '".LEVEL_ADMIN."'";
+
         if ($nAdminFid != 0){
             $strQuery .= " AND mb_emp_fid = '".$nAdminFid."'";
         }

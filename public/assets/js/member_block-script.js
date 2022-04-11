@@ -21,18 +21,17 @@ function showMember(arrMember) {
         strBuf += "<td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td> <td>";
-        strBuf += arrMember[nRow].log_mb_uid;
+        strBuf += arrMember[nRow].block_ip;
         strBuf += "</td> <td>";
-        strBuf += arrMember[nRow].mb_nickname;
-        strBuf += "</td> <td>";
-        strBuf += arrMember[nRow].log_ip;
-        strBuf += "</td> <td>";
-        strBuf += arrMember[nRow].log_time;
+        strBuf += arrMember[nRow].block_updated;
         strBuf += "</td> <td>";
         if (arrMember[nRow].block_state == 1) {
-            strBuf += "<button name='" + arrMember[nRow].log_ip + "' >차단해제</button>";
-        } else
-            strBuf += "<button name='" + arrMember[nRow].log_ip + "' >IP차단</button>";
+            strBuf += "<button name='" + arrMember[nRow].block_fid + "'  class='button-active'>차단</button>";
+        } else {
+            strBuf += "<button name='" + arrMember[nRow].block_fid + "' >해제</button>";
+        }
+        strBuf += "</td> <td>";
+        strBuf += "<button name='" + arrMember[nRow].block_fid + "' >삭제</button>";
         strBuf += "</td></tr>";
     }
 
@@ -61,28 +60,23 @@ function addEventListner() {
 function requestMember() {
 
     var nPage = getActivePage();
-    var strUid = $("#userpanel-userid-input-id").val();
-    var dtStart = $("#userpanel-datestart-input-id").val();
-    var dtEnd = $("#userpanel-dateend-input-id").val();
+    var strIp = $("#userpanel-ip-input-id").val();
 
     var jsonData = {
         "count": CountPerPage,
         "page": nPage,
-        "mb_uid": strUid,
-        "start": dtStart,
-        "end": dtEnd
+        "ip": strIp,
     };
-
 
     jsonData = JSON.stringify(jsonData);
 
     $.ajax({
         type: "POST",
         dataType: "json",
-        url: "/userapi/loglist",
+        url: "/userapi/blocklist",
         data: { json_: jsonData },
         success: function(jResult) {
-            //console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 showMember(jResult.data);
             } else if (jResult.status == "fail") {
@@ -102,26 +96,22 @@ function requestMember() {
 //Function to Request Game Result History to WebServer
 function requestTotalPage() {
     CountPerPage = $("#userpanel-number-select-id").val();
-    var strUid = $("#userpanel-userid-input-id").val();
-    var dtStart = $("#userpanel-datestart-input-id").val();
-    var dtEnd = $("#userpanel-dateend-input-id").val();
+    var strIp = $("#userpanel-ip-input-id").val();
 
     var jsonData = {
         "count": CountPerPage,
-        "mb_uid": strUid,
-        "start": dtStart,
-        "end": dtEnd
+        "ip": strIp,
     };
 
     jsonData = JSON.stringify(jsonData);
 
     $.ajax({
-        url: '/userapi/logcnt',
+        url: '/userapi/blockcnt',
         data: { json_: jsonData },
         dataType: 'json',
         type: 'post',
         success: function(jResult) {
-            // console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();
@@ -135,20 +125,52 @@ function requestTotalPage() {
     });
 }
 
-function requestAddBlock(jsData) {
+function addBtnEvent() {
+    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+
+    var elemTable = document.getElementById("user-member-table-id");
+    var elemTableBtns = elemTable.getElementsByTagName("button");
+    if (elemTableBtns == null)
+        return;
+
+    var i;
+    for (i = 0; i < elemTableBtns.length; i++) {
+        addButtonElementListener(elemTableBtns[i]);
+    }
+}
+
+
+function addButtonElementListener(buttonElement) {
+    buttonElement.addEventListener("click", function() {
+
+        if (this.innerHTML.search("차단") >= 0) {
+            var jsonData = { "block_fid": this.name, "block_state": 0 };
+            requestUpdateBlock(jsonData);
+        } else if (this.innerHTML.search("해제") >= 0) {
+            var jsonData = { "block_fid": this.name, "block_state": 1 };
+            requestUpdateBlock(jsonData);
+        } else if (this.innerHTML.search("삭제") >= 0) {
+            var jsonData = { "block_fid": this.name };
+            requestDeleteBlock(jsonData);
+        }
+    });
+}
+
+
+function requestUpdateBlock(jsData) {
 
     var jsonData = JSON.stringify(jsData);
-
+    console.log(jsonData);
     $.ajax({
         type: "POST",
         dataType: "json",
-        url: "/userapi/add_block",
+        url: "/userapi/update_block",
         data: { json_: jsonData },
         success: function(jResult) {
             // console.log(jResult);
 
             if (jResult.status == "success") {
-                location.replace('/user/member_block');
+                requestMember();
             } else if (jResult.status == "fail") {
 
             } else if (jResult.status == "nopermit") {
@@ -167,29 +189,35 @@ function requestAddBlock(jsData) {
 }
 
 
-function addButtonElementListener(buttonElement) {
-    buttonElement.addEventListener("click", function() {
+function requestDeleteBlock(jsData) {
 
-        if (this.innerHTML.search("IP차단") >= 0) {
-            var jsonData = { "block_ip": this.name, "block_state": 1 };
-            requestAddBlock(jsonData);
-        } else if (this.innerHTML.search("차단해제") >= 0) {
-            var jsonData = { "block_ip": this.name, "block_state": 0 };
-            requestAddBlock(jsonData);
-        }
-    });
-}
-
-function addBtnEvent() {
-    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
-
-    var elemTable = document.getElementById("user-member-table-id");
-    var elemTableBtns = elemTable.getElementsByTagName("button");
-    if (elemTableBtns == null)
+    if (!confirm("삭제하시겠습니까?"))
         return;
 
-    var i;
-    for (i = 0; i < elemTableBtns.length; i++) {
-        addButtonElementListener(elemTableBtns[i]);
-    }
+    var jsonData = JSON.stringify(jsData);
+    console.log(jsonData);
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "/userapi/delete_block",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+
+            if (jResult.status == "success") {
+                requestMember();
+            } else if (jResult.status == "fail") {
+
+            } else if (jResult.status == "nopermit") {
+                location.replace('/pages/nopermit');
+            } else if (jResult.status == "logout") {
+                location.replace('/');
+            }
+        },
+        error: function(request, status, error) {
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+
+    });
+
 }

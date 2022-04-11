@@ -145,16 +145,16 @@ class User extends StdController
 		
 		$this->load_view_page(
 			'user/member_log', 
-			'user_member_log', 
+			'user_log', 
 			LEVEL_ADMIN);
 	}
 
 	
-	function block_ip(){
+	function member_block(){
 		
 		$this->load_view_page(
-			'user/block_ip', 
-			'block_ip', 
+			'user/member_block', 
+			'user_block', 
 			LEVEL_ADMIN);
 	}
 

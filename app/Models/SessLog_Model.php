@@ -27,8 +27,11 @@ class SessLog_Model extends Model {
 
     function search($arrReqData)
     {
-        $strSql = "SELECT ".$this->table.".*, member.mb_nickname FROM ".$this->table;
+        $tbBlock = "block_list";
+
+        $strSql = "SELECT ".$this->table.".*, member.mb_nickname, block_ip, block_state FROM ".$this->table;
         $strSql .= " JOIN member ON ".$this->table.".log_mb_uid = member.mb_uid ";
+        $strSql .= ' LEFT JOIN '.$tbBlock.' ON '.$this->table.'.log_ip = '.$tbBlock.'.block_ip ';
         $strSql .= " WHERE log_delete = '0' ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
             $strSql.=" AND log_time >= '".$arrReqData['start']." 0:0:0' AND log_time <= '".$arrReqData['end']." 23:59:59'" ; 
