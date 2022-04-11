@@ -92,7 +92,7 @@ function requestGameResult() {
     jsonData = JSON.stringify(jsonData);
 
     //console.log(jsonData);
-
+    $(".loading").show();
     $.ajax({
         url: '/bbapi/result',
         data: { json_: jsonData },
@@ -100,11 +100,13 @@ function requestGameResult() {
         dataType: 'json',
         success: function(jResult) {
             //console.log(jResult);
+            $(".loading").hide();
             if (jResult.status == "success") {
                 ShowGameResult(jResult.data);
             }
         },
         error: function(request, status, error) {
+            $(".loading").hide();
             //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 

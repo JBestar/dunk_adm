@@ -76,7 +76,7 @@ function requestGameResult() {
 
     var jsonData = { "count": CountPerPage, "page": nPage, "start": dtStart, "end": dtEnd, "round": nRound };
     jsonData = JSON.stringify(jsonData);
-
+    $(".loading").show();
     $.ajax({
         url: '/bsapi/result',
         data: { json_: jsonData },
@@ -84,11 +84,13 @@ function requestGameResult() {
         type: 'post',
         success: function(jResult) {
             //console.log(jResult);
+            $(".loading").hide();
             if (jResult.status == "success") {
                 ShowGameResult(jResult.data);
             }
         },
         error: function(request, status, error) {
+            $(".loading").hide();
             //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 

@@ -100,19 +100,21 @@ function requestTransferHistory() {
 
     var jsonData = { "count": CountPerPage, "page": nPage, "start": dtStart, "end": dtEnd, "user": strUser, "mode": nMode };
     jsonData = JSON.stringify(jsonData);
-
+    $(".loading").show();
     $.ajax({
         url: '/api/translist',
         data: { json_: jsonData },
         type: 'post',
         dataType: "json",
         success: function(jResult) {
+            $(".loading").hide();
             //console.log(jResult);
             if (jResult.status == "success") {
                 showMoneyHistory(jResult.data);
             }
         },
         error: function(request, status, error) {
+            $(".loading").hide();
             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 

@@ -89,13 +89,14 @@ function requestCalculate(nFid, nRow) {
 
     var jsonData = { "mb_fid": nFid, "start": dtStart, "end": dtEnd, "type": mGameId };
     jsonData = JSON.stringify(jsonData);
-
+    $(".loading").show();
     $.ajax({
         url: '/api/calculategame',
         data: { json_: jsonData },
         type: 'post',
         dataType: "json",
         success: function(jResult) {
+            $(".loading").hide();
             console.log(jResult);
             if (jResult.status == "success") {
                 if (nRow < 0) showCalcualte(jResult.data);
@@ -105,6 +106,7 @@ function requestCalculate(nFid, nRow) {
             }
         },
         error: function(request, status, error) {
+            $(".loading").hide();
             console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 

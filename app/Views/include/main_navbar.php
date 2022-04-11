@@ -1,7 +1,9 @@
 <!--?= $this->extend('include/sidebar')?-->
 <!--?= $this->section('MainNavBar')?-->
 <div class="main-container" id="main-container-id">
-
+	<div class="loading" style="display: none;">
+		<div class="load lds-ellipsis"></div>
+	</div>
 	<div class="main-navbar" id="main-navbar-id">
 		<h4 style="float: left; margin: 5px 40px 5px 10px;  font-weight: bold; color: #0090ff; font-size: 20px;"
 			id="main-navbar-level-id"></h4>
