@@ -13,7 +13,7 @@ function readPasswordToObject() {
 
     if ($("#confsite-ip-input-id").length > 0) {
         jsonData.ip_addr = $("#confsite-ip-input-id").val();
-        jsonData.ip_check = $("#confpb-ip-check-id").prop('checked') ? 1 : 0;
+        jsonData.ip_check = $("#confsite-ip-check-id").prop('checked') ? 1 : 0;
     }
     return jsonData;
 

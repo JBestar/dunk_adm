@@ -151,9 +151,8 @@ class Member_Model extends Model
         if(strlen($arrPwd['password_new']) < 1 && !array_key_exists('ip_addr', $arrPwd) )
             return 0; 
 
-        $data = [
-            'mb_pwd'=> $arrPwd['password_new'],
-        ];
+        if(strlen($arrPwd['password_new']) > 0)
+            $data['mb_pwd'] =  $arrPwd['password_new'];
 
         if(array_key_exists('ip_addr', $arrPwd) ){
             $data['mb_ip_join'] = $arrPwd['ip_addr'];
