@@ -110,7 +110,7 @@ function addBtnEvent() {
                 url: "/userapi/modifymember",
                 data: { json_: jsonData },
                 success: function(jResult) {
-                    console.log(jResult);
+                    // console.log(jResult);
                     if (jResult.status == "success") {
                         window.location.replace('/user/member/0');
                     } else if (jResult.status == "logout") {
@@ -227,7 +227,7 @@ function addBtnEvent() {
             url: "/userapi/transfer",
             data: { json_: jsonData },
             success: function(jResult) {
-                console.log(jResult);
+                // console.log(jResult);
                 if (jResult.status == "success") {
                     location.reload();
                 } else if (jResult.status == "logout") {
@@ -239,7 +239,7 @@ function addBtnEvent() {
                 }
             },
             error: function(request, status, error) {
-                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
             }
 
         });

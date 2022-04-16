@@ -24,7 +24,7 @@ class Block_Model extends Model {
 
     public function updateByFid($info){
 
-        if(strlen($info['block_ip']) < 1)
+        if(array_key_exists('block_ip', $info) && strlen($info['block_ip']) < 1)
             return false;
 
         return $this->update($info['block_fid'], $info);

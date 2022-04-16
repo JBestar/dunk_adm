@@ -76,7 +76,7 @@ function requestMember() {
         url: "/userapi/blocklist",
         data: { json_: jsonData },
         success: function(jResult) {
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 showMember(jResult.data);
             } else if (jResult.status == "fail") {
@@ -111,7 +111,7 @@ function requestTotalPage() {
         dataType: 'json',
         type: 'post',
         success: function(jResult) {
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();
@@ -160,7 +160,7 @@ function addButtonElementListener(buttonElement) {
 function requestUpdateBlock(jsData) {
 
     var jsonData = JSON.stringify(jsData);
-    console.log(jsonData);
+    // console.log(jsonData);
     $.ajax({
         type: "POST",
         dataType: "json",
@@ -181,7 +181,7 @@ function requestUpdateBlock(jsData) {
             }
         },
         error: function(request, status, error) {
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });
@@ -195,7 +195,7 @@ function requestDeleteBlock(jsData) {
         return;
 
     var jsonData = JSON.stringify(jsData);
-    console.log(jsonData);
+    // console.log(jsonData);
     $.ajax({
         type: "POST",
         dataType: "json",
