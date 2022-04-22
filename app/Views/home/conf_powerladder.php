@@ -11,11 +11,10 @@
 		<?php if($_ENV['app.name'] != APP_ONESTAR) :?>
   		<a href="<?php echo base_url().'home/conf_slot_1';?>" class="sub-navbar-a">슬롯</a>
 		<?php endif ?>
-		<?php if($_ENV['app.name'] == APP_LUCKYONE) :?>
+		<?php if($_ENV['app.name'] == APP_LUCKYONE || $_ENV['app.name'] == APP_GOLDMOON) :?>
   		<a href="<?php echo base_url().'home/conf_slot_2';?>" class="sub-navbar-a">네츄럴슬롯</a>
-		<?php endif ?>
-		<?php if($_ENV['app.name'] == APP_ONESTAR) :?>
-		<a href="<?php echo base_url().'home/conf_slot_2';?>" class="sub-navbar-a" >슬롯</a>
+		<?php elseif($_ENV['app.name'] == APP_ONESTAR) :?>
+		<a href="<?php echo base_url().'home/conf_slot_2';?>" class="sub-navbar-a" >네츄럴슬롯</a>
 		<?php endif ?>
 	</div>
 	<!--Site Setting-->

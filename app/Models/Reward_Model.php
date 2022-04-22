@@ -30,4 +30,22 @@ class Reward_Model extends Model {
         
         return $this->insertBatch($batch);
     }
+
+    public function calcPoint($objEmp, $arrReqData, $gameId = 0){
+
+        $strSQL = ' SELECT SUM(rw_point) AS total_point FROM '.$this->table;
+
+        $strSQL.=" WHERE rw_mb_fid = '".$objEmp->mb_fid."' ";
+        if($gameId > 0)
+            $strSQL.=" AND rw_game = '".$gameId."' ";
+        if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
+            $strSQL.=" AND rw_time >= '".$arrReqData['start']." 0:0:0' AND rw_time <= '".$arrReqData['end']." 23:59:59' " ;
+    
+        $objResult = $this->db->query($strSQL)->getRow();
+        
+        $pointTotal = 0;
+        if(!is_null($objResult->total_point)) $pointTotal += $objResult->total_point;
+
+        return $pointTotal;
+    }
 }

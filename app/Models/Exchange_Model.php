@@ -2,7 +2,7 @@
 namespace App\Models;
 use CodeIgniter\Model;
 
-class Exchange_model extends Model {
+class Exchange_Model extends Model {
 	
 	protected $table = 'member_exchange';
     protected $allowedFileds = [

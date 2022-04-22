@@ -171,27 +171,24 @@ function showMember(arrMember, nAdminLevel) {
         strBuf += arrMember[nRow].mb_nickname;
         strBuf += "</td> <td>";
         strBuf += parseInt(arrMember[nRow].mb_grade).toLocaleString() + "레벨";
-        strBuf += "</td> <td>";
+        strBuf += "</td> <td id='mm_" + arrMember[nRow].mb_fid + "'>";
         strBuf += parseInt(arrMember[nRow].mb_money).toLocaleString() + "원";
-        strBuf += "</td> <td>";
+        strBuf += "</td> <td id='mp_" + arrMember[nRow].mb_fid + "'>";
         strBuf += parseInt(arrMember[nRow].mb_point).toLocaleString();
         strBuf += "</td> <td>";
-        strBuf += "에볼: " + parseInt(arrMember[nRow].mb_live_money).toLocaleString() + "<br>";
-        if (strApp != APP_ONESTAR)
-            strBuf += "슬롯: " + parseInt(arrMember[nRow].mb_slot_money).toLocaleString() + "<br>";
-        if (strApp == APP_LUCKYONE)
-            strBuf += "네츄럴슬롯: " + parseInt(arrMember[nRow].mb_fslot_money).toLocaleString() + "<br>";
-        if (strApp == APP_ONESTAR)
-            strBuf += "슬롯: " + parseInt(arrMember[nRow].mb_fslot_money).toLocaleString() + "<br>";
-        /*
-        strBuf += "</td> <td>";
-        strBuf += "파워볼: " + arrMember[nRow].mb_game_pb_ratio + "% / " + arrMember[nRow].mb_game_pb2_ratio + "% <br>";
-        strBuf += "파워사다리: " + arrMember[nRow].mb_game_ps_ratio + "% <br>";
-        strBuf += "보글볼: " + arrMember[nRow].mb_game_bb_ratio + "% / " + arrMember[nRow].mb_game_bb2_ratio + "% <br>";
-        strBuf += "보글사다리: " + arrMember[nRow].mb_game_bs_ratio + "% <br>";
-        strBuf += "카지노: " + arrMember[nRow].mb_game_cs_ratio + "% <br>";
-        strBuf += "슬롯: " + arrMember[nRow].mb_game_sl_ratio + "% <br>";
-        */
+        strBuf += "<span id='ev_" + arrMember[nRow].mb_fid + "'>에볼: " + parseInt(arrMember[nRow].mb_live_money).toLocaleString() + "</span><br>";
+
+        if (strApp == APP_GOLDMOON || strApp == APP_SKY)
+            strBuf += "<span id='sl_" + arrMember[nRow].mb_fid + "'>슬롯: " + parseInt(arrMember[nRow].mb_slot_money).toLocaleString() + "</span><br>";
+        if (strApp == APP_GOLDMOON)
+            strBuf += "<span id='fsl_" + arrMember[nRow].mb_fid + "'>네츄럴슬롯: " + parseInt(arrMember[nRow].mb_fslot_money).toLocaleString() + "</span>";
+        else if (strApp == APP_ONESTAR)
+            strBuf += "<span id='fsl_" + arrMember[nRow].mb_fid + "'>슬롯: " + parseInt(arrMember[nRow].mb_fslot_money).toLocaleString() + "</span>";
+        else if (strApp == APP_LUCKYONE)
+            strBuf += "<span id='tsl_" + arrMember[nRow].mb_fid + "'>슬롯: " + (parseInt(arrMember[nRow].mb_slot_money) + parseInt(arrMember[nRow].mb_fslot_money)).toLocaleString() + "</span>";
+        strBuf += '<br><button class="refresh_btn" onclick="refreshEv(' + arrMember[nRow].mb_fid + ');"></button>';
+
+
         strBuf += "</td> <td>";
         if (nAdminLevel >= LEVEL_ADMIN) {
             strBuf += arrMember[nRow].mb_ip_last;
@@ -592,4 +589,102 @@ function requestDeleteCompany(jsData) {
 
     });
 
+}
+
+function refreshEv(mbFid) {
+    var jsonData = { "mb_fid": mbFid };
+    jsonData = JSON.stringify(jsonData);
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "/userapi/egg_ev",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+
+            if (jResult.status == "success") {
+                $("#ev_" + mbFid).text("에볼: " + parseInt(jResult.live_money).toLocaleString());
+                $("#mm_" + mbFid).text(parseInt(jResult.money).toLocaleString() + "원");
+                $("#mp_" + mbFid).text(parseInt(jResult.point).toLocaleString());
+
+            } else if (jResult.status == "fail") {
+
+            } else if (jResult.status == "logout") {
+                window.location.replace('/');
+            }
+        },
+        error: function(request, status, error) {
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+
+    });
+
+    setTimeout(function() {
+        refreshSl(mbFid);
+    }, 500);
+
+    setTimeout(function() {
+        refreshFsl(mbFid);
+    }, 2000);
+}
+
+
+function refreshSl(mbFid) {
+    var jsonData = { "mb_fid": mbFid };
+    jsonData = JSON.stringify(jsonData);
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "/userapi/egg_sl",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+
+            if (jResult.status == "success") {
+                $("#sl_" + mbFid).text("슬롯: " + parseInt(jResult.slot_money).toLocaleString());
+                $("#tsl_" + mbFid).text("슬롯: " + (parseInt(jResult.slot_money) + parseInt(jResult.fslot_money)).toLocaleString());
+
+            } else if (jResult.status == "fail") {
+
+            } else if (jResult.status == "logout") {
+                window.location.replace('/');
+            }
+        },
+        error: function(request, status, error) {
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+
+    });
+}
+
+
+function refreshFsl(mbFid) {
+    var jsonData = { "mb_fid": mbFid };
+    jsonData = JSON.stringify(jsonData);
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "/userapi/egg_fsl",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+
+            if (jResult.status == "success") {
+                $("#fsl_" + mbFid).text("슬롯: " + parseInt(jResult.slot_money).toLocaleString());
+                $("#tsl_" + mbFid).text("슬롯: " + (parseInt(jResult.slot_money) + parseInt(jResult.fslot_money)).toLocaleString());
+
+            } else if (jResult.status == "fail") {
+
+            } else if (jResult.status == "logout") {
+                window.location.replace('/');
+            }
+        },
+        error: function(request, status, error) {
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+
+    });
 }

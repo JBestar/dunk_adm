@@ -5,7 +5,7 @@ use App\Models\Notice_Model;
 use App\Models\Charge_Model;
 use App\Models\Clean_model;
 use App\Models\ConfGame_model;
-use App\Models\Exchange_model;
+use App\Models\Exchange_Model;
 use App\Models\MoneyHistory_Model;
 use App\Models\Transfer_Model;
 use App\Models\ConfSite_Model;
@@ -15,6 +15,9 @@ use App\Models\SlotGame_Model;
 use App\Models\SlotPrd_Model;
 use App\Models\SessLog_Model;
 use App\Models\Block_Model;
+use App\Models\Reward_Model;
+
+
 
 class Api extends BaseController{
     public function index()
@@ -495,7 +498,7 @@ public function withdrawlist(){
 
 		if(is_login())
 		{
-			$exchangeModel = new Exchange_model();
+			$exchangeModel = new Exchange_Model();
 			$arrData = $exchangeModel->search($arrReqData);
 			$nTotal = $exchangeModel->calcAdminExchange($arrReqData);
 			
@@ -514,7 +517,7 @@ public function withdrawlist(){
 		$arrReqData = json_decode($jsonData, true);
 		if(is_login())
 		{
-			$exchangeModel = new Exchange_model();
+			$exchangeModel = new Exchange_Model();
 			$objCount = $exchangeModel->searchCount($arrReqData);
 
 			$arrResult['data'] = $objCount;
@@ -533,7 +536,7 @@ public function withdrawlist(){
 		if(is_login())
 		{
 			$strUid = $this->session->user_id;
-			$exchangeModel = new Exchange_model();
+			$exchangeModel = new Exchange_Model();
 			$memberModel  = new Member_Model();
 			$moneyhistoryModel = new MoneyHistory_Model();
 			$bResult = false;
@@ -916,34 +919,31 @@ public function withdrawlist(){
 			
 			if($bResult){
 				
-				$i=0;
 				$chargeModel = new Charge_Model();
-				$exchangeModel = new Exchange_model();
-				//$objCalc = array();
-		        
+				$exchangeModel = new Exchange_Model();
+		        $rewardModel = new Reward_Model();
+
 				foreach ($arrEmp as $objEmp) {
             		$objCalc['mb_fid'] = $objEmp->mb_fid;
 		            $objCalc['mb_uid'] = $objEmp->mb_uid;
 		            $objCalc['mb_nickname'] = $objEmp->mb_nickname;
 		            $objCalc['mb_emp_fid'] = $objEmp->mb_emp_fid;
 		            $objCalc['mb_level'] = $objEmp->mb_level;
-		            $objCalc['mb_charge'] = $chargeModel->calcChargeMoney($objEmp, $arrReqData);         //충전금액합산
-		            $objCalc['mb_exchange'] = $exchangeModel->calcExchangeMoney($objEmp, $arrReqData);     //환전금액합산
-		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  //충환손익
+		            $objCalc['mb_charge'] = $chargeModel->calcChargeMoney($objEmp, $arrReqData);         	//충전금액합산
+		            $objCalc['mb_exchange'] = $exchangeModel->calcExchangeMoney($objEmp, $arrReqData);     	//환전금액합산
+		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  		//충환손익
 		            $arrEmpMoney = $memberModel->calcEmpMoney($objEmp);
 		            $arrUserMoney = $memberModel->calcUserMoney($objEmp->mb_fid);
-	            	$objCalc['mb_emp_money'] =  $arrEmpMoney[0];                        //관리자보유금;
-	            	$objCalc['mb_user_money'] = $arrUserMoney[0];						//유저보유금;
+	            	$objCalc['mb_emp_money'] =  $arrEmpMoney[0];                        					//관리자보유금;
+	            	$objCalc['mb_user_money'] = $arrUserMoney[0];											//유저보유금;
 		            $arrBetData = $memberModel->calcBetMoneys($objEmp, $arrReqData);
-			        $objCalc['mb_bet_money'] = $arrBetData['bet_money'] ;          		//베팅머니
-					$objCalc['mb_bet_win_money'] = $arrBetData['bet_win_money'] ;      	//적중머니
-         			$objCalc['mb_bet_benefit_money'] = $arrBetData['bet_benefit_money'];  //베팅손익
-         			$objCalc['mb_rate_money'] = $arrBetData['rate_money'] ;          		//수수료
-         			$objCalc['mb_last_money'] = $arrBetData['last_money'] ;         		//최종손익
+			        $objCalc['mb_bet_money'] = $arrBetData['bet_money'] ;          							//베팅머니
+					$objCalc['mb_bet_win_money'] = $arrBetData['bet_win_money'] ;      						//적중머니
+         			$objCalc['mb_bet_benefit_money'] = $arrBetData['bet_benefit_money'];  					//베팅손익
+         			$objCalc['mb_rate_money'] = $rewardModel->calcPoint($objEmp, $arrReqData) ;   			//수수료
+         			$objCalc['mb_last_money'] = $arrBetData['bet_benefit_money'] - $objCalc['mb_rate_money'] ; //최종손익
 
-
-		            $arrData[$i] = $objCalc;
-		            $i++;
+		            $arrData[] = $objCalc;
             		
         		}
 			}
@@ -1006,11 +1006,10 @@ public function withdrawlist(){
 			
 			if($bResult){
 				
-				$i=0;
 				$chargeModel = new Charge_Model();
-				$exchangeModel = new Exchange_model();
-				//$objCalc = array();
-		        // return var_dump($arrEmp);
+				$exchangeModel = new Exchange_Model();
+				$rewardModel = new Reward_Model();
+
 				foreach ($arrEmp as $objEmp) {
             		$objCalc['mb_fid'] = $objEmp->mb_fid;
 		            $objCalc['mb_uid'] = $objEmp->mb_uid;
@@ -1035,7 +1034,7 @@ public function withdrawlist(){
 							$objCalc['mb_emp_money'] =  $arrEmpMoney[3];                        //관리자보유금;
 							$objCalc['mb_user_money'] = $arrUserMoney[3];						//유저보유금;
 							break;
-							default:
+						default:
 							$objCalc['mb_emp_money'] =  $arrEmpMoney[0];                        //관리자보유금;
 							$objCalc['mb_user_money'] = $arrUserMoney[0];						//유저보유금;
 							break;
@@ -1046,16 +1045,14 @@ public function withdrawlist(){
 			        $objCalc['mb_bet_money'] = $arrBetData['bet_money'] ;          //베팅머니
 					$objCalc['mb_bet_win_money'] = $arrBetData['bet_win_money'] ;      //적중머니
          			$objCalc['mb_bet_benefit_money'] = $arrBetData['bet_benefit_money'];  //베팅손익
-         			$objCalc['mb_rate_money'] = $arrBetData['rate_money'] ;          //수수료
-         			$objCalc['mb_last_money'] = $arrBetData['last_money'] ;         //최종손익
+         			$objCalc['mb_rate_money'] = $rewardModel->calcPoint($objEmp, $arrReqData, $arrReqData['type']) ;          //수수료
+         			$objCalc['mb_last_money'] = $arrBetData['bet_benefit_money'] - $objCalc['mb_rate_money'] ; //최종손익
 
-		            $arrData[$i] = $objCalc;
-		            $i++;
+		            $arrData[] = $objCalc;
             		
         		}
 			}
 
-			// return var_dump($arrData);
 			$objResult = new \StdClass;			
 			$objResult->data = $arrData;
 			$objResult->level = $objUser->mb_level;
@@ -1359,6 +1356,7 @@ public function withdrawlist(){
 		echo json_encode($objResult);
 	}
 
+	
 	//DB 정리
 	public function cleanDb(){ 
 		$jsonData = $_REQUEST['json_'];

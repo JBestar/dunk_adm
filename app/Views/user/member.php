@@ -13,6 +13,20 @@
 			text-decoration: underline;
 			color: blue;
 		}
+				
+		.user-table button.refresh_btn {
+			border:0;
+			padding:0;
+			box-shadow:none;
+			width: 18px;
+			height: 18px;
+			vertical-align: top;
+			margin-left: 10px;
+			background: url(/assets/image/refresh_btn.png) no-repeat left top;
+		}
+		.user-table button.refresh_btn:hover{
+			box-shadow: 1px 1px 1px 0px rgb(0 0 0 / 50%);
+		}
 	</style>
 	<!--Sub Navbar-->
 	<div class = "sub-navbar">
@@ -104,5 +118,5 @@
 </div>
 
 <script src="<?php echo base_url('assets/js/page.js');?>"></script>
-<script src="<?php echo base_url('assets/js/member-script.js?v=6');?>"></script>
+<script src="<?php echo base_url('assets/js/member-script.js?v=7');?>"></script>
 <?= $this->endSection() ?>

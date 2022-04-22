@@ -7,7 +7,7 @@ use App\Models\BsBet_model;
 use App\Models\Charge_Model;
 use App\Models\ConfGame_model;
 use App\Models\ConfSite_Model;
-use App\Models\Exchange_model;
+use App\Models\Exchange_Model;
 use App\Models\Member_Model;
 use App\Models\Notice_Model;
 use App\Models\PbBet_model;
@@ -15,6 +15,10 @@ use App\Models\PsBet_model;
 use App\Models\MoneyHistory_Model;
 use App\Models\SessLog_Model;
 use App\Models\Block_Model;
+
+use App\Libraries\ApiCas_Lib;
+use App\Libraries\ApiSlot_Lib;
+use App\Libraries\ApiFslot_Lib;
 
 class UserApi extends BaseController
 {
@@ -821,5 +825,198 @@ class UserApi extends BaseController
         echo json_encode($arrResult);
     }
 
+    public function egg_ev(){
+		$jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+
+        $result = new \StdClass;
+        
+        if(!is_login())
+		{
+			$result->msg = "세션이 만료되었습니다. 다시 로그인하세요.";
+            $result->status = STATUS_LOGOUT;		
+
+        } else {
+            $libApicas = new ApiCas_Lib();
+			$modelMember  = new Member_Model();
+
+			$objMember = $modelMember->getInfoByFid($arrReqData['mb_fid']);
+
+            $iCreated = 0;
+            if(is_null($objMember))
+				$iCreated = 0;
+			else if($objMember->mb_live_id == 0) {
+                $iCreated = 2;								//회원창조실패
+            } else {
+                $iCreated = 1;
+            }
+			if($iCreated == 0){
+                $result->msg = '준비중입니다.';
+                $result->status = "fail";
+            } else if($iCreated == 2){
+				$result->msg = '계정이 존재하지 않습니다.';
+                $result->status = "fail";
+			} else if($iCreated == 5){
+				$result->msg = '중복된 사용자입니다. 관리자에게 문의해주세요.';
+                $result->status = "fail";
+			} else if($iCreated == 1){
+				$arrResult = $libApicas->getUserInfo($objMember->mb_live_uid);
+				writeLog("<Casino>".$objMember->mb_uid."-UserInfo Status=".$arrResult['status']);
+                if($arrResult['status'] == 1)
+                {
+                    writeLog("<Casino>".$objMember->mb_uid."-UserInfo Balance=".$arrResult['balance']);
+
+                    $objMember->mb_live_money = $arrResult['balance'];
+                    $modelMember->updateLiveMoney($objMember);   
+                    
+                    $result->live_money = $objMember->mb_live_money;
+                    $result->money = $objMember->mb_money;
+                    $result->point = $objMember->mb_point;
+
+                    $result->status = "success";
+                }else {
+                    if(array_key_exists('error', $arrResult) && $arrResult['error'] == INVALID_USER){
+                        $result->msg = '존재하지 않는 사용자입니다. 관리자에게 문의해주세요.';
+                        $result->status = "fail";
+                    }
+                    else {
+                        $result->msg = '오류가 발생하였습니다. 관리자에게 문의해주세요.';
+                        $result->status = "fail";
+                    } 
+                }
+			}
+
+        }
+        echo json_encode($result);
+    }
+	
+    public function egg_sl(){
+        $jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+
+        $result = new \StdClass;
+        
+        if(!is_login())
+		{
+			$result->msg = "세션이 만료되었습니다. 다시 로그인하세요.";
+            $result->status = STATUS_LOGOUT;		
+
+        } else {
+            $libApislot = new ApiSlot_Lib();
+            $modelMember  = new Member_Model();
+
+			$objMember = $modelMember->getInfoByFid($arrReqData['mb_fid']);
+
+            $iCreated = 0;
+			if(is_null($objMember))
+				$iCreated = 0;
+			else if($objMember->mb_slot_uid == ""){
+                //플레이어 창조
+                $iCreated = 2;								//회원창조실패
+            } else {
+                $iCreated = 1;
+            }
+
+			if($iCreated == 0){
+				$result->msg = '준비중입니다.';
+                $result->status = "fail";
+			} else if($iCreated == 2){
+				$result->msg = '계정이 존재하지 않습니다.';
+                $result->status = "fail";
+			} else if($iCreated == 5){
+				$result->msg = '중복된 사용자입니다. 관리자에게 문의해주세요.';
+                $result->status = "fail";
+			} else if($iCreated == 1){
+				$arrResult =  $libApislot->getUserInfo($objMember->mb_slot_uid);
+				writeLog("<XSLOT>".$objMember->mb_uid."-UserInfo resultCode=".$arrResult['resultCode']);
+                if($arrResult['status'] == 1)
+                {
+                    writeLog("<XSLOT>".$objMember->mb_uid."-UserInfo Balance=".$arrResult['balance']);
+
+                    $objMember->mb_slot_money = $arrResult['balance'];
+                    $modelMember->updateSlotMoney($objMember);   
+                    
+                    $result->slot_money = $objMember->mb_slot_money;
+                    $result->fslot_money = $objMember->mb_fslot_money;
+                    $result->status = "success";
+                }else {
+                    if(array_key_exists('resultCode', $arrResult) ){
+                        $result->msg = '요청실패. 코드='.$arrResult['resultCode'];
+                        $result->status = "fail";
+                    }
+                    else {
+                        $result->msg = '오류가 발생하였습니다. 관리자에게 문의해주세요.';
+                        $result->status = "fail";
+                    } 
+                }
+			}
+
+        }
+        echo json_encode($result);
+    }
+
+    public function egg_fsl(){
+        $jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+
+        $result = new \StdClass;
+        
+        if(!is_login())
+		{
+			$result->msg = "세션이 만료되었습니다. 다시 로그인하세요.";
+            $result->status = STATUS_LOGOUT;		
+
+        } else {
+			$libApifslot = new ApiFslot_Lib();
+            $modelMember  = new Member_Model();
+
+            $objMember = $modelMember->getInfoByFid($arrReqData['mb_fid']);
+
+            $iCreated = 0;
+			if(is_null($objMember))
+				$iCreated = 0;
+			else if($objMember->mb_fslot_id == 0){
+                $iCreated = 2;								//회원창조실패
+            } else {
+                $iCreated = 1;
+            }
+
+			if($iCreated == 0){
+				$result->msg = '준비중입니다.';
+                $result->status = "fail";
+			} else if($iCreated == 0 || $iCreated == 2){
+				$result->msg = '계정이 존재하지 않습니다.';
+                $result->status = "fail";
+			} else if($iCreated == 5){
+				$result->msg = '중복된 사용자입니다. 관리자에게 문의해주세요.';
+                $result->status = "fail";
+			} else if($iCreated == 1){
+				$arrResult = $libApifslot->getUserInfo($objMember->mb_fslot_uid);
+				writeLog("<FSlot>".$objMember->mb_uid."-UserInfo Status=".$arrResult['status']);
+                if($arrResult['status'] == 1)
+                {
+                    writeLog("<FSlot>".$objMember->mb_uid."-UserInfo Balance=".$arrResult['balance']);
+
+                    $objMember->mb_fslot_money = $arrResult['balance'];
+                    $modelMember->updateFslotMoney($objMember);   
+                    
+					$result->slot_money = $objMember->mb_slot_money;
+					$result->fslot_money = $objMember->mb_fslot_money;
+                    $result->status = "success";
+                } else {
+                    if(array_key_exists('error', $arrResult) && $arrResult['error'] == INVALID_USER){
+                        $result->msg = '존재하지 않는 사용자입니다. 관리자에게 문의해주세요.';
+                        $result->status = "fail";
+                    }
+                    else {
+                        $result->msg = '오류가 발생하였습니다. 관리자에게 문의해주세요.';
+                        $result->status = "fail";
+                    } 
+                }
+			}
+
+        }
+        echo json_encode($result);
+    }
 
 }

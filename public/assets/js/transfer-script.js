@@ -33,19 +33,19 @@ function showMoneyHistory(arrData) {
                 strBuf += "<span style='color:green;'>사이트 => 카지노</span>";
                 break;
             case '2':
-                strBuf += "<span style='color:blue;'>카지노 => 사이트</span>";
+                strBuf += "<span style='color:green;'>카지노 => 사이트</span>";
                 break;
             case '3':
-                strBuf += "<span style='color:green;'>사이트 => 슬롯</span>";
+                strBuf += "<span style='color:blue;'>사이트 => 슬롯</span>";
                 break;
             case '4':
                 strBuf += "<span style='color:blue;'>슬롯 => 사이트</span>";
                 break;
             case '5':
-                strBuf += "<span style='color:green;'>사이트 => 슬롯</span>";
+                strBuf += "<span style='color:red;'>사이트 => 슬롯</span>";
                 break;
             case '6':
-                strBuf += "<span style='color:blue;'>슬롯 => 사이트</span>";
+                strBuf += "<span style='color:red;'>슬롯 => 사이트</span>";
                 break;
             default:
                 strBuf += parseInt(arrData[nRow].money_change_type).toLocaleString();

@@ -14,7 +14,7 @@ if (logged != "yes") {
 const APP_LUCKYONE = "Luckyone";
 const APP_ONESTAR = "Onestar";
 const APP_SKY = "Sky";
-
+const APP_GOLDMOON = "Goldmoon";
 
 const LEVEL_ADMIN = 100;
 const LEVEL_COMPANY = 99;
