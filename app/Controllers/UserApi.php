@@ -115,7 +115,7 @@ class UserApi extends BaseController
             $objAdmin = $memberModel->getInfo($strUid);
             $objReqUser = $memberModel->getInfoByFid($arrData['mb_fid']);
             $arrData['mb_emp_fid'] = 0;
-            if ($objAdmin->mb_level == LEVEL_ADMIN && strlen($arrData['mb_emp_uid']) > 0){
+            if ($objAdmin->mb_level >= LEVEL_ADMIN && strlen($arrData['mb_emp_uid']) > 0){
                 $objEmp = $memberModel->getInfo($arrData['mb_emp_uid']);
                 if ($objEmp == null){
                     $arrResult['status'] = 'employee_error';
@@ -134,7 +134,7 @@ class UserApi extends BaseController
             if ($bPermit) {
                 $strError = '';
                 $iResult = 0;
-                if ($objAdmin->mb_level == LEVEL_ADMIN) {
+                if ($objAdmin->mb_level >= LEVEL_ADMIN) {
                     $iResult = $memberModel->modifyMember($arrData, $strError);
                 } else {
                     $iResult = $memberModel->modifyMemberRatio($arrData, $strError);
@@ -493,7 +493,7 @@ class UserApi extends BaseController
             $strUid = $this->session->user_id;
             $objUser = $memberModel->getInfo($strUid);
 			$empFid = 0;
-			if ($objUser->mb_level == LEVEL_ADMIN){
+			if ($objUser->mb_level >= LEVEL_ADMIN){
 				if (strlen($arrData['mb_emp_uid']) > 0){
 					$objEmp = $memberModel->getInfo($arrData['mb_emp_uid']);
 					if ($objEmp == null){
@@ -778,7 +778,7 @@ class UserApi extends BaseController
                 $objResult->status = 'fail';
             } else if($arrData['amount'] > $objEmp->mb_money){
                 $objResult->status = 'fail';
-                $objResult->msg = '이송금액이 보유금액을 초화하셧습니다.';
+                $objResult->msg = '이송금액이 보유금액을 초하셧습니다.';
             }
             else if($memberModel->trasferMoney($objEmp, $objMember, $arrData['amount'])){
 

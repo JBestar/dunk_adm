@@ -565,6 +565,7 @@ Style - conf_site
     font-weight: bold;
 }
 
+/*
 .confsite-site-panel span {
     float: right;
     padding: 5px 20px;
@@ -572,13 +573,6 @@ Style - conf_site
     cursor: pointer;
 }
 
-
-/*
-.confsite-site-div{
-  width : 100%;
-  height: 300px;
-
-}
 */
 
 .confsite-site-text-div {
@@ -945,7 +939,7 @@ Style - powerball
 
 .user-table a {
     background-color: var(--main-bg-color);
-    padding: 7px 10px;
+    padding: 6.5px 10px;
     border: solid 1px var(--bar-font-color);
     color: var(--bar-font-color);
     border-radius: 3px;
@@ -1280,6 +1274,22 @@ Style - powerball
 .pbresult-list-view-but:hover {
     box-shadow: 1px 1px 1px 1px #e6d328 inset;
 }
+
+.pbresult-money-but {
+    margin-left: 5px;
+    background-color: var(--main-bg-color);
+    padding: 5px 5px;
+    color: var(--bar-font-color);
+    border: solid 1px #535353;
+    border-radius: 3px;
+    font-weight: normal;
+    box-shadow: -1px -1px 1px 1px #202020 inset;
+}
+
+.pbresult-money-but:hover {
+    box-shadow: 1px 1px 1px 1px #202020 inset;
+}
+
 
 .pbresult-rule-odd-span {
     position: relative;

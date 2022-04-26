@@ -111,7 +111,8 @@
 	</div>
 
 
-  <!--?= $this->renderSection('content') ?-->
-	<script src="<?php echo base_url('assets/js/main-nav-script.js?v=3');?>"></script>
-	
-	<!--?= $this->endSection() ?-->
+	<?php if(array_key_exists("app.produce", $_ENV)) :?>
+		<script src="<?php echo base_url('/assets/js/main-nav-script.js?t='.time());?>"></script>
+	<?php else : ?>
+		<script src="<?php echo base_url('/assets/js/main-nav-script.js?v=1');?>"></script>
+	<?php endif ?>

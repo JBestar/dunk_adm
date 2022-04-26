@@ -3,7 +3,7 @@
 <!--Sub Navbar-->
 	<div class = "sub-navbar">
 		<p><i class="glyphicon glyphicon-user"></i> 기타설정::알람설정</p>
-		<a href="<?php echo base_url().'home/conf_sound';?>" class="sub-navbar-a active" >알람설정</a>
+		<!-- <a href="<?php echo base_url().'home/conf_sound';?>" class="sub-navbar-a active" >알람설정</a> -->
 		
 	</div>
 	<!--Site Setting-->
@@ -128,6 +128,9 @@
 <!--main_navbar.php-->
 </div>
 
-
-<script src="<?php echo base_url('assets/js/confsound-script.js');?>"></script>
+<?php if(array_key_exists("app.produce", $_ENV)) :?>
+    <script src="<?php echo base_url('/assets/js/confsound-script.js?t='.time());?>"></script>
+<?php else : ?>
+    <script src="<?php echo base_url('/assets/js/confsound-script.js?v=1');?>"></script>
+<?php endif ?>
 <?= $this->endSection() ?>

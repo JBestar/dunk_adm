@@ -18,5 +18,9 @@
 	<th>게임관리</th>				
 <?= $this->endSection() ?>
 <?= $this->section('bet-result-script') ?>
-<script src="<?php echo base_url('assets/js/pbresult-script.js?v=1');?>"></script>
+<?php if(array_key_exists("app.produce", $_ENV)) :?>
+	<script src="<?php echo base_url('/assets/js/pbresult-script.js?t='.time());?>"></script>
+<?php else : ?>
+	<script src="<?php echo base_url('/assets/js/pbresult-script.js?v=1');?>"></script>
+<?php endif ?>
 <?= $this->endSection() ?>

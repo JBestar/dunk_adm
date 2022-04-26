@@ -1,5 +1,21 @@
 $(document).ready(function() {
-
+    $('textarea[name="editordata"]').summernote({
+        // height: 300, // 에디터 높이
+        minHeight: 100, // 최소 높이
+        // maxHeight: null, // 최대 높이
+        focus: false, // 에디터 로딩후 포커스를 맞출지 여부
+        lang: "ko-KR", // 한글 설정
+        placeholder: '', //placeholder 설정
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+        ]
+    });
+    
     addBtnEvent();
 
 });
@@ -8,21 +24,19 @@ function readConfigToObject() {
 
     var jsonData = new Object();
 
-    jsonData.sitename = document.getElementById("confsite-sitename-input-id").value;
-    jsonData.domainname = document.getElementById("confsite-domainname-input-id").value;
-    jsonData.homepage = document.getElementById("confsite-homepage-input-id").value;
-    jsonData.adminpage = document.getElementById("confsite-adminpage-input-id").value;
-    jsonData.bank = $("#confsite-bankname-input-id").val().trim() + " " + $("#confsite-bankown-input-id").val().trim() +
-        " " + $("#confsite-banknum-input-id").val().trim();
-    //jsonData.mainnotice = document.getElementById("confsite-mainnotice-text-id").value;
-    jsonData.depositenotice = document.getElementById("confsite-deposite-text-id").value;
-    jsonData.depositenotice_ok = document.getElementById("confsite-deposite-check-id").checked ? 1 : 0;
-    jsonData.mainnotice = document.getElementById("confsite-mainnotice-text-id").value;
-    jsonData.mainnotice_ok = document.getElementById("confsite-mainnotice-check-id").checked ? 1 : 0;
-    jsonData.urgentnotice = document.getElementById("confsite-urgentnotice-text-id").value;
-    jsonData.urgentnotice_ok = document.getElementById("confsite-urgentnotice-check-id").checked ? 1 : 0;
-    jsonData.bankmacro = $("#confsite-bankmacro-text-id").val();
-    //jsonData.mainnoticeok = document.getElementById("confsite-mainnotice-check-id").checked?1:0;
+    jsonData.sitename = $("#confsite-sitename-input-id").val();
+    jsonData.domainname = $("#confsite-domainname-input-id").val();
+    jsonData.homepage = $("#confsite-homepage-input-id").val();
+    jsonData.adminpage = $("#confsite-adminpage-input-id").val();
+    jsonData.bank = $("#confsite-bankname-input-id").val().trim() + "#" + $("#confsite-bankown-input-id").val().trim() +
+        "#" + $("#confsite-banknum-input-id").val().trim();
+    jsonData.depositenotice = $("#confsite-deposite-text-id").summernote('code');
+    jsonData.depositenotice_ok = $("#confsite-deposite-check-id").prop('checked') ? 1 : 0;
+    jsonData.mainnotice = $("#confsite-mainnotice-text-id").val();
+    jsonData.mainnotice_ok = $("#confsite-mainnotice-check-id").prop('checked') ? 1 : 0;
+    jsonData.urgentnotice = $("#confsite-urgentnotice-text-id").summernote('code');
+    jsonData.urgentnotice_ok = $("#confsite-urgentnotice-check-id").prop('checked') ? 1 : 0;
+    jsonData.bankmacro = $("#confsite-bankmacro-text-id").summernote('code');
 
     return jsonData;
 
@@ -37,7 +51,6 @@ function addBtnEvent() {
 
         var jsonData = readConfigToObject();
         jsonData = JSON.stringify(jsonData);
-        //console.log(jsonData);
 
         $.ajax({
             type: "POST",

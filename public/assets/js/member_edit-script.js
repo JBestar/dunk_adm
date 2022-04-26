@@ -7,33 +7,35 @@ function readConfigToObject() {
     var objMember = new Object();
     objMember.admin_level = $("#subnavbar-emplevel-p-id").text();
 
-    objMember.mb_fid = document.getElementById("subnavbar-fid-p-id").innerHTML;
+    objMember.mb_fid = $("#subnavbar-fid-p-id").text();
     objMember.mb_uid = $("#useredit-id-input-id").val();
-    var elemLevelSelect = document.getElementById("useredit-level-select-id");
-    objMember.mb_grade = elemLevelSelect.options[elemLevelSelect.selectedIndex].value;
+    objMember.mb_grade = $("#useredit-level-select-id").val();
     objMember.mb_nickname = $("#useredit-nickname-input-id").val();
     objMember.mb_color = $("#useredit-color-input-id").val();
 
     if (objMember.admin_level > LEVEL_COMPANY) {
         objMember.mb_pwd = $("#useredit-pwd-input-id").val();
         objMember.mb_emp_uid = $("#useredit-sort-select-id").val();
-        var elePhoneInput = document.getElementById("useredit-phone-input-id");
-        if (typeof(elePhoneInput) != undefined && elePhoneInput != null)
-            objMember.mb_phone = elePhoneInput.value;
-        var eleBankNameInput = document.getElementById("useredit-bankname-input-id");
-        if (typeof(eleBankNameInput) != undefined && eleBankNameInput != null)
-            objMember.mb_bank_name = eleBankNameInput.value;
-        var eleBankAccountInput = document.getElementById("useredit-bankaccount-input-id");
-        if (typeof(eleBankAccountInput) != undefined && eleBankAccountInput != null)
-            objMember.mb_bank_own = eleBankAccountInput.value;
-        var eleBankNumInput = document.getElementById("useredit-bankserial-input-id");
-        if (typeof(eleBankNumInput) != undefined && eleBankNumInput != null)
-            objMember.mb_bank_num = eleBankNumInput.value;
-        var eleBankPwdInput = document.getElementById("useredit-bankpwd-input-id");
-        if (typeof(eleBankPwdInput) != undefined && eleBankPwdInput != null)
-            objMember.mb_bank_pwd = eleBankPwdInput.value;
-        objMember.mb_money = $("#useredit-money-input-id").val();
-        objMember.mb_point = $("#useredit-point-input-id").val();
+        if ($("#useredit-phone-input-id").length > 0)
+            objMember.mb_phone = $("#useredit-phone-input-id").val();
+        if ($("#useredit-bankname-input-id").length > 0)
+            objMember.mb_bank_name = $("#useredit-bankname-input-id").val();
+        if ($("#useredit-bankaccount-input-id").length> 0)
+            objMember.mb_bank_own = $("#useredit-bankaccount-input-id").val();
+        if ($("#useredit-bankserial-input-id").length > 0)
+            objMember.mb_bank_num = $("#useredit-bankserial-input-id").val();
+        if ($("#useredit-bankpwd-input-id").length > 0)
+            objMember.mb_bank_pwd = $("#useredit-bankpwd-input-id").val();
+        var nAmount = parseInt($("#useredit-money-input-id").val().replace(/,/g, ""));
+        if (isNaN(nAmount) || nAmount == "") {
+            nAmount = 0;
+        }
+        objMember.mb_money = nAmount;
+        var nAmount = parseInt($("#useredit-point-input-id").val().replace(/,/g, ""));
+        if (isNaN(nAmount) || nAmount == "") {
+            nAmount = 0;
+        }
+        objMember.mb_point = nAmount;
     }
     objMember.mb_game_pb_ratio = $("#useredit-pbbetrate-input-id").val();
     objMember.mb_game_pb2_ratio = $("#useredit-pbbetrate2-input-id").val();
@@ -209,10 +211,16 @@ function addBtnEvent() {
     });
 
     $("#useredit-transfer-but-id").click(function() {
-        var nAmount = $("#useredit-transfer-input-id").val();
-        if (nAmount <= 0)
-            return;
-        nAmount = parseInt(nAmount);
+        
+        var nAmount = parseInt($("#useredit-transfer-input-id").val().replace(/,/g, ""));
+        if (isNaN(nAmount) || nAmount == "") {
+            nAmount = 0;
+        }
+
+        if (nAmount == 0) {
+            confirmAlert("이송금액을 입력 해주세요.");
+            return false;
+        }
 
         if (!confirm(nAmount.toLocaleString() + "원을 회원에게 이송하시겠습니까"))
             return;
@@ -246,4 +254,77 @@ function addBtnEvent() {
     });
 
 
+}
+
+
+
+$(function() {
+    $("#useredit-transfer-input-id").on("propertychange change keyup paste input", function() {
+        calcAmount("#useredit-transfer-input-id");
+    });
+    $("#useredit-money-input-id").on("propertychange change keyup paste input", function() {
+        calcAmount("#useredit-money-input-id");
+    });
+    $("#useredit-point-input-id").on("propertychange change keyup paste input", function() {
+        calcAmount("#useredit-point-input-id");
+    });
+    // 1만원
+    $("#money_1").on("click", function(e) {
+        e.preventDefault();
+        _c_price(10000);
+    });
+    // 3만원
+    $("#money_2").on("click", function(e) {
+        e.preventDefault();
+        _c_price(30000);
+    });
+    // 5만원
+    $("#money_3").on("click", function(e) {
+        e.preventDefault();
+        _c_price(50000);
+    });
+    // 10만원
+    $("#money_4").on("click", function(e) {
+        e.preventDefault();
+        _c_price(100000);
+    });
+    // 50만원
+    $("#money_5").on("click", function(e) {
+        e.preventDefault();
+        _c_price(500000);
+    });
+    // 100만원
+    $("#money_6").on("click", function(e) {
+        e.preventDefault();
+        _c_price(1000000);
+    });
+});
+
+
+function _c_price(price) {
+    if (price == 0) {
+        $("#useredit-transfer-input-id").val("0");
+    } else {
+        tmp_price = parseInt($("#useredit-transfer-input-id").val().replace(/,/g, ""));
+
+        if (isNaN(tmp_price) == false) {
+            price += tmp_price;
+        }
+
+        $("#useredit-transfer-input-id").val(price);
+        calcAmount("#useredit-transfer-input-id");
+    }
+}
+
+function calcAmount(elemName){
+    $(elemName).val(
+        $(elemName)
+        .val()
+        .replace(/[^0-9]/g, "")
+    );
+    $(elemName).val(
+        $(elemName)
+        .val()
+        .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
+    );
 }

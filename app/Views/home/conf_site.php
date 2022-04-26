@@ -1,5 +1,10 @@
 <?= $this->extend('header') ?>
 <?= $this->section('content') ?>
+<script src="/assets/js/summernote-lite.js"></script>
+<script src="/assets/js/summernote-ko-KR.js"></script>
+
+<link rel="stylesheet" href="/assets/css/summernote-lite.css">
+
 <!--Sub Navbar-->
 <div class="sub-navbar">
 	<p><i class="glyphicon glyphicon-cog"></i> 기본설정::본사설정</p>
@@ -11,9 +16,7 @@
 	<button class="sub-navbar-but" onclick="cleanDb(0);">디비정리</button>
 	<?php } ?>
 </div>
-<style>
-	
-</style>
+
 <!--Site Setting-->
 <div class="confsite-site-panel">
 	<!---->
@@ -23,7 +26,7 @@
 		<?php if(is_null($arrConfig)) {  ?>
 		<input type="text" id="confsite-sitename-input-id">
 		<?php } else {?>
-		<input type="text" id="confsite-sitename-input-id" value="<?=$arrConfig[0]['conf_content']?>">
+		<input type="text" id="confsite-sitename-input-id" value="<?=$arrConfig[CONF_SITENAME-1]['conf_content']?>">
 		<?php } ?>
 	</div>
 	<div class="confsite-site-text-div">
@@ -31,7 +34,7 @@
 		<?php if(is_null($arrConfig)) {  ?>
 		<input type="text" id="confsite-domainname-input-id">
 		<?php } else {?>
-		<input type="text" id="confsite-domainname-input-id" value="<?=$arrConfig[1]['conf_content']?>">
+		<input type="text" id="confsite-domainname-input-id" value="<?=$arrConfig[CONF_DOMAIN-1]['conf_content']?>">
 		<?php } ?>
 	</div>
 	<div class="confsite-site-text-div">
@@ -39,7 +42,7 @@
 		<?php if(is_null($arrConfig)) {  ?>
 		<input type="text" id="confsite-homepage-input-id">
 		<?php } else {?>
-		<input type="text" id="confsite-homepage-input-id" value="<?=$arrConfig[2]['conf_content']?>">
+		<input type="text" id="confsite-homepage-input-id" value="<?=$arrConfig[CONF_USERPAGE-1]['conf_content']?>">
 		<?php } ?>
 	</div>
 	<div class="confsite-site-text-div">
@@ -47,7 +50,7 @@
 		<?php if(is_null($arrConfig)) {  ?>
 		<input type="text" id="confsite-adminpage-input-id">
 		<?php } else {?>
-		<input type="text" id="confsite-adminpage-input-id" value="<?=$arrConfig[3]['conf_content']?>">
+		<input type="text" id="confsite-adminpage-input-id" value="<?=$arrConfig[CONF_ADMINPAGE-1]['conf_content']?>">
 		<?php } ?>
 	</div>
 	<div class="confsite-site-text-div">
@@ -58,9 +61,9 @@
 		<input type="text" placeholder="계좌번호" id="confsite-banknum-input-id">
 
 		<?php } else {?>
-		<input type="text" style="width:20%; margin-right:1px;" placeholder="은행명" id="confsite-bankname-input-id" value="<?=explode(" ", trim($arrConfig[7]['conf_content']))[0]?>">
-		<input type="text" style="width:25%; margin-right:1px;" placeholder="예금주" id="confsite-bankown-input-id" value="<?=explode(" ", trim($arrConfig[7]['conf_content']))[1]?>">
-		<input type="text" style="width:25%; " placeholder="계좌번호" id="confsite-banknum-input-id" value="<?=explode(" ", trim($arrConfig[7]['conf_content']))[2]?>">
+		<input type="text" style="width:20%; margin-right:1px;" placeholder="은행명" id="confsite-bankname-input-id" value="<?=explode("#", trim($arrConfig[CONF_CHARGEINFO-1]['conf_content']))[0]?>">
+		<input type="text" style="width:25%; margin-right:1px;" placeholder="예금주" id="confsite-bankown-input-id" value="<?=explode("#", trim($arrConfig[CONF_CHARGEINFO-1]['conf_content']))[1]?>">
+		<input type="text" style="width:25%; " placeholder="계좌번호" id="confsite-banknum-input-id" value="<?=explode("#", trim($arrConfig[CONF_CHARGEINFO-1]['conf_content']))[2]?>">
 		<?php } ?>
 	</div>
 	
@@ -75,9 +78,10 @@
 		<label for="confsite-deposite-check-id"> 회원로그인시 입출금안내 현시</label>
 	</div>
 
-	<div class="confsite-site-text-div">
-		<textarea rows="8"
-			id="confsite-deposite-text-id"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[5]['conf_content']?><?php } ?></textarea>
+	<div class="width:100%; clear:both; ">
+		<form method="post" style="width:80%; margin-left:20px; background-color:white;">
+			<textarea id="confsite-deposite-text-id" name="editordata"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_NOTICE_BANK-1]['conf_content']?><?php } ?></textarea>
+		</form>
 	</div>
 
 	<h4><i class="glyphicon glyphicon-hand-right"></i> 메인공지사항</h4>						
@@ -91,7 +95,7 @@
 		<label for="confsite-mainnotice-check-id"> 회원로그인시 메인공지사항 현시</label>			
 	</div>
 	<div class="confsite-site-text-div">
-		<textarea rows="1" id="confsite-mainnotice-text-id"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[4]['conf_content']?><?php } ?></textarea>					
+		<textarea rows="1" id="confsite-mainnotice-text-id"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_NOTICE_MAIN-1]['conf_content']?><?php } ?></textarea>					
 	</div>
 	<!---->
 	<h4><i class="glyphicon glyphicon-hand-right"></i> 긴급공지</h4>
@@ -103,18 +107,18 @@
 		<?php }?>
 		<label for="confsite-urgentnotice-check-id"> 회원로그인시 긴급공지사항 현시</label>
 	</div>
-	<div class="confsite-site-text-div">
-		<textarea rows="8"
-			id="confsite-urgentnotice-text-id"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[11]['conf_content']?><?php } ?></textarea>
+	<div class="width:100%; clear:both; ">
+		<form method="post" style="width:80%; margin-left:20px; background-color:white;">
+			<textarea id="confsite-urgentnotice-text-id" name="editordata"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_NOTICE_URGENT-1]['conf_content']?><?php } ?></textarea>
+		</form>
 	</div>
-
 	<!---->
 	<h4><i class="glyphicon glyphicon-hand-right"></i> 계좌문의 매크로</h4>
-	<div class="confsite-site-text-div">
-		<textarea rows="8"
-			id="confsite-bankmacro-text-id"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[8]['conf_content']?><?php } ?></textarea>
+	<div class="width:100%; clear:both; ">
+		<form method="post" style="width:80%; margin-left:20px; background-color:white;">
+			<textarea id="confsite-bankmacro-text-id" name="editordata"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_CHARGEMACRO-1]['conf_content']?><?php } ?></textarea>
+		</form>
 	</div>
-
 	<div class="confsite-button-group">
 		<button class="confsite-cancel-button" id="confsite-cancel-btn-id">취소</button>
 		<button class="confsite-ok-button" id="confsite-ok-btn-id">저장</button>
@@ -126,6 +130,9 @@
 <!--main_navbar.php-->
 </div>
 
-
-<script src="<?php echo base_url('assets/js/confsite-script.js?v=2');?>"></script>
+<?php if(array_key_exists("app.produce", $_ENV)) :?>
+    <script src="<?php echo base_url('/assets/js/confsite-script.js?t='.time());?>"></script>
+<?php else : ?>
+    <script src="<?php echo base_url('/assets/js/confsite-script.js?v=1');?>"></script>
+<?php endif ?>
 <?= $this->endSection() ?>

@@ -27,5 +27,9 @@
 <?= $this->endSection() ?>
 <?= $this->section('history_script') ?>
 	<script> var mPath = "/bsapi"; </script>
-	<script src="<?php echo base_url('assets/js/pshistory-script.js?v=1');?>"></script>
+	<?php if(array_key_exists("app.produce", $_ENV)) :?>
+		<script src="<?php echo base_url('/assets/js/pshistory-script.js?t='.time());?>"></script>
+	<?php else : ?>
+		<script src="<?php echo base_url('/assets/js/pshistory-script.js?v=1');?>"></script>
+	<?php endif ?>
 <?= $this->endSection() ?>

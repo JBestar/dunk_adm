@@ -29,5 +29,9 @@
 <?= $this->endSection() ?>
 <?= $this->section('history_script') ?>
 	<script> var mPath = "/pbapi"; </script>
-	<script src="<?php echo base_url('assets/js/pbhistory-script.js?v=1');?>"></script>
+	<?php if(array_key_exists("app.produce", $_ENV)) :?>
+		<script src="<?php echo base_url('/assets/js/pbhistory-script.js?t='.time());?>"></script>
+	<?php else : ?>
+		<script src="<?php echo base_url('/assets/js/pbhistory-script.js?v=1');?>"></script>
+	<?php endif ?>
 <?= $this->endSection() ?>

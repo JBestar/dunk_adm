@@ -1006,7 +1006,7 @@ class Member_Model extends Model
     {
         $sqlBuilder = $this->builder()->selectCount('*', 'count');
         $sqlBuilder = $sqlBuilder->where('mb_level !=', LEVEL_ADMIN);
-        if ($nAdminLev == LEVEL_ADMIN){
+        if ($nAdminLev >= LEVEL_ADMIN){
             if ($nAdminFid != 0)
                 $sqlBuilder->where('mb_emp_fid', $nAdminFid);
         }

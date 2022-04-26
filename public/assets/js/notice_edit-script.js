@@ -1,14 +1,36 @@
-addBtnEvent();
+$(document).ready(function() {
+
+    $('textarea[name="editordata"]').summernote({
+        // height: 300, // 에디터 높이
+        minHeight: 100, // 최소 높이
+        // maxHeight: null, // 최대 높이
+        focus: false, // 에디터 로딩후 포커스를 맞출지 여부
+        lang: "ko-KR", // 한글 설정
+        placeholder: '', //placeholder 설정
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            // ['table', ['table']],
+            // ['insert', ['link', 'picture', 'video']],
+            // ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+    });
+    addBtnEvent();
+});
 
 function readConfigToObject() {
 
     var jsonData = new Object();
 
-    jsonData.notice_fid = document.getElementById("subnavbar-fid-p-id").innerHTML;
+    jsonData.notice_fid = $("#subnavbar-fid-p-id").html();
     jsonData.notice_type = 1;
-    jsonData.notice_state_active = document.getElementById("notice-state-check-id").checked ? 1 : 0;
-    jsonData.notice_title = document.getElementById("notice-title-input-id").value;
-    jsonData.notice_content = document.getElementById("notice-content-text-id").value;
+    jsonData.notice_state_active = $("#notice-state-check-id").prop('checked') ? 1 : 0;
+    jsonData.notice_title = $("#notice-title-input-id").val();
+    jsonData.notice_content = $("#notice-content").summernote('code');
 
     return jsonData;
 

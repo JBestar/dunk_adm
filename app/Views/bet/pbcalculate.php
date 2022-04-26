@@ -23,5 +23,9 @@
 <?= $this->endSection() ?>
 <?= $this->section('calculate-script') ?>
 	<script>var mGameId = <?=GAME_POWER_BALL?></script>
-	<script src="<?php echo base_url('assets/js/calculate-script.js?v=2');?>"></script>
+	<?php if(array_key_exists("app.produce", $_ENV)) :?>
+		<script src="<?php echo base_url('/assets/js/calculate-script.js?t='.time());?>"></script>
+	<?php else : ?>
+		<script src="<?php echo base_url('/assets/js/calculate-script.js?v=1');?>"></script>
+	<?php endif ?>
 <?= $this->endSection() ?>

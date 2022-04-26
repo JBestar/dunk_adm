@@ -61,6 +61,11 @@
 <!--main_navbar.php-main-container-->
 </div>
 
-<script src="<?php echo base_url('assets/js/page.js?v=1');?>"></script>
-<script src="<?php echo base_url('assets/js/message-script.js?v=2');?>"></script>
+<?php if(array_key_exists("app.produce", $_ENV)) :?>
+    <script src="<?php echo base_url('/assets/js/page.js?t='.time());?>"></script>
+    <script src="<?php echo base_url('/assets/js/message-script.js?t='.time());?>"></script>
+<?php else : ?>
+	<script src="<?php echo base_url('assets/js/page.js?v=1');?>"></script>
+    <script src="<?php echo base_url('/assets/js/message-script.js?v=1');?>"></script>
+<?php endif ?>
 <?= $this->endSection() ?>

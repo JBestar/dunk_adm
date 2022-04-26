@@ -1,5 +1,9 @@
 <?= $this->extend('header') ?>
 <?= $this->section('content') ?>
+	<script src="/assets/js/summernote-lite.js"></script>
+	<script src="/assets/js/summernote-ko-KR.js"></script>
+
+	<link rel="stylesheet" href="/assets/css/summernote-lite.css">
   	<!--Sub Navbar-->
 	<div class = "sub-navbar">
 		<?php if(is_null($objNotice)) {  ?>
@@ -35,12 +39,12 @@
 			<?php } ?>
 		</div>
 
-		<div class="useredit-text-div">
-			<p>공지사항내용:</p> 
-			<textarea rows="8" id="notice-content-text-id" style="width:60%;"><?php if(!is_null($objNotice)) {  ?><?=$objNotice->notice_content?><?php } ?>		
-			</textarea>	
+		<div style="width:100%; clear:both;">
+			<p style="width:180px; float:left; padding:5px;">공지사항내용:</p> 
+			<form method="post" style="width:60%; float:left;background-color:white;">
+			<textarea id="notice-content" name="editordata"><?php if(!is_null($objNotice)) {  ?><?=$objNotice->notice_content?><?php } ?></textarea>
+			</form>	
 		</div>
-
 		<div class = "useredit-button-group">
 			<button class="useredit-cancel-button" id="notice-cancel-btn-id">취소</button>
 			<button class="useredit-ok-button"  id="notice-save-btn-id">저장</button>
@@ -48,6 +52,9 @@
 <!--main_navbar.php-->
 </div>
 
-
-<script src="<?php echo base_url('assets/js/notice_edit-script.js');?>"></script>
+<?php if(array_key_exists("app.produce", $_ENV)) :?>
+    <script src="<?php echo base_url('/assets/js/notice_edit-script.js?t='.time());?>"></script>
+<?php else : ?>
+    <script src="<?php echo base_url('/assets/js/notice_edit-script.js?v=1');?>"></script>
+<?php endif ?>
 <?= $this->endSection() ?>

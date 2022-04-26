@@ -1,4 +1,29 @@
-initMessageEdit();
+$(document).ready(function() {
+
+    
+    $('textarea[name="editordata"]').summernote({
+        // height: 300, // 에디터 높이
+        minHeight: 100, // 최소 높이
+        // maxHeight: null, // 최대 높이
+        focus: false, // 에디터 로딩후 포커스를 맞출지 여부
+        lang: "ko-KR", // 한글 설정
+        placeholder: '', //placeholder 설정
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            // ['table', ['table']],
+            // ['insert', ['link', 'picture', 'video']],
+            // ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+    });
+
+    initMessageEdit();
+
+});
 
 function initMessageEdit() {
     addBtnEvent();
@@ -6,21 +31,24 @@ function initMessageEdit() {
 }
 
 function readConfigToObject() {
-
     var jsonData = new Object();
 
-    jsonData.notice_fid = document.getElementById("subnavbar-fid-p-id").innerHTML;
-    jsonData.notice_type = document.getElementById("subnavbar-type-p-id").innerHTML;
-    jsonData.notice_state_active = document.getElementById("notice-state-check-id").checked ? 1 : 0;
-    jsonData.notice_title = document.getElementById("notice-title-input-id").value;
-    jsonData.notice_content = document.getElementById("notice-content-text-id").value;
+    jsonData.notice_fid = $("#subnavbar-fid-p-id").html();
+    jsonData.notice_type = $("#subnavbar-type-p-id").html();
+    jsonData.notice_state_active = $("#notice-state-check-id").prop('checked') ? 1 : 0;
+    jsonData.notice_title = $("#notice-title-input-id").val();
+    jsonData.notice_content = "";
+    if($("#notice-content").length > 0){
+        jsonData.notice_content = $("#notice-content").summernote('code');
+    } else {
+        jsonData.notice_content = $("#custom-content").text();
+    }
     jsonData.notice_answer = "";
-    var elemNoticeAnswer = document.getElementById("notice-answer-text-id");
-    if (elemNoticeAnswer != null) {
-        jsonData.notice_answer = elemNoticeAnswer.value;
+    if ($("#custom-answer").length > 0) {
+        jsonData.notice_answer = $("#custom-answer").summernote('code');
         jsonData.notice_state_active = 1;
     }
-    jsonData.notice_mb_uid = document.getElementById("notice-mbuid-input-id").value;
+    jsonData.notice_mb_uid = $("#notice-mbuid-input-id").val();
 
     return jsonData;
 

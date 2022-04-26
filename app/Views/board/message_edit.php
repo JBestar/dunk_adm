@@ -1,5 +1,9 @@
 <?= $this->extend('header') ?>
 <?= $this->section('content') ?>
+	<script src="/assets/js/summernote-lite.js"></script>
+	<script src="/assets/js/summernote-ko-KR.js"></script>
+
+	<link rel="stylesheet" href="/assets/css/summernote-lite.css">
   	<!--Sub Navbar-->
 	<div class = "sub-navbar">
 		<?php if(is_null($objNotice)) {  ?>
@@ -23,6 +27,10 @@
 		zoom: 130%;
 		margin-top: 5px;
 		width:20px;
+	}
+	.useredit-text-div  .content {
+		overflow: auto;
+		resize: vertical;
 	}
 	</style>
 <!--Site Setting-->
@@ -51,7 +59,8 @@
 			<label for="public" style="font-size:14px;">발송</label>
 		</div>
 		<div class="useredit-text-div">
-			<p>쪽지제목:</p> 
+			<p>제목:</p>
+			
 			<?php if(is_null($objNotice) || is_null($objNotice->notice_title)) {  ?>	
 			<input type = "text" id="notice-title-input-id" style="width:60%;">
 			<?php } else {?>
@@ -60,23 +69,26 @@
 		</div>
 
 		
-		<?php if(!is_null($objNotice) && $objNotice->notice_type == 3) {  ?>
+	<?php if(!is_null($objNotice) && $objNotice->notice_type == 3) {  ?>
 		<div class="useredit-text-div">
-			<p>쪽지내용:</p> 
-			<textarea rows="8" id="notice-content-text-id" style="width:60%;" disabled><?=$objNotice->notice_content?></textarea>	
+			<p>문의내용:</p> 
+			<div class="content" id="custom-content" style="white-space: pre-wrap; width:60%; background-color:white; padding:5px;" ><?=$objNotice->notice_content?></div>	
 		</div>
 	
-		<div class="useredit-text-div">
-			<p>회답내용:</p> 
-			<textarea rows="8" id="notice-answer-text-id" style="width:60%;"><?php if(!is_null($objNotice)) {  ?><?=$objNotice->notice_answer?><?php } ?></textarea>	
+		<div style="width:100%; clear:both;">
+			<p style="width:180px; float:left; padding:5px;">회답내용:</p> 
+			<form method="post" style="width:60%; float:left;background-color:white;">
+			<textarea id="custom-answer" name="editordata"><?php if(!is_null($objNotice)) {  ?><?=$objNotice->notice_answer?><?php } ?></textarea>
+			</form>	
 		</div>
-		<?php } else {?>
-		<div class="useredit-text-div">
-			<p>쪽지내용:</p> 
-			<textarea rows="8" id="notice-content-text-id" style="width:60%;"><?php if(!is_null($objNotice)) {  ?><?=$objNotice->notice_content?><?php } ?></textarea>	
+	<?php } else {?>
+		<div style="width:100%; clear:both;">
+			<p style="width:180px; float:left; padding:5px;">쪽지내용:</p> 
+			<form method="post" style="width:60%; float:left;background-color:white;">
+			<textarea id="notice-content" name="editordata"><?php if(!is_null($objNotice)) {  ?><?=$objNotice->notice_content?><?php } ?></textarea>
+			</form>	
 		</div>
-
-		<?php } ?>
+	<?php } ?>
 
 		<div class = "useredit-button-group">
 			<button class="useredit-cancel-button" id="notice-cancel-btn-id">취소</button>
@@ -90,7 +102,9 @@
 	</div>
 <!--main_navbar.php-->
 </div>
-
-
-<script src="<?php echo base_url('assets/js/message_edit-script.js');?>"></script>
+<?php if(array_key_exists("app.produce", $_ENV)) :?>
+    <script src="<?php echo base_url('/assets/js/message_edit-script.js?t='.time());?>"></script>
+<?php else : ?>
+    <script src="<?php echo base_url('/assets/js/message_edit-script.js?v=1');?>"></script>
+<?php endif ?>
 <?= $this->endSection() ?>

@@ -44,7 +44,7 @@
 		</div>
 		<!---->
         <?php $this->renderSection('user-edit-check-level')  ?>
-		<?php if ($mb_level == LEVEL_ADMIN) {?>
+		<?php if ($mb_level >= LEVEL_ADMIN) {?>
 		<div class="useredit-text-div">
 			<p>비밀번호:</p> 
 			<?php if(is_null($objMember)) {  ?>	
@@ -57,7 +57,7 @@
 		<!---->
         <?= $this->renderSection('user-edit-form-section1') ?>
 		<!---->
-		<?php if ($mb_level == LEVEL_ADMIN) {?>
+		<?php if ($mb_level >= LEVEL_ADMIN) {?>
 		<div class="useredit-text-div">
 			<p>핸드폰번호:</p> 
 			<?php if(is_null($objMember)) {  ?>			
@@ -265,18 +265,18 @@
 		<div class="useredit-text-div">
 			<p>현재금액:</p> 
 			<?php if(is_null($objMember)) {  ?>	
-			<input type = "number" id="useredit-money-input-id">
+			<input type = "text" id="useredit-money-input-id">
 			<?php } else {?>
-			<input type = "number" id="useredit-money-input-id" value="<?=$objMember->mb_money?>">
+			<input type = "text" id="useredit-money-input-id" value="<?=number_format($objMember->mb_money)?>">
 			<?php } ?><label>원</label>
 		</div>
 		<!---->
 		<div class="useredit-text-div">
 			<p>현재포인트:</p> 
 			<?php if(is_null($objMember)) {  ?>	
-			<input type = "number" id="useredit-point-input-id">
+			<input type = "text" id="useredit-point-input-id">
 			<?php } else {?>
-			<input type = "number" id="useredit-point-input-id" value="<?=$objMember->mb_point?>">
+			<input type = "text" id="useredit-point-input-id" value="<?=number_format($objMember->mb_point)?>">
 			<?php } ?>
 			<label>원</label>
 		</div>
@@ -286,13 +286,19 @@
 				<p class="useredit-seperate-div">
 				<div class="useredit-text-div">
 					<p>현재금액:</p> 
-					<input type = "number" id="useredit-money-input-id" value="<?=$objMember->mb_money?>"  disabled>
+					<input type = "text" id="useredit-money-input-id" value="<?=number_format($objMember->mb_money)?>"  disabled>
 					<label>원</label>
 				</div>
 				<div class="useredit-text-div">
 					<p>이송금액:</p> 
-					<input type = "number" id="useredit-transfer-input-id" value="0" >
+					<input type = "text" id="useredit-transfer-input-id" value="0" >
 					<label>원</label>
+					<button class="pbresult-money-but" id="money_1">1만원</button>
+					<button class="pbresult-money-but" id="money_2">3만원</button>  
+					<button class="pbresult-money-but" id="money_3">5만원</button>  
+					<button class="pbresult-money-but" id="money_4">10만원</button>  
+					<button class="pbresult-money-but" id="money_5">50만원</button>  
+					<button class="pbresult-money-but" id="money_6">100만원</button>  
 					<button class="pbresult-list-view-but" id="useredit-transfer-but-id">이송</button>  
 				</div>
 

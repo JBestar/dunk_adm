@@ -18,7 +18,7 @@
   	<!-- JQuery 3.4.1 -->
 	<script src="<?php echo base_url('assets/js/jquery-3.4.1.min.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/bootstrap/js/bootstrap.min.js'); ?>"></script>
-	<script src="<?php echo base_url('assets/js/util.js'); ?>"></script>
+	<script src="<?php echo base_url('assets/js/util.js?v=1'); ?>"></script>
 </head>
 <body>
 	<div class="login-background-panel">
@@ -38,7 +38,10 @@
 			</div>
 		</div>
 	</div>
-
-	<script src="<?php echo base_url('assets/js/pages-script.js?v=1');?>"></script>
+	<?php if(array_key_exists("app.produce", $_ENV)) :?>
+		<script src="<?php echo base_url('/assets/js/pages-script.js?t='.time());?>"></script>
+	<?php else : ?>
+		<script src="<?php echo base_url('/assets/js/pages-script.js?v=1');?>"></script>
+	<?php endif ?>
 </body>
 </html>

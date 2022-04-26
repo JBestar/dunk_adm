@@ -112,7 +112,9 @@ class Home extends StdController
 		$arrConfig = $confsiteModel->gets();
 		$this->load_view_page('home/conf_sound', 'conf_other', LEVEL_ADMIN, ['arrConfig', $arrConfig]);	
 	}
+	
 	public function conf_password(){
 		$this->load_view_page('home/conf_password', 'conf_password');
 	}
+
 }

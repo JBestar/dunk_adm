@@ -45,7 +45,7 @@ class Api extends BaseController{
 			$iResult = 0;
 		} else if($userData['mb_level'] < LEVEL_ADMIN && !is_null($modelBlock->getByIp($ip, true))){
 			$iResult = 2;
-		} else if($userData['mb_level'] >= LEVEL_ADMIN && $userData['mb_state_view'] == STATE_ACTIVE &&
+		} else if($userData['mb_level'] == LEVEL_ADMIN && $userData['mb_state_view'] == STATE_ACTIVE &&
 			$userData['mb_ip_join'] !== $ip){
 			$iResult = 3;
 		}
@@ -60,10 +60,11 @@ class Api extends BaseController{
 				$userData['mb_ip_last'] = $ip;
 				$modelMember->updateLogin($userData);
                 $iResult = 1;
-
-				$modelSessLog = new SessLog_Model();
-				$modelSessLog->add($userData);
-
+				
+				if($objMember->mb_level <= LEVEL_ADMIN){
+					$modelSessLog = new SessLog_Model();
+					$modelSessLog->add($userData);
+				}
             }
         }   
 		//결과값 

@@ -8,7 +8,7 @@ function requestPageInfo() {
 }
 
 function getMemberLevelString(nLevel) {
-    if (nLevel == LEVEL_ADMIN)
+    if (nLevel >= LEVEL_ADMIN)
         return "관리자";
     else if (nLevel == LEVEL_COMPANY)
         return "부본";
@@ -36,7 +36,7 @@ function showMember(arrMember, nAdminLevel) {
         strBuf += "<td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td> <td>";
-        if (nAdminLevel == LEVEL_ADMIN) {
+        if (nAdminLevel >= LEVEL_ADMIN) {
             strBuf += "<a href='/user/member/";
             strBuf += arrMember[nRow].mb_emp_fid;
             strBuf += "' class='link-member'>"
@@ -486,6 +486,7 @@ function requestDeleteCompany(jsData) {
 function refreshEv(mbFid) {
     var jsonData = { "mb_fid": mbFid };
     jsonData = JSON.stringify(jsonData);
+    $(".loading").show();
 
     $.ajax({
         type: "POST",
@@ -518,7 +519,7 @@ function refreshEv(mbFid) {
 
     setTimeout(function() {
         refreshFsl(mbFid);
-    }, 2000);
+    }, 1000);
 }
 
 
@@ -563,6 +564,7 @@ function refreshFsl(mbFid) {
         data: { json_: jsonData },
         success: function(jResult) {
             // console.log(jResult);
+            $(".loading").hide();
 
             if (jResult.status == "success") {
                 $("#fsl_" + mbFid).text("슬롯: " + parseInt(jResult.slot_money).toLocaleString());
@@ -575,6 +577,7 @@ function refreshFsl(mbFid) {
             }
         },
         error: function(request, status, error) {
+            $(".loading").hide();
             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
