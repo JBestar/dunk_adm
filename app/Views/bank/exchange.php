@@ -20,14 +20,18 @@
 				<option value="1">충전</option>
 				<option value="2">환전</option>
 				<option value="3">포인트전환</option>
-				<option value="4">파워볼배팅</option>				
-				<option value="6">파워볼정산</option>
-				<option value="7">파워사다리배팅</option>
-				<option value="9">파워사다리정산</option>
-				<option value="13">보글볼배팅</option>				
-				<option value="15">보글볼정산</option>
-				<option value="16">보글사다리배팅</option>
-				<option value="18">보글사다리정산</option>
+				<?php if(!$npg_deny) :?>
+					<option value="4">파워볼배팅</option>				
+					<option value="6">파워볼정산</option>
+					<option value="7">파워사다리배팅</option>
+					<option value="9">파워사다리정산</option>
+				<?php endif ?>   
+				<?php if(!$bpg_deny) :?>
+					<option value="13">보글볼배팅</option>				
+					<option value="15">보글볼정산</option>
+					<option value="16">보글사다리배팅</option>
+					<option value="18">보글사다리정산</option>
+				<?php endif ?>   
 				<option value="19">머니충전</option>
 				<option value="20">머니이송</option>
 			</select>

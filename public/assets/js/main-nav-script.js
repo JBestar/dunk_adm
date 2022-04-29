@@ -150,9 +150,13 @@ function showMemberInfo(objUser) {
 
     if (objUser.mb_level < LEVEL_ADMIN) {
 
+        if(objUser.mb_money == null)
+            objUser.mb_money = 0;
         strBuf = parseInt(objUser.mb_money).toLocaleString() + " 원";
         $("#main-navbar-emp_money-id").text(strBuf);
 
+        if(objUser.mb_point == null)
+            objUser.mb_point = 0;
         strBuf = parseInt(objUser.mb_point).toLocaleString() + " P";
         $("#main-navbar-emp_point-id").text(strBuf);
 
@@ -219,10 +223,13 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
     strBuf = objEmpInfo.waitexchange + " 대기";
     $("#main-navbar-exchange_wait-id").text(strBuf);
 
-
+    if(objEmpInfo.emp_money == null)
+        objEmpInfo.emp_money = 0;
     strBuf = parseInt(objEmpInfo.emp_money).toLocaleString() + " 원";
     $("#main-navbar-emp_money-id").text(strBuf);
 
+    if(objEmpInfo.emp_point == null)
+        objEmpInfo.emp_point = 0;
     strBuf = parseInt(objEmpInfo.emp_point).toLocaleString() + " P";
     $("#main-navbar-emp_point-id").text(strBuf);
 
@@ -338,12 +345,9 @@ function addNavbarButtonEvent() {
     var elemAlarmCheck = document.getElementById("main-navbar-alarm-check-id");
 
     elemAlarmCheck.addEventListener("click", function() {
-        //var elemAlarmPlayer = document.getElementById("main-navbar-alarm-player-id");
         if (!elemAlarmCheck.checked) {
-            //elemAlarmPlayer.pause();
             mAudio.pause();
         }
-
         requestAlarmState();
     });
 

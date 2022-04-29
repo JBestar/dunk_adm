@@ -47,4 +47,26 @@ class BaseController extends Controller
 
 	}
 
+	protected function getSiteConf($confsiteModel){
+		
+		$confs = ['site_name'=>"", "npg_deny"=>false, "bpg_deny"=>false, "img_type"=>0];
+		$arrConf = $confsiteModel->getSiteConf();  
+		
+		foreach($arrConf as $objConf){
+			switch($objConf['conf_id']){
+				case CONF_SITENAME:	$confs['site_name'] = $objConf['conf_content'];
+					break;
+				case CONF_NPG_DENY:	$confs['npg_deny'] = $objConf['conf_active'] == STATE_ACTIVE?true:false;
+					break;
+				case CONF_BPG_DENY:	$confs['bpg_deny'] = $objConf['conf_active'] == STATE_ACTIVE?true:false;
+					break;
+				case CONF_IMG_TYPE:	$confs['img_type'] = $objConf['conf_active'];
+					break;
+				default:break;
+			}
+		}
+		
+		return $confs;
+	}
+
 }

@@ -4,19 +4,27 @@
 	<div class = "sub-navbar" value=<?= $this->renderSection('calculate-active') ?>>
 		<p><i class="glyphicon glyphicon-tag"></i> 정산</p>
 		<a href="<?php echo base_url().'bet/allcalculate';?>" class="sub-navbar-a" >전체</a>
+		<?php if(!$npg_deny) :?>
 		<a href="<?php echo base_url().'bet/pbcalculate';?>" class="sub-navbar-a" >파워볼</a>
 		<a href="<?php echo base_url().'bet/pscalculate';?>" class="sub-navbar-a" >파워사다리</a>
+		<?php endif ?>   
+    	<?php if(!$bpg_deny) :?>
 		<a href="<?php echo base_url().'bet/bbcalculate';?>" class="sub-navbar-a" >보글볼</a>
 		<a href="<?php echo base_url().'bet/bscalculate';?>" class="sub-navbar-a" >보글사다리</a>
+   		<?php endif ?>   
 		<a href="<?php echo base_url().'bet/cscalculate';?>" class="sub-navbar-a" >에볼루션</a>
-		<?php if($_ENV['app.type'] != APPTYPE_2) :?>
-		<a href="<?php echo base_url().'bet/slcalculate';?>" class="sub-navbar-a" >슬롯게임</a>
+		<?php if($mb_level >= LEVEL_ADMIN) :  ?>
+			<?php if($_ENV['app.type'] != APPTYPE_2) :?>
+				<a href="<?php echo base_url().'bet/xslcalculate';?>" class="sub-navbar-a" >정품슬롯</a>
+			<?php endif ?>
+			<a href="<?php echo base_url().'bet/fslcalculate';?>" class="sub-navbar-a" >네츄럴슬롯</a>
+			<?php if($_ENV['app.type'] != APPTYPE_2) :?>
+				<a href="<?php echo base_url().'bet/slcalculate';?>" class="sub-navbar-a" >슬롯</a>
+			<?php endif ?>
+		<?php else: ?>
+			<a href="<?php echo base_url().'bet/slcalculate';?>" class="sub-navbar-a" >슬롯</a>
 		<?php endif ?>
-		<?php if($_ENV['app.type'] == APPTYPE_0 || $_ENV['app.type'] == APPTYPE_1) :?>
-		<a href="<?php echo base_url().'bet/fslcalculate';?>" class="sub-navbar-a" >네츄럴슬롯</a>
-		<?php elseif($_ENV['app.type'] == APPTYPE_2) :?>
-		<a href="<?php echo base_url().'bet/fslcalculate';?>" class="sub-navbar-a" >네츄럴슬롯</a>
-		<?php endif ?>
+
 	</div>
 
 	<div class="bet-panel">

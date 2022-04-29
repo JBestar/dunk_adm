@@ -37,21 +37,40 @@ function readConfigToObject() {
         }
         objMember.mb_point = nAmount;
     }
-    objMember.mb_game_pb_ratio = $("#useredit-pbbetrate-input-id").val();
-    objMember.mb_game_pb2_ratio = $("#useredit-pbbetrate2-input-id").val();
-    objMember.mb_game_ps_ratio = $("#useredit-psbetrate-input-id").val();
+    if($("#useredit-pbbetrate-input-id").length > 0){
+        objMember.mb_game_pb_ratio = $("#useredit-pbbetrate-input-id").val();
+        objMember.mb_game_pb2_ratio = $("#useredit-pbbetrate2-input-id").val();
+        objMember.mb_game_ps_ratio = $("#useredit-psbetrate-input-id").val();
+        objMember.mb_game_pb_percent = $("#useredit-pbbetpercent-input-id").val();
+        objMember.mb_game_pb2_percent = $("#useredit-pbbetpercent2-input-id").val();
+        objMember.mb_game_ps_percent = $("#useredit-psbetpercent-input-id").val();
+    }
+    else{
+        objMember.mb_game_pb_ratio = 0;
+        objMember.mb_game_pb2_ratio = 0;
+        objMember.mb_game_ps_ratio = 0;
+        objMember.mb_game_pb_percent = 0;
+        objMember.mb_game_pb2_percent = 0;
+        objMember.mb_game_ps_percent = 0;
+    }  
+
+    if($("#useredit-bbbetrate-input-id").length > 0){
+        objMember.mb_game_bb_ratio = $("#useredit-bbbetrate-input-id").val();
+        objMember.mb_game_bb2_ratio = $("#useredit-bbbetrate2-input-id").val();
+        objMember.mb_game_bs_ratio = $("#useredit-bsbetrate-input-id").val();
+        objMember.mb_game_bb_percent = $("#useredit-bbbetpercent-input-id").val();
+        objMember.mb_game_bb2_percent = $("#useredit-bbbetpercent2-input-id").val();
+        objMember.mb_game_bs_percent = $("#useredit-bsbetpercent-input-id").val();
+    } else {
+        objMember.mb_game_bb_ratio = 0;
+        objMember.mb_game_bb2_ratio = 0;
+        objMember.mb_game_bs_ratio = 0;
+        objMember.mb_game_bb_percent = 0;
+        objMember.mb_game_bb2_percent = 0;
+        objMember.mb_game_bs_percent = 0;
+    }
     objMember.mb_game_cs_ratio = $("#useredit-evbetrate-input-id").val();
     objMember.mb_game_sl_ratio = $("#useredit-slbetrate-input-id").val();
-    objMember.mb_game_bb_ratio = $("#useredit-bbbetrate-input-id").val();
-    objMember.mb_game_bb2_ratio = $("#useredit-bbbetrate2-input-id").val();
-    objMember.mb_game_bs_ratio = $("#useredit-bsbetrate-input-id").val();
-
-    objMember.mb_game_pb_percent = $("#useredit-pbbetpercent-input-id").val();
-    objMember.mb_game_pb2_percent = $("#useredit-pbbetpercent2-input-id").val();
-    objMember.mb_game_ps_percent = $("#useredit-psbetpercent-input-id").val();
-    objMember.mb_game_bb_percent = $("#useredit-bbbetpercent-input-id").val();
-    objMember.mb_game_bb2_percent = $("#useredit-bbbetpercent2-input-id").val();
-    objMember.mb_game_bs_percent = $("#useredit-bsbetpercent-input-id").val();
 
     return objMember;
 
@@ -271,37 +290,64 @@ $(function() {
     // 1만원
     $("#money_1").on("click", function(e) {
         e.preventDefault();
-        _c_price(10000);
+        tr_price(10000);
     });
     // 3만원
     $("#money_2").on("click", function(e) {
         e.preventDefault();
-        _c_price(30000);
+        tr_price(30000);
     });
     // 5만원
     $("#money_3").on("click", function(e) {
         e.preventDefault();
-        _c_price(50000);
+        tr_price(50000);
     });
     // 10만원
     $("#money_4").on("click", function(e) {
         e.preventDefault();
-        _c_price(100000);
+        tr_price(100000);
     });
     // 50만원
     $("#money_5").on("click", function(e) {
         e.preventDefault();
-        _c_price(500000);
+        tr_price(500000);
     });
     // 100만원
     $("#money_6").on("click", function(e) {
         e.preventDefault();
-        _c_price(1000000);
+        tr_price(1000000);
+    });
+
+
+    // 1만원
+    $("#amount_1").on("click", function(e) {
+        e.preventDefault();
+        mb_price(10000);
+    });
+    // 5만원
+    $("#amount_3").on("click", function(e) {
+        e.preventDefault();
+        mb_price(50000);
+    });
+    // 10만원
+    $("#amount_4").on("click", function(e) {
+        e.preventDefault();
+        mb_price(100000);
+    });
+    // 50만원
+    $("#amount_5").on("click", function(e) {
+        e.preventDefault();
+        mb_price(500000);
+    });
+    // 100만원
+    $("#amount_6").on("click", function(e) {
+        e.preventDefault();
+        mb_price(1000000);
     });
 });
 
 
-function _c_price(price) {
+function tr_price(price) {
     if (price == 0) {
         $("#useredit-transfer-input-id").val("0");
     } else {
@@ -313,6 +359,22 @@ function _c_price(price) {
 
         $("#useredit-transfer-input-id").val(price);
         calcAmount("#useredit-transfer-input-id");
+    }
+}
+
+
+function mb_price(price) {
+    if (price == 0) {
+        $("#useredit-money-input-id").val("0");
+    } else {
+        tmp_price = parseInt($("#useredit-money-input-id").val().replace(/,/g, ""));
+
+        if (isNaN(tmp_price) == false) {
+            price += tmp_price;
+        }
+
+        $("#useredit-money-input-id").val(price);
+        calcAmount("#useredit-money-input-id");
     }
 }
 

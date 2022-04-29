@@ -923,7 +923,9 @@ public function withdrawlist(){
 				$chargeModel = new Charge_Model();
 				$exchangeModel = new Exchange_Model();
 		        $rewardModel = new Reward_Model();
+				$confsiteModel = new ConfSite_Model();
 
+				$siteConfs = $this->getSiteConf($confsiteModel);
 				foreach ($arrEmp as $objEmp) {
             		$objCalc['mb_fid'] = $objEmp->mb_fid;
 		            $objCalc['mb_uid'] = $objEmp->mb_uid;
@@ -937,7 +939,7 @@ public function withdrawlist(){
 		            $arrUserMoney = $memberModel->calcUserMoney($objEmp->mb_fid);
 	            	$objCalc['mb_emp_money'] =  $arrEmpMoney[0];                        					//관리자보유금;
 	            	$objCalc['mb_user_money'] = $arrUserMoney[0];											//유저보유금;
-		            $arrBetData = $memberModel->calcBetMoneys($objEmp, $arrReqData);
+		            $arrBetData = $memberModel->calcBetMoneys($objEmp, $arrReqData, $siteConfs);
 			        $objCalc['mb_bet_money'] = $arrBetData['bet_money'] ;          							//베팅머니
 					$objCalc['mb_bet_win_money'] = $arrBetData['bet_win_money'] ;      						//적중머니
          			$objCalc['mb_bet_benefit_money'] = $arrBetData['bet_benefit_money'];  					//베팅손익

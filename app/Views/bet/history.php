@@ -3,18 +3,26 @@
 	<!--Sub Navbar-->
 	<div class = "sub-navbar" value=<?= $this->renderSection('history-active') ?>>
 		<p><i class="glyphicon glyphicon-book"></i> 배팅내역</p>
-		<a href="<?php echo base_url().'bet/pbhistory';?>" class="sub-navbar-a" >파워볼</a>
-		<a href="<?php echo base_url().'bet/pshistory';?>" class="sub-navbar-a" >파워사다리</a>
+		<?php if(!$npg_deny) :?>
+			<a href="<?php echo base_url().'bet/pbhistory';?>" class="sub-navbar-a" >파워볼</a>
+			<a href="<?php echo base_url().'bet/pshistory';?>" class="sub-navbar-a" >파워사다리</a>
+		<?php endif ?>   
+    	<?php if(!$bpg_deny) :?>
 		<a href="<?php echo base_url().'bet/bbhistory';?>" class="sub-navbar-a" >보글볼</a>
 		<a href="<?php echo base_url().'bet/bshistory';?>" class="sub-navbar-a" >보글사다리</a>
+   		<?php endif ?>   
 		<a href="<?php echo base_url().'bet/cshistory';?>" class="sub-navbar-a" >에볼루션</a>
-		<?php if($_ENV['app.type'] != APPTYPE_2) :?>
-        <a href="<?php echo base_url().'bet/slhistory';?>" class="sub-navbar-a" >슬롯게임</a>
-		<?php endif ?>
-		<?php if($_ENV['app.type'] == APPTYPE_0 || $_ENV['app.type'] == APPTYPE_1) :?>
-		<a href="<?php echo base_url().'bet/fslhistory';?>" class="sub-navbar-a" >네츄럴슬롯</a>
-		<?php elseif($_ENV['app.type'] == APPTYPE_2) :?>
-		<a href="<?php echo base_url().'bet/fslhistory';?>" class="sub-navbar-a" >네츄럴슬롯</a>
+
+		<?php if($mb_level >= LEVEL_ADMIN) :  ?>
+			<?php if($_ENV['app.type'] != APPTYPE_2) :?>
+				<a href="<?php echo base_url().'bet/xslhistory';?>" class="sub-navbar-a" >정품슬롯</a>
+			<?php endif ?>
+			<a href="<?php echo base_url().'bet/fslhistory';?>" class="sub-navbar-a" >네츄럴슬롯</a>
+			<?php if($_ENV['app.type'] != APPTYPE_2) :?>
+				<a href="<?php echo base_url().'bet/slhistory';?>" class="sub-navbar-a" >슬롯</a>
+			<?php endif ?>
+		<?php else: ?>
+			<a href="<?php echo base_url().'bet/slhistory';?>" class="sub-navbar-a" >슬롯</a>
 		<?php endif ?>
 	</div>
 
@@ -41,7 +49,7 @@
                 <?= $this->renderSection('history_game_options') ?>
 			</select>
 
-			<select name="pbresult-number" class="pbresult-number-select" id="pbhistory-number-select-id">
+			<select name="pbresult-number" class="pbresult-number-select" id="pbhistory-number-select-id" style="width:70px;">
 				<option value="10">10개</option>
 				<option value="20">20개</option>
 				<option value="50">50개</option>

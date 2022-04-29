@@ -57,18 +57,18 @@ class Bet extends StdController {
 		$this->load_view_page('bet/bshistory', 'bet_history');
 	}
 	
-	public function slhistory(){
+	public function xslhistory(){
 		$modelSlotprd = new SlotPrd_Model();
 		$gameId = GAME_SLOT_1;
 		$arrPrd = $modelSlotprd->gets($gameId);
 
 		$param = [
-			'game_name' => "슬롯게임",
+			'game_name' => "정품슬롯",
 			'game_id' => $gameId,
 			'prds' => $arrPrd,
 		];
 
-		$this->load_view_page('bet/slhistory', 'bet_history', 0, $param);
+		$this->load_view_page('bet/slhistory', 'bet_history', LEVEL_ADMIN, $param);
 	}
 
 	public function fslhistory(){
@@ -79,6 +79,27 @@ class Bet extends StdController {
 
 		$param = [
 			'game_name' => "네츄럴슬롯",
+			'game_id' => $gameId,
+			'prds' => $arrPrd,
+		];
+
+		$this->load_view_page('bet/slhistory', 'bet_history', LEVEL_ADMIN, $param);
+	}
+
+	public function slhistory(){
+		
+		$modelSlotprd = new SlotPrd_Model();
+		$gameId = GAME_SLOT_12;
+		if($_ENV['app.type'] == APPTYPE_2){
+			$arrPrd = $modelSlotprd->gets(GAME_SLOT_2);
+		} else
+			$arrPrd = $modelSlotprd->gets(GAME_SLOT_1);
+		// $arrPrd2 = $modelSlotprd->gets(GAME_SLOT_2);
+		// foreach ($arrPrd2 as $objPrd){
+		// 	$arrPrd[] = $objPrd;
+		// }
+		$param = [
+			'game_name' => "슬롯",
 			'game_id' => $gameId,
 			'prds' => $arrPrd,
 		];
@@ -103,19 +124,28 @@ class Bet extends StdController {
 		$this->load_view_page('bet/cscalculate', 'bet_calculate');
 	}
 
-	public function slcalculate(){
+	public function xslcalculate(){
 		$param = [
-			'game_name' => "슬롯게임",
+			'game_name' => "정품슬롯",
 			'game_id' => GAME_SLOT_1,
 		];
 
-		$this->load_view_page('bet/slcalculate', 'bet_calculate', 0, $param);
+		$this->load_view_page('bet/slcalculate', 'bet_calculate', LEVEL_ADMIN, $param);
 	}
 	
 	public function fslcalculate(){
 		$param = [
 			'game_name' => "네츄럴슬롯",
 			'game_id' => GAME_SLOT_2,
+		];
+
+		$this->load_view_page('bet/slcalculate', 'bet_calculate', LEVEL_ADMIN, $param);
+	}
+
+	public function slcalculate(){
+		$param = [
+			'game_name' => "슬롯",
+			'game_id' => GAME_SLOT_12,
 		];
 
 		$this->load_view_page('bet/slcalculate', 'bet_calculate', 0, $param);

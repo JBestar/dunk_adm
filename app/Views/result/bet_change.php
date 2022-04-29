@@ -3,10 +3,14 @@
 	<!--Sub Navbar-->
 	<div class = "sub-navbar" value="<?= $this->renderSection('bet-change-title')?>">
 		<p><i class="glyphicon glyphicon-tag"></i> 적중특례</p>
-		<a href="<?php echo base_url().'result/pbbetchange/0/0';?>" class="sub-navbar-a" >파워볼</a>
-		<a href="<?php echo base_url().'result/psbetchange/0/0';?>" class="sub-navbar-a" >파워사다리</a>
-		<a href="<?php echo base_url().'result/bbbetchange/0/0';?>" class="sub-navbar-a" >보글볼</a>
-		<a href="<?php echo base_url().'result/bsbetchange/0/0';?>" class="sub-navbar-a" >보글사다리</a>
+		<?php if(!$npg_deny) :?>
+			<a href="<?php echo base_url().'result/pbbetchange/0/0';?>" class="sub-navbar-a" >파워볼</a>
+			<a href="<?php echo base_url().'result/psbetchange/0/0';?>" class="sub-navbar-a" >파워사다리</a>
+		<?php endif ?>   
+		<?php if(!$bpg_deny) :?>
+			<a href="<?php echo base_url().'result/bbbetchange/0/0';?>" class="sub-navbar-a" >보글볼</a>
+			<a href="<?php echo base_url().'result/bsbetchange/0/0';?>" class="sub-navbar-a" >보글사다리</a>
+		<?php endif ?>   
 	</div>
 
 

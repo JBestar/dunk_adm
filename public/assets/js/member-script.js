@@ -21,7 +21,7 @@ function getMemberLevelString(nLevel) {
 }
 
 
-function showMember(arrMember, nAdminLevel) {
+function showMember(arrMember, confs) {
 
     var strBuf = "";
 
@@ -36,7 +36,7 @@ function showMember(arrMember, nAdminLevel) {
         strBuf += "<td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td> <td>";
-        if (nAdminLevel >= LEVEL_ADMIN) {
+        if (confs.emp_level >= LEVEL_ADMIN) {
             strBuf += "<a href='/user/member/";
             strBuf += arrMember[nRow].mb_emp_fid;
             strBuf += "' class='link-member'>"
@@ -47,7 +47,7 @@ function showMember(arrMember, nAdminLevel) {
         }
 
         strBuf += "</td> <td>";
-        if (nAdminLevel >= LEVEL_ADMIN) {
+        if (confs.emp_level >= LEVEL_ADMIN) {
             strBuf += "<a href='/user/member/";
             strBuf += arrMember[nRow].mb_fid;
             strBuf += "' class='link-member'>"
@@ -78,11 +78,11 @@ function showMember(arrMember, nAdminLevel) {
             strBuf += "<span id='fsl_" + arrMember[nRow].mb_fid + "'>슬롯: " + parseInt(arrMember[nRow].mb_fslot_money).toLocaleString() + "</span>";
         else if (strApp == APPTYPE_1)
             strBuf += "<span id='tsl_" + arrMember[nRow].mb_fid + "'>슬롯: " + (parseInt(arrMember[nRow].mb_slot_money) + parseInt(arrMember[nRow].mb_fslot_money)).toLocaleString() + "</span>";
-        strBuf += '<br><button class="refresh_btn" onclick="refreshEv(' + arrMember[nRow].mb_fid + ');"></button>';
+        strBuf += '<br><button class="refresh_btn" onclick="refreshEv(' + arrMember[nRow].mb_fid + ', this);"></button>';
 
 
         strBuf += "</td> <td>";
-        if (nAdminLevel >= LEVEL_ADMIN) {
+        if (confs.emp_level >= LEVEL_ADMIN) {
             strBuf += arrMember[nRow].mb_ip_last;
             if (arrMember[nRow].block_state == 1) {
                 strBuf += "<br><br><button name='" + arrMember[nRow].mb_ip_last + "' >차단해제</button>";
@@ -98,31 +98,37 @@ function showMember(arrMember, nAdminLevel) {
             strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >차단</button>";
         }
         strBuf += "<a href='/user/member_edit/" + arrMember[nRow].mb_fid + "' >수정</a>";
-        if (nAdminLevel > LEVEL_COMPANY) {
+        if (confs.emp_level > LEVEL_COMPANY) {
             var strEncodeURI = "/board/message_edit/0/" + arrMember[nRow].mb_fid;
             strBuf += "<a href='" + strEncodeURI + "' >쪽지</a>";
             strBuf += "<button name='" + arrMember[nRow].mb_fid + "'>삭제</button>   ";
         }
         strBuf += "</td> <td>";
-        if (arrMember[nRow].mb_game_pb == 1) {
-            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>파워볼</button>";
-        } else {
-            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >파워볼</button>";
+
+        if(!confs.npg_deny){
+            if (arrMember[nRow].mb_game_pb == 1) {
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>파워볼</button>";
+            } else {
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >파워볼</button>";
+            }
+            if (arrMember[nRow].mb_game_ps == 1) {
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>파워사다리</button>";
+            } else {
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >파워사다리</button>";
+            }
         }
-        if (arrMember[nRow].mb_game_ps == 1) {
-            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>파워사다리</button>";
-        } else {
-            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >파워사다리</button>";
-        }
-        if (arrMember[nRow].mb_game_bb == 1) {
-            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>보글볼</button>";
-        } else {
-            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >보글볼</button>";
-        }
-        if (arrMember[nRow].mb_game_bs == 1) {
-            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>보글사다리</button>";
-        } else {
-            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >보글사다리</button>";
+
+        if(!confs.bpg_deny){
+            if (arrMember[nRow].mb_game_bb == 1) {
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>보글볼</button>";
+            } else {
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >보글볼</button>";
+            }
+            if (arrMember[nRow].mb_game_bs == 1) {
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>보글사다리</button>";
+            } else {
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >보글사다리</button>";
+            }
         }
         if (arrMember[nRow].mb_game_cs == 1) {
             strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>카지노</button>";
@@ -199,7 +205,7 @@ function requestMember() {
             $(".loading").hide();
             //console.log(jResult);
             if (jResult.status == "success") {
-                showMember(jResult.data, jResult.level);
+                showMember(jResult.data, jResult.confs);
             } else if (jResult.status == "fail") {
 
             }
@@ -483,10 +489,10 @@ function requestDeleteCompany(jsData) {
 
 }
 
-function refreshEv(mbFid) {
+function refreshEv(mbFid, elBtn) {
     var jsonData = { "mb_fid": mbFid };
     jsonData = JSON.stringify(jsonData);
-    $(".loading").show();
+    $(elBtn).addClass("refresh");
 
     $.ajax({
         type: "POST",
@@ -518,7 +524,7 @@ function refreshEv(mbFid) {
     }, 500);
 
     setTimeout(function() {
-        refreshFsl(mbFid);
+        refreshFsl(mbFid, elBtn);
     }, 1000);
 }
 
@@ -553,7 +559,7 @@ function refreshSl(mbFid) {
 }
 
 
-function refreshFsl(mbFid) {
+function refreshFsl(mbFid, elBtn) {
     var jsonData = { "mb_fid": mbFid };
     jsonData = JSON.stringify(jsonData);
 
@@ -564,7 +570,7 @@ function refreshFsl(mbFid) {
         data: { json_: jsonData },
         success: function(jResult) {
             // console.log(jResult);
-            $(".loading").hide();
+            $(elBtn).removeClass("refresh");
 
             if (jResult.status == "success") {
                 $("#fsl_" + mbFid).text("슬롯: " + parseInt(jResult.slot_money).toLocaleString());
@@ -577,7 +583,7 @@ function refreshFsl(mbFid) {
             }
         },
         error: function(request, status, error) {
-            $(".loading").hide();
+            $(elBtn).removeClass("refresh");
             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 

@@ -23,8 +23,8 @@ class StdController extends BaseController
 			$strUid = $this->session->user_id;
 			$objUser = $memberModel->getInfo($strUid);
 			$arrData['mb_level'] = $objUser->mb_level;
-			$strSiteName = $confsiteModel->getSiteName();
-			$arrData['site_name'] = $strSiteName;
+			$arrData += $this->getSiteConf($confsiteModel);
+			
 			if ($arrAddData !== null)
 				$arrData = $arrData + $arrAddData;
 			

@@ -436,6 +436,8 @@ class UserApi extends BaseController
         if (is_login()) {
             // model
             $memberModel = new Member_Model();
+			$confsiteModel = new ConfSite_Model();
+
 			$objResult = new \stdClass();
             $strUid = $this->session->user_id;
             $objUser = $memberModel->getInfo($strUid);
@@ -469,9 +471,11 @@ class UserApi extends BaseController
                 }
                 
             }
-
+            $confs= $this->getSiteConf($confsiteModel);
+            $confs['emp_level'] = $objUser->mb_level; 
+            
             $objResult->status = 'success';
-            $objResult->level = $objUser->mb_level;
+            $objResult->confs = $confs;
             $objResult->data = $arrMember;
 
             echo json_encode($objResult);

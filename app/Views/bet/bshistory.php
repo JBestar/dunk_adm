@@ -9,7 +9,7 @@
 <?= $this->endSection() ?>
 <?= $this->section('history-add-round-search') ?>
 	<label>회차</label>
-	<input type="text" class="pbresult-text-input" id="pbhistory-roundid-input-id" >
+	<input type="text" class="pbresult-text-input" id="pbhistory-roundid-input-id"  style="width:70px;">
 <?= $this->endSection() ?>
 <?= $this->section('history-bet-table-headers') ?>
 	<th>번호</th>

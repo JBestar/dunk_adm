@@ -117,6 +117,10 @@ defined('CONF_CASINO_EVOL')    || define('CONF_CASINO_EVOL', 21);
 defined('CONF_SLOT_1')         || define('CONF_SLOT_1', 22);
 defined('CONF_SLOT_2')         || define('CONF_SLOT_2', 23);
 
+defined('CONF_NPG_DENY')        || define('CONF_NPG_DENY', 26);
+defined('CONF_BPG_DENY')        || define('CONF_BPG_DENY', 27);
+defined('CONF_IMG_TYPE')        || define('CONF_IMG_TYPE', 30);
+
 defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);
 defined('LEVEL_ADMIN')         || define('LEVEL_ADMIN', 100);
 defined('LEVEL_COMPANY')       || define('LEVEL_COMPANY', 99);
@@ -124,10 +128,6 @@ defined('LEVEL_AGENCY')        || define('LEVEL_AGENCY', 98);
 defined('LEVEL_EMPLOYEE')      || define('LEVEL_EMPLOYEE', 97);
 defined('LEVEL_MIN')           || define('LEVEL_MIN', 1);
 
-defined('GRADE_ADMIN')         || define('GRADE_ADMIN', 20);
-defined('GRADE_COMPANY')       || define('GRADE_COMPANY', 19);
-defined('GRADE_AGENCY')        || define('GRADE_AGENCY', 18);
-defined('GRADE_EMPLOYEE')      || define('GRADE_EMPLOYEE', 17);
 defined('GRADE_1')             || define('GRADE_1', 1);
 
 //status
@@ -165,7 +165,7 @@ defined('GAME_BOGLE_BALL')     || define('GAME_BOGLE_BALL', 5);
 defined('GAME_BOGLE_LADDER')   || define('GAME_BOGLE_LADDER', 6);
 defined('GAME_SLOT_1')         || define('GAME_SLOT_1', 7);
 defined('GAME_SLOT_2')         || define('GAME_SLOT_2', 8);
-
+defined('GAME_SLOT_12')        || define('GAME_SLOT_12', 12);
 
 defined('ROUND_5MIN')    || define('ROUND_5MIN', 5);
 defined('ROUND_3MIN')    || define('ROUND_3MIN', 3);

@@ -3,7 +3,7 @@
 <?= $this->section('history-title') ?><?=$game_name?> 배팅내역<?= $this->endSection() ?>
 <?= $this->section('history_game_options') ?>	
 	<?php foreach ($prds as $prd):?>
-		<option value="<?=$prd->code?>"><?=$prd->name?></option>
+		<option value="<?=$prd->code?>"><?=$prd->name_kr?></option>
 	<?php endforeach;?>
 <?= $this->endSection() ?>
 <?= $this->section('history-bet-table-headers') ?>		

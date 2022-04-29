@@ -323,7 +323,7 @@ class Member_Model extends Model
         if (!is_null($objResult->mb_fslot_money)) {
             $arrTotalMoney[3] = $objResult->mb_fslot_money;
         }
-        writeLog($strSQL);
+        
         return $arrTotalMoney;
     }
 
@@ -349,7 +349,7 @@ class Member_Model extends Model
     }
 
     // 배팅금액 (하부포함)
-    public function calcBetMoneys($objEmp, $arrReqData)
+    public function calcBetMoneys($objEmp, $arrReqData, $confs)
     {
         $strCond = "";
         if (strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
@@ -367,31 +367,36 @@ class Member_Model extends Model
         $strSQL .= ' SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money ';
         $strSQL .= '  FROM (SELECT  * FROM tbmember UNION SELECT '.$strTbColum.' FROM '.$this->table." where mb_fid='".$objEmp->mb_fid."'";
         $strSQL .= ' ) AS mb_table ';
-
-        $strSQL .= ' JOIN ( (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_powerball ';
+        
+        $strSQL .= ' JOIN ( (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_casino';
         $strSQL .= $strCond;
         $strSQL .= ' GROUP BY bet_mb_uid) ';
 
-        $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_powerladder ';
-        $strSQL .= $strCond;
-        $strSQL .= ' GROUP BY bet_mb_uid) ';
+        if(!$confs['npg_deny']){
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_powerball ';
+            $strSQL .= $strCond;
+            $strSQL .= ' GROUP BY bet_mb_uid) ';
 
-        $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_casino ';
-        $strSQL .= $strCond;
-        $strSQL .= ' GROUP BY bet_mb_uid) ';
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_powerladder ';
+            $strSQL .= $strCond;
+            $strSQL .= ' GROUP BY bet_mb_uid) ';
+        }
+
+        if(!$confs['bpg_deny']){
+
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_bogleball ';
+            $strSQL .= $strCond;
+            $strSQL .= ' GROUP BY bet_mb_uid) ';
+
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_bogleladder ';
+            $strSQL .= $strCond;
+            $strSQL .= ' GROUP BY bet_mb_uid) ';
+        }
 
         $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_slot ';
         $strSQL .= $strCond;
         $strSQL .= ' GROUP BY bet_mb_uid) ';
-
-        $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_bogleball ';
-        $strSQL .= $strCond;
-        $strSQL .= ' GROUP BY bet_mb_uid) ';
-
-        $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_bogleladder ';
-        $strSQL .= $strCond;
-        $strSQL .= ' GROUP BY bet_mb_uid) ';
-
+        
         $strSQL .= ' )AS bet_table ON bet_table.bet_mb_uid = mb_table.mb_uid ';
 
         $objResult = $this->db->query($strSQL)->getRow();
@@ -446,7 +451,7 @@ class Member_Model extends Model
             $strSQL .= ' bet_bogleball ';
         } elseif ($arrReqData['type'] == GAME_BOGLE_LADDER ) {
             $strSQL .= ' bet_bogleladder ';
-        } elseif ($arrReqData['type'] == GAME_SLOT_1 || $arrReqData['type'] == GAME_SLOT_2 ) {
+        } elseif ($arrReqData['type'] == GAME_SLOT_1 || $arrReqData['type'] == GAME_SLOT_2 || $arrReqData['type'] == GAME_SLOT_12 ) {
             $strSQL .= ' bet_slot ';
         } else {
             return null;
@@ -1005,7 +1010,7 @@ class Member_Model extends Model
     public function searchCountByEmpFid($nAdminFid, $nAdminLev, $arrReqData)
     {
         $sqlBuilder = $this->builder()->selectCount('*', 'count');
-        $sqlBuilder = $sqlBuilder->where('mb_level !=', LEVEL_ADMIN);
+        $sqlBuilder = $sqlBuilder->where('mb_level <', LEVEL_ADMIN);
         if ($nAdminLev >= LEVEL_ADMIN){
             if ($nAdminFid != 0)
                 $sqlBuilder->where('mb_emp_fid', $nAdminFid);

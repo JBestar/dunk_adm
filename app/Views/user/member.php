@@ -25,7 +25,13 @@
 			background: url(/assets/image/refresh_btn.png) no-repeat left top;
 		}
 		.user-table button.refresh_btn:hover{
+			border:1px;
+
 			box-shadow: 1px 1px 1px 0px rgb(0 0 0 / 50%);
+		}
+
+		.user-table button.refresh_btn.refresh{
+			background: url(/assets/image/refresh_btn.gif) no-repeat left top;
 		}
 	</style>
 	<!--Sub Navbar-->

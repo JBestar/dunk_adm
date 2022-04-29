@@ -20,10 +20,6 @@ class ConfSite_Model extends Model
         return NULL;
     }
 
-    public function updateLast($objConf){
-        
-    }
-
     public function getSiteName():string
     {
 
@@ -218,4 +214,11 @@ class ConfSite_Model extends Model
         return  $this->builder()->updateBatch($arrBatch, 'conf_id');
             
     }
+
+    public function getSiteConf(){
+        $confIds = [CONF_SITENAME, CONF_NPG_DENY, CONF_BPG_DENY, CONF_IMG_TYPE];  
+        return $this->find($confIds);
+    }
+
+
 }

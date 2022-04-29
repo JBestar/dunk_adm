@@ -14,6 +14,6 @@ function loop() {
     // 1초뒤에 다시 실행
     setTimeout(function() {
         loop();
-    }, 30000);
+    }, 15000);
 
 }

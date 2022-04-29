@@ -14,9 +14,13 @@
 				<td>충전금액<span id="main-navbar-emp_charge-id">0 원</span></td>
 
 				<?php if($mb_level < LEVEL_ADMIN) {  ?>
-
-				<td>파워볼<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
-				<td>보글볼<span id="main-navbar-emp_bbrate-id">0 % | 0 %</span></td>
+					<?php if(!$npg_deny) :?>
+						<td>파워볼<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
+					<?php endif ?>     
+					<?php if(!$bpg_deny) :?>
+						<td>보글볼<span id="main-navbar-emp_bbrate-id">0 % | 0 %</span></td>
+					<?php endif ?>     
+				
 				<td>카지노<span id="main-navbar-emp_evrate-id">0 %</span></td>
 				<?php } else { ?>
 
@@ -32,8 +36,12 @@
 				<td>환전금액<span id="main-navbar-emp_exchange-id">0 원</span></td>
 
 				<?php if($mb_level < LEVEL_ADMIN) {  ?>
-				<td>파워사다리<span id="main-navbar-emp_psrate-id">0 % </span></td>
-				<td>보글사다리<span id="main-navbar-emp_bsrate-id">0 % </span></td>
+					<?php if(!$npg_deny) :?>
+						<td>파워사다리<span id="main-navbar-emp_psrate-id">0 % </span></td>
+					<?php endif ?>     
+					<?php if(!$bpg_deny) :?>
+						<td>보글사다리<span id="main-navbar-emp_bsrate-id">0 % </span></td>
+					<?php endif ?>     
 				<td>슬롯<span id="main-navbar-emp_slrate-id">0 %</span></td>
 				<?php } else { ?>
 
@@ -48,47 +56,54 @@
 		</Table>
 
 		<?php if($mb_level >= LEVEL_ADMIN) {  ?>
-		<Table class="main-navbar-betinfo-table">
-			<tr>
-				<td style="font-weight: bold; color: #0090ff; font-size: 14px;">파워볼단폴:</td>
-				<td>배팅<span id="main-navbar-pbbet-id">0 원</span></td>
-				<td>적중<span id="main-navbar-pbbetearn-id">0 원</span></td>
-				<!--<td>누름<span id="main-navbar-pbbetpress-id">0 원</span></td>-->
-			</tr>
-			<tr>
-				<td style="font-weight: bold; color: #0090ff; font-size: 14px;">파워볼조합:</td>
-				<td>배팅<span id="main-navbar-pb2bet-id">0 원</span></td>
-				<td>적중<span id="main-navbar-pb2betearn-id">0 원</span></td>
-				<!--<td>누름<span id="main-navbar-pb2betpress-id">0 원</span></td>-->
-			</tr>
-			<tr>
-				<td style="font-weight: bold; color: #0090ff; font-size: 14px;">파워사다리:</td>
-				<td>배팅<span id="main-navbar-psbet-id">0 원</span></td>
-				<td>적중<span id="main-navbar-psbetearn-id">0 원</span></td>
-				<!--<td>누름<span id="main-navbar-psbetpress-id">0 원</span></td>-->
-			</tr>
+			
+			<?php if(!$npg_deny) :?>
+			<Table class="main-navbar-betinfo-table">
+				<tr>
+					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">파워볼단폴:</td>
+					<td>배팅<span id="main-navbar-pbbet-id">0 원</span></td>
+					<td>적중<span id="main-navbar-pbbetearn-id">0 원</span></td>
+					<!--<td>누름<span id="main-navbar-pbbetpress-id">0 원</span></td>-->
+				</tr>
+				<tr>
+					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">파워볼조합:</td>
+					<td>배팅<span id="main-navbar-pb2bet-id">0 원</span></td>
+					<td>적중<span id="main-navbar-pb2betearn-id">0 원</span></td>
+					<!--<td>누름<span id="main-navbar-pb2betpress-id">0 원</span></td>-->
+				</tr>
+				<tr>
+					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">파워사다리:</td>
+					<td>배팅<span id="main-navbar-psbet-id">0 원</span></td>
+					<td>적중<span id="main-navbar-psbetearn-id">0 원</span></td>
+					<!--<td>누름<span id="main-navbar-psbetpress-id">0 원</span></td>-->
+				</tr>
 
-		</Table>
-		<Table class="main-navbar-betinfo-table">
-			<tr>
-				<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보글볼단폴:</td>
-				<td>배팅<span id="main-navbar-bbbet-id">0 원</span></td>
-				<td>적중<span id="main-navbar-bbbetearn-id">0 원</span></td>
+			</Table>
+			<?php endif ?>   
+			
+			<?php if(!$bpg_deny) :?>
+			<Table class="main-navbar-betinfo-table">
+				<tr>
+					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보글볼단폴:</td>
+					<td>배팅<span id="main-navbar-bbbet-id">0 원</span></td>
+					<td>적중<span id="main-navbar-bbbetearn-id">0 원</span></td>
 
-			</tr>
-			<tr>
-				<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보글볼조합:</td>
-				<td>배팅<span id="main-navbar-bb2bet-id">0 원</span></td>
-				<td>적중<span id="main-navbar-bb2betearn-id">0 원</span></td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보글볼조합:</td>
+					<td>배팅<span id="main-navbar-bb2bet-id">0 원</span></td>
+					<td>적중<span id="main-navbar-bb2betearn-id">0 원</span></td>
 
-			</tr>
-			<tr>
-				<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보글사다리:</td>
-				<td>배팅<span id="main-navbar-bsbet-id">0 원</span></td>
-				<td>적중<span id="main-navbar-bsbetearn-id">0 원</span></td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보글사다리:</td>
+					<td>배팅<span id="main-navbar-bsbet-id">0 원</span></td>
+					<td>적중<span id="main-navbar-bsbetearn-id">0 원</span></td>
 
-			</tr>
-		</Table>
+				</tr>
+			</Table>
+			<?php endif ?>     
+
 		<?php } ?>
 
 		<div class="main-navbar-user-div">

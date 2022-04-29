@@ -67,7 +67,7 @@
 		<?php } ?>
 	</div>
 	
-	<h4><i class="glyphicon glyphicon-hand-right"></i> 입출금안내 </h4>
+	<h4><i class="glyphicon glyphicon-hand-right"></i> 충환전안내 </h4>
 
 	<div class="confsite-site-check-div">
 		<?php if (is_null($arrConfig) || $arrConfig[5]['conf_active'] != 1) {?>
@@ -75,7 +75,7 @@
 		<?php } else {?>
 		<input type="checkbox" id="confsite-deposite-check-id" checked>
 		<?php }?>
-		<label for="confsite-deposite-check-id"> 회원로그인시 입출금안내 현시</label>
+		<label for="confsite-deposite-check-id"> 회원로그인시 충환전공지사항 현시</label>
 	</div>
 
 	<div class="width:100%; clear:both; ">
@@ -95,7 +95,7 @@
 		<label for="confsite-mainnotice-check-id"> 회원로그인시 메인공지사항 현시</label>			
 	</div>
 	<div class="confsite-site-text-div">
-		<textarea rows="1" id="confsite-mainnotice-text-id"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_NOTICE_MAIN-1]['conf_content']?><?php } ?></textarea>					
+		<textarea rows="" id="confsite-mainnotice-text-id"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_NOTICE_MAIN-1]['conf_content']?><?php } ?></textarea>					
 	</div>
 	<!---->
 	<h4><i class="glyphicon glyphicon-hand-right"></i> 긴급공지</h4>

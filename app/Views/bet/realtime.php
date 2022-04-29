@@ -3,10 +3,14 @@
 	<!--Sub Navbar-->
 	<div class = "sub-navbar" value="<?= $this->renderSection('realtime-title')?>">
 		<p><i class="glyphicon glyphicon-dashboard"></i> 실시간배팅</p>
-		<a href="<?php echo base_url().'bet/pbrealtime';?>" class="sub-navbar-a" >파워볼</a>
-		<a href="<?php echo base_url().'bet/psrealtime';?>" class="sub-navbar-a" >파워사다리</a>
-		<a href="<?php echo base_url().'bet/bbrealtime';?>" class="sub-navbar-a" >보글볼</a>
-		<a href="<?php echo base_url().'bet/bsrealtime';?>" class="sub-navbar-a" >보글사다리</a>
+		<?php if(!$npg_deny) :?>
+			<a href="<?php echo base_url().'bet/pbrealtime';?>" class="sub-navbar-a" >파워볼</a>
+			<a href="<?php echo base_url().'bet/psrealtime';?>" class="sub-navbar-a" >파워사다리</a>
+		<?php endif ?>   
+		<?php if(!$bpg_deny) :?>
+			<a href="<?php echo base_url().'bet/bbrealtime';?>" class="sub-navbar-a" >보글볼</a>
+			<a href="<?php echo base_url().'bet/bsrealtime';?>" class="sub-navbar-a" >보글사다리</a>
+		<?php endif ?>   
 	</div>
 
 	<div class="bet-panel">
