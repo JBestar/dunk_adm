@@ -851,8 +851,8 @@ class UserApi extends BaseController
                         $objResult->msg = '이송금액이 보유금액을 초과하셧습니다.';
                     } else if($memberModel->trasferMoney($objEmp, $objMember, $arrData['amount'])){
 
-                        $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, 0-$arrData['amount'], MONEYCHANGE_TRANS_S);
-                        $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, $arrData['amount'], MONEYCHANGE_TRANS_R);
+                        $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, 0-$arrData['amount'], MONEYCHANGE_TRANS_DEC);
+                        $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, $arrData['amount'], MONEYCHANGE_TRANS_INC);
                         $objResult->status = 'success';
                     } 
                 } else if($arrData['type'] == 3){               //환수
@@ -861,8 +861,8 @@ class UserApi extends BaseController
                     }
                     if($arrData['amount'] > 0 && $memberModel->trasferMoney($objMember, $objEmp, $arrData['amount'])){
 
-                        $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, $arrData['amount'], MONEYCHANGE_TRANS_R);
-                        $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], MONEYCHANGE_TRANS_S);
+                        $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, $arrData['amount'], MONEYCHANGE_EXCHANGE_INC);
+                        $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], MONEYCHANGE_EXCHANGE_DEC);
                         $objResult->status = 'success';
                     } 
                 }

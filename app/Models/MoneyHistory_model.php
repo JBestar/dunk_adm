@@ -167,7 +167,7 @@ class MoneyHistory_Model extends Model
             $strSql .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
 
             $strSql .= "SELECT ".$this->table.".*, mb_table.mb_nickname, mb_table.mb_money FROM ".$this->table;
-            $strSql .="  LEFT JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
+            $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
             $strSql .=" ) AS mb_table ";
             $strSql .=" ON ".$this->table.".money_mb_uid = mb_table.mb_uid ";
         } else {

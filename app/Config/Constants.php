@@ -199,14 +199,21 @@ defined('MONEYCHANGE_BET_BB')    || define('MONEYCHANGE_BET_BB', 13);
 defined('MONEYCHANGE_WIN_BB')    || define('MONEYCHANGE_WIN_BB', 15);
 defined('MONEYCHANGE_BET_BS')    || define('MONEYCHANGE_BET_BS', 16);
 defined('MONEYCHANGE_WIN_BS')    || define('MONEYCHANGE_WIN_BS', 18);
-defined('MONEYCHANGE_TRANS_R')   || define('MONEYCHANGE_TRANS_R', 19);  //머니이송 받기
-defined('MONEYCHANGE_TRANS_S')   || define('MONEYCHANGE_TRANS_S', 20);  //머니이송 보내기
-defined('MONEYCANCEL_CHARGE')    || define('MONEYCANCEL_CHARGE', 21);   //
-defined('MONEYCANCEL_EXCHANGE')  || define('MONEYCANCEL_EXCHANGE', 22); 
+
+defined('MONEYCHANGE_CHARGE_DEC')   || define('MONEYCHANGE_TRANS_DEC', 19);     //하부이송
+defined('MONEYCHANGE_CHARGE_INC')   || define('MONEYCHANGE_TRANS_INC', 20);     //상부이송
+defined('MONEYCHANGE_EXCHANGE_INC') || define('MONEYCHANGE_EXCHANGE_INC', 27);  //하부환수
+defined('MONEYCHANGE_EXCHANGE_DEC') || define('MONEYCHANGE_EXCHANGE_DEC', 28);  //상부환수
+
+defined('MONEYCANCEL_CHARGE')    || define('MONEYCANCEL_CHARGE', 21);   //충전취소
+defined('MONEYCANCEL_EXCHANGE')  || define('MONEYCANCEL_EXCHANGE', 22); //환전취소
+
 defined('MONEYCHANGE_INC')       || define('MONEYCHANGE_INC', 23);     //직충전
+defined('MONEYCHANGE_DEC')       || define('MONEYCHANGE_DEC', 26);     //직환전
 defined('MONEYCHANGE_WITHDRAW')  || define('MONEYCHANGE_WITHDRAW', 24); //머니회수
 defined('POINTHANGE_WITHDRAW')   || define('POINTHANGE_WITHDRAW', 25);  //포인트회수
-defined('MONEYCHANGE_DEC')       || define('MONEYCHANGE_DEC', 26);     //직환전
+
+
 
 defined('TRANS_SITE_EVOL')      || define('TRANS_SITE_EVOL', 1); 
 defined('TRANS_EVOL_SITE')      || define('TRANS_EVOL_SITE', 2); 

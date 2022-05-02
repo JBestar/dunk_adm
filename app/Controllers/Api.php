@@ -796,7 +796,6 @@ public function withdrawlist(){
 			
 			$arrBetResults = $moneyhistoryModel->search($objAdmin, $arrGetData);
 		
-			//var_dump($arrBetHistory);
 			$objResult = new \StdClass;
 			$objResult->data = $arrBetResults;			
 			$objResult->status = "success";

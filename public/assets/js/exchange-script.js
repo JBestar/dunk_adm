@@ -76,28 +76,27 @@ function showMoneyHistory(jsonBetData) {
         } else if (jsonBetData[nRow].money_change_type == 18) {
             strBuf += "보글사다리 정산";
         } else if (jsonBetData[nRow].money_change_type == 19) {
-            strBuf += "이송충전";
+            strBuf += "하부이송";
         } else if (jsonBetData[nRow].money_change_type == 20) {
-            strBuf += "이송환전";
-        } else if (jsonBetData[nRow].money_change_type == 21) {
-            strBuf += "입금취소";
-        } else if (jsonBetData[nRow].money_change_type == 22) {
-            strBuf += "출금취소";
+            strBuf += "상부이송";
+        } else if (jsonBetData[nRow].money_change_type == 27) {
+            strBuf += "하부환수";
+        } else if (jsonBetData[nRow].money_change_type == 28) {
+            strBuf += "상부환수";
         } else if (jsonBetData[nRow].money_change_type == 23) {
             strBuf += "직충전";
-        } else if (jsonBetData[nRow].money_change_type == 24) {
-            strBuf += "직환전";
-        } else if (jsonBetData[nRow].money_change_type == 25) {
-            strBuf += "머니회수";
         } else if (jsonBetData[nRow].money_change_type == 26) {
+            strBuf += "직환전";
+        } else if (jsonBetData[nRow].money_change_type == 24) {
+            strBuf += "머니회수";
+        } else if (jsonBetData[nRow].money_change_type == 25) {
             strBuf += "포인트회수";
-        }
+        } 
         strBuf += "</td><td>";
-        if (jsonBetData[nRow].money_change_type == 19) {
+        if (jsonBetData[nRow].money_change_type == 19 || jsonBetData[nRow].money_change_type == 20 ||
+            jsonBetData[nRow].money_change_type == 27 || jsonBetData[nRow].money_change_type == 28) {
             strBuf += jsonBetData[nRow].money_bet_target;
-        } else if (jsonBetData[nRow].money_change_type == 20) {
-            strBuf += jsonBetData[nRow].money_bet_target;
-        }
+        } 
         strBuf += "</td></tr>";
 
     }
