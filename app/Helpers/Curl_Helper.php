@@ -7,11 +7,11 @@ function getCurlRequest($url, $headers = null, $post = null){
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, $url);
 
-    if ($post && !empty($post)) {
+    if (!is_null($post)) {
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $post);
     }
-    if ($headers && !empty($headers)) {
+    if (!is_null($headers)) {
         curl_setopt($curl, CURLOPT_HEADER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
     }

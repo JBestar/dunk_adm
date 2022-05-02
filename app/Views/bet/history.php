@@ -8,22 +8,25 @@
 			<a href="<?php echo site_furl('bet/pshistory');?>" class="sub-navbar-a" >파워사다리</a>
 		<?php endif ?>   
     	<?php if(!$bpg_deny) :?>
-		<a href="<?php echo site_furl('bet/bbhistory');?>" class="sub-navbar-a" >보글볼</a>
-		<a href="<?php echo site_furl('bet/bshistory');?>" class="sub-navbar-a" >보글사다리</a>
+			<a href="<?php echo site_furl('bet/bbhistory');?>" class="sub-navbar-a" >보글볼</a>
+			<a href="<?php echo site_furl('bet/bshistory');?>" class="sub-navbar-a" >보글사다리</a>
    		<?php endif ?>   
-		<a href="<?php echo site_furl('bet/cshistory');?>" class="sub-navbar-a" >에볼루션</a>
-
-		<?php if($mb_level >= LEVEL_ADMIN) :  ?>
-			<?php if($_ENV['app.type'] != APPTYPE_2) :?>
-				<a href="<?php echo site_furl('bet/xslhistory');?>" class="sub-navbar-a" >정품슬롯</a>
-			<?php endif ?>
-			<a href="<?php echo site_furl('bet/fslhistory');?>" class="sub-navbar-a" >네츄럴슬롯</a>
-			<?php if($_ENV['app.type'] != APPTYPE_2) :?>
+		<?php if(!$cas_deny) :?>
+			<a href="<?php echo site_furl('bet/cshistory');?>" class="sub-navbar-a" >에볼루션</a>
+		<?php endif ?>
+		<?php if(!$slot_deny) :?>
+			<?php if($mb_level >= LEVEL_ADMIN) :  ?>
+				<?php if($_ENV['app.type'] != APPTYPE_2) :?>
+					<a href="<?php echo site_furl('bet/xslhistory');?>" class="sub-navbar-a" >정품슬롯</a>
+				<?php endif ?>
+				<a href="<?php echo site_furl('bet/fslhistory');?>" class="sub-navbar-a" >네츄럴슬롯</a>
+				<?php if($_ENV['app.type'] != APPTYPE_2) :?>
+					<a href="<?php echo site_furl('bet/slhistory');?>" class="sub-navbar-a" >슬롯</a>
+				<?php endif ?>
+			<?php else: ?>
 				<a href="<?php echo site_furl('bet/slhistory');?>" class="sub-navbar-a" >슬롯</a>
 			<?php endif ?>
-		<?php else: ?>
-			<a href="<?php echo site_furl('bet/slhistory');?>" class="sub-navbar-a" >슬롯</a>
-		<?php endif ?>
+		<?php endif ?>   
 	</div>
 
 	<div class="bet-panel">

@@ -45,7 +45,6 @@
 			<button class="pbresult-list-view-but" id="exchange-list-view-but-id">검색</button>	  
 		</div>
 
-
 		<Table class="user-table" >
 			<thead>
 			<tr>
@@ -54,8 +53,8 @@
 				<th>아이디</th>
 				<th>현재금액</th>
 				<th>거래금액</th>
-				<th>거래전 머니</th>
-				<th>거래후 머니</th>
+				<th>거래전 금액</th>
+				<th>거래후 금액</th>
 				<th>일짜</th>
 				<th>구분</th>
 				<th>설명</th>

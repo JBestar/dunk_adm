@@ -61,6 +61,9 @@ function showMember(arrMember, confs) {
 
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_nickname;
+        if(arrMember[nRow].mb_state_delete > 0){
+            strBuf += "<br>(오플라인)";    
+        }
         strBuf += "</td> <td>";
         strBuf += parseInt(arrMember[nRow].mb_grade).toLocaleString() + "레벨";
         strBuf += "</td> <td id='mm_" + arrMember[nRow].mb_fid + "'>";
@@ -130,15 +133,20 @@ function showMember(arrMember, confs) {
                 strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >보글사다리</button>";
             }
         }
-        if (arrMember[nRow].mb_game_cs == 1) {
-            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>카지노</button>";
-        } else {
-            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >카지노</button>";
+        if(!confs.cas_deny){
+            if (arrMember[nRow].mb_game_cs == 1) {
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>카지노</button>";
+            } else {
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >카지노</button>";
+            }
         }
-        if (arrMember[nRow].mb_game_sl == 1) {
-            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>슬롯</button>";
-        } else {
-            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >슬롯</button>";
+        if(!confs.slot_deny){
+
+            if (arrMember[nRow].mb_game_sl == 1) {
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>슬롯</button>";
+            } else {
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >슬롯</button>";
+            }
         }
         strBuf += "</td></tr>";
     }

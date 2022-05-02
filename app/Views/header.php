@@ -5,15 +5,25 @@
 	-->
 	<title><?=$site_name?> 관리자</title>
     <?php if($_ENV['app.name'] == APP_ONESTAR) :?>
-    <link rel="shortcut icon" href="<?php echo site_furl('/favicon_o.ico');?>">
+    	<link rel="shortcut icon" href="<?php echo site_furl('/favicon_o.ico');?>">
     <?php elseif($_ENV['app.name'] == APP_SKY) :?>
-    <link rel="shortcut icon" href="<?php echo site_furl('/favicon_s.ico');?>">
+    	<link rel="shortcut icon" href="<?php echo site_furl('/favicon_s.ico');?>">
     <?php elseif($_ENV['app.name'] == APP_MSLOT) :?>
-    <link rel="shortcut icon" href="<?php echo site_furl('/favicon_m.ico');?>">
+    	<link rel="shortcut icon" href="<?php echo site_furl('/favicon_m.ico');?>">
     <?php elseif($_ENV['app.name'] == APP_KANGNUM) :?>
-    <link rel="shortcut icon" href="<?php echo site_furl('/favicon_k.ico');?>">
+    	<link rel="shortcut icon" href="<?php echo site_furl('/favicon_k.ico');?>">
+    <?php elseif($_ENV['app.name'] == APP_MAX) :?>
+    	<link rel="shortcut icon" href="<?php echo site_furl('/favicon_x.ico');?>">
+    <?php elseif($_ENV['app.name'] == APP_THUNDER) :?>
+    	<link rel="shortcut icon" href="<?php echo site_furl('/favicon_t.ico');?>">
+	<?php elseif($_ENV['app.name'] == APP_WORLD) :?>
+    	<link rel="shortcut icon" href="<?php echo site_furl('/favicon_w.ico');?>">
+	<?php elseif($_ENV['app.name'] == APP_ROYAL) :?>
+    	<link rel="shortcut icon" href="<?php echo site_furl('/favicon_r.ico');?>">
+	<?php elseif($_ENV['app.name'] == APP_COD) :?>
+    	<link rel="shortcut icon" href="<?php echo site_furl('/favicon_c.ico');?>">
     <?php else : ?>
-    <link rel="shortcut icon" href="<?php echo site_furl('/favicon_l.ico');?>">
+    	<link rel="shortcut icon" href="<?php echo site_furl('/favicon_l.ico');?>">
     <?php endif ?>
 	<!-- Bootstrap 3.3.7 -->
   	<link rel="stylesheet" href="<?php echo site_furl('assets/bootstrap/css/bootstrap.min.css');?>">
@@ -39,6 +49,40 @@
   <button id="main-navbar-dropdown-logout-id"><span class="glyphicon glyphicon-log-out"></span>&nbsp&nbsp로그아웃</button>
   </div>
 </div>
+<style>
+		.user-table a.link-member {
+			color: blue;
+			border: none;
+			background-color: transparent;
+			box-shadow: none;
+			font-weight: lighter;
+		}
+
+		.user-table a.link-member:hover {
+			text-decoration: underline;
+			color: blue;
+		}
+				
+		button.refresh_btn {
+			border:0;
+			padding:0;
+			box-shadow:none;
+			width: 18px;
+			height: 18px;
+			vertical-align: top;
+			margin-left: 10px;
+			background: url(<?php echo site_furl('/assets/image/refresh_btn.png');?>) no-repeat left top;
+		}
+		button.refresh_btn:hover{
+			border:1px;
+
+			box-shadow: 1px 1px 1px 0px rgb(0 0 0 / 50%);
+		}
+
+		button.refresh_btn.refresh{
+			background: url(<?php echo site_furl('/assets/image/refresh_btn.gif');?>) no-repeat left top;
+		}
+	</style>
 <?= $this->include('include/sidebar')?>
 <?= $this->include('include/main_navbar')?>
 <?php $this->renderSection('content') ?>

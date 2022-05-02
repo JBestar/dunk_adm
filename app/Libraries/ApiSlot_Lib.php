@@ -107,6 +107,47 @@ class ApiSlot_Lib {
     }
 
 
+    public function getAgentInfo()
+    {
+
+        if(strlen($this->mHost) < 1){
+            return array('status' => 0);
+        }
+
+        $url = $this->mHost."/custom/api/agent/GetCurrentEgg";
+
+        $arrPost['key'] = $this->mAgCode;
+        $arrPost['secret'] = $this->mAgToken;
+        $post = json_encode($arrPost);
+
+        $header =  ['Content-Type: application/json',
+                'Content-Length: ' . strlen($post),
+                'Accept: */*'];
+        
+        $response = getCurlRequest($url, $header, $post);
+        
+        $arrResult = json_decode($response, true);
+		$balance = -1;
+		
+		if(!is_null($arrResult) && array_key_exists("resultCode", $arrResult)) {
+			if($arrResult['resultCode'] <= 1){
+                $arrResult['status'] = 1;
+                // "resultCode": "0",
+                // "resultMessage": "OK",
+                // "balance": 0
+                $balance = $arrResult['currentEgg'];
+
+            } else { //
+                $arrResult['status'] = 0;
+                //"status": 0,
+            }
+		} else {
+            $arrResult['status'] = 0;
+            $arrResult['resultCode'] = INTERNAL_ERROR;
+        }
+
+        return $balance;
+    }
 
     public function createSess($id)
     {

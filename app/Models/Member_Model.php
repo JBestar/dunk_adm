@@ -70,7 +70,7 @@ class Member_Model extends Model
         'mb_email', 'mb_phone', 'mb_bank_name', 'mb_bank_own', 'mb_bank_num', 'mb_bank_pwd',
         'mb_ip_join', 'mb_ip_last',
         'mb_money', 'mb_point', 'mb_money_charge', 'mb_money_exchange', 'mb_grade', 
-        'mb_state_active', 'mb_state_alarm', 'mb_state_view',
+        'mb_state_active', 'mb_state_delete', 'mb_state_alarm', 'mb_state_view',
         'mb_game_pb', 'mb_game_ps', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 
         'mb_game_pb_ratio', 'mb_game_pb2_ratio','mb_game_ps_ratio', 'mb_game_bb_ratio', 'mb_game_bb2_ratio', 
         'mb_game_bs_ratio', 'mb_game_cs_ratio', 'mb_game_sl_ratio', 
@@ -195,7 +195,7 @@ class Member_Model extends Model
         return $this->delete($arrDeleteData['mb_fid']);
     }
 
-    public function moneyProc(&$objUser, $dtMoney, $dtPoint, $nCharge, $nExchange)
+    public function moneyProc(&$objUser, $dtMoney, $dtPoint=0, $nCharge=0, $nExchange=0)
     {
         $strSql1 = 'UPDATE '.$this->table.' SET ';
         if ($dtMoney >= 0) {
@@ -368,7 +368,7 @@ class Member_Model extends Model
         $strSQL .= '  FROM (SELECT  * FROM tbmember UNION SELECT '.$strTbColum.' FROM '.$this->table." where mb_fid='".$objEmp->mb_fid."'";
         $strSQL .= ' ) AS mb_table ';
         
-        $strSQL .= ' JOIN ( (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_casino';
+        $strSQL .= ' JOIN ( (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_slot';
         $strSQL .= $strCond;
         $strSQL .= ' GROUP BY bet_mb_uid) ';
 
@@ -383,7 +383,6 @@ class Member_Model extends Model
         }
 
         if(!$confs['bpg_deny']){
-
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_bogleball ';
             $strSQL .= $strCond;
             $strSQL .= ' GROUP BY bet_mb_uid) ';
@@ -393,10 +392,12 @@ class Member_Model extends Model
             $strSQL .= ' GROUP BY bet_mb_uid) ';
         }
 
-        $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_slot ';
-        $strSQL .= $strCond;
-        $strSQL .= ' GROUP BY bet_mb_uid) ';
-        
+        if(!$confs['cas_deny']){
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_casino ';
+            $strSQL .= $strCond;
+            $strSQL .= ' GROUP BY bet_mb_uid) ';
+        }
+
         $strSQL .= ' )AS bet_table ON bet_table.bet_mb_uid = mb_table.mb_uid ';
 
         $objResult = $this->db->query($strSQL)->getRow();
@@ -886,6 +887,12 @@ class Member_Model extends Model
         $arrData['mb_bank_own'] = trim($arrData['mb_bank_own']);
         $arrData['mb_bank_num'] = trim($arrData['mb_bank_num']);
 
+        if(array_key_exists('mb_money', $arrData))
+            unset($arrData['mb_money']);
+
+        if(array_key_exists('mb_point', $arrData))
+            unset($arrData['mb_point']);
+
         $bResult = $this->update($arrData['mb_fid'], $arrData);
         
         if ($bResult) {
@@ -944,7 +951,9 @@ class Member_Model extends Model
         }
 
         $this->builder()->set('mb_color', $arrData['mb_color']);
-
+        if(array_key_exists('mb_state_delete', $arrData)){
+            $this->builder()->set('mb_state_delete', $arrData['mb_state_delete']);
+        }
         $this->builderSetGameRatioAndPercent($arrData);
 
         $this->builder()->where('mb_fid', $arrData['mb_fid']);
@@ -1047,13 +1056,13 @@ class Member_Model extends Model
             }
 
             // 대기중인 회원수
-            $strSQL = ' SELECT  COUNT(*) AS mb_count FROM '.$this->table." WHERE mb_level < '".LEVEL_EMPLOYEE."'";
+            $strSQL = ' SELECT  COUNT(*) AS mb_count FROM '.$this->table." WHERE mb_level < '".LEVEL_ADMIN."'";
             $strSQL .= " AND mb_state_active = '2'";
             $objResult = $this->db->query($strSQL)->getRow();
             if (!is_null($objResult->mb_count)) {
                 $arrEmpUserInfo['waituser'] = $objResult->mb_count;
             }
-
+            /*
             // 대기중인 매장수
             $strSQL = ' SELECT  COUNT(*) AS mb_count FROM '.$this->table." WHERE mb_level = '".LEVEL_EMPLOYEE."'";
             $strSQL .= " AND mb_state_active = '2'";
@@ -1077,6 +1086,7 @@ class Member_Model extends Model
             if (!is_null($objResult->mb_count)) {
                 $arrEmpUserInfo['waitcompany'] = $objResult->mb_count;
             }
+            */
         }
 
         return $arrEmpUserInfo;
@@ -1123,12 +1133,12 @@ class Member_Model extends Model
         $strTbColum = " ".implode(", ", $this->getFields);
         $strTbColum.= ", block_ip, block_state ";
 
-        $strTbColum = "mb_fid, mb_uid, mb_level, mb_emp_fid, mb_emp_permit, mb_nickname,  
-	        mb_ip_join, mb_ip_last, mb_money, mb_point, mb_money_charge, mb_money_exchange, mb_grade, mb_state_active, mb_state_alarm, 
-	        mb_state_view, mb_game_pb, mb_game_ps, mb_game_bb, mb_game_bs, mb_game_cs, mb_game_sl, mb_game_pb_ratio, mb_game_pb2_ratio, 
-	        mb_game_ps_ratio, mb_game_bb_ratio, mb_game_bb2_ratio, mb_game_bs_ratio, mb_game_cs_ratio, mb_game_sl_ratio, mb_game_pb_percent, 
-	        mb_game_pb2_percent, mb_game_ps_percent, mb_game_bb_percent, mb_game_bb2_percent, mb_game_bs_percent,  
-            mb_live_money, mb_slot_money, mb_fslot_money, block_ip, block_state";
+        // $strTbColum = "mb_fid, mb_uid, mb_level, mb_emp_fid, mb_emp_permit, mb_nickname,  
+	    //     mb_ip_join, mb_ip_last, mb_money, mb_point, mb_money_charge, mb_money_exchange, mb_grade, mb_state_active, mb_state_alarm, 
+	    //     mb_state_view, mb_game_pb, mb_game_ps, mb_game_bb, mb_game_bs, mb_game_cs, mb_game_sl, mb_game_pb_ratio, mb_game_pb2_ratio, 
+	    //     mb_game_ps_ratio, mb_game_bb_ratio, mb_game_bb2_ratio, mb_game_bs_ratio, mb_game_cs_ratio, mb_game_sl_ratio, mb_game_pb_percent, 
+	    //     mb_game_pb2_percent, mb_game_ps_percent, mb_game_bb_percent, mb_game_bb2_percent, mb_game_bs_percent,  
+        //     mb_live_money, mb_slot_money, mb_fslot_money, block_ip, block_state";
 
         $tbBlock = "block_list";
         $strQuery = "SELECT ".$strTbColum." FROM ".$this->table;

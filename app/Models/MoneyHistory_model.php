@@ -110,6 +110,31 @@ class MoneyHistory_Model extends Model
         return $this->builder()->insert();
     }
 
+    function registerWithdraw($objUser, $userId, $nAmount, $type)
+    {
+        if(is_null($objUser)) return false;
+
+        $this->builder()->set('money_mb_fid', $objUser->mb_fid);
+        $this->builder()->set('money_mb_uid', $objUser->mb_uid);
+        $this->builder()->set('money_mb_emp_fid', $objUser->mb_emp_fid);        
+        $this->builder()->set('money_amount', $nAmount);
+        if($type == MONEYCHANGE_WITHDRAW)
+        {
+            $this->builder()->set('money_before', $objUser->mb_money+$nAmount);
+            $this->builder()->set('money_after', $objUser->mb_money);
+        } else if($type == POINTHANGE_WITHDRAW)
+        {
+            $this->builder()->set('money_before', $objUser->mb_point+$nAmount);
+            $this->builder()->set('money_after', $objUser->mb_point);
+        } else return false;
+        
+        $this->builder()->set('money_change_type', $type);   
+        $this->builder()->set('money_bet_target', $userId);     
+        $this->builder()->set('money_update_time', 'NOW()', false);
+        
+        return $this->builder()->insert();
+    }
+
     function registerAccountBet($objUser, $objBetInfo, $nMoney, $iType)
     {
         
@@ -142,12 +167,12 @@ class MoneyHistory_Model extends Model
             $strSql .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
 
             $strSql .= "SELECT ".$this->table.".*, mb_table.mb_nickname, mb_table.mb_money FROM ".$this->table;
-            $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
+            $strSql .="  LEFT JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
             $strSql .=" ) AS mb_table ";
             $strSql .=" ON ".$this->table.".money_mb_uid = mb_table.mb_uid ";
         } else {
             $strSql .= "SELECT ".$this->table.".*, member.mb_nickname, member.mb_money FROM ".$this->table;
-            $strSql .="  JOIN member ";
+            $strSql .="  LEFT JOIN member ";
             $strSql .=" ON ".$this->table.".money_mb_uid = member.mb_uid ";
         }
         $bWhere = false;
@@ -217,7 +242,7 @@ class MoneyHistory_Model extends Model
 
         $query = $this -> db -> query($strSql);
         $result = $query -> getRow();
-        
+
         return $result; 
 
     }

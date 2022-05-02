@@ -17,6 +17,9 @@ use App\Models\SessLog_Model;
 use App\Models\Block_Model;
 use App\Models\Reward_Model;
 
+use App\Libraries\ApiCas_Lib;
+use App\Libraries\ApiSlot_Lib;
+use App\Libraries\ApiFslot_Lib;
 
 
 class Api extends BaseController{
@@ -106,10 +109,30 @@ class Api extends BaseController{
 			
 			$agConf = null;
 			if($gameId == GAME_CASINO_EVOL){
+				$libApicas = new ApiCas_Lib();
+				$balance = $libApicas->getAgentInfo();
+				if($balance > 0){
+					$confsiteModel->setConfActive(CONF_CASINO_EVOL, $balance);
+				}
+				writeLog("<CASINO> Agent Egg = ".$balance);
 				$agConf = $confsiteModel->getConf(CONF_CASINO_EVOL);
 			} else if($gameId == GAME_SLOT_1){
+				$libApislot = new ApiSlot_Lib();
+				$balance = $libApislot->getAgentInfo();
+				if($balance > 0){
+					$confsiteModel->setConfActive(CONF_SLOT_1, $balance);
+				}
+				writeLog("<SLOT> Agent Egg = ".$balance);
+
 				$agConf = $confsiteModel->getConf(CONF_SLOT_1);
 			} else if($gameId == GAME_SLOT_2){
+				$libApifslot = new ApiFslot_Lib();
+				$balance = $libApifslot->getAgentInfo();
+				if($balance > 0){
+					$confsiteModel->setConfActive(CONF_SLOT_2, $balance);
+				}
+				writeLog("<FSLOT> AGENT Egg = ".$balance);
+
 				$agConf = $confsiteModel->getConf(CONF_SLOT_2);
 			}
 			

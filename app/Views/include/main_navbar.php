@@ -20,8 +20,9 @@
 					<?php if(!$bpg_deny) :?>
 						<td>보글볼<span id="main-navbar-emp_bbrate-id">0 % | 0 %</span></td>
 					<?php endif ?>     
-				
-				<td>카지노<span id="main-navbar-emp_evrate-id">0 %</span></td>
+					<?php if(!$cas_deny) :?>
+						<td>카지노<span id="main-navbar-emp_evrate-id">0 %</span></td>
+					<?php endif ?>   
 				<?php } else { ?>
 
 				<td>새 문의&nbsp;<a href="<?php echo site_furl('/board/message');?>" id="main-navbar-newmessage-id">0 통</a></td>
@@ -42,7 +43,9 @@
 					<?php if(!$bpg_deny) :?>
 						<td>보글사다리<span id="main-navbar-emp_bsrate-id">0 % </span></td>
 					<?php endif ?>     
-				<td>슬롯<span id="main-navbar-emp_slrate-id">0 %</span></td>
+					<?php if(!$slot_deny) :?>
+						<td>슬롯<span id="main-navbar-emp_slrate-id">0 %</span></td>
+					<?php endif ?>   
 				<?php } else { ?>
 
 				<td>가입신청&nbsp;<a href="<?php echo site_furl('/user/member/0');?>" id="main-navbar-user_wait-id">0 명</span></td>

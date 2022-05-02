@@ -776,9 +776,32 @@ class UserApi extends BaseController
 
             $objResult = new \stdClass();
 
-            if(is_null($objMember)){
+            if(is_null($objMember) || is_null($objEmp)){
                 $objResult->status = 'fail';
-            } else if($objMember->mb_emp_fid !== $objEmp->mb_fid){
+            } else if($objEmp->mb_level >= LEVEL_ADMIN) {
+                $objResult->status = 'fail';
+                
+                if($arrData['type'] == 0){
+                    //직충전
+                    if($arrData['amount'] > 0 && $memberModel->moneyProc($objMember, $arrData['amount']))
+                    {
+                        $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, $arrData['amount'], MONEYCHANGE_INC);
+                        $objResult->status = 'success';
+                    }
+                } else if($arrData['type'] == 1){
+                    if(intval($objMember->mb_money) < $arrData['amount']){
+                        $arrData['amount'] = $objMember->mb_money;
+                    }
+                    //직환전
+                    if($arrData['amount'] > 0 && $memberModel->moneyProc($objMember, 0-$arrData['amount']))
+                    {
+                        $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], MONEYCHANGE_DEC);
+                        $objResult->status = 'success';
+                    }
+                } 
+                 
+            }
+            else if($objMember->mb_emp_fid !== $objEmp->mb_fid){
                 $objResult->status = 'fail';
             } else if($arrData['amount'] > $objEmp->mb_money){
                 $objResult->status = 'fail';
@@ -791,8 +814,55 @@ class UserApi extends BaseController
                 $objResult->status = 'success';
             } else{
                 $objResult->status = 'fail';
-
             }
+
+            echo json_encode($objResult);
+        } else {
+            $arrResult['status'] = 'logout';
+            echo json_encode($arrResult);
+        }
+    }
+
+    //머니, 포인트 회수
+    public function withdraw()
+    {
+        $jsonData = $_REQUEST['json_'];
+        $arrData = json_decode($jsonData, true);
+
+        if (is_login()) {
+            // model
+            $memberModel = new Member_Model();
+            $moneyhistoryModel = new MoneyHistory_Model();
+
+            $strUid = $this->session->user_id;
+            $objEmp = $memberModel->getInfo($strUid);
+            $objMember = $memberModel->getInfoByFid($arrData['mb_fid']);
+
+            $objResult = new \stdClass();
+
+            if(is_null($objMember) || is_null($objEmp)){
+                $objResult->status = 'fail';
+            } else if($objEmp->mb_level < LEVEL_ADMIN) {
+                $objResult->status = 'fail';
+            } else {
+                if($arrData['type'] == 0 && $objMember->mb_money > 0){
+                    $nAmount = $objMember->mb_money;
+                    $objMember->mb_money = 0;
+                    if($memberModel->updateMoney($objMember))
+                        $moneyhistoryModel->registerWithdraw($objMember, $objEmp->mb_uid, $nAmount, MONEYCHANGE_WITHDRAW);
+                    $objResult->status = 'success';
+                }
+                else if($arrData['type'] == 1 && $objMember->mb_point > 0){
+                    $nAmount = $objMember->mb_point;
+                    $objMember->mb_point = 0;
+                    if($memberModel->updateMoney($objMember))
+                        $moneyhistoryModel->registerWithdraw($objMember, $objEmp->mb_uid, $nAmount, POINTHANGE_WITHDRAW);
+                    $objResult->status = 'success';
+                } else {
+                    $objResult->status = 'fail';
+                }
+
+            } 
 
             echo json_encode($objResult);
         } else {

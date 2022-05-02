@@ -73,7 +73,12 @@ defined('APP_ONESTAR')      || define('APP_ONESTAR', 'Onestar');
 defined('APP_SKY')          || define('APP_SKY', 'Sky');
 defined('APP_GOLDMOON')     || define('APP_GOLDMOON', 'Goldmoon');
 defined('APP_MSLOT')        || define('APP_MSLOT', 'Mslot');
-defined('APP_KANGNUM')        || define('APP_KANGNUM', 'Kangnum');
+defined('APP_KANGNUM')      || define('APP_KANGNUM', 'Kangnum');
+defined('APP_MAX')          || define('APP_MAX', 'Max');
+defined('APP_THUNDER')      || define('APP_THUNDER', 'Thunder');
+defined('APP_WORLD')        || define('APP_WORLD', 'World');
+defined('APP_ROYAL')        || define('APP_ROYAL', 'Royal');
+defined('APP_COD')          || define('APP_COD', 'Cod');
 
 defined('APPTYPE_0')        || define('APPTYPE_0', 0);      //Premier
 defined('APPTYPE_1')        || define('APPTYPE_1', 1);      //Slot Combine
@@ -120,6 +125,8 @@ defined('CONF_SLOT_2')         || define('CONF_SLOT_2', 23);
 
 defined('CONF_NPG_DENY')        || define('CONF_NPG_DENY', 26);
 defined('CONF_BPG_DENY')        || define('CONF_BPG_DENY', 27);
+defined('CONF_CAS_DENY')        || define('CONF_CAS_DENY', 28);
+defined('CONF_SLOT_DENY')       || define('CONF_SLOT_DENY', 29);
 defined('CONF_IMG_TYPE')        || define('CONF_IMG_TYPE', 30);
 
 defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);
@@ -186,10 +193,14 @@ defined('MONEYCHANGE_BET_BB')    || define('MONEYCHANGE_BET_BB', 13);
 defined('MONEYCHANGE_WIN_BB')    || define('MONEYCHANGE_WIN_BB', 15);
 defined('MONEYCHANGE_BET_BS')    || define('MONEYCHANGE_BET_BS', 16);
 defined('MONEYCHANGE_WIN_BS')    || define('MONEYCHANGE_WIN_BS', 18);
-defined('MONEYCHANGE_TRANS_R')   || define('MONEYCHANGE_TRANS_R', 19);
-defined('MONEYCHANGE_TRANS_S')   || define('MONEYCHANGE_TRANS_S', 20);
-defined('MONEYCANCEL_CHARGE')    || define('MONEYCANCEL_CHARGE', 21);   
+defined('MONEYCHANGE_TRANS_R')   || define('MONEYCHANGE_TRANS_R', 19);  //머니이송 받기
+defined('MONEYCHANGE_TRANS_S')   || define('MONEYCHANGE_TRANS_S', 20);  //머니이송 보내기
+defined('MONEYCANCEL_CHARGE')    || define('MONEYCANCEL_CHARGE', 21);   //
 defined('MONEYCANCEL_EXCHANGE')  || define('MONEYCANCEL_EXCHANGE', 22); 
+defined('MONEYCHANGE_INC')       || define('MONEYCHANGE_INC', 23);     //직충전
+defined('MONEYCHANGE_DEC')       || define('MONEYCHANGE_DEC', 24);     //직환전
+defined('MONEYCHANGE_WITHDRAW')  || define('MONEYCHANGE_WITHDRAW', 24); //머니회수
+defined('POINTHANGE_WITHDRAW')   || define('POINTHANGE_WITHDRAW', 25);  //포인트회수
 
 defined('TRANS_SITE_EVOL')      || define('TRANS_SITE_EVOL', 1); 
 defined('TRANS_EVOL_SITE')      || define('TRANS_EVOL_SITE', 2); 
@@ -197,3 +208,31 @@ defined('TRANS_SITE_SLOT')      || define('TRANS_SITE_SLOT', 3);
 defined('TRANS_SLOT_SITE')      || define('TRANS_SLOT_SITE', 4); 
 defined('TRANS_SITE_FSLOT')     || define('TRANS_SITE_FSLOT', 5); 
 defined('TRANS_FSLOT_SITE')     || define('TRANS_FSLOT_SITE', 6); 
+
+
+// AAS 요청오류
+defined('INVALID_ACCESS_TOKEN') || define('INVALID_ACCESS_TOKEN', "INVALID_ACCESS_TOKEN");  //증명서 불일치(code/token)
+defined('INVALID_PRODUCT')      || define('INVALID_PRODUCT', "INVALID_PRODUCT");            //프로젝트가 존재하지 않는 경우
+defined('INVALID_PARAMETER')    || define('INVALID_PARAMETER', "INVALID_PARAMETER");        //요청이 잘못된 경우
+defined('INVALID_USER')         || define('INVALID_USER', "INVALID_USER");                  //사용자가 존재하지 않을 경우
+defined('DOUBLE_USER')          || define('DOUBLE_USER', "DOUBLE_USER");                    //해당 유저가 이미 존재하는 경우
+defined('INSUFFICIENT_FUNDS')   || define('INSUFFICIENT_FUNDS', "INSUFFICIENT_FUNDS");      //귀사의 알이 부족한 경우
+defined('INTERNAL_ERROR')       || define('INTERNAL_ERROR', "INTERNAL_ERROR");              //기타오류
+defined('INVALID_AMOUNT')       || define('INVALID_AMOUNT', "INVALID_AMOUNT");              //금액이 올바르지 않은경우
+defined('GAME_PLAYING')         || define('GAME_PLAYING', "GAME_PLAYING");                  //해당 유저가 게임중인 경우
+
+// SLOT 결과
+defined('SLOTCODE_SUCCESS')         || define('SLOTCODE_SUCCESS', 0);       //정상   
+defined('SLOTCODE_WARNING')         || define('SLOTCODE_WARNING', 1);       //정상적으로 실행되었으나 Description 확인 필요 
+defined('SLOTCODE_SESSION_FAIL')    || define('SLOTCODE_SESSION_FAIL', 8);       //게임세션 생성 실패   
+defined('SLOTCODE_IP_AUTH')         || define('SLOTCODE_IP_AUTH', 9);       //인증되지 않은 IP 
+defined('SLOTCODE_USER_BALANCE')    || define('SLOTCODE_USER_BALANCE', 10); //충분하지 않은 회원 잔액 
+defined('SLOTCODE_AGENT_BALANCE')   || define('SLOTCODE_AGENT_BALANCE', 11);//충분하지 않은 관리자 잔액 
+defined('SLOTCODE_NOFORMAT')        || define('SLOTCODE_NOFORMAT', 64);    //값이 형식에 불일치 
+defined('SLOTCODE_OUTRANGE')        || define('SLOTCODE_OUTRANGE', 65);    //값이 범위에서 벗어남 
+defined('SLOTCODE_DOUBLE_USER')     || define('SLOTCODE_DOUBLE_USER', 89);       //중복된 회원 ID 
+defined('SLOTCODE_SESSION_END')     || define('SLOTCODE_SESSION_END', 96);     //만료된 게임세션
+defined('SLOTCODE_SESSION_NO')      || define('SLOTCODE_SESSION_NO', 97);     //찾을 수 없는 게임세션 
+defined('SLOTCODE_USER_NONE')       || define('SLOTCODE_USER_NONE', 98);     //찾을 수 없는 회원 ID 
+defined('SLOTCODE_PARAMETER_NO')    || define('SLOTCODE_PARAMETER_NO', 99);    //API 호출을 위한 매개변수 부족 
+defined('SLOTCODE_API_FAIL')        || define('SLOTCODE_API_FAIL', 100);    //API 요청 실패 - 시스템 관리자 문의 

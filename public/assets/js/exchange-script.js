@@ -27,11 +27,13 @@ function showMoneyHistory(jsonBetData) {
         strBuf += "<tr><td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td><td>";
-        strBuf += jsonBetData[nRow].mb_nickname;
+        if(jsonBetData[nRow].mb_nickname != null)
+            strBuf += jsonBetData[nRow].mb_nickname;
         strBuf += "</td><td>";
         strBuf += jsonBetData[nRow].money_mb_uid;
         strBuf += "</td><td>";
-        strBuf += parseInt(jsonBetData[nRow].mb_money).toLocaleString();
+        if(jsonBetData[nRow].mb_money != null)
+            strBuf += parseInt(jsonBetData[nRow].mb_money).toLocaleString();
         strBuf += "</td><td>";
         strBuf += parseInt(jsonBetData[nRow].money_amount).toLocaleString();
         strBuf += "</td><td>";
@@ -81,6 +83,14 @@ function showMoneyHistory(jsonBetData) {
             strBuf += "입금취소";
         } else if (jsonBetData[nRow].money_change_type == 22) {
             strBuf += "출금취소";
+        } else if (jsonBetData[nRow].money_change_type == 23) {
+            strBuf += "직충전";
+        } else if (jsonBetData[nRow].money_change_type == 24) {
+            strBuf += "직환전";
+        } else if (jsonBetData[nRow].money_change_type == 25) {
+            strBuf += "머니회수";
+        } else if (jsonBetData[nRow].money_change_type == 26) {
+            strBuf += "포인트회수";
         }
         strBuf += "</td><td>";
         if (jsonBetData[nRow].money_change_type == 19) {
@@ -130,14 +140,14 @@ function requestMoneyHistory() {
         dataType: "json",
         success: function(jResult) {
             $(".loading").hide();
-            // console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 showMoneyHistory(jResult.data);
             }
         },
         error: function(request, status, error) {
             $(".loading").hide();
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 
     });
@@ -163,7 +173,7 @@ function requestTotalPage() {
         dataType: 'json',
         type: 'post',
         success: function(jResult) {
-            //console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();
@@ -171,7 +181,7 @@ function requestTotalPage() {
             }
         },
         error: function(request, status, error) {
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 
     });

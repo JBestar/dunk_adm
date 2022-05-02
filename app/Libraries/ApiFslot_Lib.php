@@ -109,6 +109,44 @@ class ApiFslot_Lib {
         return $arrResult;
     }
 
+    public function getAgentInfo()
+    {
+        if(strlen($this->mHost) < 1){
+            return -1;
+        }
+        $url = $this->mHost."/agent/info";
+
+        $post = "";
+       
+        $header =  $this->getHeader($post);
+
+        $response = getCurlRequest($url, $header, $post);
+        
+        $arrResult = json_decode($response, true);
+		$balance = -1;
+		
+		if(!is_null($arrResult) && array_key_exists("status", $arrResult)) {
+			if($arrResult['status'] == 1){
+                // "status": 1,
+				// "agent_id": "69a0d021-cd55-4a65-b648-efa776e50178",
+				// "agent_code": "test102",
+				// "balance": 3002950,
+				// "createdAt": "2022-02-18T19:12:13.517",
+				// "updatedAt": "2022-02-18T19:12:13.517",
+				// "callback_url": "http://test"
+                $balance = $arrResult['balance'];
+
+            } else { //
+                //"status": 0,
+                //"error": INVALID_ACCESS_TOKEN, INVALID_PARAMETER, INVALID_USER, INSUFFICIENT_FUNDS, INTERNAL_ERROR
+            }
+		} else {
+            $arrResult['status'] = 0;
+            $arrResult['error'] = INTERNAL_ERROR;
+        }
+
+        return $balance;
+    }
     public function auth($id, $name, $game)
     {
         if(strlen($this->mHost) < 1){

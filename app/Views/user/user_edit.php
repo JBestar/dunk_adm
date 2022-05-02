@@ -217,81 +217,116 @@
 				<?php } ?>
 			</div>	
 		<?php endif ?>   
-
-		<div class="useredit-percent-div">
-			<p>카지노:</p>			 
-			<label> 배당율(%)</label>
-			<?php if(is_null($objMember)) {  ?>
-			<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="0" >
-			<?php } else {?>
-			<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="<?=$objMember->mb_game_cs_ratio?>">
-			<?php } ?>
-		</div>
-
-		<div class="useredit-percent-div">
-			<p>슬롯:</p>			 
-			<label> 배당율(%)</label>
-			<?php if(is_null($objMember)) {  ?>
-			<input type = "number" step="0.1" id="useredit-slbetrate-input-id" value="0" >
-			<?php } else {?>
-			<input type = "number" step="0.1" id="useredit-slbetrate-input-id" value="<?=$objMember->mb_game_sl_ratio?>">
-			<?php } ?>
-		</div>
+		<?php if(!$cas_deny) :?>
+			<div class="useredit-percent-div">
+				<p>카지노:</p>			 
+				<label> 배당율(%)</label>
+				<?php if(is_null($objMember)) {  ?>
+				<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="0" >
+				<?php } else {?>
+				<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="<?=$objMember->mb_game_cs_ratio?>">
+				<?php } ?>
+			</div>
+		<?php endif ?>   
+		<?php if(!$slot_deny) :?>
+			<div class="useredit-percent-div">
+				<p>슬롯:</p>			 
+				<label> 배당율(%)</label>
+				<?php if(is_null($objMember)) {  ?>
+				<input type = "number" step="0.1" id="useredit-slbetrate-input-id" value="0" >
+				<?php } else {?>
+				<input type = "number" step="0.1" id="useredit-slbetrate-input-id" value="<?=$objMember->mb_game_sl_ratio?>">
+				<?php } ?>
+			</div>
+		<?php endif ?>   
 		
 		<?php $this->renderSection('user-edit-check-level')  ?>
         
-		
+		<div class="useredit-text-div">
+			<?php if(!is_null($objMember) && $objMember->mb_state_delete == 1) :  ?>
+				<input type="checkbox" id="useredit-offline-check-id" style="zoom:140%; margin-top:4px; width:20px;" checked>
+			<?php else :  ?>
+				<input type="checkbox" id="useredit-offline-check-id" style="zoom:140%; margin-top:4px; width:20px;" >
+			<?php endif ?>
+			<p>오플라인 유저</p> 
+		</div>
+
 		<!---->
 		<?php if ($mb_level >= LEVEL_ADMIN) { ?>
 		<p class="useredit-seperate-div"></p>
-
-			<?php if(!is_null($objMember)) {  ?>
+		
+			<!-- <?php if(!is_null($objMember)) {  ?>
 			<div class="useredit-text-div">
 				<p>충전금액:</p> 
 				<input type = "text" id="useredit-charge-input-id" value="<?=number_format($objMember->mb_money_charge)?>" disabled>
 				<label>원</label>
 			</div>
-			<!---->
+			
 			<div class="useredit-text-div">
 				<p>환전금액:</p> 
 				<input type = "text" id="useredit-exchange-input-id" value="<?=number_format($objMember->mb_money_exchange)?>" disabled>
 				<label>원</label>
 			</div>
 			<?php } ?>
-			<!---->
+			 -->
 			
 			<div class="useredit-text-div">
-				<p>현재금액:</p> 
+				<p>보유금액:</p> 
 				<?php if(is_null($objMember)) {  ?>	
 				<input type = "text" id="useredit-money-input-id">
+				<label>원</label>
 				<?php } else {?>
-				<input type = "text" id="useredit-money-input-id" value="<?=number_format($objMember->mb_money)?>">
-				<?php } ?><label>원</label>
-				<button class="pbresult-money-but" id="amount_1">1만원</button>
-				<button class="pbresult-money-but" id="amount_3">5만원</button>  
-				<button class="pbresult-money-but" id="amount_4">10만원</button>  
-				<button class="pbresult-money-but" id="amount_5">50만원</button>  
-				<button class="pbresult-money-but" id="amount_6">100만원</button>  
+				<input type = "text" id="useredit-money-input-id" value="<?=number_format($objMember->mb_money)?>" disabled>
+				<label>원</label>
+				<button class="pbresult-list-view-but" id="useredit-withdraw-money-id">회수</button>  
+				<?php } ?>
 			</div>
 			<!---->
 			<div class="useredit-text-div">
-				<p>현재포인트:</p> 
+				<p>보유포인트:</p> 
 				<?php if(is_null($objMember)) {  ?>	
 				<input type = "text" id="useredit-point-input-id">
+				<label>P</label>
 				<?php } else {?>
-				<input type = "text" id="useredit-point-input-id" value="<?=number_format($objMember->mb_point)?>">
+				<input type = "text" id="useredit-point-input-id" value="<?=number_format($objMember->mb_point)?>" disabled>
+				<label>P&nbsp;</label>
+				<button class="pbresult-list-view-but" id="useredit-withdraw-point-id">회수</button>  
 				<?php } ?>
-				<label>원</label>
+				
 			</div>
+
+			<?php if(!is_null($objMember)) :  ?>	
+				<div class="useredit-text-div">
+					<p>충환전금액:</p> 
+					<input type = "text" id="useredit-transfer-input-id" value="0" >
+					<label>원</label>
+					<button class="pbresult-money-but" id="money_1">1만원</button>
+					<button class="pbresult-money-but" id="money_2">3만원</button>  
+					<button class="pbresult-money-but" id="money_3">5만원</button>  
+					<button class="pbresult-money-but" id="money_4">10만원</button>  
+					<button class="pbresult-money-but" id="money_5">50만원</button>  
+					<button class="pbresult-money-but" id="money_6">100만원</button>  
+					<button class="pbresult-list-view-but" id="useredit-give-but-id" style="margin-right:0px;">직충전</button>  
+					<button class="pbresult-list-view-but" id="useredit-withdraw-but-id">직환전</button>  
+
+				</div>
+			<?php endif ?>
+
 		<?php } else {?>
 		
 			<?php if(!is_null($objMember)) {  ?>
 				<p class="useredit-seperate-div">
 				<div class="useredit-text-div">
-					<p>현재금액:</p> 
+					<p>보유금액:</p> 
 					<input type = "text" id="useredit-money-input-id" value="<?=number_format($objMember->mb_money)?>"  disabled>
 					<label>원</label>
 				</div>
+				<div class="useredit-text-div">
+					<p>보유포인트:</p> 
+					<input type = "text" id="useredit-point-input-id" value="<?=number_format($objMember->mb_point)?>" disabled>
+					<label>P</label>
+				</div>
+
 				<div class="useredit-text-div">
 					<p>이송금액:</p> 
 					<input type = "text" id="useredit-transfer-input-id" value="0" >

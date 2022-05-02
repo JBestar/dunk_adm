@@ -36,6 +36,7 @@ function readConfigToObject() {
             nAmount = 0;
         }
         objMember.mb_point = nAmount;
+
     }
     if($("#useredit-pbbetrate-input-id").length > 0){
         objMember.mb_game_pb_ratio = $("#useredit-pbbetrate-input-id").val();
@@ -69,8 +70,18 @@ function readConfigToObject() {
         objMember.mb_game_bb2_percent = 0;
         objMember.mb_game_bs_percent = 0;
     }
-    objMember.mb_game_cs_ratio = $("#useredit-evbetrate-input-id").val();
-    objMember.mb_game_sl_ratio = $("#useredit-slbetrate-input-id").val();
+
+    if($("#useredit-evbetrate-input-id").length > 0){
+        objMember.mb_game_cs_ratio = $("#useredit-evbetrate-input-id").val();
+    } else objMember.mb_game_cs_ratio = 0;
+
+    if($("#useredit-slbetrate-input-id").length > 0){
+        objMember.mb_game_sl_ratio = $("#useredit-slbetrate-input-id").val();
+    } else objMember.mb_game_sl_ratio = 0;
+    
+    if ($("#useredit-offline-check-id").length > 0){
+        objMember.mb_state_delete = $("#useredit-offline-check-id").prop('checked') ? 1 : 0;
+    } else objMember.mb_state_delete = 0;
 
     return objMember;
 
@@ -229,52 +240,145 @@ function addBtnEvent() {
         window.location.replace( FURL +'/user/member/0');
     });
 
-    $("#useredit-transfer-but-id").click(function() {
         
+    $("#useredit-give-but-id").click(function() {
         var nAmount = parseInt($("#useredit-transfer-input-id").val().replace(/,/g, ""));
         if (isNaN(nAmount) || nAmount == "") {
             nAmount = 0;
         }
+        if (nAmount == 0) {
+            confirmAlert("충전금액을 입력 해주세요.");
+            return false;
+        }
 
+        if (!confirm(nAmount.toLocaleString() + "원을 직충전하시겠습니까?"))
+            return;
+    
+        var jsonData = {
+            'mb_fid': $("#subnavbar-fid-p-id").html(),
+            'amount': nAmount,
+            'type':0
+        }
+        requestTrasnfer(jsonData);
+    });
+    
+    //직환전
+    $("#useredit-withdraw-but-id").click(function() {
+        var nAmount = parseInt($("#useredit-transfer-input-id").val().replace(/,/g, ""));
+        if (isNaN(nAmount) || nAmount == "") {
+            nAmount = 0;
+        }
+        if (nAmount == 0) {
+            confirmAlert("환전금액을 입력 해주세요.");
+            return false;
+        }
+
+        if (!confirm(nAmount.toLocaleString() + "원을 직환전하시겠습니까?"))
+            return;
+    
+        var jsonData = {
+            'mb_fid': $("#subnavbar-fid-p-id").html(),
+            'amount': nAmount,
+            'type':1
+        }
+        requestTrasnfer(jsonData);
+
+    });
+    
+    $("#useredit-transfer-but-id").click(function() {
+        var nAmount = parseInt($("#useredit-transfer-input-id").val().replace(/,/g, ""));
+        if (isNaN(nAmount) || nAmount == "") {
+            nAmount = 0;
+        }
         if (nAmount == 0) {
             confirmAlert("이송금액을 입력 해주세요.");
             return false;
         }
 
-        if (!confirm(nAmount.toLocaleString() + "원을 회원에게 이송하시겠습니까"))
+        if (!confirm(nAmount.toLocaleString() + "원을 회원에게 이송하시겠습니까?"))
             return;
+
         var jsonData = {
             'mb_fid': $("#subnavbar-fid-p-id").html(),
-            'amount': nAmount
+            'amount': nAmount,
+            'type':2
         }
-        jsonData = JSON.stringify(jsonData);
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: FURL + "/userapi/transfer",
-            data: { json_: jsonData },
-            success: function(jResult) {
-                // console.log(jResult);
-                if (jResult.status == "success") {
-                    location.reload();
-                } else if (jResult.status == "logout") {
-                    window.location.replace( FURL +'/');
-                } else if (jResult.status == "fail") {
-                    if (jResult.msg) {
-                        alert(jResult.msg);
-                    } else alert("머니 이송이 실패되었습니다.")
-                }
-            },
-            error: function(request, status, error) {
-                // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-            }
+        requestTrasnfer(jsonData);
 
-        });
+    });
+    
+    $("#useredit-withdraw-money-id").click(function() {
+        if (!confirm("보유금액을 회수하시겠습니까?"))
+            return;
+
+        requestWithdraw(0);
     });
 
+    $("#useredit-withdraw-point-id").click(function() {
+        if (!confirm("보유포인트를 회수하시겠습니까?"))
+            return;
+
+        requestWithdraw(1)
+    });
 
 }
 
+function requestTrasnfer(jsonData){
+    
+    jsonData = JSON.stringify(jsonData);
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: FURL + "/userapi/transfer",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+            if (jResult.status == "success") {
+                location.reload();
+            } else if (jResult.status == "logout") {
+                window.location.replace( FURL +'/');
+            } else if (jResult.status == "fail") {
+                if (jResult.msg) {
+                    alert(jResult.msg);
+                } else alert("충전이 실패되었습니다.")
+            }
+        },
+        error: function(request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+
+    });
+
+}
+
+function requestWithdraw(iType){
+    var jsonData = {
+        'mb_fid': $("#subnavbar-fid-p-id").html(),
+        'type': iType
+    }
+
+    jsonData = JSON.stringify(jsonData);
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: FURL + "/userapi/withdraw",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+            if (jResult.status == "success") {
+                location.reload();
+            } else if (jResult.status == "logout") {
+                window.location.replace( FURL +'/');
+            } else if (jResult.status == "fail") {
+                alert("회수가 실패되었습니다.")
+            }
+        },
+        error: function(request, status, error) {
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+
+    });
+}
 
 
 $(function() {
@@ -318,32 +422,6 @@ $(function() {
         tr_price(1000000);
     });
 
-
-    // 1만원
-    $("#amount_1").on("click", function(e) {
-        e.preventDefault();
-        mb_price(10000);
-    });
-    // 5만원
-    $("#amount_3").on("click", function(e) {
-        e.preventDefault();
-        mb_price(50000);
-    });
-    // 10만원
-    $("#amount_4").on("click", function(e) {
-        e.preventDefault();
-        mb_price(100000);
-    });
-    // 50만원
-    $("#amount_5").on("click", function(e) {
-        e.preventDefault();
-        mb_price(500000);
-    });
-    // 100만원
-    $("#amount_6").on("click", function(e) {
-        e.preventDefault();
-        mb_price(1000000);
-    });
 });
 
 
@@ -362,21 +440,6 @@ function tr_price(price) {
     }
 }
 
-
-function mb_price(price) {
-    if (price == 0) {
-        $("#useredit-money-input-id").val("0");
-    } else {
-        tmp_price = parseInt($("#useredit-money-input-id").val().replace(/,/g, ""));
-
-        if (isNaN(tmp_price) == false) {
-            price += tmp_price;
-        }
-
-        $("#useredit-money-input-id").val(price);
-        calcAmount("#useredit-money-input-id");
-    }
-}
 
 function calcAmount(elemName){
     $(elemName).val(

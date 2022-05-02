@@ -201,21 +201,9 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
 
     var nWaitCnt = 0;
     nWaitCnt += parseInt(objEmpInfo.waituser);
-    nWaitCnt += parseInt(objEmpInfo.waitemployee);
-    nWaitCnt += parseInt(objEmpInfo.waitagency);
-    nWaitCnt += parseInt(objEmpInfo.waitcompany);
+
     strBuf = nWaitCnt + " 명";
     $("#main-navbar-user_wait-id").text(strBuf);
-
-
-    if (objEmpInfo.waitcompany > 0)
-        $("#main-navbar-user_wait-id").attr("href", "/user/company");
-    else if (objEmpInfo.waitagency > 0)
-        $("#main-navbar-user_wait-id").attr("href", "/user/agency");
-    else if (objEmpInfo.waitemployee > 0)
-        $("#main-navbar-user_wait-id").attr("href", "/user/employee");
-    else
-        $("#main-navbar-user_wait-id").attr("href", "/user/member/0");
 
     strBuf = objEmpInfo.waitcharge + " 대기";
     $("#main-navbar-charge_wait-id").text(strBuf);

@@ -425,7 +425,7 @@ function requestBetRealtime() {
         dataType: "json",
         success: function(jResult) {
             $(".loading").hide();
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 setNavBarElement();
                 ShowBetRealtime(jResult.data);

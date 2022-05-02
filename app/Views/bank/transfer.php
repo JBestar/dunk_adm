@@ -19,10 +19,14 @@
 
             <select class="pbresult-game-select" id="transfer-type-select-id">
 				<option value="0">::분류::</option>
-				<option value="1">사이트 => 카지노</option>
-				<option value="2">카지노 => 사이트</option>
-				<option value="3">사이트 => 슬롯</option>
-				<option value="4">슬롯 => 사이트</option>
+				<?php if(!$cas_deny) :?>
+					<option value="1">사이트 => 카지노</option>
+					<option value="2">카지노 => 사이트</option>
+				<?php endif ?>   
+				<?php if(!$slot_deny) :?>
+					<option value="3">사이트 => 슬롯</option>
+					<option value="4">슬롯 => 사이트</option>
+				<?php endif ?>
 				
 			</select>
 

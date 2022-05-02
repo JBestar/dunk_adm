@@ -216,9 +216,17 @@ class ConfSite_Model extends Model
     }
 
     public function getSiteConf(){
-        $confIds = [CONF_SITENAME, CONF_NPG_DENY, CONF_BPG_DENY, CONF_IMG_TYPE];  
+        $confIds = [CONF_SITENAME, CONF_NPG_DENY, CONF_BPG_DENY, CONF_CAS_DENY, CONF_SLOT_DENY, CONF_IMG_TYPE];  
         return $this->find($confIds);
     }
 
+    
+    public function setConfActive($confId, $balance){
+        
+        $this->builder()->set('conf_active', $balance);
+        $this->builder()->where('conf_id', $confId);
+        
+        return $this->builder()->update();
+    }
 
 }

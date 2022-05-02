@@ -1,39 +1,6 @@
 <?= $this->extend('header') ?>
 <?= $this->section('content') ?>
-	<style>
-		.user-table a.link-member {
-			color: blue;
-			border: none;
-			background-color: transparent;
-			box-shadow: none;
-			font-weight: lighter;
-		}
-
-		.user-table a.link-member:hover {
-			text-decoration: underline;
-			color: blue;
-		}
-				
-		.user-table button.refresh_btn {
-			border:0;
-			padding:0;
-			box-shadow:none;
-			width: 18px;
-			height: 18px;
-			vertical-align: top;
-			margin-left: 10px;
-			background: url(<?php echo site_furl('/assets/image/refresh_btn.png');?>) no-repeat left top;
-		}
-		.user-table button.refresh_btn:hover{
-			border:1px;
-
-			box-shadow: 1px 1px 1px 0px rgb(0 0 0 / 50%);
-		}
-
-		.user-table button.refresh_btn.refresh{
-			background: url(<?php echo site_furl('/assets/image/refresh_btn.gif');?>) no-repeat left top;
-		}
-	</style>
+	
 	<!--Sub Navbar-->
 	<div class = "sub-navbar">
 		<p><i class="glyphicon glyphicon-user"></i> 회원관리::회원</p>
