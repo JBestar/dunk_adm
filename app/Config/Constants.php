@@ -204,9 +204,9 @@ defined('MONEYCHANGE_TRANS_S')   || define('MONEYCHANGE_TRANS_S', 20);  //머니
 defined('MONEYCANCEL_CHARGE')    || define('MONEYCANCEL_CHARGE', 21);   //
 defined('MONEYCANCEL_EXCHANGE')  || define('MONEYCANCEL_EXCHANGE', 22); 
 defined('MONEYCHANGE_INC')       || define('MONEYCHANGE_INC', 23);     //직충전
-defined('MONEYCHANGE_DEC')       || define('MONEYCHANGE_DEC', 24);     //직환전
 defined('MONEYCHANGE_WITHDRAW')  || define('MONEYCHANGE_WITHDRAW', 24); //머니회수
 defined('POINTHANGE_WITHDRAW')   || define('POINTHANGE_WITHDRAW', 25);  //포인트회수
+defined('MONEYCHANGE_DEC')       || define('MONEYCHANGE_DEC', 26);     //직환전
 
 defined('TRANS_SITE_EVOL')      || define('TRANS_SITE_EVOL', 1); 
 defined('TRANS_EVOL_SITE')      || define('TRANS_EVOL_SITE', 2); 

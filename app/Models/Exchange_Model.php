@@ -86,7 +86,7 @@ class Exchange_Model extends Model {
     function calcAdminExchange($arrReqData){
         
         $strSQL = "SELECT SUM(exchange_money) AS exchange_sum FROM ".$this->table;
-        $strSQL.=" WHERE exchange_action_state = '2' OR exchange_action_state = '5' ";
+        $strSQL.=" WHERE (exchange_action_state = '2' OR exchange_action_state = '5') ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
             $strSQL.=" AND exchange_time_require >= '".$arrReqData['start']." 0:0:0' AND exchange_time_require <= '".$arrReqData['end']." 23:59:59' " ;
         
@@ -111,7 +111,7 @@ class Exchange_Model extends Model {
         $strSQL .=" ) AS mb_table ";
 
         $strSQL .= " JOIN (SELECT SUM(exchange_money) AS exchange_money, exchange_mb_uid FROM ".$this->table;
-        $strSQL.=" WHERE exchange_action_state = '2' OR exchange_action_state = '5'  ";
+        $strSQL.=" WHERE (exchange_action_state = '2' OR exchange_action_state = '5')  ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
             $strSQL.=" AND ".getTimeRange("exchange_time_require", $arrReqData);
         $strSQL .= " GROUP BY exchange_mb_uid";
