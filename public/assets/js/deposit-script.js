@@ -63,15 +63,14 @@ function showDepositList(arrData) {
         if (arrData[nRow].charge_action_state == 1) {
             strBuf += "<button name='" + arrData[nRow].charge_fid + "' >승인</button>";
             strBuf += "<button name='" + arrData[nRow].charge_fid + "' >거절</button>";
-            // strBuf += "<button name='" + arrData[nRow].charge_fid + "' >대기</button>";
+            strBuf += "<button name='" + arrData[nRow].charge_fid + "' >대기</button>";
         } else if (arrData[nRow].charge_action_state == 2) {
             // strBuf += "<button name='" + arrData[nRow].charge_fid + "' >취소</button>";
         } else if (arrData[nRow].charge_action_state == 3) {
             // strBuf += "<button name='" + arrData[nRow].charge_fid + "' >승인</button>";
         } else if (arrData[nRow].charge_action_state == 4) {
-            // strBuf += "<button name='" + arrData[nRow].charge_fid + "' >승인</button>";
-            // strBuf += "<button name='" + arrData[nRow].charge_fid + "' >거절</button>";
-
+            strBuf += "<button name='" + arrData[nRow].charge_fid + "' >승인</button>";
+            strBuf += "<button name='" + arrData[nRow].charge_fid + "' >거절</button>";
         }
         strBuf += "</td></tr>";
 

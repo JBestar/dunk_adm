@@ -75,17 +75,27 @@ class Charge_Model extends Model
      function getWaitCnt(){
         $strSql = "SELECT COUNT(*)  AS charge_wait_cnt FROM ".$this->table;
         $strSql .= " JOIN member ON ".$this->table.".charge_mb_uid = member.mb_uid ";
-        $strSql .= " WHERE charge_action_state = '1'  AND charge_state_delete = '0' ";
+        $strSql .= " WHERE charge_action_state = '".STATE_ACTIVE."'  AND charge_state_delete = '0' ";
         
         $objResult = $this-> db -> query($strSql)->getRow();
         if(is_null($objResult->charge_wait_cnt)) return 0;
         else return  $objResult->charge_wait_cnt;
     }
 
+    function getMomentCnt(){
+        $strSql = "SELECT COUNT(*)  AS charge_moment_cnt FROM ".$this->table;
+        $strSql .= " JOIN member ON ".$this->table.".charge_mb_uid = member.mb_uid ";
+        $strSql .= " WHERE charge_action_state = '".STATE_WAIT."'  AND charge_state_delete = '0' ";
+        
+        $objResult = $this-> db -> query($strSql)->getRow();
+        if(is_null($objResult->charge_moment_cnt)) return 0;
+        else return  $objResult->charge_moment_cnt;
+    }
+
     //일충전금액
     function calcAdminCharge($arrReqData){
         $strSQL = "SELECT SUM(charge_money) AS charge_sum FROM ".$this->table;
-        $strSQL.=" WHERE (charge_action_state = '2' OR charge_action_state = '5') ";
+        $strSQL.=" WHERE (charge_action_state = '".STATE_VERIFY."' OR charge_action_state = '".STATE_HOT."') ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
             $strSQL.=" AND charge_time_require >= '".$arrReqData['start']." 0:0:0' AND charge_time_require <= '".$arrReqData['end']." 23:59:59'" ; 
         }

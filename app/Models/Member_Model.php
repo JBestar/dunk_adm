@@ -65,6 +65,7 @@ class Member_Model extends Model
         'mb_fslot_money',
     ];
 
+    protected $primaryKey = 'mb_fid';
     
     private $getFields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid', 'mb_emp_permit', 'mb_nickname', 
         'mb_email', 'mb_phone', 'mb_bank_name', 'mb_bank_own', 'mb_bank_num', 'mb_bank_pwd',
@@ -80,8 +81,20 @@ class Member_Model extends Model
         'mb_slot_uid', 'mb_slot_money', 
         'mb_fslot_id', 'mb_fslot_uid', 'mb_fslot_money' ];
 
-    protected $primaryKey = 'mb_fid';
 
+    private $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid', 'mb_emp_permit', 'mb_nickname', 
+            'mb_ip_join', 'mb_ip_last',
+            'mb_money', 'mb_point', 'mb_money_charge', 'mb_money_exchange', 'mb_grade', 
+            'mb_state_active', 'mb_state_delete', 'mb_state_alarm', 'mb_state_view',
+            'mb_game_pb', 'mb_game_ps', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 
+            'mb_game_pb_ratio', 'mb_game_pb2_ratio','mb_game_ps_ratio', 'mb_game_bb_ratio', 'mb_game_bb2_ratio', 
+            'mb_game_bs_ratio', 'mb_game_cs_ratio', 'mb_game_sl_ratio', 
+            'mb_game_pb_percent', 'mb_game_pb2_percent', 'mb_game_ps_percent', 'mb_game_bb_percent',
+            'mb_game_bb2_percent', 'mb_game_bs_percent',
+            'mb_live_id', 'mb_live_uid', 'mb_live_money', 
+            'mb_slot_uid', 'mb_slot_money', 
+            'mb_fslot_id', 'mb_fslot_uid', 'mb_fslot_money' ];
+        
     
     protected $validationRules = [
         'mb_uid' => 'required|alpha_numeric|is_unique[member.mb_uid, mb_fid, {mb_fid}]',
@@ -121,6 +134,42 @@ class Member_Model extends Model
             'required' => '은행번호는 필수입력사항입니다.',
         ],
     ];
+
+    
+    
+    public function getInfoByFid($strFid)
+    {
+        return $this->asObject()->select($this->getFields)->find($strFid);
+    }
+
+    public function getInfo($strId)
+    {
+        return $this->asObject()->select($this->getFields)->where('mb_uid', $strId)->first();
+    }
+
+    public function getInfoByUid($strId)
+    {
+        return $this->asObject()->select($this->fields)->where('mb_uid', $strId)->first();
+    }
+
+    public function getByNickname($strName)
+    {
+        return $this->asObject()->select($this->getFields)->where('mb_nickname', $strName)->first();
+    }
+
+    public function login($strUserId, $strPwd)
+    {
+        return $this->builder()
+            ->where([
+            'mb_uid' => $strUserId,
+            'mb_pwd' => $strPwd ])
+            ->get()->getRow();
+    }
+
+    public function deleteMemberByFid($arrDeleteData)
+    {
+        return $this->delete($arrDeleteData['mb_fid']);
+    }
 
     public function changePassword($strUserId, $arrPwd)
     {
@@ -181,19 +230,6 @@ class Member_Model extends Model
         ->update();
     }
 
-    public function login($strUserId, $strPwd)
-    {
-        return $this->builder()
-            ->where([
-            'mb_uid' => $strUserId,
-            'mb_pwd' => $strPwd ])
-            ->get()->getRow();
-    }
-
-    public function deleteMemberByFid($arrDeleteData)
-    {
-        return $this->delete($arrDeleteData['mb_fid']);
-    }
 
     public function moneyProc(&$objUser, $dtMoney, $dtPoint=0, $nCharge=0, $nExchange=0)
     {
@@ -582,104 +618,6 @@ class Member_Model extends Model
         }
     }
 
-    public function getEmployeeNames($objAdmin, $nLevel)
-    {
-        $arrData = [];
-        if ($nLevel > $objAdmin->mb_level) {
-        } elseif ($nLevel == $objAdmin->mb_level) {
-            $arrName['mb_name'] = $objAdmin->mb_nickname;
-            $arrName['mb_fid'] = $objAdmin->mb_fid;
-            $arrName['mb_color'] = $objAdmin->mb_color;
-            $arrData[0] = (object) $arrName;
-        } elseif (LEVEL_COMPANY == $nLevel) {
-            $arrEmployee = $this->getMemberByEmpFid($objAdmin->mb_fid, $nLevel, $objAdmin->mb_level, false);
-
-            $i = 0;
-            foreach ($arrEmployee as $objMember) {
-                $arrName['mb_name'] = $objMember->mb_nickname;
-                $arrName['mb_fid'] = $objMember->mb_fid;
-                $arrName['mb_color'] = $objMember->mb_color;
-                $arrData[$i++] = (object) $arrName;
-            }
-        } elseif (LEVEL_AGENCY == $nLevel) {
-            $arrEmployee = $this->getMemberByEmpFid($objAdmin->mb_fid, $nLevel, $objAdmin->mb_level, false);
-            $i = 0;
-            foreach ($arrEmployee as $objMember) {
-                $arrName['mb_name'] = $this->getFullName($objMember);
-                $arrName['mb_fid'] = $objMember->mb_fid;
-                $arrName['mb_color'] = $objMember->mb_color;
-                $arrData[$i++] = (object) $arrName;
-            }
-        } elseif (LEVEL_EMPLOYEE == $nLevel) {
-            $arrEmployee = $this->getMemberByEmpFid($objAdmin->mb_fid, $nLevel, $objAdmin->mb_level, false);
-            $i = 0;
-            foreach ($arrEmployee as $objMember) {
-                $arrName['mb_name'] = $this->getFullName($objMember);
-                $arrName['mb_fid'] = $objMember->mb_fid;
-                $arrName['mb_color'] = $objMember->mb_color;
-                $arrData[$i++] = (object) $arrName;
-            }
-        }
-
-        return $arrData;
-    }
-
-    public function getFullName($objMember)
-    {
-        if (is_null($objMember)) {
-            return '';
-        }
-
-        // 9레벨일때
-        if ($objMember->mb_level >= LEVEL_COMPANY) {
-            return $objMember->mb_nickname;
-        }
-
-        $strBuf = '';
-        // 8레벨일때
-        $objEmp = $this->getInfoByFid($objMember->mb_emp_fid);
-        if (is_null($objEmp)) {
-            return '';
-        }
-        $strBuf = $objEmp->mb_nickname;
-        if (LEVEL_AGENCY == $objMember->mb_level) {
-            return $strBuf.'::'.$objMember->mb_nickname;
-        }
-
-        // 7레벨일때
-        $objEmp = $this->getInfoByFid($objEmp->mb_emp_fid);
-        if (is_null($objEmp)) {
-            return '';
-        }
-        $strBuf = $objEmp->mb_nickname.'::'.$strBuf;
-        if (LEVEL_EMPLOYEE == $objMember->mb_level) {
-            return $strBuf.'::'.$objMember->mb_nickname;
-        }
-
-        // 그이하일때
-        $objEmp = $this->getInfoByFid($objEmp->mb_emp_fid);
-        if (is_null($objEmp)) {
-            return '';
-        }
-        $strBuf = $objEmp->mb_nickname.'::'.$strBuf;
-
-        return $strBuf;
-    }
-
-    public function getInfoByFid($strFid)
-    {
-        return $this->asObject()->select($this->getFields)->find($strFid);
-    }
-
-    public function getInfo($strId)
-    {
-        return $this->asObject()->select($this->getFields)->where('mb_uid', $strId)->first();
-    }
-
-    public function getByNickname($strName)
-    {
-        return $this->asObject()->select($this->getFields)->where('mb_nickname', $strName)->first();
-    }
 
     private function checkGameRatio($objEmployee, $arrRegData, &$strError)
     {
@@ -984,9 +922,6 @@ class Member_Model extends Model
             return false;
         }
 
-        // if(array_key_exists("mb_live_id", $arrData))
-        //    $this->db->set('mb_live_id', $arrData['mb_live_id']);
-
         $this->builder()->where('mb_fid', $arrData['mb_fid']);
         $bResult = $this->builder()->update();
 
@@ -1048,13 +983,7 @@ class Member_Model extends Model
         $arrEmpUserInfo['waitcompany'] = 0;
 
         if ($objMember->mb_level >= LEVEL_ADMIN) {
-            // 소속 전체 유저수
-            $strSQL = ' SELECT  COUNT(*) AS mb_count FROM '.$this->table." WHERE mb_level < '".LEVEL_ADMIN."'";
-            $objResult = $this->db->query($strSQL)->getRow();
-            if (!is_null($objResult->mb_count)) {
-                $arrEmpUserInfo['alluser'] = $objResult->mb_count;
-            }
-
+            
             // 대기중인 회원수
             $strSQL = ' SELECT  COUNT(*) AS mb_count FROM '.$this->table." WHERE mb_level < '".LEVEL_ADMIN."'";
             $strSQL .= " AND mb_state_active = '2'";
@@ -1062,31 +991,7 @@ class Member_Model extends Model
             if (!is_null($objResult->mb_count)) {
                 $arrEmpUserInfo['waituser'] = $objResult->mb_count;
             }
-            /*
-            // 대기중인 매장수
-            $strSQL = ' SELECT  COUNT(*) AS mb_count FROM '.$this->table." WHERE mb_level = '".LEVEL_EMPLOYEE."'";
-            $strSQL .= " AND mb_state_active = '2'";
-            $objResult = $this->db->query($strSQL)->getRow();
-            if (!is_null($objResult->mb_count)) {
-                $arrEmpUserInfo['waitemployee'] = $objResult->mb_count;
-            }
-
-            // 대기중인 총판수
-            $strSQL = ' SELECT  COUNT(*) AS mb_count FROM '.$this->table." WHERE mb_level = '".LEVEL_AGENCY."'";
-            $strSQL .= " AND mb_state_active = '2'";
-            $objResult = $this->db->query($strSQL)->getRow();
-            if (!is_null($objResult->mb_count)) {
-                $arrEmpUserInfo['waitagency'] = $objResult->mb_count;
-            }
-
-            // 대기중인 본사수
-            $strSQL = ' SELECT  COUNT(*) AS mb_count FROM '.$this->table." WHERE mb_level = '".LEVEL_COMPANY."'";
-            $strSQL .= " AND mb_state_active = '2'";
-            $objResult = $this->db->query($strSQL)->getRow();
-            if (!is_null($objResult->mb_count)) {
-                $arrEmpUserInfo['waitcompany'] = $objResult->mb_count;
-            }
-            */
+            
         }
 
         return $arrEmpUserInfo;
@@ -1133,13 +1038,6 @@ class Member_Model extends Model
         $strTbColum = " ".implode(", ", $this->getFields);
         $strTbColum.= ", block_ip, block_state ";
 
-        // $strTbColum = "mb_fid, mb_uid, mb_level, mb_emp_fid, mb_emp_permit, mb_nickname,  
-	    //     mb_ip_join, mb_ip_last, mb_money, mb_point, mb_money_charge, mb_money_exchange, mb_grade, mb_state_active, mb_state_alarm, 
-	    //     mb_state_view, mb_game_pb, mb_game_ps, mb_game_bb, mb_game_bs, mb_game_cs, mb_game_sl, mb_game_pb_ratio, mb_game_pb2_ratio, 
-	    //     mb_game_ps_ratio, mb_game_bb_ratio, mb_game_bb2_ratio, mb_game_bs_ratio, mb_game_cs_ratio, mb_game_sl_ratio, mb_game_pb_percent, 
-	    //     mb_game_pb2_percent, mb_game_ps_percent, mb_game_bb_percent, mb_game_bb2_percent, mb_game_bs_percent,  
-        //     mb_live_money, mb_slot_money, mb_fslot_money, block_ip, block_state";
-
         $tbBlock = "block_list";
         $strQuery = "SELECT ".$strTbColum." FROM ".$this->table;
         $strQuery .= ' LEFT JOIN '.$tbBlock.' ON '.$this->table.'.mb_ip_last = '.$tbBlock.'.block_ip ';
@@ -1164,4 +1062,44 @@ class Member_Model extends Model
         $strQuery .= ' LIMIT '.$nStartRow.', '.$arrReqData['count'];
         return $this->db->query($strQuery)->getResult();
     }
+
+    
+    public function getEmpMemberByFid($fid)
+    {
+        $strTbColum = " ".implode(", ", $this->getFields);
+        $strTbRColum = " r.".implode(", r.", $this->getFields);
+
+        $strSQL = 'WITH RECURSIVE tbmember ('.$strTbColum.') AS';
+        $strSQL .= ' ( SELECT '.$strTbColum.' FROM '.$this->table." WHERE mb_fid = '".$fid."'";
+        $strSQL .= ' UNION ALL SELECT '.$strTbRColum.' FROM '.$this->table.' r ';
+        $strSQL .= ' INNER JOIN tbmember ON r.mb_fid = tbmember.mb_emp_fid )';
+        $strSQL .= ' SELECT * FROM tbmember ';
+        
+        $strSQL .=  " ORDER BY mb_level DESC ";
+        return $this->db->query($strSQL)->getResult();
+    }
+
+    public function isPermitMember($objMember, $iGame = 0){
+
+        if(is_null($objMember))
+            return false;
+
+        if($objMember->mb_level > LEVEL_COMPANY)
+            return true;
+
+        $arrMember = $this->getEmpMemberByFid($objMember->mb_fid);
+        if(count($arrMember) < 1)
+            return false;
+
+        if($arrMember[0]->mb_level != LEVEL_COMPANY)
+            return false;
+
+        foreach($arrMember as $member){
+            if(getMemberState($member, $iGame) === false)
+                return false;
+        }
+        
+        return true;
+    }
+
 }

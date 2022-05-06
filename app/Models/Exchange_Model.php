@@ -74,7 +74,7 @@ class Exchange_Model extends Model {
     function getWaitCnt(){
         $strSql = "SELECT COUNT(*)  AS exchange_wait_cnt FROM ".$this->table;
         $strSql .= " JOIN member ON ".$this->table.".exchange_mb_uid = member.mb_uid ";
-        $strSql .= " WHERE exchange_action_state = '1'  AND exchange_state_delete = '0' ";
+        $strSql .= " WHERE exchange_action_state = '".STATE_ACTIVE."'  AND exchange_state_delete = '0' ";
         
         $objResult = $this -> db -> query($strSql)->getRow();
         if(is_null($objResult->exchange_wait_cnt)) return 0;
@@ -82,11 +82,23 @@ class Exchange_Model extends Model {
 
     }
 
+    
+    function getMomentCnt(){
+        $strSql = "SELECT COUNT(*)  AS exchange_moment_cnt FROM ".$this->table;
+        $strSql .= " JOIN member ON ".$this->table.".exchange_mb_uid = member.mb_uid ";
+        $strSql .= " WHERE exchange_action_state = '".STATE_WAIT."'  AND exchange_state_delete = '0' ";
+        
+        $objResult = $this -> db -> query($strSql)->getRow();
+        if(is_null($objResult->exchange_moment_cnt)) return 0;
+        else return  $objResult->exchange_moment_cnt;
+
+    }
+
     //금일 환전금액
     function calcAdminExchange($arrReqData){
         
         $strSQL = "SELECT SUM(exchange_money) AS exchange_sum FROM ".$this->table;
-        $strSQL.=" WHERE (exchange_action_state = '2' OR exchange_action_state = '5') ";
+        $strSQL.=" WHERE (exchange_action_state = '".STATE_VERIFY."' OR exchange_action_state = '".STATE_HOT."') ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
             $strSQL.=" AND exchange_time_require >= '".$arrReqData['start']." 0:0:0' AND exchange_time_require <= '".$arrReqData['end']." 23:59:59' " ;
         

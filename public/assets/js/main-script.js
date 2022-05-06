@@ -92,9 +92,7 @@ function requestInfo() {
 
 	if(mObjUser != null)
     {
-      if(parseInt(mObjUser.mb_level) > LEVEL_COMPANY){
-          requestEmployeeInfo();
-      }
+        requestMemberInfo();
     
     }
 }

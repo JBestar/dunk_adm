@@ -15,6 +15,7 @@ namespace App\Controllers;
  */
 
 use CodeIgniter\Controller;
+use App\Models\Sess_Model;
 
 class BaseController extends Controller
 {
@@ -44,6 +45,7 @@ class BaseController extends Controller
 		// $this->session = \Config\Services::session();
 		
 		$this->session = session();
+		$this->modelSess = new Sess_Model();
 
 	}
 
@@ -71,6 +73,12 @@ class BaseController extends Controller
 		}
 		
 		return $confs;
+	}
+
+	protected function sess_destroy(){
+		$sess_id = $this->session->session_id;
+		$this->modelSess->deleteBySess($sess_id);
+		$this->session->destroy();
 	}
 
 }

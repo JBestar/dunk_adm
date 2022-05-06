@@ -194,28 +194,14 @@ class UserApi extends BaseController
 
             // 현재 가입한 유저가 요청한 유저보다 레벨이 높은 경우에 변경이 가능하다.
             if (!is_null($objUser) && !is_null($objReqUser)) {
-                if ($objUser->mb_level > $objReqUser->mb_level) {
+                if ($objUser->mb_level >= LEVEL_ADMIN) {
                     $bPermit = true;
                 }
             }
             if ($bPermit) {
                 $bResult = $memberModel->updateMemberByFid($arrData);
-
                 if ($bResult) {
-                    /*
-                    $arrUserData = $memberModel->find($arrData['mb_fid']);
-                    $arrUserData['mb_empname'] = '';
-                    if ($arrUserData['mb_emp_fid'] != 0){
-                        $arrEmpInfo = $memberModel->find($arrUserData['mb_emp_fid']);
-                        if ($arrEmpInfo != null)
-                        {
-                            $arrUserData['mb_empname'] = $arrEmpInfo['mb_uid'];
-                        }
-                    }
-                    */
                     $arrResult['status'] = 'success';
-                    // $arrResult['level'] = $objUser->mb_level;
-                    // $arrResult['data'] = $arrUserData;                    
                 } else {
                     $arrResult['status'] = 'fail';
                 }
@@ -317,15 +303,32 @@ class UserApi extends BaseController
             $strUid = $this->session->user_id;
             // model
             $memberModel = new Member_Model();
-
-            $objUser = $memberModel->getInfo($strUid);
+            $modelConfsite = new ConfSite_Model();
+            $objUser = $memberModel->getInfoByUid($strUid);
+            $sess_id = $this->session->session_id;
+			$this->modelSess->deleteLast();
 
             $objResult = new \stdClass();
-            if (null != $objUser) {
+
+            $bPermit = true;
+            if (is_null($objUser)) {
+				$bPermit = false;
+            }
+            else if($objUser->mb_level < LEVEL_ADMIN && $modelConfsite->IsMaintain())
+				$bPermit = false;
+            else if( !$memberModel->isPermitMember($objUser) )
+				$bPermit = false;
+            else if( is_null($this->modelSess->getBySess($sess_id)) )
+				$bPermit = false;
+            
+            if ($bPermit) {
+				$this->modelSess->updateLast($sess_id);
+
                 $objResult->data = $objUser;
                 $objResult->status = 'success';
             } else {
-                $objResult->status = 'fail';
+				$this->sess_destroy();
+                $objResult->status = 'logout';
             }
 
             echo json_encode($objResult);
@@ -352,9 +355,11 @@ class UserApi extends BaseController
             $objResult = new \stdClass();
             if ($objUser->mb_level >= LEVEL_ADMIN) {
                 $arrEmpInfo = $memberModel->getEmpUserCnt($objUser);
-                $arrEmpInfo['waitcharge'] = $chargeModel->getWaitCnt();
-                $arrEmpInfo['waitexchange'] = $exchangeModel->getWaitCnt();
-                $arrEmpInfo['newmessage'] = $noticeModel->getNewMessageCnt();
+                $arrEmpInfo['wait_charge'] = $chargeModel->getWaitCnt();
+                $arrEmpInfo['moment_charge'] = $chargeModel->getMomentCnt();
+                $arrEmpInfo['wait_exchange'] = $exchangeModel->getWaitCnt();
+                $arrEmpInfo['moment_exchange'] = $exchangeModel->getMomentCnt();
+                $arrEmpInfo['new_message'] = $noticeModel->getNewMessageCnt();
                 $objAdminMoney = $memberModel->calcAdminMoney();
                 $arrEmpInfo['emp_money'] = $objAdminMoney->emp_money;
                 $arrEmpInfo['emp_point'] = $objAdminMoney->emp_point;

@@ -121,6 +121,7 @@ defined('CONF_CHARGEMACRO')    || define('CONF_CHARGEMACRO', 9);
 defined('CONF_MAINTAIN')       || define('CONF_MAINTAIN', 10);
 defined('CONF_BETSITE')        || define('CONF_BETSITE', 11);
 defined('CONF_NOTICE_URGENT')  || define('CONF_NOTICE_URGENT', 12);
+defined('CONF_MULTI_LOGIN')    || define('CONF_MULTI_LOGIN', 14);
 defined('CONF_SOUND_1')        || define('CONF_SOUND_1', 15);
 defined('CONF_SOUND_2')        || define('CONF_SOUND_2', 16);
 defined('CONF_SOUND_3')        || define('CONF_SOUND_3', 17);
@@ -147,6 +148,10 @@ defined('GRADE_1')             || define('GRADE_1', 1);
 //status
 defined('STATE_DISABLE')      || define('STATE_DISABLE', 0);
 defined('STATE_ACTIVE')       || define('STATE_ACTIVE', 1);
+defined('STATE_VERIFY')       || define('STATE_VERIFY', 2);
+defined('STATE_REFUSE')       || define('STATE_REFUSE', 3);
+defined('STATE_WAIT')         || define('STATE_WAIT', 4);
+defined('STATE_HOT')          || define('STATE_HOT', 5);
 
 //permit state
 defined('PERMIT_CANCEL')       || define('PERMIT_CANCEL', 0);

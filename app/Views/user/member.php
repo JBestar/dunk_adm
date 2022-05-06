@@ -62,7 +62,9 @@
 					<th>접속IP</th>
 					<?php } ?>
 					<th>승인</th>
+					<?php if ($mb_level >= LEVEL_ADMIN) {?>	
 					<th>게임별설정</th>
+					<?php } ?>
 				</tr>
 			</thead>
 			<tbody  id="user-member-table-id">

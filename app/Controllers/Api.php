@@ -37,36 +37,48 @@ class Api extends BaseController{
 	public function login(){ 
 		$jsonData = $_REQUEST['json_'];
 		$arrLoginData = json_decode($jsonData, true);
+		$this->modelSess->deleteLast();
 		//model
         $modelMember = new Member_Model();
-        $userData = $modelMember->where('mb_uid', $arrLoginData['username'])->first();
+        $member = $modelMember->where('mb_uid', $arrLoginData['username'])->first();
         $iResult = 0;
 		$ip = $this->request->getIPAddress();
+		$modelConfsite = new ConfSite_Model();
 
 		$modelBlock = new Block_Model();
-		if(is_null($userData)){
+		if(is_null($member)){
 			$iResult = 0;
-		} else if($userData['mb_level'] < LEVEL_ADMIN && !is_null($modelBlock->getByIp($ip, true))){
+		} else if($member['mb_level'] < LEVEL_ADMIN && !is_null($modelBlock->getByIp($ip, true))){
 			$iResult = 2;
-		} else if($userData['mb_level'] == LEVEL_ADMIN && $userData['mb_state_view'] == STATE_ACTIVE &&
-			$userData['mb_ip_join'] !== $ip){
+		} else if($member['mb_level'] == LEVEL_ADMIN && $member['mb_state_view'] == STATE_ACTIVE &&
+			$member['mb_ip_join'] !== $ip){
+			$iResult = 3;
+		} else if($member['mb_level'] < LEVEL_ADMIN && $modelConfsite->IsMaintain()){
+			$iResult = 4;
+		}  else if(!$modelMember->isPermitMember((object)$member)){
 			$iResult = 3;
 		}
-		else if ( $userData['mb_pwd'] === $arrLoginData['password'])
+		else if ( $member['mb_pwd'] === $arrLoginData['password'])
         {
-            if ($userData['mb_level'] >= LEVEL_MIN && $userData['mb_state_active'] == STATE_ACTIVE){
+			$sessId = $this->session->session_id;
+			$sess = $this->modelSess->getByUid($member['mb_uid']);
+
+			if($member['mb_level'] < LEVEL_ADMIN && !$modelConfsite->IsMultiLogin() && !is_null($sess) && $sess->sess_id != $sessId /*$sess->sess_ip != $ip*/){
+				$iResult = 4;
+            } else if ($member['mb_state_active'] == STATE_ACTIVE){
                 $sessData = [
-                    'user_id' => $userData['mb_uid'], 
+                    'user_id' => $member['mb_uid'], 
                     'logged_in' => TRUE, 
                 ];
 				$this->session->set($sessData);
-				$userData['mb_ip_last'] = $ip;
-				$modelMember->updateLogin($userData);
+				$member['mb_ip_last'] = $ip;
+				$modelMember->updateLogin($member);
                 $iResult = 1;
 				
-				if($userData['mb_level'] <= LEVEL_ADMIN){
+				$this->modelSess->add((object)$member, $sessId);
+				if($member['mb_level'] <= LEVEL_ADMIN){
 					$modelSessLog = new SessLog_Model();
-					$modelSessLog->add($userData);
+					$modelSessLog->add($member);
 				}
             }
         }   
@@ -87,7 +99,7 @@ class Api extends BaseController{
 
 	public function logout()
 	{
-		$this->session->destroy();
+		$this->sess_destroy();
 		
 		$arrResult['status'] = "success";
 		echo json_encode($arrResult);

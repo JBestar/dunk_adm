@@ -69,18 +69,6 @@ class ConfSite_Model extends Model
         if(strlen($arrReqData['userpwd'])<1) return false;
         $strContent .= $arrReqData['userpwd'];
         
-        // if(strlen($arrReqData['pball'])<1) return false;
-        // $strContent .= $arrReqData['pball']."#";
-        
-        // if(strlen($arrReqData['pladder'])<1) return false;
-        // $strContent .= $arrReqData['pladder']."#";
-        
-        // if(strlen($arrReqData['bball'])<1) return false;
-        // $strContent .= $arrReqData['bball']."#";
-
-        // if(strlen($arrReqData['bladder'])<1) return false;
-        // $strContent .= $arrReqData['bladder'];
-
         $this->builder()->set('conf_content', $strContent);
         $this->builder()->set('conf_active', $arrReqData['active']);
         $this->builder()->where('conf_id', CONF_BETSITE);
@@ -100,57 +88,61 @@ class ConfSite_Model extends Model
         $updateData = array();
         $updateData['conf_id'] = CONF_SITENAME;
         $updateData['conf_content'] = $arrData['sitename'];
-        $arrBatch[0] = $updateData;
+        $arrBatch[] = $updateData;
 
         $updateData = array();
         $updateData['conf_id'] = CONF_DOMAIN;
         $updateData['conf_content'] = $arrData['domainname'];
-        $arrBatch[1] = $updateData;
+        $arrBatch[] = $updateData;
 
         $updateData = array();
         $updateData['conf_id'] = CONF_USERPAGE;
         $updateData['conf_content'] = $arrData['homepage'];
-        $arrBatch[2] = $updateData;
+        $arrBatch[] = $updateData;
         
         $updateData = array();
         $updateData['conf_id'] = CONF_ADMINPAGE;
         $updateData['conf_content'] = $arrData['adminpage'];
-        $arrBatch[3] = $updateData;
+        $arrBatch[] = $updateData;
         
         $updateData = array();
         $updateData['conf_id'] = CONF_NOTICE_MAIN;
         $updateData['conf_content'] = $arrData['mainnotice'];
         $updateData['conf_active'] = $arrData['mainnotice_ok'];
-        $arrBatch[4] = $updateData;
+        $arrBatch[] = $updateData;
         
 
         $updateData = array();
         $updateData['conf_id'] = CONF_NOTICE_BANK;
         $updateData['conf_content'] = $arrData['depositenotice'];
         $updateData['conf_active'] = $arrData['depositenotice_ok'];
-        $arrBatch[5] = $updateData;
+        $arrBatch[] = $updateData;
 
         // $updateData = array();
         // $updateData['conf_id'] = 7;
         // $updateData['conf_content'] = $arrData['withdrawnotice'];
-        // $arrBatch[6] = $updateData;
+        // $arrBatch[] = $updateData;
 
         $updateData = array();
         $updateData['conf_id'] = CONF_CHARGEINFO;
         $updateData['conf_content'] = $arrData['bank'];
-        $arrBatch[7] = $updateData;
+        $arrBatch[] = $updateData;
 
         $updateData = array();
         $updateData['conf_id'] = CONF_CHARGEMACRO;
         $updateData['conf_content'] = $arrData['bankmacro'];
-        $arrBatch[8] = $updateData;
+        $arrBatch[] = $updateData;
 
         $updateData = array();
         $updateData['conf_id'] = CONF_NOTICE_URGENT;
         $updateData['conf_content'] = $arrData['urgentnotice'];
         $updateData['conf_active'] = $arrData['urgentnotice_ok'];
-        $arrBatch[9] = $updateData;
+        $arrBatch[] = $updateData;
 
+        $updateData = array();
+        $updateData['conf_id'] = CONF_MULTI_LOGIN;
+        $updateData['conf_active'] = $arrData['multilog_ok'];
+        $arrBatch[] = $updateData;
 
         return  $this->builder()->updateBatch($arrBatch, 'conf_id');
 
@@ -229,4 +221,28 @@ class ConfSite_Model extends Model
         return $this->builder()->update();
     }
 
+    
+    public function IsMultiLogin(){
+
+        $objConf = (object)$this->find(CONF_MULTI_LOGIN);
+        if(!is_null($objConf))
+            $objConf = (object)$objConf;
+        if(!is_null($objConf) && $objConf->conf_active == STATE_ACTIVE) {
+            return true;
+        }
+        return false;
+    }
+
+    
+    public function IsMaintain(){
+
+        $objConf = $this->find(CONF_MAINTAIN);
+        if(!is_null($objConf))
+            $objConf = (object)$objConf;
+
+        if(!is_null($objConf) && $objConf->conf_active == STATE_ACTIVE) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -227,6 +227,34 @@
 
     }
 
+    
+    function getMemberState($objMember, $iGame){
+      if(is_null($objMember))
+            return false;
+        else if($objMember->mb_state_active != STATE_ACTIVE)
+            return false;
+        else if($iGame > 0 && getStateByGame($objMember, $iGame) != PERMIT_OK) {
+            return false;  
+        }
+        return true;
+    }
+
+    function getStateByGame($objMember, $iGame){
+
+      switch($iGame){
+          case GAME_POWER_BALL: return $objMember->mb_game_pb;
+          case GAME_POWER_LADDER: return $objMember->mb_game_ps;
+          case GAME_CASINO: return $objMember->mb_game_cs;
+          case GAME_BOGLE_BALL: return $objMember->mb_game_bb;
+          case GAME_BOGLE_LADDER: return $objMember->mb_game_bs;
+          case GAME_SLOT_1: 
+          case GAME_SLOT_2: 
+            return $objMember->mb_game_sl;
+          default: break;
+      } 
+      return 0;
+    }
+    
     function siteFurl(){
       return $_ENV['app.furl']."/";
     }

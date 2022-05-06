@@ -27,7 +27,7 @@ function requestMemberInfo() {
                 mObjUser = jResult.data;
                 showMemberInfo(jResult.data);
                 requestEmployeeInfo();
-                setTimeout(function() { requestBetInfo(); }, 1000);
+                setTimeout(function() { requestEmployeeInfo(); }, 1000);
 
             } else if (jResult.status == "fail") {
                 alert('로그인정보를 가져오는데 실패했습니다. \n 다시 가입해 주세요.');
@@ -36,7 +36,7 @@ function requestMemberInfo() {
             }
         },
         error: function(request, status, error) {
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
     });
 
@@ -140,13 +140,8 @@ function showMemberInfo(objUser) {
     else
         strBuf = "회원";
 
-
     $("#main-navbar-level-id").text(strBuf);
-
-
-    strBuf = objUser.mb_nickname;
-    $("#main-navbar-emp-div-id").text(strBuf);
-
+    $("#main-navbar-emp-div-id").text(objUser.mb_nickname);
 
     if (objUser.mb_level < LEVEL_ADMIN) {
 
@@ -196,7 +191,7 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
         return;
     $("#main-navbar-table-id td a").removeClass("flicker");
 
-    var strBuf = objEmpInfo.newmessage + " 통";
+    var strBuf = objEmpInfo.new_message + " 통";
     $("#main-navbar-newmessage-id").text(strBuf);
 
     var nWaitCnt = 0;
@@ -205,10 +200,10 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
     strBuf = nWaitCnt + " 명";
     $("#main-navbar-user_wait-id").text(strBuf);
 
-    strBuf = objEmpInfo.waitcharge + " 대기";
+    strBuf = (parseInt(objEmpInfo.wait_charge) + parseInt(objEmpInfo.moment_charge))  + " 대기";
     $("#main-navbar-charge_wait-id").text(strBuf);
 
-    strBuf = objEmpInfo.waitexchange + " 대기";
+    strBuf = (parseInt(objEmpInfo.wait_exchange) + parseInt(objEmpInfo.moment_exchange))  + " 대기";
     $("#main-navbar-exchange_wait-id").text(strBuf);
 
     if(objEmpInfo.emp_money == null)
@@ -240,7 +235,7 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
             bAlarm = true;
         }
 
-    } else if (objEmpInfo.waitcharge > 0) {
+    } else if (objEmpInfo.wait_charge > 0) {
 
         $("#main-navbar-charge_wait-id").addClass("flicker");
         if(bAlarmEnable){
@@ -251,7 +246,7 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
             bAlarm = true;
         }
 
-    } else if (objEmpInfo.waitexchange > 0) {
+    } else if (objEmpInfo.wait_exchange > 0) {
         $("#main-navbar-exchange_wait-id").addClass("flicker");
 
         if(bAlarmEnable){
@@ -261,7 +256,7 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
             }
             bAlarm = true;
         }
-    } else if (objEmpInfo.newmessage > 0) {
+    } else if (objEmpInfo.new_message > 0) {
         $("#main-navbar-newmessage-id").addClass("flicker");
         if(bAlarmEnable){
             mAudio.src = FURL + '/assets/sound/' + arrSoundInfo[3][0];

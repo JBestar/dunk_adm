@@ -19,18 +19,23 @@ class Clean_model extends Model {
         $strSql = " DELETE FROM bet_casino WHERE bet_time < '".$strDate."' ";
         $this -> db -> query($strSql);
         
+        $strSql = " DELETE FROM bet_slot WHERE bet_time < '".$strDate."' ";
+        $this -> db -> query($strSql);
+        
         $strSql = " DELETE FROM bet_powerball WHERE bet_time < '".$strDate."' ";
         $this -> db -> query($strSql);
         
         $strSql = " DELETE FROM bet_powerladder WHERE bet_time < '".$strDate."' ";
         $this -> db -> query($strSql);
         
-        $strSql = " DELETE FROM bet_kenoladder WHERE bet_time < '".$strDate."' ";
+        $strSql = " DELETE FROM bet_bogleball WHERE bet_time < '".$strDate."' ";
+        $this -> db -> query($strSql);
+        
+        $strSql = " DELETE FROM bet_bogleladder WHERE bet_time < '".$strDate."' ";
         $this -> db -> query($strSql);
         
         $strSql = " DELETE FROM board_notice WHERE notice_time_create < '".$strDate."'  AND notice_type != '1' ";
         $this -> db -> query($strSql);
-        
 
         $strSql = " DELETE FROM member_charge WHERE charge_time_require < '".$strDate."' ";
         $this -> db -> query($strSql);
@@ -50,7 +55,10 @@ class Clean_model extends Model {
         $strSql = " DELETE FROM round_powerladder WHERE round_date < '".$strDate."' ";
         $this -> db -> query($strSql);
 
-        $strSql = " DELETE FROM round_kenoladder WHERE round_date < '".$strDate."' ";
+        $strSql = " DELETE FROM round_bogleball WHERE round_date < '".$strDate."' ";
+        $this -> db -> query($strSql);
+
+        $strSql = " DELETE FROM round_bogleladder WHERE round_date < '".$strDate."' ";
         $this -> db -> query($strSql);
 
         $this->builder->truncate("sessions");

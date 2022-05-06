@@ -19,7 +19,7 @@ class Pages extends BaseController
 
 	public function logout()
 	{
-		$this->session->destroy();
+		$this->sess_destroy();
 		$this->response->redirect( $_ENV['app.furl'].'/pages/login');
 	}
 
