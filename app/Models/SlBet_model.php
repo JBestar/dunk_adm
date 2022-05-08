@@ -52,6 +52,7 @@ class SlBet_model extends Model
         $arrSum = array();
         $strSql = " SELECT SUM(bet_money) AS bet_money_sum, SUM(bet_win_money) AS win_money_sum  FROM ".$this->table;
         $strSql .= $strCondition;
+        // writeLog($strSql);
         $objResult = $this -> db -> query($strSql)->getRow();
 
         $nSum = 0;
@@ -68,6 +69,7 @@ class SlBet_model extends Model
         $strSql = " SELECT SUM(bet_money) AS loss_money_sum  FROM ".$this->table;
         $strSql .= $strCondition;
         $strSql .= " AND bet_win_money = 0 ";
+        // writeLog($strSql);
         
         $objResult = $this -> db -> query($strSql)->getRow();
 
@@ -80,6 +82,7 @@ class SlBet_model extends Model
         $strSql = " SELECT SUM(bet_win_money-bet_money) AS benefit_money_sum  FROM ".$this->table;
         $strSql .= $strCondition;
         $strSql .= " AND bet_win_money > 0 ";
+        // writeLog($strSql);
         
         $objResult = $this -> db -> query($strSql)->getRow();
 
@@ -88,6 +91,7 @@ class SlBet_model extends Model
             $nSum = $objResult->benefit_money_sum;
         }
         $arrSum[3] = $nSum;
+        // writeLog("getBetAccount End");
         
         return $arrSum;
     }
@@ -95,7 +99,6 @@ class SlBet_model extends Model
 
     function search($objEmp, $arrReqData)
     {
-
         $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_slot_uid, mb_fslot_id  ";
         $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_nickname, r.mb_slot_uid, r.mb_fslot_id  ";
         
@@ -170,9 +173,11 @@ class SlBet_model extends Model
             
         $strSql .= " LEFT JOIN ".$this->mPrdTable." ON ".$tbBetSearch.".bet_game_type = ".$this->mPrdTable.".code ";
         $strSql .= " ORDER BY bet_time  DESC";
+        // writeLog($strSql);
 
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();
+        // writeLog("search End");
         
         return $result; 
 
@@ -216,9 +221,11 @@ class SlBet_model extends Model
         if(intval($arrReqData['mode']) > 0){
             $strSql.=" AND bet_game_type = '".$arrReqData['mode']."' ";
         }
+        // writeLog($strSql);
 
         $query = $this -> db -> query($strSql);
         $result = $query -> getRow();
+        // writeLog("searchCount End");
         
         return $result; 
 
