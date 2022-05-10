@@ -74,9 +74,9 @@ function getGameName(strGameType) {
         strGameName = "바카라";
     } else if (strGameType == "2") {
         strGameName = "룰렛";
-    } else if (strGameType == "2") {
-        strGameName = "식보";
     } else if (strGameType == "3") {
+        strGameName = "식보";
+    } else if (strGameType == "4") {
         strGameName = "바카라보";
     } else {
         strGameName = strGameType;
