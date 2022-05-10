@@ -70,25 +70,6 @@ function ShowBetHistory(jsonBetData) {
 
 }
 
-function getGameName(strGameType) {
-    var strGameName = "";
-
-    if (strGameType == "0") {
-        strGameName = "바카라";
-    } else if (strGameType == "1") {
-        strGameName = "용호";
-    } else if (strGameType == "2") {
-        strGameName = "슈퍼 식보";
-    } else if (strGameType == "3") {
-        strGameName = "룰렛";
-    } else {
-        strGameName = strGameType;
-    }
-
-    return strGameName;
-
-}
-
 
 function ShowBetAccount(arrBetAccount) {
 

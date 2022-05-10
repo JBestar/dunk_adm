@@ -4,10 +4,10 @@
 	에볼루션 배팅내역
 <?= $this->endSection() ?>
 <?= $this->section('history_game_options') ?>		
-	<option value="0">바카라</option>
-	<option value="1">용호</option>
-	<option value="2">슈퍼 식보</option>
-	<option value="3">룰렛</option>
+	<option value="1">바카라</option>
+	<option value="2">룰렛</option>
+	<option value="3">식보</option>
+	<option value="4">바카라보</option>
 <?= $this->endSection() ?>
 <?= $this->section('history-bet-table-headers') ?>		
 	<th>ID</th>
