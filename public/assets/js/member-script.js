@@ -36,28 +36,28 @@ function showMember(arrMember, confs) {
         strBuf += "<td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td> <td>";
-        if (confs.emp_level >= LEVEL_ADMIN) {
-            strBuf += "<a href='"+FURL+"/user/member/";
-            strBuf += arrMember[nRow].mb_emp_fid;
-            strBuf += "' class='link-member'>"
-            strBuf += arrMember[nRow].mb_empname;
-            strBuf += "</a>";
-        } else {
-            strBuf += arrMember[nRow].mb_empname;
-        }
+        // if (confs.emp_level >= LEVEL_ADMIN) {
+        strBuf += "<a href='"+FURL+"/user/member/";
+        strBuf += arrMember[nRow].mb_emp_fid;
+        strBuf += "' class='link-member'>"
+        strBuf += arrMember[nRow].mb_empname;
+        strBuf += "</a>";
+        // } else {
+        //     strBuf += arrMember[nRow].mb_empname;
+        // }
 
         strBuf += "</td> <td>";
-        if (confs.emp_level >= LEVEL_ADMIN) {
-            strBuf += "<a href='"+FURL+"/user/member/";
-            strBuf += arrMember[nRow].mb_fid;
-            strBuf += "' class='link-member'>"
-            strBuf += arrMember[nRow].mb_uid;
-            if (getMemberLevelString(arrMember[nRow].mb_level) != null)
-                strBuf += " | " + getMemberLevelString(arrMember[nRow].mb_level);
-            strBuf += "</a>";
-        } else {
-            strBuf += arrMember[nRow].mb_uid;
-        }
+        // if (confs.emp_level >= LEVEL_ADMIN) {
+        strBuf += "<a href='"+FURL+"/user/member/";
+        strBuf += arrMember[nRow].mb_fid;
+        strBuf += "' class='link-member'>"
+        strBuf += arrMember[nRow].mb_uid;
+        if (getMemberLevelString(arrMember[nRow].mb_level) != null)
+            strBuf += " | " + getMemberLevelString(arrMember[nRow].mb_level);
+        strBuf += "</a>";
+        // } else {
+        //     strBuf += arrMember[nRow].mb_uid;
+        // }
 
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_nickname;
@@ -217,7 +217,7 @@ function requestMember() {
         url: FURL + "/userapi/getmembers",
         data: { json_: jsonData },
         success: function(jResult) {
-            //console.log(jResult);            
+            // console.log(jResult);            
             $(".loading").hide();
             //console.log(jResult);
             if (jResult.status == "success") {
@@ -227,7 +227,7 @@ function requestMember() {
             }
         },
         error: function(request, status, error) {
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             $(".loading").hide();
         }
 

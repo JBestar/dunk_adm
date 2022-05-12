@@ -11,10 +11,8 @@
 			<?php if($mb_level >= LEVEL_ADMIN) {  ?>
 			<a href="<?php echo siteFurl().'user/member_edit/0';?>" class="user-panel-add-a" >회원 등록</a>
 			<?php } ?>
-			<?php if ($mb_level >= LEVEL_ADMIN) {?>	
 			<label>추천인</label>
             <input type="text" class="pbresult-text-input" id="userpanel-empid-input-id" value= "<?=$emp_uid ?>">
-			<?php } ?>
 			<label>아이디</label>
             <input type="text" class="pbresult-text-input" id="userpanel-userid-input-id" >
 			

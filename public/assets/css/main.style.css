@@ -954,14 +954,16 @@ Style - powerball
     box-shadow: -1px -1px 1px 1px #adaeaf inset;
 }
 
-.user-table button:hover {
-    /*box-shadow: 0px 1px 10px var(--span-font-color);*/
+.user-table button:hover:not([disabled]) {
     background-color: #eee;
+}
+
+.user-table button:disabled {
+    box-shadow: none;
 }
 
 .user-table .button-active {
     color: var(--span-font-color);
-    /*#5668f6*/
 }
 
 .user-table a {

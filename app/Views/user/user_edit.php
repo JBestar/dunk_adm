@@ -326,6 +326,7 @@
 					<input type = "text" id="useredit-point-input-id" value="<?=number_format($objMember->mb_point)?>" disabled>
 					<label>P</label>
 				</div>
+				<?php if($isChild) :  ?>
 
 				<div class="useredit-text-div">
 					<p>이동금액:</p> 
@@ -340,6 +341,7 @@
 					<button class="pbresult-list-view-but" id="useredit-transfer-but-id" style="margin-right:0px;">이송</button>  
 					<button class="pbresult-list-view-but" id="useredit-return-but-id" style="margin-left:5px;">환수</button>  
 				</div>
+				<?php endif  ?>
 
 			<?php } ?>
 		<?php } ?>

@@ -447,35 +447,32 @@ class UserApi extends BaseController
             $strUid = $this->session->user_id;
             $objUser = $memberModel->getInfo($strUid);
 			$empFid = 0;
-			if ($objUser->mb_level >= LEVEL_ADMIN){
-				if (strlen($arrData['mb_emp_uid']) > 0){
-					$objEmp = $memberModel->getInfo($arrData['mb_emp_uid']);
-					if ($objEmp == null){
-						$objResult->status = 'fail';
-						echo json_encode($objResult);
-						return;
-					}
-					$empFid = $objEmp->mb_fid;
-				}
-			}
-			else {
-				$empFid = $objUser->mb_fid;
-			}
+            if (strlen($arrData['mb_emp_uid']) > 0){
+                $objEmp = $memberModel->getInfo($arrData['mb_emp_uid']);
+                if (!is_null($objEmp)){
+                    $empFid = $objEmp->mb_fid;
+                } else $empFid = -1;
+            } 
             
-            $arrMember = $memberModel->searchMemberByEmpFid($empFid, $objUser->mb_level, $arrData);
-            if (is_null($arrMember)) {
-                $arrMember = [];
-            }
-            foreach ($arrMember as $objMember) {
-                $arrEmpInfo = $memberModel->find($objMember->mb_emp_fid);
-                if ($arrEmpInfo != null){
-                    $objMember->mb_empname = $arrEmpInfo['mb_uid'];
+            if($empFid >= 0){
+                $arrMember = $memberModel->searchMemberByEmpFid($objUser, $arrData, $empFid);
+                if (is_null($arrMember)) {
+                    $arrMember = [];
                 }
-                else {
-                    $objMember->mb_empname = '';
+                foreach ($arrMember as $objMember) {
+                    $arrEmpInfo = $memberModel->find($objMember->mb_emp_fid);
+                    if ($arrEmpInfo != null){
+                        $objMember->mb_empname = $arrEmpInfo['mb_uid'];
+                    }
+                    else {
+                        $objMember->mb_empname = '';
+                    }
                 }
                 
+            } else {
+                $arrMember = [];
             }
+
             $confs= $this->getSiteConf($confsiteModel);
             $confs['emp_level'] = $objUser->mb_level; 
             
@@ -502,24 +499,23 @@ class UserApi extends BaseController
             $strUid = $this->session->user_id;
             $objUser = $memberModel->getInfo($strUid);
 			$empFid = 0;
-			if ($objUser->mb_level >= LEVEL_ADMIN){
-				if (strlen($arrData['mb_emp_uid']) > 0){
-					$objEmp = $memberModel->getInfo($arrData['mb_emp_uid']);
-					if ($objEmp == null){
-						$objResult->status = 'fail';
-						echo json_encode($objResult);
-						return;
-					}
-					$empFid = $objEmp->mb_fid;
-				}
-			}
-			else {
-				$empFid = $objUser->mb_fid;
-			}
-			$objCount = $memberModel->searchCountByEmpFid($empFid, $objUser->mb_level, $arrData);
-			$objResult->status = 'success';
-			$objResult->data = $objCount;
-
+            if (strlen($arrData['mb_emp_uid']) > 0){
+                $objEmp = $memberModel->getInfo($arrData['mb_emp_uid']);
+                if (!is_null($objEmp)){
+                    $empFid = $objEmp->mb_fid;
+                } else $empFid = -1;
+            } 
+            if($empFid >= 0){
+                $objCount = $memberModel->searchCountByEmpFid($objUser, $arrData, $empFid);
+                $objResult->status = 'success';
+                $objResult->data = $objCount;
+            } else {
+                $objCount = new \stdClass();
+                $objCount->count = 0;
+                $objResult->status = 'success';
+                $objResult->data = $objCount;
+            }
+			
             echo json_encode($objResult);
         } else {
             $arrResult['status'] = 'logout';

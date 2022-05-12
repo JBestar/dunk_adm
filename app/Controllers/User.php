@@ -23,11 +23,13 @@ class User extends StdController
 			$objMember = $memberModel->getMemberByFid($memberFid, true);					
 		}
 		$empUid = '';
-		
+		$bChild = false;
 		if ($objMember != null){
 			$arrEmpMember = $memberModel->find($objMember->mb_emp_fid);
 			if ($arrEmpMember != null)
 				$empUid = $arrEmpMember['mb_uid'];
+			$bChild = $objMember->mb_emp_fid == $objAdmin->mb_fid;
+			
 		}
 			
 		$this->load_view_page(
@@ -37,6 +39,7 @@ class User extends StdController
 			[
 				'objMember' => $objMember, 
 				'emp_uid' => $empUid,
+				'isChild' => $bChild,
 		]);	
 		
 	}

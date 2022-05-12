@@ -928,51 +928,6 @@ class Member_Model extends Model
         return $bResult;
     }
 
-    public function searchCountByLevel($arrReqData)
-    {
-        $strSql = 'SELECT count(*) as count FROM '.$this->table;
-
-        if (LEVEL_MIN > $arrReqData['mb_level']) {
-            $strSql .= " WHERE mb_level < '".LEVEL_EMPLOYEE."' ";
-        } else {
-            $strSql .= " WHERE mb_level = '".$arrReqData['mb_level']."' ";
-        }
-
-        if ($arrReqData['mb_emp_fid'] > 0) {
-            $strSql .= " AND mb_emp_fid = '".$arrReqData['mb_emp_fid']."' ";
-        }
-        if (strlen($arrReqData['mb_uid']) > 0) {
-            $strSql .= " AND mb_uid = '".$arrReqData['mb_uid']."' ";
-        }
-
-        $query = $this->db->query($strSql);
-        $result = $query->getRow();
-
-        return $result;
-    }
-
-    public function searchCountByEmpFid($nAdminFid, $nAdminLev, $arrReqData)
-    {
-        $sqlBuilder = $this->builder()->selectCount('*', 'count');
-        $sqlBuilder = $sqlBuilder->where('mb_level <', LEVEL_ADMIN);
-        if ($nAdminLev >= LEVEL_ADMIN){
-            if ($nAdminFid != 0)
-                $sqlBuilder->where('mb_emp_fid', $nAdminFid);
-        }
-        else{
-            $sqlBuilder->where('mb_emp_fid', $nAdminFid);
-        }
-        if ($arrReqData['mb_grade'] != 0){
-            $sqlBuilder->where('mb_grade', $arrReqData['mb_grade']);
-        }
-        if ($arrReqData['mb_state'] >= 0){
-            $sqlBuilder->where('mb_state_active', $arrReqData['mb_state']);
-        }
-        if (strlen($arrReqData['mb_uid']) > 0){
-            $sqlBuilder->like('mb_uid', $arrReqData['mb_uid']);
-        }
-        return $sqlBuilder->get()->getRow();
-    }
 
     public function getEmpUserCnt($objMember)
     {
@@ -1008,32 +963,62 @@ class Member_Model extends Model
         return $objResult;
     }
 
-    public function searchMemberByLevel($arrReqData)
+    
+    public function searchCountByLevel($arrReqData, $iEmpFid)
     {
-        $strSql = 'SELECT mb_fid, mb_uid, mb_level, mb_emp_fid, mb_emp_permit, mb_nickname, mb_time_join, mb_time_last, mb_ip_join, mb_ip_last, mb_money, mb_point, mb_money_charge, mb_money_exchange, ';
-        $strSql .= 'mb_color, mb_state_active, mb_game_pb, mb_game_ps, mb_game_bb, mb_game_bs, mb_game_cs, mb_game_sl, mb_live_money, mb_slot_money, mb_fslot_money FROM '.$this->table;
-        if (0 == $arrReqData['mb_level']) {
-            $strSql .= " WHERE mb_level < '".LEVEL_EMPLOYEE."' ";
-        } else {
-            $strSql .= " WHERE mb_level = '".$arrReqData['mb_level']."' ";
-        }
+        $sqlBuilder = $this->builder()->selectCount('*', 'count');
+        $sqlBuilder = $sqlBuilder->where('mb_level <', LEVEL_ADMIN);
+        if ($iEmpFid != 0)
+            $sqlBuilder->where('mb_emp_fid', $iEmpFid);
 
-        if ($arrReqData['mb_emp_fid'] > 0) {
-            $strSql .= " AND mb_emp_fid = '".$arrReqData['mb_emp_fid']."' ";
+        if ($arrReqData['mb_grade'] != 0){
+            $sqlBuilder->where('mb_grade', $arrReqData['mb_grade']);
         }
-        if (strlen($arrReqData['mb_uid']) > 0) {
-            $strSql .= " AND mb_uid = '".$arrReqData['mb_uid']."' ";
+        if ($arrReqData['mb_state'] >= 0){
+            $sqlBuilder->where('mb_state_active', $arrReqData['mb_state']);
         }
-
-        $nStartRow = ($arrReqData['page'] - 1) * $arrReqData['count'];
-        $strSql .= ' ORDER BY  mb_time_join DESC LIMIT '.$nStartRow.', '.$arrReqData['count'];
-        $query = $this->db->query($strSql);
-        $result = $query->getResult();
-
-        return $result;
+        if (strlen($arrReqData['mb_uid']) > 0){
+            $sqlBuilder->like('mb_uid', $arrReqData['mb_uid']);
+        }
+        return $sqlBuilder->get()->getRow();
     }
 
-    public function searchMemberByEmpFid($nAdminFid, $nAdminLev, $arrReqData)
+    public function searchCountByEmpFid($objUser, $arrReqData, $iEmpFid)
+    {
+        if($objUser->mb_level > LEVEL_COMPANY)
+        {
+            return $this->searchCountByLevel($arrReqData, $iEmpFid);
+        } else {
+            $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_grade, mb_state_active ";
+            $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_grade, r.mb_state_active ";
+
+            $strSQL = "WITH RECURSIVE tbmember (".$strTbColum.") AS";
+            $strSQL .= " ( SELECT ".$strTbColum." FROM ".$this->table." WHERE mb_emp_fid = '".$objUser->mb_fid."'";
+            $strSQL .= " UNION ALL SELECT ".$strTbRColum." FROM ".$this->table." r ";
+            $strSQL .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
+            $strSQL .= " SELECT COUNT(*) as count FROM tbmember WHERE ";
+            $strSQL .= " mb_level < '".$objUser->mb_level."' ";
+
+            if ($iEmpFid != 0)
+                $strSQL.=" AND mb_emp_fid = '".$iEmpFid."' ";
+
+            if($arrReqData['mb_grade'] != 0){            
+                $strSQL.=" AND mb_grade = '".$arrReqData['mb_grade']."' ";
+            }
+            if ($arrReqData['mb_state'] >= 0){
+                $strSQL.=" AND mb_state_active = '".$arrReqData['mb_state']."' ";
+            }
+            if(strlen($arrReqData['mb_uid']) > 0){            
+                $strSQL.=" AND mb_uid LIKE '".$arrReqData['mb_uid']."%' ";
+            }
+            writeLog($strSQL);
+            
+            return $this -> db -> query($strSQL)->getRow();
+
+        }
+    }
+
+    public function searchMemberByLevel($arrReqData, $iEmpFid)
     {
         $strTbColum = " ".implode(", ", $this->getFields);
         $strTbColum.= ", block_ip, block_state ";
@@ -1043,8 +1028,8 @@ class Member_Model extends Model
         $strQuery .= ' LEFT JOIN '.$tbBlock.' ON '.$this->table.'.mb_ip_last = '.$tbBlock.'.block_ip ';
         $strQuery.= " WHERE mb_level < '".LEVEL_ADMIN."'";
 
-        if ($nAdminFid != 0){
-            $strQuery .= " AND mb_emp_fid = '".$nAdminFid."'";
+        if ($iEmpFid != 0){
+            $strQuery .= " AND mb_emp_fid = '".$iEmpFid."'";
         }
         if (strlen($arrReqData['mb_uid']) > 0) {
             $strQuery .= " AND mb_uid LIKE '%".$arrReqData['mb_uid']."%'";
@@ -1060,7 +1045,50 @@ class Member_Model extends Model
         
         $nStartRow = ($arrReqData['page'] - 1) * $arrReqData['count'];
         $strQuery .= ' LIMIT '.$nStartRow.', '.$arrReqData['count'];
+        writeLog($strQuery);
         return $this->db->query($strQuery)->getResult();
+    }
+
+    public function searchMemberByEmpFid($objUser, $arrReqData, $iEmpFid)
+    {
+        if($objUser->mb_level > LEVEL_COMPANY)
+        {
+            return $this->searchMemberByLevel($arrReqData, $iEmpFid);
+        } else {
+            $strTbColum = " ".implode(", ", $this->getFields);
+            $strTbRColum = " r.".implode(", r.", $this->getFields);
+
+            $strSQL = "WITH RECURSIVE tbmember (".$strTbColum.") AS";
+            $strSQL .= " ( SELECT ".$strTbColum." FROM ".$this->table." WHERE mb_emp_fid = '".$objUser->mb_fid."'";
+            $strSQL .= " UNION ALL SELECT ".$strTbRColum." FROM ".$this->table." r ";
+            $strSQL .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
+            $strSQL .= " SELECT * FROM tbmember where ";
+            $strSQL .= " mb_level < '".$objUser->mb_level."' ";
+
+            if ($iEmpFid != 0){
+                $strSQL .= " AND mb_emp_fid = '".$iEmpFid."'";
+            }
+            if (strlen($arrReqData['mb_uid']) > 0) {
+                $strSQL .= " AND mb_uid LIKE '%".$arrReqData['mb_uid']."%'";
+            }
+            if ($arrReqData['mb_grade'] != 0){
+                $strSQL .= " AND mb_grade = '".$arrReqData['mb_grade']."'";
+            }
+            if ($arrReqData['mb_state'] >= 0){
+                $strSQL .= " AND mb_state_active = '".$arrReqData['mb_state']."' ";
+            }
+
+            $strSQL .= " ORDER BY (CASE WHEN mb_state_active = 2 THEN 0 ELSE 1 END) ";
+            $strSQL .= " , mb_level DESC";
+
+            $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
+            $strSQL .= ' LIMIT '.$nStartRow.', '.$arrReqData['count'];
+            
+            writeLog($strSQL);
+
+            return $this -> db -> query($strSQL)->getResult();
+          
+        }
     }
 
     
