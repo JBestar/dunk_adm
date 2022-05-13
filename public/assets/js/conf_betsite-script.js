@@ -8,17 +8,16 @@ $(document).ready(function() {
 
 
 function showConfSite(arrData) {
-    if (arrData.length < 4)
+    if (arrData.length < 5)
         return;
 
     $("#conf-betsite-input-id").val(arrData[0]);
     $("#conf-userid-input-id").val(arrData[1]);
     $("#conf-userpwd-input-id").val(arrData[2]);
     $("#confpb-bet-check-id").prop('checked', arrData[3] > 0 ? true : false);
-    // $("#conf-pball-input-id").val(arrData[3]);
-    // $("#conf-pladder-input-id").val(arrData[4]);
-    // $("#conf-bball-input-id").val(arrData[5]);
-    // $("#conf-bladder-input-id").val(arrData[6]);
+    $("#conf-bettype-select-id").val(arrData[4]);
+    // $("#conf-money-input-id").val(arrData[5]);
+    changeBetType();
 
 }
 
@@ -48,26 +47,8 @@ function addBtnEvent() {
             return;
         }
         objData.active = $("#confpb-bet-check-id").prop('checked') ? 1 : 0;
-        // objData.pball = $("#conf-pball-input-id").val();
-        // if (objData.pball.length < 1) {
-        //     alert("파워볼 누르기율을 입력하세요.");
-        //     return;
-        // }
-        // objData.pladder = $("#conf-pladder-input-id").val();
-        // if (objData.pladder.length < 1) {
-        //     alert("파워사다리 누르기율을 입력하세요.");
-        //     return;
-        // }
-        // objData.bball = $("#conf-bball-input-id").val();
-        // if (objData.bball.length < 1) {
-        //     alert("보글파워볼 누르기율을 입력하세요.");
-        //     return;
-        // }
-        // objData.bladder = $("#conf-bladder-input-id").val();
-        // if (objData.bladder.length < 1) {
-        //     alert("보글사다리 누르기율을 입력하세요.");
-        //     return;
-        // }
+        objData.type = $("#conf-bettype-select-id").val();
+        
         var jsonData = JSON.stringify(objData);
 
 
@@ -105,8 +86,21 @@ function addBtnEvent() {
         location.reload();
     });
 
+    
+    $("#conf-bettype-select-id").change(function() {
+        changeBetType();
+    });
 }
 
+function changeBetType(){
+    if($("#conf-bettype-select-id").val() == "1"){
+        $("#conf-pw-label").text("계정 토큰키");
+        // $("conf-money-div").show();
+    } else{
+        $("#conf-pw-label").text("계정 비밀번호");
+        // $("conf-money-div").hide();
+    } 
+}
 
 function requestConfBetSite() {
     $.ajax({
@@ -114,7 +108,7 @@ function requestConfBetSite() {
         dataType: "json",
         url: FURL + "/api/getBetSite",
         success: function(jResult) {
-            // console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 showConfSite(jResult.data);
             } else if (jResult.status == "logout") {

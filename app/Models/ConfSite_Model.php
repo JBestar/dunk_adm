@@ -40,7 +40,7 @@ class ConfSite_Model extends Model
     public function getBetSite($nLevel){
 
         $nConfigId = CONF_BETSITE;
-        $arrSiteInfo = ["", "", "", 0 ];
+        $arrSiteInfo = ["", "", "", 0, 0 ];
 
         $objConfig = $this->asObject()->where(array('conf_id'=>$nConfigId))->first();
         if(!is_null($objConfig) && $nLevel >= LEVEL_ADMIN){
@@ -48,6 +48,10 @@ class ConfSite_Model extends Model
             $arrSiteInfo = explode('#', $strSite);
             if(count($arrSiteInfo) >= 3){
                 $arrSiteInfo[3] = $objConfig->conf_active;
+                if($objConfig->conf_idx == 1){
+                    $arrSiteInfo[4] = 1;
+                } else 
+                    $arrSiteInfo[4] = 0;
                 return $arrSiteInfo;
             }
         }
@@ -71,6 +75,7 @@ class ConfSite_Model extends Model
         
         $this->builder()->set('conf_content', $strContent);
         $this->builder()->set('conf_active', $arrReqData['active']);
+        $this->builder()->set('conf_idx', $arrReqData['type']);
         $this->builder()->where('conf_id', CONF_BETSITE);
         
         return $this->builder()->update();
