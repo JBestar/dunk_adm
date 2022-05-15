@@ -1,7 +1,9 @@
 $(document).ready(function() {
     addEventListner();
     requestTotalPage();
-    pbhitoryLoop();
+    setTimeout(function() {
+        pbhitoryLoop();
+    }, 300000);
 });
 
 function requestPageInfo() {

@@ -1,7 +1,9 @@
 $(document).ready(function() {
     addEventListner();
     requestTotalPage();
-    pbhitoryLoop();
+    setTimeout(function() {
+        pbhitoryLoop();
+    }, 300000);
 });
 
 function requestPageInfo() {
@@ -22,9 +24,10 @@ function ShowBetHistory(jsonBetData) {
         strBuf += "<tr><td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td><td>";
-        strBuf += jsonBetData[nRow].mb_uid;
+        strBuf += jsonBetData[nRow].bet_mb_uid;
         strBuf += "</td><td>";
-        strBuf += jsonBetData[nRow].mb_nickname;
+        if(jsonBetData[nRow].mb_nickname != null)
+            strBuf += jsonBetData[nRow].mb_nickname;
         strBuf += "</td><td>";
         strBuf += jsonBetData[nRow].bet_time;
         strBuf += "</td><td>";

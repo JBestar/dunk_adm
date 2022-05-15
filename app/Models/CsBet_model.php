@@ -117,7 +117,7 @@ class CsBet_model extends Model
         $strWhere.=" ORDER BY bet_fid DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
         
         $strSql = "";
-        $strSql .= "SELECT bet_fid, bet_idx, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_type, bet_table_code, ";
+        $strSql .= "SELECT bet_fid, bet_idx, bet_mb_uid, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_type, bet_table_code, ";
         $strSql .= " bet_choice, mb_uid, mb_nickname, name as game_name, rw_mb_uid, rw_point ";
         $strSql .= " FROM ( ";
 
