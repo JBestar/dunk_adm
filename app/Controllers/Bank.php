@@ -28,7 +28,7 @@ class Bank extends StdController {
 	}
 
 	public function exchange(){
-		$this->load_view_page('bank/exchange', 'bank_exchange', LEVEL_EMPLOYEE);
+		$this->load_view_page('bank/exchange', 'bank_exchange');
 	}
 
 	// public function transfer(){
