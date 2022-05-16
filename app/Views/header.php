@@ -62,6 +62,9 @@
         case APP_FOXWOOD :?>
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_f.ico');?>">
         <?php break; 
+        case APP_ORANGE :?>
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_org.ico');?>">
+        <?php break; 
         default :?>
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_l.ico');?>">
         <?php break; 

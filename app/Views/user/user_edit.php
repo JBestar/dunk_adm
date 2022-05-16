@@ -254,29 +254,14 @@
 		<!---->
 		<?php if ($mb_level >= LEVEL_ADMIN) { ?>
 		<p class="useredit-seperate-div"></p>
-		
-			<!-- <?php if(!is_null($objMember)) {  ?>
-			<div class="useredit-text-div">
-				<p>충전금액:</p> 
-				<input type = "text" id="useredit-charge-input-id" value="<?=number_format($objMember->mb_money_charge)?>" disabled>
-				<label>원</label>
-			</div>
-			
-			<div class="useredit-text-div">
-				<p>환전금액:</p> 
-				<input type = "text" id="useredit-exchange-input-id" value="<?=number_format($objMember->mb_money_exchange)?>" disabled>
-				<label>원</label>
-			</div>
-			<?php } ?>
-			 -->
-			
+					
 			<div class="useredit-text-div">
 				<p>보유금액:</p> 
 				<?php if(is_null($objMember)) {  ?>	
 				<input type = "text" id="useredit-money-input-id">
 				<label>원</label>
 				<?php } else {?>
-				<input type = "text" id="useredit-money-input-id" value="<?=number_format($objMember->mb_money)?>" disabled>
+				<input type = "text" id="useredit-money-input-id" value="<?=number_format(allMoney($objMember))?>" disabled>
 				<label>원</label>
 				<button class="pbresult-list-view-but" id="useredit-withdraw-money-id">회수</button>  
 				<?php } ?>
@@ -318,7 +303,7 @@
 				<p class="useredit-seperate-div">
 				<div class="useredit-text-div">
 					<p>보유금액:</p> 
-					<input type = "text" id="useredit-money-input-id" value="<?=number_format($objMember->mb_money)?>"  disabled>
+					<input type = "text" id="useredit-money-input-id" value="<?=number_format(allMoney($objMember))?>"  disabled>
 					<label>원</label>
 				</div>
 				<div class="useredit-text-div">

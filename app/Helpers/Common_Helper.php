@@ -255,6 +255,15 @@
       return 0;
     }
     
+    function allMoney($member){
+      $nMoney = 0;
+      if(is_null($member))
+        return $nMoney;
+
+      $nMoney = $member->mb_money + $member->mb_live_money + $member->mb_slot_money + $member->mb_fslot_money;
+      return $nMoney;
+    }
+    
     function siteFurl(){
       return $_ENV['app.furl']."/";
     }

@@ -37,9 +37,9 @@ function showWithdrawList(arrData) {
         strBuf += "</td><td>";
         strBuf += parseInt(arrData[nRow].exchange_money).toLocaleString() + " 원";
         strBuf += "</td><td>";
-        strBuf += arrData[nRow].exchange_mb_phone;
-        strBuf += "</td><td>";
         strBuf += arrData[nRow].exchange_bank_name + ":" + arrData[nRow].exchange_bank_account + ":" + arrData[nRow].exchange_bank_serial;
+        strBuf += "</td><td>";
+        strBuf += arrData[nRow].exchange_mb_phone;
         strBuf += "</td>";
         if (arrData[nRow].exchange_action_state == 1)
             strBuf += "<td>승인대기";
@@ -206,6 +206,7 @@ function requestProcWithdraw(jsData) {
     }
 
     var jsonData = JSON.stringify(jsData);
+    $(".loading").show();
 
     $.ajax({
         type: "POST",
@@ -213,6 +214,7 @@ function requestProcWithdraw(jsData) {
         dataType: "json",
         url: FURL + "/api/withdrawproc",
         success: function(jResult) {
+            $(".loading").hide();
             //console.log(jResult);
             if (jResult.status == "success") {
                 requestEmployeeInfo();
@@ -224,6 +226,7 @@ function requestProcWithdraw(jsData) {
             }
         },
         error: function(request, status, error) {
+            $(".loading").hide();
             //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 

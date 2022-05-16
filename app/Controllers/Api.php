@@ -474,7 +474,7 @@ class Api extends BaseController{
 										//charge Table 
 										$objCharge->charge_action_state = 3;
 										$objCharge->charge_action_uid = $strUid;
-										$objCharge->charge_money_after = $objUser->mb_money + $dtMoney;
+										$objCharge->charge_money_after = allMoney($objUser) + $dtMoney;
 										$bResult = $chargeModel->permit($objCharge);
 									}
 								}
@@ -491,7 +491,7 @@ class Api extends BaseController{
 									//charge Table 
 									$objCharge->charge_action_state = 2;
 									$objCharge->charge_action_uid = $strUid;
-									$objCharge->charge_money_after = $objUser->mb_money + $dtMoney;
+									$objCharge->charge_money_after = allMoney($objUser) + $dtMoney;
 									$bResult = $chargeModel->permit($objCharge);
 								}
 							}
@@ -500,7 +500,7 @@ class Api extends BaseController{
 								//charge Table 
 								$objCharge->charge_action_state = 3;
 								$objCharge->charge_action_uid = $strUid;
-								$objCharge->charge_money_after = $objUser->mb_money;
+								$objCharge->charge_money_after = allMoney($objUser);
 								$bResult = $chargeModel->permit($objCharge);	
 							}		
 						}
@@ -509,7 +509,7 @@ class Api extends BaseController{
 								//charge Table 
 								$objCharge->charge_action_state = 4;
 								$objCharge->charge_action_uid = $strUid;
-								$objCharge->charge_money_after = $objUser->mb_money;
+								$objCharge->charge_money_after = allMoney($objUser);
 								$bResult = $chargeModel->permit($objCharge);	
 							}		
 						}
@@ -597,7 +597,7 @@ public function withdrawlist(){
 									//exchange Table 
 									$objExchange->exchange_action_state = 3;
 									$objExchange->exchange_action_uid = $strUid;
-									$objExchange->exchange_money_after = $objUser->mb_money + $dtMoney;
+									$objExchange->exchange_money_after = allMoney($objUser) + $dtMoney;
 									$bResult = $exchangeModel->permit($objExchange);
 								}
 							}
@@ -605,8 +605,12 @@ public function withdrawlist(){
 						else if($arrReqData['process'] == 1){		//승인
 
 							if($objExchange->exchange_action_state == 1 || $objExchange->exchange_action_state == 3  || $objExchange->exchange_action_state == 4){ //대기이거나 거절된 상태에서만 진행
-								
-								if($objUser->mb_money >= $objExchange->exchange_money){
+								$iResult = 1;
+								if($objUser->mb_money < $objExchange->exchange_money){
+									$iResult = $this->alltoGame($objUser);
+								}
+
+								if($iResult==1 &&  $objUser->mb_money >= $objExchange->exchange_money){
 									$dtMoney = 0-$objExchange->exchange_money;
 									$nExchange = $objExchange->exchange_money;
 									$bResult = $memberModel->moneyProc($objUser, $dtMoney, 0, 0, $nExchange);
@@ -616,7 +620,7 @@ public function withdrawlist(){
 										//exchange Table 
 										$objExchange->exchange_action_state = 2;
 										$objExchange->exchange_action_uid = $strUid;
-										$objExchange->exchange_money_after = $objUser->mb_money + $dtMoney;
+										$objExchange->exchange_money_after = allMoney($objUser) + $dtMoney;
 										$bResult = $exchangeModel->permit($objExchange);
 									}
 								}
@@ -626,7 +630,7 @@ public function withdrawlist(){
 								//charge Table 
 								$objExchange->exchange_action_state = 3;
 								$objExchange->exchange_action_uid = $strUid;
-								$objExchange->exchange_money_after = $objUser->mb_money;
+								$objExchange->exchange_money_after = allMoney($objUser);
 								$bResult = $exchangeModel->permit($objExchange);
 							}			
 						} else if($arrReqData['process'] == 3){					//임시대기
@@ -634,7 +638,7 @@ public function withdrawlist(){
 								//charge Table 
 								$objExchange->exchange_action_state = 4;
 								$objExchange->exchange_action_uid = $strUid;
-								$objExchange->exchange_money_after = $objUser->mb_money;
+								$objExchange->exchange_money_after = allMoney($objUser);
 								$bResult = $exchangeModel->permit($objExchange);
 							}			
 						} 
@@ -971,8 +975,8 @@ public function withdrawlist(){
 		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  		//충환손익
 		            $arrEmpMoney = $memberModel->calcEmpMoney($objEmp);
 		            $arrUserMoney = $memberModel->calcUserMoney($objEmp->mb_fid);
-	            	$objCalc['mb_emp_money'] =  $arrEmpMoney[0];                        					//관리자보유금;
-	            	$objCalc['mb_user_money'] = $arrUserMoney[0];											//유저보유금;
+	            	$objCalc['mb_emp_money'] =  $arrEmpMoney[0]+$arrEmpMoney[2]+$arrEmpMoney[3];                        					//관리자보유금;
+	            	$objCalc['mb_user_money'] =$arrUserMoney[0]+$arrEmpMoney[2]+$arrEmpMoney[3];											//유저보유금;
 		            $arrBetData = $memberModel->calcBetMoneys($objEmp, $arrReqData, $siteConfs);
 			        $objCalc['mb_bet_money'] = $arrBetData['bet_money'] ;          							//베팅머니
 					$objCalc['mb_bet_win_money'] = $arrBetData['bet_win_money'] ;      						//적중머니
@@ -1058,24 +1062,26 @@ public function withdrawlist(){
 		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  //충환손익
 		            $arrEmpMoney = $memberModel->calcEmpMoney($objEmp);
 		            $arrUserMoney = $memberModel->calcUserMoney($objEmp->mb_fid);
-					switch($arrReqData['type']){
-						case GAME_CASINO_EVOL:
-							$objCalc['mb_emp_money'] =  $arrEmpMoney[1];                        //관리자보유금;
-		            		$objCalc['mb_user_money'] = $arrUserMoney[1];						//유저보유금;
-							break;
-						case GAME_SLOT_1:
-							$objCalc['mb_emp_money'] =  $arrEmpMoney[2];                        //관리자보유금;
-		            		$objCalc['mb_user_money'] = $arrUserMoney[2];						//유저보유금;
-							break;
-						case GAME_SLOT_2:
-							$objCalc['mb_emp_money'] =  $arrEmpMoney[3];                        //관리자보유금;
-							$objCalc['mb_user_money'] = $arrUserMoney[3];						//유저보유금;
-							break;
-						default:
-							$objCalc['mb_emp_money'] =  $arrEmpMoney[0];                        //관리자보유금;
-							$objCalc['mb_user_money'] = $arrUserMoney[0];						//유저보유금;
-							break;
-					}
+					$objCalc['mb_emp_money'] = $arrEmpMoney[0]+$arrEmpMoney[2]+$arrEmpMoney[3];                        					//관리자보유금;
+	            	$objCalc['mb_user_money'] = $arrUserMoney[0]+$arrEmpMoney[2]+$arrEmpMoney[3];
+					// switch($arrReqData['type']){
+					// 	case GAME_CASINO_EVOL:
+					// 		$objCalc['mb_emp_money'] =  $arrEmpMoney[1];                        //관리자보유금;
+		            // 		$objCalc['mb_user_money'] = $arrUserMoney[1];						//유저보유금;
+					// 		break;
+					// 	case GAME_SLOT_1:
+					// 		$objCalc['mb_emp_money'] =  $arrEmpMoney[2];                        //관리자보유금;
+		            // 		$objCalc['mb_user_money'] = $arrUserMoney[2];						//유저보유금;
+					// 		break;
+					// 	case GAME_SLOT_2:
+					// 		$objCalc['mb_emp_money'] =  $arrEmpMoney[3];                        //관리자보유금;
+					// 		$objCalc['mb_user_money'] = $arrUserMoney[3];						//유저보유금;
+					// 		break;
+					// 	default:
+					// 		$objCalc['mb_emp_money'] =  $arrEmpMoney[0];                        //관리자보유금;
+					// 		$objCalc['mb_user_money'] = $arrUserMoney[0];						//유저보유금;
+					// 		break;
+					// }
 		            $arrBetData = $memberModel->calcBetMoneysByGame($objEmp, $arrReqData);
 					
 		            if(is_null($arrBetData))	break;

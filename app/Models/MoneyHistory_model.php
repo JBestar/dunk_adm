@@ -33,8 +33,8 @@ class MoneyHistory_Model extends Model
         $this->builder()->set('money_mb_uid', $objUser->mb_uid);
         $this->builder()->set('money_mb_emp_fid', $objUser->mb_emp_fid);        
         $this->builder()->set('money_amount', $nChargeMoney);
-        $this->builder()->set('money_before', $objUser->mb_money);
-        $this->builder()->set('money_after', $objUser->mb_money+$nChargeMoney);
+        $this->builder()->set('money_before', allMoney($objUser));
+        $this->builder()->set('money_after', allMoney($objUser)+$nChargeMoney);
         $this->builder()->set('money_change_type', MONEYCHANGE_CHARGE);     //충전일때
         $this->builder()->set('money_update_time', 'NOW()', false);
         
@@ -50,8 +50,8 @@ class MoneyHistory_Model extends Model
         $this->builder()->set('money_mb_uid', $objUser->mb_uid);
         $this->builder()->set('money_mb_emp_fid', $objUser->mb_emp_fid);        
         $this->builder()->set('money_amount', (-1) * $nChargeMoney);
-        $this->builder()->set('money_before', $objUser->mb_money);
-        $this->builder()->set('money_after', $objUser->mb_money-$nChargeMoney);
+        $this->builder()->set('money_before', allMoney($objUser));
+        $this->builder()->set('money_after', allMoney($objUser)-$nChargeMoney);
         $this->builder()->set('money_change_type', MONEYCANCEL_CHARGE);     //충전취소일때
         $this->builder()->set('money_update_time', 'NOW()', false);
         
@@ -67,8 +67,8 @@ class MoneyHistory_Model extends Model
         $this->builder()->set('money_mb_uid', $objUser->mb_uid);
         $this->builder()->set('money_mb_emp_fid', $objUser->mb_emp_fid);        
         $this->builder()->set('money_amount', (-1) * $nExchangeMoney);
-        $this->builder()->set('money_before', $objUser->mb_money);
-        $this->builder()->set('money_after', $objUser->mb_money-$nExchangeMoney);
+        $this->builder()->set('money_before', allMoney($objUser));
+        $this->builder()->set('money_after', allMoney($objUser)-$nExchangeMoney);
         $this->builder()->set('money_change_type', MONEYCHANGE_EXCHANGE);     //환전일때
         $this->builder()->set('money_update_time', 'NOW()', false);
         
@@ -85,8 +85,8 @@ class MoneyHistory_Model extends Model
         $this->builder()->set('money_mb_uid', $objUser->mb_uid);
         $this->builder()->set('money_mb_emp_fid', $objUser->mb_emp_fid);        
         $this->builder()->set('money_amount', $nExchangeMoney);
-        $this->builder()->set('money_before', $objUser->mb_money);
-        $this->builder()->set('money_after', $objUser->mb_money+$nExchangeMoney);
+        $this->builder()->set('money_before', allMoney($objUser));
+        $this->builder()->set('money_after', allMoney($objUser)+$nExchangeMoney);
         $this->builder()->set('money_change_type', MONEYCANCEL_EXCHANGE);     //환전취소일때
         $this->builder()->set('money_update_time', 'NOW()', false);
         
@@ -101,8 +101,8 @@ class MoneyHistory_Model extends Model
         $this->builder()->set('money_mb_uid', $objUser->mb_uid);
         $this->builder()->set('money_mb_emp_fid', $objUser->mb_emp_fid);        
         $this->builder()->set('money_amount', $nAmount);
-        $this->builder()->set('money_before', $objUser->mb_money);
-        $this->builder()->set('money_after', $objUser->mb_money+$nAmount);
+        $this->builder()->set('money_before', allMoney($objUser));
+        $this->builder()->set('money_after', allMoney($objUser)+$nAmount);
         $this->builder()->set('money_change_type', $type);   
         $this->builder()->set('money_bet_target', $userId);     
         $this->builder()->set('money_update_time', 'NOW()', false);
@@ -120,8 +120,8 @@ class MoneyHistory_Model extends Model
         $this->builder()->set('money_amount', $nAmount);
         if($type == MONEYCHANGE_WITHDRAW)
         {
-            $this->builder()->set('money_before', $objUser->mb_money+$nAmount);
-            $this->builder()->set('money_after', $objUser->mb_money);
+            $this->builder()->set('money_before', allMoney($objUser)+$nAmount);
+            $this->builder()->set('money_after', allMoney($objUser));
         } else if($type == POINTHANGE_WITHDRAW)
         {
             $this->builder()->set('money_before', $objUser->mb_point+$nAmount);
@@ -144,8 +144,8 @@ class MoneyHistory_Model extends Model
         $this->builder()->set('money_mb_uid', $objUser->mb_uid);
         $this->builder()->set('money_mb_emp_fid', $objUser->mb_emp_fid);        
         $this->builder()->set('money_amount', $nMoney);
-        $this->builder()->set('money_before', $objUser->mb_money);
-        $this->builder()->set('money_after', $objUser->mb_money+$nMoney);
+        $this->builder()->set('money_before', allMoney($objUser));
+        $this->builder()->set('money_after', allMoney($objUser)+$nMoney);
         $this->builder()->set('money_change_type', $iType);     //정산 6,9,12
         $this->builder()->set('money_bet_round', $objBetInfo->bet_round_no);
         $this->builder()->set('money_bet_mode', $objBetInfo->bet_mode);
@@ -156,8 +156,8 @@ class MoneyHistory_Model extends Model
     }
     function search($objEmp, $arrReqData)
     {
-        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_money";
-        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid , r.mb_nickname, r.mb_money";
+        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_money, mb_live_money, mb_slot_money, mb_fslot_money";
+        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid , r.mb_nickname, r.mb_money, r.mb_live_money, r.mb_slot_money, r.mb_fslot_money";
 
         $strSql = "";
         if($objEmp->mb_level < LEVEL_ADMIN){
@@ -166,12 +166,12 @@ class MoneyHistory_Model extends Model
             $strSql .= " UNION ALL SELECT ".$strTbRColum." FROM ".$this->mMemberTable." r ";
             $strSql .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
 
-            $strSql .= "SELECT ".$this->table.".*, mb_table.mb_nickname, mb_table.mb_money FROM ".$this->table;
+            $strSql .= "SELECT ".$this->table.".*, mb_table.mb_nickname, mb_table.mb_money, mb_table.mb_live_money, mb_table.mb_slot_money, mb_table.mb_fslot_money FROM ".$this->table;
             $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
             $strSql .=" ) AS mb_table ";
             $strSql .=" ON ".$this->table.".money_mb_uid = mb_table.mb_uid ";
         } else {
-            $strSql .= "SELECT ".$this->table.".*, member.mb_nickname, member.mb_money FROM ".$this->table;
+            $strSql .= "SELECT ".$this->table.".*, member.mb_nickname, member.mb_money, member.mb_live_money, member.mb_slot_money, member.mb_fslot_money  FROM ".$this->table;
             $strSql .="  LEFT JOIN member ";
             $strSql .=" ON ".$this->table.".money_mb_uid = member.mb_uid ";
         }

@@ -29,7 +29,7 @@ function showDepositList(arrData) {
         strBuf += "<tr><td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td><td>";
-        strBuf += arrData[nRow].charge_mb_realname;
+        strBuf += arrData[nRow].mb_nickname;
         strBuf += "</td><td>";
         strBuf += arrData[nRow].charge_mb_uid;
         strBuf += "</td><td>";
@@ -38,6 +38,8 @@ function showDepositList(arrData) {
         strBuf += arrData[nRow].charge_time_require;
         strBuf += "</td><td>";
         strBuf += parseInt(arrData[nRow].charge_money).toLocaleString() + " 원";
+        strBuf += "</td><td>";
+        strBuf += arrData[nRow].charge_mb_realname;
         strBuf += "</td><td>";
         strBuf += arrData[nRow].charge_mb_phone;
         strBuf += "</td>";
@@ -203,15 +205,15 @@ function requestProcDeposit(jsData) {
     if (mAudio != undefined && mAudio != null) {
         mAudio.pause();
     }
-
+    $(".loading").show();
     var jsonData = JSON.stringify(jsData);
-
     $.ajax({
         type: "POST",
         data: { json_: jsonData },
         dataType: "json",
         url: FURL + "/api/depositproc",
         success: function(jResult) {
+            $(".loading").hide();
             //	console.log(jResult);
             if (jResult.status == "success") {
                 requestEmployeeInfo();
@@ -223,6 +225,7 @@ function requestProcDeposit(jsData) {
             }
         },
         error: function(request, status, error) {
+            $(".loading").hide();
             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 

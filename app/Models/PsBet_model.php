@@ -88,7 +88,7 @@ class PsBet_model extends Model {
             if(!is_null($objResult->bet_money_allsum)) {
                 $nSum = $objResult->bet_money_allsum;
             }
-            $nSum = $nSum * $objConfPs->game_percent_1 / 100;
+            // $nSum = $nSum * $objConfPs->game_percent_1 / 100;
             $arrSum[0] = (int)$nSum;
 
             
@@ -107,7 +107,7 @@ class PsBet_model extends Model {
                 $nSum = $objResult->bet_money_allsum;
             }
             //게임별 누르기율 계산
-            $nSum = $nSum * $objConfPs->game_percent_1 / 100;
+            // $nSum = $nSum * $objConfPs->game_percent_1 / 100;
             $arrSum[1] = (int)$nSum;
         
             $arrSumData[$i] = $arrSum;
@@ -131,7 +131,7 @@ class PsBet_model extends Model {
                 $nSum = $objResult->bet_money_allsum;
             }
             //게임별 누르기율 계산
-            $nSum = $nSum * $objConfPs->game_percent_2 / 100;
+            // $nSum = $nSum * $objConfPs->game_percent_2 / 100;
             $arrSum[0] = (int)$nSum;
     
             $arrSumData[$i] = $arrSum;

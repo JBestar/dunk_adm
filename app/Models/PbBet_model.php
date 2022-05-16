@@ -89,7 +89,7 @@ class PbBet_model extends Model {
                 $nSum = $objResult->bet_money_allsum;
             }
             //게임별 누르기율 계산
-            $nSum = $nSum * $objConfPb->game_percent_1 / 100;
+            // $nSum = $nSum * $objConfPb->game_percent_1 / 100;
             $arrSum[0] = (int)$nSum;
             
             $strSql = " SELECT SUM(bet_money_sum * mb_game_pb_percent DIV 100) AS bet_money_allsum FROM ( ";
@@ -107,7 +107,7 @@ class PbBet_model extends Model {
                 $nSum = $objResult->bet_money_allsum;
             }
             //게임별 누르기율 계산
-            $nSum = $nSum * $objConfPb->game_percent_1 / 100;
+            // $nSum = $nSum * $objConfPb->game_percent_1 / 100;
             $arrSum[1] = (int)$nSum;
         
             $arrSumData[$i] = $arrSum;
@@ -129,7 +129,7 @@ class PbBet_model extends Model {
                 $nSum = $objResult->bet_money_allsum;
             }
             //게임별 누르기율 계산
-            $nSum = $nSum * $objConfPb->game_percent_2 / 100;
+            // $nSum = $nSum * $objConfPb->game_percent_2 / 100;
             $arrSum[0] = (int)$nSum;
     
             $arrSumData[$i] = $arrSum;

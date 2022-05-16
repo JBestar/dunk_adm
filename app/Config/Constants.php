@@ -89,6 +89,7 @@ defined('APP_DREAM')        || define('APP_DREAM', 'Dream');
 defined('APP_EMPEROR')      || define('APP_EMPEROR', 'Emperor');
 defined('APP_GOLD')         || define('APP_GOLD', 'Gold');
 defined('APP_FOXWOOD')      || define('APP_FOXWOOD', 'Foxwood');
+defined('APP_ORANGE')       || define('APP_ORANGE', 'Orange');
 
 defined('APPTYPE_0')        || define('APPTYPE_0', 0);      //Premier
 defined('APPTYPE_1')        || define('APPTYPE_1', 1);      //Slot Combine

@@ -348,6 +348,7 @@ function addBtnEvent() {
 }
 
 function requestTrasnfer(jsonData){
+    $(".loading").show();
     
     jsonData = JSON.stringify(jsonData);
     $.ajax({
@@ -356,6 +357,7 @@ function requestTrasnfer(jsonData){
         url: FURL + "/userapi/transfer",
         data: { json_: jsonData },
         success: function(jResult) {
+            $(".loading").hide();
             // console.log(jResult);
             if (jResult.status == "success") {
                 location.reload();
@@ -368,6 +370,7 @@ function requestTrasnfer(jsonData){
             }
         },
         error: function(request, status, error) {
+            $(".loading").hide();
             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
@@ -380,6 +383,7 @@ function requestWithdraw(iType){
         'mb_fid': $("#subnavbar-fid-p-id").html(),
         'type': iType
     }
+    $(".loading").show();
 
     jsonData = JSON.stringify(jsonData);
     $.ajax({
@@ -388,6 +392,7 @@ function requestWithdraw(iType){
         url: FURL + "/userapi/withdraw",
         data: { json_: jsonData },
         success: function(jResult) {
+            $(".loading").hide();
             // console.log(jResult);
             if (jResult.status == "success") {
                 location.reload();
@@ -398,6 +403,7 @@ function requestWithdraw(iType){
             }
         },
         error: function(request, status, error) {
+            $(".loading").hide();
             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 

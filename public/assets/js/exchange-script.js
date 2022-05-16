@@ -33,7 +33,8 @@ function showMoneyHistory(jsonBetData) {
         strBuf += jsonBetData[nRow].money_mb_uid;
         strBuf += "</td><td>";
         if(jsonBetData[nRow].mb_money != null)
-            strBuf += parseInt(jsonBetData[nRow].mb_money).toLocaleString();
+            strBuf += (parseInt(jsonBetData[nRow].mb_money)+parseInt(jsonBetData[nRow].mb_live_money)
+            +parseInt(jsonBetData[nRow].mb_slot_money)+parseInt(jsonBetData[nRow].mb_fslot_money)).toLocaleString();
         strBuf += "</td><td>";
         strBuf += parseInt(jsonBetData[nRow].money_amount).toLocaleString();
         strBuf += "</td><td>";
@@ -44,9 +45,9 @@ function showMoneyHistory(jsonBetData) {
         strBuf += jsonBetData[nRow].money_update_time;
         strBuf += "</td><td>";
         if (jsonBetData[nRow].money_change_type == 1) {
-            strBuf += "입금";
+            strBuf += "충전";
         } else if (jsonBetData[nRow].money_change_type == 2) {
-            strBuf += "출금";
+            strBuf += "환전";
         } else if (jsonBetData[nRow].money_change_type == 3) {
             strBuf += "포인트 전환";
         } else if (jsonBetData[nRow].money_change_type == 4) {
@@ -139,7 +140,7 @@ function requestMoneyHistory() {
         dataType: "json",
         success: function(jResult) {
             $(".loading").hide();
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 showMoneyHistory(jResult.data);
             }
@@ -172,7 +173,7 @@ function requestTotalPage() {
         dataType: 'json',
         type: 'post',
         success: function(jResult) {
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();

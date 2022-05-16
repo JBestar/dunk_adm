@@ -55,7 +55,7 @@
 					<th>레벨</th>
 					<th>현재금액</th>
 					<th>포인트</th>
-					<th>게임사별<br>보유알</th>
+					<!-- <th>게임사별<br>보유알</th> -->
 					<?php if ($mb_level >= LEVEL_ADMIN) {?>	
 					<th>접속IP</th>
 					<?php } ?>

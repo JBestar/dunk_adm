@@ -16,6 +16,11 @@ namespace App\Controllers;
 
 use CodeIgniter\Controller;
 use App\Models\Sess_Model;
+use App\Models\Member_Model;
+
+use App\Libraries\ApiCas_Lib;
+use App\Libraries\ApiSlot_Lib;
+use App\Libraries\ApiFslot_Lib;
 
 class BaseController extends Controller
 {
@@ -29,6 +34,11 @@ class BaseController extends Controller
 	 */
 	protected $helpers = ['url', 'session', 'common_helper', 'curl_helper'];
 	protected $session ;
+	protected $modelMember;
+
+	protected $libApicas;
+	protected $libApislot;
+	protected $libApifslot;
 	/**
 	 * Constructor.
 	 */
@@ -46,6 +56,11 @@ class BaseController extends Controller
 		
 		$this->session = session();
 		$this->modelSess = new Sess_Model();
+		$this->modelMember = new Member_Model();
+
+		$this->libApicas = new ApiCas_Lib();
+		$this->libApislot = new ApiSlot_Lib();
+        $this->libApifslot = new ApiFslot_Lib();
 
 	}
 
@@ -80,5 +95,334 @@ class BaseController extends Controller
 		$this->modelSess->deleteBySess($sess_id);
 		$this->session->destroy();
 	}
+
+	protected function allEgg(&$objMember){
+		$this->evEgg($objMember);
+		usleep(100000);
+		$this->slEgg($objMember);
+		usleep(100000);
+		$this->fslEgg($objMember);
+	}
+	
+	protected function evEgg(&$objMember){
+		$iResult = 0;
+
+		$logHead = "<EvEgg>";
+		//슬롯 머니조회
+		if($objMember->mb_live_id > 0){
+			//슬롯머니 요청
+			$arrResult = $this->libApicas->getUserInfo($objMember->mb_live_uid);
+			writeLog($logHead." ".$objMember->mb_uid."-UserInfo Status=".$arrResult['status']);
+			if($arrResult['status'] == 1)
+			{
+				writeLog($logHead." ".$objMember->mb_uid."-UserInfo Balance=".$arrResult['balance']." Money=".$objMember->mb_money);
+				$objMember->mb_live_money = $arrResult['balance'];
+				$this->modelMember->updateLiveMoney($objMember);   
+				$iResult = 1;
+			}
+		} else {
+            $iResult = 1;
+        }
+		return $iResult;
+	}
+
+	protected function slEgg(&$objMember){
+		$iResult = 0;
+
+		$logHead = "<SlEgg> ";
+		//슬롯 머니조회
+		if($objMember->mb_slot_uid !== ""){
+			//슬롯머니 요청
+			$arrResult = $this->libApislot->getUserInfo($objMember->mb_slot_uid);
+			writeLog($logHead.$objMember->mb_uid."-UserInfo resultCode=".$arrResult['resultCode']);
+			if($arrResult['status'] == 1)
+			{
+				writeLog($logHead.$objMember->mb_uid."-UserInfo Balance=".$arrResult['balance']." Money=".$objMember->mb_money);
+				$objMember->mb_slot_money = $arrResult['balance'];
+				$this->modelMember->updateSlotMoney($objMember);   
+				$iResult = 1;
+			}
+		} else {
+            $iResult = 1;
+        }
+		return $iResult;
+	}
+
+	
+	protected function fslEgg(&$objMember){
+		$iResult = 0;
+		$logHead = "<FslEgg> ";
+
+		//네츄럴 => 슬롯 머니넘기기
+		if($objMember->mb_fslot_id > 0){
+			//네츄럴 머니 요청
+			$arrResult = $this->libApifslot->getUserInfo($objMember->mb_fslot_uid);
+			writeLog($logHead.$objMember->mb_uid."-UserInfo Status=".$arrResult['status']);
+
+			if($arrResult['status'] == 1)
+			{
+				writeLog($logHead.$objMember->mb_uid."-UserInfo Balance=".$arrResult['balance']." Money=".$objMember->mb_money);
+				$objMember->mb_fslot_money = $arrResult['balance'];
+
+				$this->modelMember->updateFslotMoney($objMember);   
+				$iResult = 1;
+			
+			}
+		} else {
+            $iResult = 1;
+        }
+
+		return $iResult;
+	}
+
+	protected function alltoGame(&$objMember, $iGame = 0){
+		$iResult = 0;
+		if($iGame == GAME_CASINO_EVOL){
+			$iResult = $this->sltoMb($objMember);
+			if($iResult == 1){
+				$iResult = $this->fsltoMb($objMember);
+				if($iResult == 1){
+					$iResult = $this->mbtoEv($objMember);
+				}
+			}
+		} else if($iGame == GAME_SLOT_1){
+			$iResult = $this->evtoMb($objMember);
+			if($iResult == 1){
+				$iResult = $this->fsltoMb($objMember);
+				if($iResult == 1){
+					$iResult = $this->mbtoSl($objMember);
+				}
+			}
+		} else if($iGame == GAME_SLOT_2){
+			$iResult = $this->evtoMb($objMember);
+			if($iResult == 1){
+				$iResult = $this->sltoMb($objMember);
+				if($iResult == 1){
+					$iResult = $this->mbtoFsl($objMember);
+				}
+			}
+		} else {
+			$iResult = $this->evtoMb($objMember);
+			if($iResult == 1){
+				$iResult = $this->sltoMb($objMember);
+				if($iResult == 1){
+					$iResult = $this->fsltoMb($objMember);
+					
+				}
+			}
+		}
+		return $iResult ;
+
+	}
+	
+	protected function evtoMb(&$objMember){
+		$iResult = 0;
+		$logHead = "<EvtoMb> ";
+
+		//에볼 => 지갑 머니넘기기
+		if($objMember->mb_live_id > 0){
+			//에볼 머니 요청
+			$arrResult = $this->libApicas->getUserInfo($objMember->mb_live_uid);
+			writeLog($logHead.$objMember->mb_uid."-UserInfo Status=".$arrResult['status']);
+
+			if($arrResult['status'] == 1)
+			{
+				writeLog($logHead.$objMember->mb_uid."-UserInfo Balance=".$arrResult['balance']." Money=".$objMember->mb_money);
+				$amount = 0;
+				if($arrResult['balance'] > 0){
+					//에볼 머니 꺼내기
+					usleep(500000);
+					$amount = $arrResult['balance'];
+					$arrResp = $this->libApicas->subBalance($objMember->mb_live_uid, $amount);
+				} else {
+					$iResult = 1;   //success
+                    return $iResult;
+				}
+				
+				if($arrResp['status'] == 1)
+                {
+                    writeLog($logHead.$objMember->mb_uid."-Withdraw RemainBalance=".$arrResp['balance']);
+					if($this->modelMember->moneyProc($objMember, $amount)){
+                        $objMember->mb_live_money = $arrResp['balance'];
+                        $this->modelMember->updateLiveMoney($objMember);   
+						$objMember->mb_money += $amount;   
+                        $iResult = 1;
+                    }
+                } 
+			}
+		} else {
+            $iResult = 1;
+        }
+
+		return $iResult;
+	}
+
+	protected function sltoMb(&$objMember){
+		$iResult = 0;
+
+		$logHead = "<SltoMb> ";
+		//슬롯 => 보유머니넘기기
+		if($objMember->mb_slot_uid !== ""){
+			//슬롯머니 요청
+			$arrResult = $this->libApislot->getUserInfo($objMember->mb_slot_uid);
+			writeLog($logHead." ".$objMember->mb_uid."-UserInfo resultCode=".$arrResult['resultCode']);
+			if($arrResult['status'] == 1)
+			{
+				writeLog($logHead." ".$objMember->mb_uid."-UserInfo Balance=".$arrResult['balance']." Money=".$objMember->mb_money);
+				$amount = 0;
+				if($arrResult['balance'] > 0){
+					//슬롯머니 꺼내기
+					usleep(500000);
+					$amount = $arrResult['balance'];
+					$arrResp =  $this->libApislot->subBalance($objMember->mb_slot_uid, $amount);
+					writeLog($logHead." ".$objMember->mb_uid."-Withdraw resultCode=".$arrResult['resultCode']);
+				} else {
+                    $iResult = 1;   //success
+                    return $iResult;
+                }
+
+				if($arrResp['status'] == 1)
+				{
+					writeLog($logHead.$objMember->mb_uid."-Withdraw ReaminBalance=".$arrResp['balance']);
+                    if($this->modelMember->moneyProc($objMember, $amount)){
+                        $objMember->mb_slot_money = $arrResp['balance'];
+                        $this->modelMember->updateSlotMoney($objMember);
+						$objMember->mb_money += $amount;   
+                        $iResult = 1;
+                    }
+                } 
+			}
+		} else {
+            $iResult = 1;
+        }
+		return $iResult;
+	}
+
+	
+	protected function fsltoMb(&$objMember){
+		$iResult = 0;
+		$logHead = "<FsltoMb> ";
+
+		//네츄럴 => 지갑 머니넘기기
+		if($objMember->mb_fslot_id > 0){
+			//네츄럴 머니 요청
+			$arrResult = $this->libApifslot->getUserInfo($objMember->mb_fslot_uid);
+			writeLog($logHead.$objMember->mb_uid."-UserInfo Status=".$arrResult['status']);
+
+			if($arrResult['status'] == 1)
+			{
+				writeLog($logHead.$objMember->mb_uid."-UserInfo Balance=".$arrResult['balance']." Money=".$objMember->mb_money);
+				$amount = 0;
+				if($arrResult['balance'] > 0){
+					//네츄럴 머니 꺼내기
+					usleep(500000);
+					$amount = $arrResult['balance'];
+					$arrResp = $this->libApifslot->subBalance($objMember->mb_fslot_uid, $amount);
+				} else {
+					$iResult = 1;   //success
+                    return $iResult;
+				}
+				
+				if($arrResp['status'] == 1)
+                {
+                    writeLog($logHead.$objMember->mb_uid."-Withdraw RemainBalance=".$arrResp['balance']);
+					if($this->modelMember->moneyProc($objMember, $amount)){
+                        $objMember->mb_fslot_money = $arrResp['balance'];
+                        $this->modelMember->updateFslotMoney($objMember);   
+						$objMember->mb_money += $amount;   
+                        $iResult = 1;
+                    }
+                } 
+			}
+		} else {
+            $iResult = 1;
+        }
+
+		return $iResult;
+	}
+
+	protected function mbtoEv(&$objMember){
+		$iResult = 0;
+		$logHead = "<MbtoEv> ";
+
+		//에볼 <= 지갑 머니넘기기
+		if($objMember->mb_live_id > 0 && $objMember->mb_money > 0){
+			//에볼 머니 요청
+			$arrResult = $this->libApicas->addBalance($objMember->mb_live_uid, $objMember->mb_money);
+			writeLog($logHead.$objMember->mb_uid."-Deposit Status=".$arrResult['status']);
+				
+			if($arrResult['status'] == 1)
+			{
+				writeLog($logHead.$objMember->mb_uid."-Deposit Balance=".$arrResult['balance']);
+				if($this->modelMember->moneyProc($objMember, 0-$arrResult['amount'])){
+					$objMember->mb_live_money = $arrResult['balance'];
+					$this->modelMember->updateLiveMoney($objMember);   
+					$objMember->mb_money -= $arrResult['amount'];   
+					$iResult = 1;
+				}
+			} 
+		} else {
+            $iResult = 1;
+        }
+
+		return $iResult;
+	}
+
+	protected function mbtoSl(&$objMember){
+		$iResult = 0;
+
+		$logHead = "<MbtoSl> ";
+		//슬롯 <= 보유머니넘기기
+		if($objMember->mb_slot_uid !== "" && $objMember->mb_money > 0){
+			//슬롯머니 요청
+			$arrResult = $this->libApislot->addBalance($objMember->mb_slot_uid, $objMember->mb_money);
+			writeLog($logHead." ".$objMember->mb_uid."-Deposit resultCode=".$arrResult['resultCode']);
+			
+			if($arrResult['status'] == 1)
+			{
+				$arrResult['amount'] = $objMember->mb_money;
+
+				writeLog($logHead.$objMember->mb_uid."-Deposit Balance=".$arrResult['balance']);
+				if($this->modelMember->moneyProc($objMember, 0-$arrResult['amount'])){
+					$objMember->mb_slot_money = $arrResult['balance'];
+					$this->modelMember->updateSlotMoney($objMember);
+					$objMember->mb_money -= $arrResult['amount'];   
+					$iResult = 1;
+				}
+			} 
+		} else {
+            $iResult = 1;
+        }
+		return $iResult;
+	}
+
+	
+	protected function mbtoFsl(&$objMember){
+		$iResult = 0;
+		$logHead = "<MbtoFsl> ";
+
+		//네츄럴 => 지갑 머니넘기기
+		if($objMember->mb_fslot_id > 0 && $objMember->mb_money > 0){
+			//네츄럴 머니 요청
+			$arrResult = $this->libApifslot->addBalance($objMember->mb_fslot_uid, $objMember->mb_money);
+			writeLog($logHead.$objMember->mb_uid."-Deposit Status=".$arrResult['status']);
+				
+			if($arrResult['status'] == 1)
+			{
+				writeLog($logHead.$objMember->mb_uid."-Deposit Balance=".$arrResult['balance']);
+				if($this->modelMember->moneyProc($objMember, 0-$arrResult['amount'])){
+					$objMember->mb_fslot_money = $arrResult['balance'];
+					$this->modelMember->updateFslotMoney($objMember);   
+					$objMember->mb_money -= $arrResult['amount'];   
+					$iResult = 1;
+				}
+			} 
+		} else {
+            $iResult = 1;
+        }
+
+		return $iResult;
+	}
+
 
 }

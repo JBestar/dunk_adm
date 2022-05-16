@@ -36,7 +36,7 @@ class ApiFslot_Lib {
     public function createUser($id, $name)
     {
         if(strlen($this->mHost) < 1){
-            return array('status' => 0);
+            return array('status' => 0, 'error'=>INTERNAL_ERROR);
         }
         $url = $this->mHost."/user/create";
 
@@ -75,7 +75,7 @@ class ApiFslot_Lib {
     public function getUserInfo($id)
     {
         if(strlen($this->mHost) < 1){
-            return array('status' => 0);
+            return array('status' => 0, 'error'=>INTERNAL_ERROR);
         }
         $url = $this->mHost."/user/info";
 
@@ -150,7 +150,7 @@ class ApiFslot_Lib {
     public function auth($id, $name, $game)
     {
         if(strlen($this->mHost) < 1){
-            return array('status' => 0);
+            return array('status' => 0, 'error'=>INTERNAL_ERROR);
         }
         $url = $this->mHost."/game/get_url";
 
@@ -193,7 +193,7 @@ class ApiFslot_Lib {
     public function addBalance($id, $amount)
     {
         if(strlen($this->mHost) < 1){
-            return array('status' => 0);
+            return array('status' => 0, 'error'=>INTERNAL_ERROR);
         }
         $url = $this->mHost."/user/add_balance";
 
@@ -229,7 +229,7 @@ class ApiFslot_Lib {
     public function subBalance($id, $amount)
     {
         if(strlen($this->mHost) < 1){
-            return array('status' => 0);
+            return array('status' => 0, 'error'=>INTERNAL_ERROR);
         }
         $url = $this->mHost."/user/sub_balance";
 

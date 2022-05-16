@@ -28,7 +28,7 @@ class ApiSlot_Lib {
     {
 
         if(strlen($this->mHost) < 1){
-            return array('status' => 0);
+            return array('status' => 0, 'resultCode'=>-1);
         }
 
         $url = $this->mHost."/custom/api/user/Create";
@@ -69,7 +69,7 @@ class ApiSlot_Lib {
     {
 
         if(strlen($this->mHost) < 1){
-            return array('status' => 0);
+            return array('status' => 0, 'resultCode'=>-1);
         }
 
         $url = $this->mHost."/custom/api/user/GetBalance";
@@ -111,7 +111,7 @@ class ApiSlot_Lib {
     {
 
         if(strlen($this->mHost) < 1){
-            return array('status' => 0);
+            return array('status' => 0, 'resultCode'=>-1);
         }
 
         $url = $this->mHost."/custom/api/agent/GetCurrentEgg";
@@ -153,7 +153,7 @@ class ApiSlot_Lib {
     {
 
         if(strlen($this->mHost) < 1){
-            return array('status' => 0);
+            return array('status' => 0, 'resultCode'=>-1);
         }
 
         $url = $this->mHost."/custom/api/game/CreateSession";
@@ -196,7 +196,7 @@ class ApiSlot_Lib {
     {
 
         if(strlen($this->mHost) < 1){
-            return array('status' => 0);
+            return array('status' => 0, 'resultCode'=>-1);
         }
 
         $url = $this->mHost."/custom/api/game/Link";
@@ -239,7 +239,7 @@ class ApiSlot_Lib {
     {
         
         if(strlen($this->mHost) < 1){
-            return array('status' => 0);
+            return array('status' => 0, 'resultCode'=>-1);
         }
 
         $url = $this->mHost."/custom/api/user/Deposit";
@@ -281,7 +281,7 @@ class ApiSlot_Lib {
     {
         
         if(strlen($this->mHost) < 1){
-            return array('status' => 0);
+            return array('status' => 0, 'resultCode'=>-1);
         }
 
         $url = $this->mHost."/custom/api/user/Withdraw";

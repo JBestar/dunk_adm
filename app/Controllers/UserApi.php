@@ -794,15 +794,15 @@ class UserApi extends BaseController
                         $data =[
                             'charge_emp_fid' => $objMember->mb_emp_fid,
                             'charge_mb_uid' => $objMember->mb_uid,
-                            'charge_mb_realname' => $objMember->mb_nickname,
+                            'charge_mb_realname' => $objMember->mb_bank_own,
                             'charge_mb_phone' => $objMember->mb_phone,
                             'charge_money' => $arrData['amount'],
                             'charge_time_require' => date("Y-m-d H:i:s"),
                             'charge_action_state' => 5,
                             'charge_action_uid' => $objEmp->mb_uid,
                             'charge_time_process' => date("Y-m-d H:i:s"),
-                            'charge_money_before' => $objMember->mb_money,
-                            'charge_money_after' => $objMember->mb_money + $arrData['amount'],
+                            'charge_money_before' => allMoney($objMember),
+                            'charge_money_after' => allMoney($objMember) + $arrData['amount'],
                         ];
                         $chargeModel->register($data);
 
@@ -810,35 +810,47 @@ class UserApi extends BaseController
                         $objResult->status = 'success';
                     }
                 } else if($arrData['type'] == 1){
-                    //직환전
+                    $iResult = 1;
                     if(intval($objMember->mb_money) < $arrData['amount']){
-                        $arrData['amount'] = $objMember->mb_money;
+                        $iResult = $this->alltoGame($objMember);
+                    } 
+                    
+                    if($iResult == 1){
+                        //직환전
+                        if(intval($objMember->mb_money) < $arrData['amount']){
+                            $arrData['amount'] = $objMember->mb_money;
+                        }
+                        if($arrData['amount'] > 0 && $memberModel->moneyProc($objMember, 0-$arrData['amount']))
+                        {
+                            $exchangeModel = new Exchange_Model();
+
+                            $data =[
+                                'exchange_emp_fid' => $objMember->mb_emp_fid,
+                                'exchange_mb_uid' => $objMember->mb_uid,
+                                'exchange_mb_phone' => $objMember->mb_phone,
+                                'exchange_money' => $arrData['amount'],
+                                'exchange_time_require' => date("Y-m-d H:i:s"),
+                                'exchange_action_state' => 5,
+                                'exchange_action_uid' => $objEmp->mb_uid,
+                                'exchange_time_process' => date("Y-m-d H:i:s"),
+                                'exchange_bank_name' => $objMember->mb_bank_name,
+                                'exchange_bank_account' => $objMember->mb_bank_own,
+                                'exchange_bank_serial' => $objMember->mb_bank_num,
+                                'exchange_money_before' => allMoney($objMember),
+                                'exchange_money_after' => allMoney($objMember)-$arrData['amount']
+
+                            ];
+                            $exchangeModel->register($data);
+
+                            $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], MONEYCHANGE_DEC);
+                            $objResult->status = 'success';
+                        }
+                    } else {
+                        $objResult->status = 'fail';
+                        $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
+
                     }
-                    if($arrData['amount'] > 0 && $memberModel->moneyProc($objMember, 0-$arrData['amount']))
-                    {
-                        $exchangeModel = new Exchange_Model();
-
-                        $data =[
-                            'exchange_emp_fid' => $objMember->mb_emp_fid,
-                            'exchange_mb_uid' => $objMember->mb_uid,
-                            'exchange_mb_phone' => $objMember->mb_phone,
-                            'exchange_money' => $arrData['amount'],
-                            'exchange_time_require' => date("Y-m-d H:i:s"),
-                            'exchange_action_state' => 5,
-                            'exchange_action_uid' => $objEmp->mb_uid,
-                            'exchange_time_process' => date("Y-m-d H:i:s"),
-                            'exchange_bank_name' => $objMember->mb_bank_name,
-                            'exchange_bank_account' => $objMember->mb_bank_own,
-                            'exchange_bank_serial' => $objMember->mb_bank_num,
-                            'exchange_money_before' => $objMember->mb_money,
-                            'exchange_money_after' => $objMember->mb_money-$arrData['amount']
-
-                        ];
-                        $exchangeModel->register($data);
-
-                        $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], MONEYCHANGE_DEC);
-                        $objResult->status = 'success';
-                    }
+                    
                 } 
                  
             }
@@ -848,24 +860,46 @@ class UserApi extends BaseController
                 $objResult->status = 'fail';
 
                 if($arrData['type'] == 2){                      //이송
+                    
+                    $iResult = 1;
                     if($arrData['amount'] > $objEmp->mb_money){
-                        $objResult->msg = '이송금액이 보유금액을 초과하셧습니다.';
-                    } else if($memberModel->trasferMoney($objEmp, $objMember, $arrData['amount'])){
-
-                        $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, 0-$arrData['amount'], MONEYCHANGE_TRANS_DEC);
-                        $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, $arrData['amount'], MONEYCHANGE_TRANS_INC);
-                        $objResult->status = 'success';
+                        $iResult = $this->alltoGame($objEmp);
                     } 
-                } else if($arrData['type'] == 3){               //환수
-                    if($arrData['amount'] > $objMember->mb_money){
-                        $arrData['amount'] = $objMember->mb_money;
+
+                    if($iResult == 1){
+                        if($arrData['amount'] > $objEmp->mb_money){
+                            $objResult->msg = '이송금액이 보유금액을 초과하셧습니다.';
+                        } else if($memberModel->trasferMoney($objEmp, $objMember, $arrData['amount'])){
+
+                            $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, 0-$arrData['amount'], MONEYCHANGE_TRANS_DEC);
+                            $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, $arrData['amount'], MONEYCHANGE_TRANS_INC);
+                            $objResult->status = 'success';
+                        } 
+                    } else {
+                        $objResult->status = 'fail';
+                        $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
                     }
-                    if($arrData['amount'] > 0 && $memberModel->trasferMoney($objMember, $objEmp, $arrData['amount'])){
-
-                        $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, $arrData['amount'], MONEYCHANGE_EXCHANGE_INC);
-                        $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], MONEYCHANGE_EXCHANGE_DEC);
-                        $objResult->status = 'success';
+                } else if($arrData['type'] == 3){               //환수
+                    $iResult = 1;
+                    if($arrData['amount'] > $objMember->mb_money){
+                        $iResult = $this->alltoGame($objMember);
                     } 
+
+                    if($iResult == 1){
+                        if($arrData['amount'] > $objMember->mb_money){
+                            $arrData['amount'] = $objMember->mb_money;
+                        }
+                        if($arrData['amount'] > 0 && $memberModel->trasferMoney($objMember, $objEmp, $arrData['amount'])){
+
+                            $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, $arrData['amount'], MONEYCHANGE_EXCHANGE_INC);
+                            $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], MONEYCHANGE_EXCHANGE_DEC);
+                            $objResult->status = 'success';
+                        } 
+                    } else {
+                        $objResult->status = 'fail';
+                        $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
+
+                    }
                 }
                 
             }
@@ -899,12 +933,19 @@ class UserApi extends BaseController
             } else if($objEmp->mb_level < LEVEL_ADMIN) {
                 $objResult->status = 'fail';
             } else {
-                if($arrData['type'] == 0 && $objMember->mb_money > 0){
-                    $nAmount = $objMember->mb_money;
-                    $objMember->mb_money = 0;
-                    if($memberModel->updateMoney($objMember))
-                        $moneyhistoryModel->registerWithdraw($objMember, $objEmp->mb_uid, $nAmount, MONEYCHANGE_WITHDRAW);
-                    $objResult->status = 'success';
+                if($arrData['type'] == 0){
+                    $iResult = $this->alltoGame($objMember);
+                    if($iResult == 1){
+                        $nAmount = $objMember->mb_money;
+                        $objMember->mb_money = 0;
+                        if($memberModel->updateMoney($objMember))
+                            $moneyhistoryModel->registerWithdraw($objMember, $objEmp->mb_uid, $nAmount, MONEYCHANGE_WITHDRAW);
+                        $objResult->status = 'success';
+                    } else {
+                        $objResult->status = 'fail';
+                        $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
+                    }
+                    
                 }
                 else if($arrData['type'] == 1 && $objMember->mb_point > 0){
                     $nAmount = $objMember->mb_point;
@@ -951,6 +992,7 @@ class UserApi extends BaseController
         echo json_encode($arrResult);
     }
 
+    /*
     public function egg_ev(){
 		$jsonData = $_REQUEST['json_'];
 		$arrReqData = json_decode($jsonData, true);
@@ -1144,5 +1186,35 @@ class UserApi extends BaseController
         }
         echo json_encode($result);
     }
+    */
 
+    
+	public function egginfo(){
+        $jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+
+		$result = new \StdClass;
+		if(!is_login())
+		{
+            $result->status = STATUS_LOGOUT;
+		} else {
+			$modelMember  = new Member_Model();
+
+            $objMember = $modelMember->getInfoByFid($arrReqData['mb_fid']);
+			if(!is_null($objMember)){
+				$this->allEgg($objMember);
+                $result->money = allMoney($objMember);
+                $result->point = $objMember->mb_point;
+                $result->status = STATUS_SUCCESS;
+    
+            } else {
+                $result->status = STATUS_FAIL;
+
+            }
+
+
+		}
+		echo json_encode($result);
+
+	}
 }

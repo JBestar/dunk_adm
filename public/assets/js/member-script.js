@@ -66,25 +66,23 @@ function showMember(arrMember, confs) {
         }
         strBuf += "</td> <td>";
         strBuf += parseInt(arrMember[nRow].mb_grade).toLocaleString() + "레벨";
-        strBuf += "</td> <td id='mm_" + arrMember[nRow].mb_fid + "'>";
-        strBuf += parseInt(arrMember[nRow].mb_money).toLocaleString() + "원";
+        strBuf += "</td><td> <span id='mm_" + arrMember[nRow].mb_fid + "'>";
+        strBuf += (parseInt(arrMember[nRow].mb_money) + parseInt(arrMember[nRow].mb_slot_money) + parseInt(arrMember[nRow].mb_fslot_money)).toLocaleString() + "원</span>";
+        strBuf += '<button class="refresh_btn" onclick="refreshEv(' + arrMember[nRow].mb_fid + ', this);"></button>';
         strBuf += "</td> <td id='mp_" + arrMember[nRow].mb_fid + "'>";
         strBuf += parseInt(arrMember[nRow].mb_point).toLocaleString();
         strBuf += "</td> <td>";
-        strBuf += "<span id='ev_" + arrMember[nRow].mb_fid + "'>에볼: " + parseInt(arrMember[nRow].mb_live_money).toLocaleString() + "</span><br>";
-
-        if (strApp == APPTYPE_0)
-            strBuf += "<span id='sl_" + arrMember[nRow].mb_fid + "'>슬롯: " + parseInt(arrMember[nRow].mb_slot_money).toLocaleString() + "</span><br>";
-        if (strApp == APPTYPE_0)
-            strBuf += "<span id='fsl_" + arrMember[nRow].mb_fid + "'>네츄럴슬롯: " + parseInt(arrMember[nRow].mb_fslot_money).toLocaleString() + "</span>";
-        else if (strApp == APPTYPE_2)
-            strBuf += "<span id='fsl_" + arrMember[nRow].mb_fid + "'>슬롯: " + parseInt(arrMember[nRow].mb_fslot_money).toLocaleString() + "</span>";
-        else if (strApp == APPTYPE_1)
-            strBuf += "<span id='tsl_" + arrMember[nRow].mb_fid + "'>슬롯: " + (parseInt(arrMember[nRow].mb_slot_money) + parseInt(arrMember[nRow].mb_fslot_money)).toLocaleString() + "</span>";
-        strBuf += '<br><button class="refresh_btn" onclick="refreshEv(' + arrMember[nRow].mb_fid + ', this);"></button>';
-
-
-        strBuf += "</td> <td>";
+        // strBuf += "<span id='ev_" + arrMember[nRow].mb_fid + "'>에볼: " + parseInt(arrMember[nRow].mb_live_money).toLocaleString() + "</span><br>";
+        // if (strApp == APPTYPE_0)
+        //     strBuf += "<span id='sl_" + arrMember[nRow].mb_fid + "'>슬롯: " + parseInt(arrMember[nRow].mb_slot_money).toLocaleString() + "</span><br>";
+        // if (strApp == APPTYPE_0)
+        //     strBuf += "<span id='fsl_" + arrMember[nRow].mb_fid + "'>네츄럴슬롯: " + parseInt(arrMember[nRow].mb_fslot_money).toLocaleString() + "</span>";
+        // else if (strApp == APPTYPE_2)
+        //     strBuf += "<span id='fsl_" + arrMember[nRow].mb_fid + "'>슬롯: " + parseInt(arrMember[nRow].mb_fslot_money).toLocaleString() + "</span>";
+        // else if (strApp == APPTYPE_1)
+        //     strBuf += "<span id='tsl_" + arrMember[nRow].mb_fid + "'>슬롯: " + (parseInt(arrMember[nRow].mb_slot_money) + parseInt(arrMember[nRow].mb_fslot_money)).toLocaleString() + "</span>";
+        // strBuf += '<br><button class="refresh_btn" onclick="refreshEv(' + arrMember[nRow].mb_fid + ', this);"></button>';
+        // strBuf += "</td> <td>";
         if (confs.emp_level >= LEVEL_ADMIN) {
             strBuf += arrMember[nRow].mb_ip_last;
             if (arrMember[nRow].block_state == 1) {
@@ -217,7 +215,6 @@ function requestMember() {
         url: FURL + "/userapi/getmembers",
         data: { json_: jsonData },
         success: function(jResult) {
-            // console.log(jResult);            
             $(".loading").hide();
             //console.log(jResult);
             if (jResult.status == "success") {
@@ -513,13 +510,13 @@ function refreshEv(mbFid, elBtn) {
     $.ajax({
         type: "POST",
         dataType: "json",
-        url: FURL + "/userapi/egg_ev",
+        url: FURL + "/userapi/egginfo",
         data: { json_: jsonData },
         success: function(jResult) {
             // console.log(jResult);
+            $(elBtn).removeClass("refresh");
 
             if (jResult.status == "success") {
-                $("#ev_" + mbFid).text("에볼: " + parseInt(jResult.live_money).toLocaleString());
                 $("#mm_" + mbFid).text(parseInt(jResult.money).toLocaleString() + "원");
                 $("#mp_" + mbFid).text(parseInt(jResult.point).toLocaleString());
 
@@ -530,78 +527,79 @@ function refreshEv(mbFid, elBtn) {
             }
         },
         error: function(request, status, error) {
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-        }
-
-    });
-
-    setTimeout(function() {
-        refreshSl(mbFid);
-    }, 500);
-
-    setTimeout(function() {
-        refreshFsl(mbFid, elBtn);
-    }, 1000);
-}
-
-
-function refreshSl(mbFid) {
-    var jsonData = { "mb_fid": mbFid };
-    jsonData = JSON.stringify(jsonData);
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: FURL + "/userapi/egg_sl",
-        data: { json_: jsonData },
-        success: function(jResult) {
-            // console.log(jResult);
-
-            if (jResult.status == "success") {
-                $("#sl_" + mbFid).text("슬롯: " + parseInt(jResult.slot_money).toLocaleString());
-                $("#tsl_" + mbFid).text("슬롯: " + (parseInt(jResult.slot_money) + parseInt(jResult.fslot_money)).toLocaleString());
-
-            } else if (jResult.status == "fail") {
-
-            } else if (jResult.status == "logout") {
-                window.location.replace( FURL +'/');
-            }
-        },
-        error: function(request, status, error) {
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-        }
-
-    });
-}
-
-
-function refreshFsl(mbFid, elBtn) {
-    var jsonData = { "mb_fid": mbFid };
-    jsonData = JSON.stringify(jsonData);
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: FURL + "/userapi/egg_fsl",
-        data: { json_: jsonData },
-        success: function(jResult) {
-            // console.log(jResult);
-            $(elBtn).removeClass("refresh");
-
-            if (jResult.status == "success") {
-                $("#fsl_" + mbFid).text("슬롯: " + parseInt(jResult.fslot_money).toLocaleString());
-                $("#tsl_" + mbFid).text("슬롯: " + (parseInt(jResult.slot_money) + parseInt(jResult.fslot_money)).toLocaleString());
-
-            } else if (jResult.status == "fail") {
-
-            } else if (jResult.status == "logout") {
-                window.location.replace( FURL +'/');
-            }
-        },
-        error: function(request, status, error) {
             $(elBtn).removeClass("refresh");
             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });
+
+    // setTimeout(function() {
+    //     refreshSl(mbFid);
+    // }, 500);
+
+    // setTimeout(function() {
+    //     refreshFsl(mbFid, elBtn);
+    // }, 1000);
 }
+
+
+// function refreshSl(mbFid) {
+//     var jsonData = { "mb_fid": mbFid };
+//     jsonData = JSON.stringify(jsonData);
+
+//     $.ajax({
+//         type: "POST",
+//         dataType: "json",
+//         url: FURL + "/userapi/egg_sl",
+//         data: { json_: jsonData },
+//         success: function(jResult) {
+//             // console.log(jResult);
+
+//             if (jResult.status == "success") {
+//                 $("#sl_" + mbFid).text("슬롯: " + parseInt(jResult.slot_money).toLocaleString());
+//                 $("#tsl_" + mbFid).text("슬롯: " + (parseInt(jResult.slot_money) + parseInt(jResult.fslot_money)).toLocaleString());
+
+//             } else if (jResult.status == "fail") {
+
+//             } else if (jResult.status == "logout") {
+//                 window.location.replace( FURL +'/');
+//             }
+//         },
+//         error: function(request, status, error) {
+//             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+//         }
+
+//     });
+// }
+
+
+// function refreshFsl(mbFid, elBtn) {
+//     var jsonData = { "mb_fid": mbFid };
+//     jsonData = JSON.stringify(jsonData);
+
+//     $.ajax({
+//         type: "POST",
+//         dataType: "json",
+//         url: FURL + "/userapi/egg_fsl",
+//         data: { json_: jsonData },
+//         success: function(jResult) {
+//             // console.log(jResult);
+//             $(elBtn).removeClass("refresh");
+
+//             if (jResult.status == "success") {
+//                 $("#fsl_" + mbFid).text("슬롯: " + parseInt(jResult.fslot_money).toLocaleString());
+//                 $("#tsl_" + mbFid).text("슬롯: " + (parseInt(jResult.slot_money) + parseInt(jResult.fslot_money)).toLocaleString());
+
+//             } else if (jResult.status == "fail") {
+
+//             } else if (jResult.status == "logout") {
+//                 window.location.replace( FURL +'/');
+//             }
+//         },
+//         error: function(request, status, error) {
+//             $(elBtn).removeClass("refresh");
+//             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+//         }
+
+//     });
+// }

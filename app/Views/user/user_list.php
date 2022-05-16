@@ -43,7 +43,7 @@
 			<td><?=$i++?></td>
 			<td><?=$objMember->mb_uid?></td>
 			<td><?=$objMember->mb_nickname?></td>
-			<td><?=number_format($objMember->mb_money)?>원</td>
+			<td><?=number_format(allMoney($objMember))?>원</td>
 			<td><?=number_format($objMember->mb_point)?></td>
 			<td><?=number_format($objMember->mb_live_money)?>원</td>
 			<td><?=number_format($objMember->mb_slot_money)?>원</td>

@@ -955,7 +955,7 @@ class Member_Model extends Model
     // 관리자 보유금
     public function calcAdminMoney()
     {
-        $strSQL = 'SELECT SUM(mb_money) AS emp_money, SUM(mb_point) AS emp_point FROM '.$this->table;
+        $strSQL = 'SELECT SUM(mb_money+mb_live_money+mb_slot_money+mb_fslot_money) AS emp_money, SUM(mb_point) AS emp_point FROM '.$this->table;
         $strSQL .= ' WHERE mb_level < '.LEVEL_ADMIN;
 
         $objResult = $this->db->query($strSQL)->getRow();
@@ -1022,24 +1022,29 @@ class Member_Model extends Model
         $strTbColum.= ", block_ip, block_state ";
 
         $tbBlock = "block_list";
-        $strQuery = "SELECT ".$strTbColum." FROM ".$this->table;
-        $strQuery .= ' LEFT JOIN '.$tbBlock.' ON '.$this->table.'.mb_ip_last = '.$tbBlock.'.block_ip ';
-        $strQuery.= " WHERE mb_level < '".LEVEL_ADMIN."'";
 
+        $where = "";
         if ($iEmpFid != 0){
-            $strQuery .= " AND mb_emp_fid = '".$iEmpFid."'";
+            $where .= " AND mb_emp_fid = '".$iEmpFid."'";
         }
         if (strlen($arrReqData['mb_uid']) > 0) {
-            $strQuery .= " AND mb_uid LIKE '%".$arrReqData['mb_uid']."%'";
+            $where .= " AND mb_uid LIKE '%".$arrReqData['mb_uid']."%'";
         }
         if ($arrReqData['mb_grade'] != 0){
-            $strQuery .= " AND mb_grade = '".$arrReqData['mb_grade']."'";
+            $where .= " AND mb_grade = '".$arrReqData['mb_grade']."'";
         }
         if ($arrReqData['mb_state'] >= 0){
-            $strQuery .= " AND mb_state_active = '".$arrReqData['mb_state']."' ";
+            $where .= " AND mb_state_active = '".$arrReqData['mb_state']."' ";
         }
+
+
+        $strQuery = "SELECT ".$strTbColum." FROM ".$this->table;
+        $strQuery.= ' LEFT JOIN '.$tbBlock.' ON '.$this->table.'.mb_ip_last = '.$tbBlock.'.block_ip ';
+        $strQuery.= " WHERE mb_level < '".LEVEL_ADMIN."' ";
+        $strQuery.= $where;
+
         $strQuery .= " ORDER BY (CASE WHEN mb_state_active = 2 THEN 0 ELSE 1 END) ";
-        $strQuery .= " , mb_level DESC";
+        $strQuery .= " , mb_level DESC, mb_time_join DESC ";
         
         $nStartRow = ($arrReqData['page'] - 1) * $arrReqData['count'];
         $strQuery .= ' LIMIT '.$nStartRow.', '.$arrReqData['count'];
@@ -1076,7 +1081,7 @@ class Member_Model extends Model
             }
 
             $strSQL .= " ORDER BY (CASE WHEN mb_state_active = 2 THEN 0 ELSE 1 END) ";
-            $strSQL .= " , mb_level DESC";
+            $strSQL .= " , mb_level DESC, mb_uid ASC ";
 
             $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
             $strSQL .= ' LIMIT '.$nStartRow.', '.$arrReqData['count'];

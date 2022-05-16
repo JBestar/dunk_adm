@@ -332,7 +332,6 @@ class PbApi extends BaseController {
 							$objBetUser = $memberModel->getInfo($objBet->bet_mb_uid);
 							if($objBet->bet_win_money > 0){		//적중
 					      		$dtMoney = $objBet->bet_win_money;
-					            //$objBetUser->mb_money_earn += ($objBet->bet_win_money - $objBet->bet_money) ;
 					            $bResult = $memberModel->moneyProc($objBetUser, $dtMoney, 0, 0, 0);
 					            if($bResult){
 					            	$moneyhistoryModel->registerAccountBet($objBetUser, $objBet, $dtMoney, MONEYCHANGE_WIN_PB);
