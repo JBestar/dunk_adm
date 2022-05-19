@@ -9,7 +9,7 @@ function showConfPowerball(objConfig, objAgent) {
         $("#confpb-bet-check-id").prop('checked', true);
     else $("#confpb-bet-check-id").prop('checked', false);
 
-    $("#confpb-minmoney-input-id").val(objConfig.game_min_bet_money);
+    // $("#confpb-minmoney-input-id").val(objConfig.game_min_bet_money);
 
     if (objAgent != null) {
         $("#confpb-agent-code-id").val(objAgent.code);
@@ -53,7 +53,7 @@ function readConfigToObject() {
     var jsonData = new Object();
     jsonData.game_index = $(".confsite-game-panel").attr('id');;
     jsonData.game_bet_permit = $("#confpb-bet-check-id").prop('checked') ? 1 : 0;
-    jsonData.game_min_bet_money = $("#confpb-minmoney-input-id").val();
+    // jsonData.game_min_bet_money = $("#confpb-minmoney-input-id").val();
 
     return jsonData;
 
@@ -104,4 +104,18 @@ function addBtnEvent() {
         requestConfPowerball();
     });
 
+    $('#confsite-agent-btn-id').on('click', function() {
+        
+        let gameId = $(".confsite-game-panel").attr('id');
+        var openWindow = window.open("about:blank");
+        if(gameId == 4){
+            openWindow.location.href = "https://www.hpplaycasion.com/";
+        } else if(gameId == 7){
+            openWindow.location.href = "http://system-theplus.com/login";
+        } else if(gameId == 8){
+            openWindow.location.href = "http://agent.gsplay-777.com/agent";
+        }
+        
+    });
+    
 }

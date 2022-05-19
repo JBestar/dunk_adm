@@ -128,6 +128,7 @@ defined('CONF_CHARGEMACRO')    || define('CONF_CHARGEMACRO', 9);
 defined('CONF_MAINTAIN')       || define('CONF_MAINTAIN', 10);
 defined('CONF_BETSITE')        || define('CONF_BETSITE', 11);
 defined('CONF_NOTICE_URGENT')  || define('CONF_NOTICE_URGENT', 12);
+defined('CONF_GAMEPER_FULL')   || define('CONF_GAMEPER_FULL', 13);
 defined('CONF_MULTI_LOGIN')    || define('CONF_MULTI_LOGIN', 14);
 defined('CONF_SOUND_1')        || define('CONF_SOUND_1', 15);
 defined('CONF_SOUND_2')        || define('CONF_SOUND_2', 16);

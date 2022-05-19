@@ -123,7 +123,7 @@ class Api extends BaseController{
 			if($gameId == GAME_CASINO_EVOL){
 				$libApicas = new ApiCas_Lib();
 				$balance = $libApicas->getAgentInfo();
-				if($balance > 0){
+				if($balance >= 0){
 					$confsiteModel->setConfActive(CONF_CASINO_EVOL, $balance);
 				}
 				writeLog("<CASINO> Agent Egg = ".$balance);
@@ -131,7 +131,7 @@ class Api extends BaseController{
 			} else if($gameId == GAME_SLOT_1){
 				$libApislot = new ApiSlot_Lib();
 				$balance = $libApislot->getAgentInfo();
-				if($balance > 0){
+				if($balance >= 0){
 					$confsiteModel->setConfActive(CONF_SLOT_1, $balance);
 				}
 				writeLog("<SLOT> Agent Egg = ".$balance);
@@ -140,7 +140,7 @@ class Api extends BaseController{
 			} else if($gameId == GAME_SLOT_2){
 				$libApifslot = new ApiFslot_Lib();
 				$balance = $libApifslot->getAgentInfo();
-				if($balance > 0){
+				if($balance >= 0){
 					$confsiteModel->setConfActive(CONF_SLOT_2, $balance);
 				}
 				writeLog("<FSLOT> AGENT Egg = ".$balance);
@@ -1399,6 +1399,89 @@ public function withdrawlist(){
 		echo json_encode($objResult);
 	}
 
+	
+	public function xslotlist(){
+		$jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+
+		$objResult = new \StdClass;
+		if(is_login()) {
+			//model
+			$slprdModel = new SlotPrd_Model();
+			$memberModel  = new Member_Model();
+			
+			$strUid = $this->session->user_id;
+			$objAdmin = $memberModel->getInfo($strUid);
+			if($objAdmin->mb_level < LEVEL_ADMIN){
+				$objResult->status = "fail";
+			} else {
+				$objResult->status = "success";
+				$objResult->data = $slprdModel->search($arrReqData);
+			}
+		
+		}
+		else{
+			$objResult->status = "logout";
+
+		}
+		echo json_encode($objResult);
+
+	}
+
+	public function xslotcnt(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+
+		$objResult = new \StdClass;
+		if(is_login()) {
+			//model
+			$slprdModel = new SlotPrd_Model();
+			$memberModel  = new Member_Model();
+			
+			$strUid = $this->session->user_id;
+			$objAdmin = $memberModel->getInfo($strUid);
+			if($objAdmin->mb_level < LEVEL_ADMIN){
+				$objResult->status = "fail";
+			} else {
+				$objResult->status = "success";
+				$objResult->data = $slprdModel->searchCount($arrReqData);
+			}
+		
+		}
+		else{
+			$objResult->status = "logout";
+
+		}
+		echo json_encode($objResult);
+	}
+
+	public function xslotset(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+
+		$objResult = new \StdClass;
+		if(is_login()) {
+			//model
+			$slprdModel = new SlotPrd_Model();
+			$memberModel  = new Member_Model();
+			
+			$strUid = $this->session->user_id;
+			$objAdmin = $memberModel->getInfo($strUid);
+			if($objAdmin->mb_level < LEVEL_ADMIN){
+				$objResult->status = "fail";
+			} else {
+				$slprdModel->changeAct($arrReqData);
+
+				$objResult->status = "success";
+			}
+		
+		}
+		else{
+			$objResult->status = "logout";
+
+		}
+		echo json_encode($objResult);
+	}
 	
 	//DB 정리
 	public function cleanDb(){ 

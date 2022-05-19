@@ -13,7 +13,7 @@
 	<a href="<?php echo siteFurl().'home/conf_maintain';?>" class="sub-navbar-a">점검설정</a>
 	<?php if($mb_level > LEVEL_ADMIN) {  ?>
 	<button class="sub-navbar-but" style="display: none;" onclick="cleanDb(1);">디비초기화</button>
-	<button class="sub-navbar-but" onclick="cleanDb(0);">디비정리</button>
+	<button class="sub-navbar-but" style="display: none;" onclick="cleanDb(0);">디비정리</button>
 	<?php } ?>
 </div>
 
@@ -121,12 +121,21 @@
 	</div>
 	<h4><i class="glyphicon glyphicon-hand-right"></i> 회원가입정책</h4>
 	<div class="confsite-site-check-div">
-		<?php if (is_null($arrConfig) || $arrConfig[13]['conf_active'] != 1){ ?>
+		<?php if (is_null($arrConfig) || $arrConfig[CONF_MULTI_LOGIN-1]['conf_active'] != 1){ ?>
 			<input type="checkbox" id="confsite-multilog-check-id">
 		<?php } else {?>
 			<input type="checkbox" id="confsite-multilog-check-id" checked>
 		<?php }?>
 		<label for="confsite-multilog-check-id"> 회원가입시 중복로그인 허용</label>
+	</div>
+	<h4><i class="glyphicon glyphicon-hand-right"></i> 전체 게임설정</h4>
+	<div class="confsite-site-check-div">
+		<?php if (is_null($arrConfig) || $arrConfig[CONF_GAMEPER_FULL-1]['conf_active'] != 1){ ?>
+			<input type="checkbox" id="confsite-gameper-check-id">
+		<?php } else {?>
+			<input type="checkbox" id="confsite-gameper-check-id" checked>
+		<?php }?>
+		<label for="confsite-gameper-check-id"> 게임별 누르기 현시하지 않기</label>
 	</div>
 	<div class="confsite-button-group">
 		<button class="confsite-cancel-button" id="confsite-cancel-btn-id">취소</button>

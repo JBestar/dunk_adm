@@ -16,12 +16,12 @@
 		<?php endif ?>   
 		<?php if(!$slot_deny) :?>
 			<?php if($_ENV['app.type'] != APPTYPE_2) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="sub-navbar-a ">정품슬롯</a>
+			<a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="sub-navbar-a active">정품슬롯</a>
 			<?php endif ?>
 			<?php if($_ENV['app.type'] == APPTYPE_0 || $_ENV['app.type'] == APPTYPE_1) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a active">네츄럴슬롯</a>
+			<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a">네츄럴슬롯</a>
 			<?php elseif($_ENV['app.type'] == APPTYPE_2) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a active" >네츄럴슬롯</a>
+			<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a" >네츄럴슬롯</a>
 			<?php endif ?>
 		<?php endif ?>   
 	</div>
@@ -29,9 +29,9 @@
 	<div class="confsite-game-panel"  id="<?=$game_id?>">
 	<?php if($_ENV['app.type'] == APPTYPE_1) :?>
 		<!---->
-		<h4 style="font-size:16px; font-weight:bold;"><i class="glyphicon glyphicon-hand-right"></i> 게임별 설정</h4>	
+		<h4 style="font-size:16px; font-weight:bold;"><i class="glyphicon glyphicon-hand-right"></i> 게임업체 설정</h4>	
 		<div>
-			<label>게임명</label>
+			<label>게임업체</label>
 			<input type="text" class="pbresult-text-input" id="confsite-game-input-id" style="width:150px; margin-right:0;">
 			<select name="pbresult-number" class="pbresult-number-select" id="confsite-number-select-id">
 				<option value="10">10개</option>
@@ -46,14 +46,9 @@
 			<thead>
 				<tr>
 					<th>번호</th>
-					<th></th>
-					<th>게임업체</th>
-					<th>게임명(ko)</th>
-					<th>게임명(en)</th>
-					<th>게임코드</th>
+					<th>게임업체(ko)</th>
+					<th>게임업체(en)</th>
 					<th>로출상태</th>
-					<th>운영상태</th>
-					<th>API타입</th>
 				</tr>
 			</thead>
 			<tbody  id="confsite-table-data">
@@ -97,12 +92,8 @@
 		<div class="confsite-game-text-div">
 			<p>에이젼트 페이지:</p>
 			<button class="confsite-cancel-button" id="confsite-agent-btn-id" style="margin-bottom:20px; width:200px;">바로 가기</button>
+
 		</div>
-		<!-- <div class="confsite-game-text-div">
-			<p>입금 금액:</p> 
-			<input type = "text" class="conf-text-input"  style="min-width:200px;" id="confpb-minmoney-input-id"><label> 원 / 회</label>
-		</div> -->
-		
 		<div class = "confsite-button-group" style="margin-top:20px;">
 			<button class="confsite-cancel-button" id="confsite-cancel-btn-id">취소</button>
 			<button class="confsite-ok-button"  id="confsite-ok-btn-id">저장</button>
@@ -116,10 +107,10 @@
 <?php if(array_key_exists("app.produce", $_ENV)) :?>
     <script src="<?php echo site_furl('/assets/js/confcs-script.js?t='.time());?>"></script>
     <script src="<?php echo site_furl('/assets/js/page.js?t='.time());?>"></script>
-    <script src="<?php echo site_furl('/assets/js/confsl-script.js?t='.time());?>"></script>
+    <script src="<?php echo site_furl('/assets/js/confxsl-script.js?t='.time());?>"></script>
 <?php else : ?>
     <script src="<?php echo site_furl('/assets/js/confcs-script.js?v=1');?>"></script>
     <script src="<?php echo site_furl('/assets/js/page.js?v=1');?>"></script>
-    <script src="<?php echo site_furl('/assets/js/confsl-script.js?v=1');?>"></script>
+    <script src="<?php echo site_furl('/assets/js/confxsl-script.js?v=1');?>"></script>
 <?php endif ?>
 <?= $this->endSection() ?>

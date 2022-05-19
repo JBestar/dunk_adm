@@ -51,13 +51,15 @@
   			<p>적중 최대금액:</p>
   			<input type="number" class="conf-text-input" id="confpb-winmoney-input-id"><label> 원</label>
   		</div>
-		<div class="confsite-game-text-div">
-			<p>누르기율:</p> 
-			<input type = "number" class="conf-text-input"  id="confpb-percent-input-id"><label> %</label>
-		</div>
+		<?php if(!$gameper_full) :?>
+			<div class="confsite-game-text-div">
+				<p>누르기율:</p> 
+				<input type = "number" class="conf-text-input"  id="confpb-percent-input-id"><label> %</label>
+			</div>
+		<?php endif?>
+
 		<div class="confsite-game-text-div">
 		<p style="font-size: 16px; font-weight: bold;"><?=$game_name?> 단폴</p>
-
   		</div>
 		<div class="confsite-game-text-div">
 			<p> 좌 :: 우 배당율</p> 

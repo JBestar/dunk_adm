@@ -38,6 +38,7 @@ function readConfigToObject() {
     jsonData.urgentnotice_ok = $("#confsite-urgentnotice-check-id").prop('checked') ? 1 : 0;
     jsonData.bankmacro = $("#confsite-bankmacro-text-id").summernote('code');
     jsonData.multilog_ok = $("#confsite-multilog-check-id").prop('checked') ? 1 : 0;
+    jsonData.gameper_full = $("#confsite-gameper-check-id").prop('checked') ? 1 : 0;
 
     return jsonData;
 

@@ -42,33 +42,41 @@ function readConfigToObject() {
         objMember.mb_game_pb_ratio = $("#useredit-pbbetrate-input-id").val();
         objMember.mb_game_pb2_ratio = $("#useredit-pbbetrate2-input-id").val();
         objMember.mb_game_ps_ratio = $("#useredit-psbetrate-input-id").val();
-        objMember.mb_game_pb_percent = $("#useredit-pbbetpercent-input-id").val();
-        objMember.mb_game_pb2_percent = $("#useredit-pbbetpercent2-input-id").val();
-        objMember.mb_game_ps_percent = $("#useredit-psbetpercent-input-id").val();
     }
     else{
         objMember.mb_game_pb_ratio = 0;
         objMember.mb_game_pb2_ratio = 0;
         objMember.mb_game_ps_ratio = 0;
-        objMember.mb_game_pb_percent = 0;
-        objMember.mb_game_pb2_percent = 0;
-        objMember.mb_game_ps_percent = 0;
     }  
 
+    if($("#useredit-pbbetpercent-input-id").length > 0){
+        objMember.mb_game_pb_percent = $("#useredit-pbbetpercent-input-id").val();
+        objMember.mb_game_pb2_percent = $("#useredit-pbbetpercent2-input-id").val();
+        objMember.mb_game_ps_percent = $("#useredit-psbetpercent-input-id").val();
+    } else{
+        objMember.mb_game_pb_percent = 100;
+        objMember.mb_game_pb2_percent = 100;
+        objMember.mb_game_ps_percent = 100;
+    }
+    
     if($("#useredit-bbbetrate-input-id").length > 0){
         objMember.mb_game_bb_ratio = $("#useredit-bbbetrate-input-id").val();
         objMember.mb_game_bb2_ratio = $("#useredit-bbbetrate2-input-id").val();
         objMember.mb_game_bs_ratio = $("#useredit-bsbetrate-input-id").val();
-        objMember.mb_game_bb_percent = $("#useredit-bbbetpercent-input-id").val();
-        objMember.mb_game_bb2_percent = $("#useredit-bbbetpercent2-input-id").val();
-        objMember.mb_game_bs_percent = $("#useredit-bsbetpercent-input-id").val();
     } else {
         objMember.mb_game_bb_ratio = 0;
         objMember.mb_game_bb2_ratio = 0;
         objMember.mb_game_bs_ratio = 0;
-        objMember.mb_game_bb_percent = 0;
-        objMember.mb_game_bb2_percent = 0;
-        objMember.mb_game_bs_percent = 0;
+    }
+
+    if($("#useredit-bbbetpercent-input-id").length > 0){
+        objMember.mb_game_bb_percent = $("#useredit-bbbetpercent-input-id").val();
+        objMember.mb_game_bb2_percent = $("#useredit-bbbetpercent2-input-id").val();
+        objMember.mb_game_bs_percent = $("#useredit-bsbetpercent-input-id").val();
+    } else {
+        objMember.mb_game_bb_percent = 100;
+        objMember.mb_game_bb2_percent = 100;
+        objMember.mb_game_bs_percent = 100;
     }
 
     if($("#useredit-evbetrate-input-id").length > 0){

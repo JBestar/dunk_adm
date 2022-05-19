@@ -12,16 +12,16 @@
 			<a href="<?php echo siteFurl().'home/conf_bogleladder';?>" class="sub-navbar-a " >보글사다리</a>
    		<?php endif ?>   
 		<?php if(!$cas_deny) :?>
-			<a href="<?php echo siteFurl().'home/conf_evol';?>" class="sub-navbar-a <?=$active_ev?>" >에볼루션</a>
+			<a href="<?php echo siteFurl().'home/conf_evol';?>" class="sub-navbar-a active" >에볼루션</a>
    		<?php endif ?>   
 		<?php if(!$slot_deny) :?>
 			<?php if($_ENV['app.type'] != APPTYPE_2) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="sub-navbar-a <?=$active_sl1?>">정품슬롯</a>
+			<a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="sub-navbar-a">정품슬롯</a>
 			<?php endif ?>
 			<?php if($_ENV['app.type'] == APPTYPE_0 || $_ENV['app.type'] == APPTYPE_1) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a <?=$active_sl2?>">네츄럴슬롯</a>
+			<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a">네츄럴슬롯</a>
 			<?php elseif($_ENV['app.type'] == APPTYPE_2) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a <?=$active_sl2?>" >네츄럴슬롯</a>
+			<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a" >네츄럴슬롯</a>
 			<?php endif ?>
 		<?php endif ?>
 	</div>
@@ -46,8 +46,8 @@
 		</div>
 		
 		<div class="confsite-game-text-div">
-			<p>입금 금액:</p> 
-			<input type = "text" class="conf-text-input"  style="min-width:200px;" id="confpb-minmoney-input-id"><label> 원 / 회</label>
+			<p>에이젼트 페이지:</p>
+			<button class="confsite-cancel-button" id="confsite-agent-btn-id" style="margin-bottom:20px; width:200px;">바로 가기</button>
 		</div>
 		
 		<div class = "confsite-button-group" style="margin-top:50px;">

@@ -89,8 +89,10 @@ function readConfigToObject() {
     jsonData.game_min_bet_money = $("#confpb-minmoney-input-id").val();
     jsonData.game_max_bet_money = $("#confpb-maxmoney-input-id").val();
     jsonData.game_max_win_money = $("#confpb-winmoney-input-id").val();
-    jsonData.game_percent_1 = $("#confpb-percent-input-id").val();
-    jsonData.game_percent_2 = $("#confpb-percent2-input-id").val();
+    if($("#confpb-percent-input-id").length > 0)
+        jsonData.game_percent_1 = $("#confpb-percent-input-id").val();
+    if($("#confpb-percent2-input-id").length > 0)
+        jsonData.game_percent_2 = $("#confpb-percent2-input-id").val();
     jsonData.game_ratio_1 = $("#confpb-ratio1-input-id").val();
     jsonData.game_ratio_2 = $("#confpb-ratio2-input-id").val();
     jsonData.game_ratio_3 = $("#confpb-ratio3-input-id").val();

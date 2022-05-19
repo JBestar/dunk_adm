@@ -67,7 +67,8 @@ class BaseController extends Controller
 
 	protected function getSiteConf($confsiteModel){
 		
-		$confs = ['site_name'=>"", "npg_deny"=>false, "bpg_deny"=>false, "cas_deny"=>false, "slot_deny"=>false, "img_type"=>0];
+		$confs = ['site_name'=>"", "gameper_full"=>false, "npg_deny"=>false, "bpg_deny"=>false, 
+			"cas_deny"=>false, "slot_deny"=>false, "img_type"=>0];
 		$arrConf = $confsiteModel->getSiteConf();  
 		
 		foreach($arrConf as $objConf){
@@ -83,6 +84,8 @@ class BaseController extends Controller
 				case CONF_SLOT_DENY: $confs['slot_deny'] = $objConf['conf_active'] == STATE_ACTIVE?true:false;
 					break;
 				case CONF_IMG_TYPE:	$confs['img_type'] = $objConf['conf_active'];
+					break;
+				case CONF_GAMEPER_FULL:	$confs['gameper_full'] = $objConf['conf_active'] == STATE_ACTIVE?true:false;
 					break;
 				default:break;
 			}

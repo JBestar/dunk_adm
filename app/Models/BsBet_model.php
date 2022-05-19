@@ -74,7 +74,8 @@ class BsBet_model extends Model {
 
             $iMode = $i+1;
             
-            $strSql = " SELECT SUM(bet_money_sum * mb_game_bs_percent DIV 100) AS bet_money_allsum FROM ( ";
+            // $strSql = " SELECT SUM(bet_money_sum * mb_game_bs_percent DIV 100) AS bet_money_allsum FROM ( ";
+            $strSql = " SELECT SUM(bet_money_sum) AS bet_money_allsum FROM ( ";
             $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum, mb_game_bs_percent FROM ".$this->table;
             $strSql .= " JOIN ".$this->mMemberTable." ON ".$this->mMemberTable.".mb_uid = ".$this->table.".bet_mb_uid ";
             $strSql .= " WHERE bet_round_no='".$arrRoundInfo['round_no']."' AND bet_state = '1' ";
@@ -92,7 +93,8 @@ class BsBet_model extends Model {
             $arrSum[0] = (int)$nSum;
 
             
-            $strSql = " SELECT SUM(bet_money_sum * mb_game_bs_percent DIV 100) AS bet_money_allsum FROM ( ";
+            // $strSql = " SELECT SUM(bet_money_sum * mb_game_bs_percent DIV 100) AS bet_money_allsum FROM ( ";
+            $strSql = " SELECT SUM(bet_money_sum) AS bet_money_allsum FROM ( ";
             $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum, mb_game_bs_percent FROM ".$this->table;
             $strSql .= " JOIN ".$this->mMemberTable." ON ".$this->mMemberTable.".mb_uid = ".$this->table.".bet_mb_uid ";
             $strSql .= " WHERE bet_round_no='".$arrRoundInfo['round_no']."' AND bet_state = '1' ";
@@ -115,7 +117,8 @@ class BsBet_model extends Model {
         $arrSum = array();
         for($i = 3; $i <7; $i ++){
             $iMode = $i+1;
-            $strSql = " SELECT SUM(bet_money_sum * mb_game_bs_percent DIV 100) AS bet_money_allsum FROM ( ";
+            // $strSql = " SELECT SUM(bet_money_sum * mb_game_bs_percent DIV 100) AS bet_money_allsum FROM ( ";
+            $strSql = " SELECT SUM(bet_money_sum) AS bet_money_allsum FROM ( ";
             $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum, mb_game_bs_percent FROM ".$this->table;
             $strSql .= " JOIN ".$this->mMemberTable." ON ".$this->mMemberTable.".mb_uid = ".$this->table.".bet_mb_uid ";
             $strSql .= " WHERE bet_round_no='".$arrRoundInfo['round_no']."' AND bet_state = '1' ";
@@ -170,13 +173,13 @@ class BsBet_model extends Model {
         // $objResult = $this -> db -> query($strSql)->getRow();
         
         // //유저별 배팅결과 합
-        $nSum = 0;
+        // $nSum = 0;
         // if(!is_null($objResult->bet_money_allsum)) {
         //     $nSum = $objResult->bet_money_allsum;
         // }
         // //게임별 누르기율 계산
         // $nSum = $nSum * $objConf->game_percent_1 / 100;
-        $arrSum[2] = $nSum;
+        // $arrSum[2] = $nSum;
 
         return $arrSum;
     }

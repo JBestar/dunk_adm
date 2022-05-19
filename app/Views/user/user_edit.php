@@ -123,12 +123,14 @@
 				<input type = "number" step="0.1" id="useredit-pbbetrate-input-id" value="<?=$objMember->mb_game_pb_ratio?>">
 				<?php } ?>
 
-				<label> 누르기율(%)</label>
-				<?php if(is_null($objMember)) {  ?>
-				<input type = "number" step="1" id="useredit-pbbetpercent-input-id" value="100">
-				<?php } else {?>
-				<input type = "number" step="1" id="useredit-pbbetpercent-input-id" value="<?=$objMember->mb_game_pb_percent?>">
-				<?php } ?>
+				<?php if(!$gameper_full) :?>
+					<label> 누르기율(%)</label>
+					<?php if(is_null($objMember)) {  ?>
+					<input type = "number" step="1" id="useredit-pbbetpercent-input-id" value="100">
+					<?php } else {?>
+					<input type = "number" step="1" id="useredit-pbbetpercent-input-id" value="<?=$objMember->mb_game_pb_percent?>">
+					<?php } ?>
+				<?php endif?>
 			</div>
 			<div class="useredit-percent-div">
 				<p>파워볼조합:</p> 
@@ -140,12 +142,14 @@
 				<input type = "number" step="0.1" id="useredit-pbbetrate2-input-id" value="<?=$objMember->mb_game_pb2_ratio?>">
 				<?php } ?>
 
-				<label> 누르기율(%)</label>
-				<?php if(is_null($objMember)) {  ?>
-				<input type = "number" step="1" id="useredit-pbbetpercent2-input-id" value="100">
-				<?php } else {?>
-				<input type = "number" step="1" id="useredit-pbbetpercent2-input-id" value="<?=$objMember->mb_game_pb2_percent?>">
-				<?php } ?>
+				<?php if(!$gameper_full) :?>
+					<label> 누르기율(%)</label>
+					<?php if(is_null($objMember)) {  ?>
+					<input type = "number" step="1" id="useredit-pbbetpercent2-input-id" value="100">
+					<?php } else {?>
+					<input type = "number" step="1" id="useredit-pbbetpercent2-input-id" value="<?=$objMember->mb_game_pb2_percent?>">
+					<?php } ?>
+				<?php endif?>
 			</div>
 			<div class="useredit-percent-div">
 				<p>파워사다리:</p> 
@@ -157,12 +161,14 @@
 				<input type = "number" step="0.1" id="useredit-psbetrate-input-id" value="<?=$objMember->mb_game_ps_ratio?>">
 				<?php } ?>
 
-				<label> 누르기율(%)</label>
-				<?php if(is_null($objMember)) {  ?>
-				<input type = "number" step="1" id="useredit-psbetpercent-input-id" value="100">
-				<?php } else {?>
-				<input type = "number" step="1" id="useredit-psbetpercent-input-id" value="<?=$objMember->mb_game_ps_percent?>">
-				<?php } ?>
+				<?php if(!$gameper_full) :?>
+					<label> 누르기율(%)</label>
+					<?php if(is_null($objMember)) {  ?>
+					<input type = "number" step="1" id="useredit-psbetpercent-input-id" value="100">
+					<?php } else {?>
+					<input type = "number" step="1" id="useredit-psbetpercent-input-id" value="<?=$objMember->mb_game_ps_percent?>">
+					<?php } ?>
+				<?php endif?>
 			</div>
 		<?php endif ?>   
 
@@ -176,12 +182,14 @@
 				<input type = "number" min="0" step="0.1" id="useredit-bbbetrate-input-id" value="<?=$objMember->mb_game_bb_ratio?>">
 				<?php } ?>
 
-				<label> 누르기율(%)</label>
-				<?php if(is_null($objMember)) {  ?>
-				<input type = "number" min="0" step="1" id="useredit-bbbetpercent-input-id" value="100">
-				<?php } else {?>
-				<input type = "number" min="0" step="1" id="useredit-bbbetpercent-input-id" value="<?=$objMember->mb_game_bb_percent?>">
-				<?php } ?>
+				<?php if(!$gameper_full) :?>
+					<label> 누르기율(%)</label>
+					<?php if(is_null($objMember)) {  ?>
+					<input type = "number" min="0" step="1" id="useredit-bbbetpercent-input-id" value="100">
+					<?php } else {?>
+					<input type = "number" min="0" step="1" id="useredit-bbbetpercent-input-id" value="<?=$objMember->mb_game_bb_percent?>">
+					<?php } ?>
+				<?php endif?>
 			</div>
 			<div class="useredit-percent-div">
 				<p>보글볼조합:</p> 
@@ -193,12 +201,14 @@
 				<input type = "number" min="0" step="0.1" id="useredit-bbbetrate2-input-id" value="<?=$objMember->mb_game_bb2_ratio?>">
 				<?php } ?>
 
-				<label> 누르기율(%)</label>
-				<?php if(is_null($objMember)) {  ?>
-				<input type = "number" min="0" step="1" id="useredit-bbbetpercent2-input-id" value="100">
-				<?php } else {?>
-				<input type = "number" min="0" step="1" id="useredit-bbbetpercent2-input-id" value="<?=$objMember->mb_game_bb2_percent?>">
-				<?php } ?>
+				<?php if(!$gameper_full) :?>
+					<label> 누르기율(%)</label>
+					<?php if(is_null($objMember)) {  ?>
+					<input type = "number" min="0" step="1" id="useredit-bbbetpercent2-input-id" value="100">
+					<?php } else {?>
+					<input type = "number" min="0" step="1" id="useredit-bbbetpercent2-input-id" value="<?=$objMember->mb_game_bb2_percent?>">
+					<?php } ?>
+				<?php endif?>
 			</div>
 			<div class="useredit-percent-div">
 				<p>보글사다리:</p> 
@@ -209,12 +219,14 @@
 				<input type = "number" min="0" step="0.1" id="useredit-bsbetrate-input-id" value="<?=$objMember->mb_game_bs_ratio?>">
 				<?php } ?>
 
-				<label> 누르기율(%)</label>
-				<?php if(is_null($objMember)) {  ?>
-				<input type = "number" min="0" step="1" id="useredit-bsbetpercent-input-id" value="100">
-				<?php } else {?>
-				<input type = "number" min="0" step="1" id="useredit-bsbetpercent-input-id" value="<?=$objMember->mb_game_bs_percent?>">
-				<?php } ?>
+				<?php if(!$gameper_full) :?>
+					<label> 누르기율(%)</label>
+					<?php if(is_null($objMember)) {  ?>
+					<input type = "number" min="0" step="1" id="useredit-bsbetpercent-input-id" value="100">
+					<?php } else {?>
+					<input type = "number" min="0" step="1" id="useredit-bsbetpercent-input-id" value="<?=$objMember->mb_game_bs_percent?>">
+					<?php } ?>
+				<?php endif?>
 			</div>	
 		<?php endif ?>   
 		<?php if(!$cas_deny) :?>

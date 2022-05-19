@@ -154,6 +154,8 @@ function ShowBetRealtime(jRealBet) {
                 iTemp = jRealBet.betsums[2][1];
                 break;
             default:
+                iTemp = jRealBet.betsums[i - 3][0];
+                            
                 break;
         }
         if (iTemp > 0)
@@ -205,7 +207,7 @@ function requestBetRealtime() {
         dataType: "json",
         success: function(jResult) {
             $(".loading").hide();
-            //console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 //console.log(jResult.data);
                 setNavBarElement();
