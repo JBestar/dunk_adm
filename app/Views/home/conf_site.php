@@ -128,15 +128,7 @@
 		<?php }?>
 		<label for="confsite-multilog-check-id"> 회원가입시 중복로그인 허용</label>
 	</div>
-	<h4><i class="glyphicon glyphicon-hand-right"></i> 전체 게임설정</h4>
-	<div class="confsite-site-check-div">
-		<?php if (is_null($arrConfig) || $arrConfig[CONF_GAMEPER_FULL-1]['conf_active'] != 1){ ?>
-			<input type="checkbox" id="confsite-gameper-check-id">
-		<?php } else {?>
-			<input type="checkbox" id="confsite-gameper-check-id" checked>
-		<?php }?>
-		<label for="confsite-gameper-check-id"> 게임별 누르기 현시하지 않기</label>
-	</div>
+	
 	<div class="confsite-button-group">
 		<button class="confsite-cancel-button" id="confsite-cancel-btn-id">취소</button>
 		<button class="confsite-ok-button" id="confsite-ok-btn-id">저장</button>
