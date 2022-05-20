@@ -379,13 +379,14 @@ class Member_Model extends Model
     // 직원별 보유금
     public function calcEmpMoney($objEmp)
     {
-        $arrTotalMoney = [0, 0, 0, 0];
+        $arrTotalMoney = [0, 0, 0, 0, 0];
         if ($objEmp->mb_level >= LEVEL_EMPLOYEE) {
             $arrResult = $this->calcMemberMoney($objEmp->mb_fid, true);
             $arrTotalMoney[0] = $arrResult[0] + $objEmp->mb_money;
             $arrTotalMoney[1] = $arrResult[1] + $objEmp->mb_live_money;
             $arrTotalMoney[2] = $arrResult[2] + $objEmp->mb_slot_money;
             $arrTotalMoney[3] = $arrResult[3] + $objEmp->mb_fslot_money;
+            $arrTotalMoney[4] = $arrResult[4] + $objEmp->mb_kgon_money;
         }
 
         return $arrTotalMoney;

@@ -90,7 +90,7 @@ class BaseController extends Controller
 					break;
 				case CONF_GAMEPER_FULL:	$confs['gameper_full'] = $objConf['conf_active'] == STATE_ACTIVE?true:false;
 					break;
-				case CONF_KGON_ENABLE:	$confs['kgon_enable'] = $objConf->conf_active == STATE_ACTIVE?true:false;
+				case CONF_KGON_ENABLE:	$confs['kgon_enable'] = $objConf['conf_active'] == STATE_ACTIVE?true:false;
 					break;
 				default:break;
 			}

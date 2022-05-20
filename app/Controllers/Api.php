@@ -16,6 +16,7 @@ use App\Models\SlotPrd_Model;
 use App\Models\SessLog_Model;
 use App\Models\Block_Model;
 use App\Models\Reward_Model;
+use App\Models\CasPrd_Model;
 
 use App\Libraries\ApiCas_Lib;
 use App\Libraries\ApiSlot_Lib;
@@ -146,11 +147,11 @@ class Api extends BaseController{
 			} else if($gameId == GAME_CASINO_KGON){
 				$balance = $this->libApikgon->getAgentInfo();
 				if($balance >= 0){
-					$confsiteModel->setConfActive(GAME_CASINO_KGON, $balance);
+					$confsiteModel->setConfActive(CONF_CASINO_KGON, $balance);
 				}
-				writeLog("<FSLOT> AGENT Egg = ".$balance);
+				writeLog("<KGON> AGENT Egg = ".$balance);
 
-				$agConf = $confsiteModel->getConf(GAME_CASINO_KGON);
+				$agConf = $confsiteModel->getConf(CONF_CASINO_KGON);
 			}
 			
 			$agInfo = null;
@@ -980,8 +981,8 @@ public function withdrawlist(){
 		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  		//충환손익
 		            $arrEmpMoney = $memberModel->calcEmpMoney($objEmp);
 		            $arrUserMoney = $memberModel->calcUserMoney($objEmp->mb_fid);
-	            	$objCalc['mb_emp_money'] =  $arrEmpMoney[0]+$arrEmpMoney[2]+$arrEmpMoney[3];                        					//관리자보유금;
-	            	$objCalc['mb_user_money'] =$arrUserMoney[0]+$arrEmpMoney[2]+$arrEmpMoney[3];											//유저보유금;
+	            	$objCalc['mb_emp_money'] =  $arrEmpMoney[0]+$arrEmpMoney[1]+$arrEmpMoney[2]+$arrEmpMoney[3]+$arrEmpMoney[4];                        					//관리자보유금;
+	            	$objCalc['mb_user_money'] =$arrUserMoney[0]+$arrUserMoney[1]+$arrUserMoney[2]+$arrUserMoney[3]+$arrUserMoney[4];											//유저보유금;
 		            $arrBetData = $memberModel->calcBetMoneys($objEmp, $arrReqData, $siteConfs);
 			        $objCalc['mb_bet_money'] = $arrBetData['bet_money'] ;          							//베팅머니
 					$objCalc['mb_bet_win_money'] = $arrBetData['bet_win_money'] ;      						//적중머니
@@ -1067,8 +1068,8 @@ public function withdrawlist(){
 		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  //충환손익
 		            $arrEmpMoney = $memberModel->calcEmpMoney($objEmp);
 		            $arrUserMoney = $memberModel->calcUserMoney($objEmp->mb_fid);
-					$objCalc['mb_emp_money'] = $arrEmpMoney[0]+$arrEmpMoney[2]+$arrEmpMoney[3];                        					//관리자보유금;
-	            	$objCalc['mb_user_money'] = $arrUserMoney[0]+$arrEmpMoney[2]+$arrEmpMoney[3];
+					$objCalc['mb_emp_money'] = $arrEmpMoney[0]+$arrEmpMoney[1]+$arrEmpMoney[2]+$arrEmpMoney[3]+$arrEmpMoney[4];                        					//관리자보유금;
+	            	$objCalc['mb_user_money'] = $arrUserMoney[0]+$arrUserMoney[1]+$arrUserMoney[2]+$arrUserMoney[3]+$arrUserMoney[4];
 					// switch($arrReqData['type']){
 					// 	case GAME_CASINO_EVOL:
 					// 		$objCalc['mb_emp_money'] =  $arrEmpMoney[1];                        //관리자보유금;
@@ -1488,14 +1489,14 @@ public function withdrawlist(){
 		echo json_encode($objResult);
 	}
 	
-	public function kcaslist(){
+	public function kgonlist(){
 		$jsonData = $_REQUEST['json_'];
 		$arrReqData = json_decode($jsonData, true);
 
 		$objResult = new \StdClass;
 		if(is_login()) {
 			//model
-			$slprdModel = new SlotPrd_Model();
+			$casprdModel = new CasPrd_Model();
 			$memberModel  = new Member_Model();
 			
 			$strUid = $this->session->user_id;
@@ -1504,7 +1505,7 @@ public function withdrawlist(){
 				$objResult->status = "fail";
 			} else {
 				$objResult->status = "success";
-				$objResult->data = $slprdModel->search($arrReqData);
+				$objResult->data = $casprdModel->search($arrReqData);
 			}
 		
 		}
@@ -1516,14 +1517,14 @@ public function withdrawlist(){
 
 	}
 
-	public function kcascnt(){ 
+	public function kgoncnt(){ 
 		$jsonData = $_REQUEST['json_'];
 		$arrReqData = json_decode($jsonData, true);
 
 		$objResult = new \StdClass;
 		if(is_login()) {
 			//model
-			$slprdModel = new SlotPrd_Model();
+			$casprdModel = new CasPrd_Model();
 			$memberModel  = new Member_Model();
 			
 			$strUid = $this->session->user_id;
@@ -1532,7 +1533,7 @@ public function withdrawlist(){
 				$objResult->status = "fail";
 			} else {
 				$objResult->status = "success";
-				$objResult->data = $slprdModel->searchCount($arrReqData);
+				$objResult->data = $casprdModel->searchCount($arrReqData);
 			}
 		
 		}
@@ -1543,14 +1544,14 @@ public function withdrawlist(){
 		echo json_encode($objResult);
 	}
 
-	public function kcasset(){ 
+	public function kgonset(){ 
 		$jsonData = $_REQUEST['json_'];
 		$arrReqData = json_decode($jsonData, true);
 
 		$objResult = new \StdClass;
 		if(is_login()) {
 			//model
-			$slprdModel = new SlotPrd_Model();
+			$casprdModel = new CasPrd_Model();
 			$memberModel  = new Member_Model();
 			
 			$strUid = $this->session->user_id;
@@ -1558,7 +1559,7 @@ public function withdrawlist(){
 			if($objAdmin->mb_level < LEVEL_ADMIN){
 				$objResult->status = "fail";
 			} else {
-				$slprdModel->changeAct($arrReqData);
+				$casprdModel->changeAct($arrReqData);
 
 				$objResult->status = "success";
 			}

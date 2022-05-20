@@ -30,15 +30,24 @@ function showGame(list) {
             html += "<tr><td>";
             html += (parseInt(nRow) + firstIdx + 1);
             html += "</td><td>";
-            html += game.name_kr;
+            html += game.vendor_id;
+            html += "</td><td>";
+            html += game.key;
             html += "</td><td>";
             html += game.name;
             html += "</td><td>";
-            html += "<select class='' onchange='onChangeHidden(this)' data-name='" + game.name + "' ";
+            html += "<select class='' onchange='onChangeHidden(this)' data-fid='" + game.fid + "' ";
             if (game.hidden == 0) {
                 html += " style='color:black'> <option selected='' value='0'>보이기</option><option value='1'>감추기</option></select>";
             } else {
                 html += " style='color:red'> <option value='0'>보이기</option><option selected='' value='1'>감추기</option></select>";
+            }
+            html += "</td><td>";
+            html += "<select class='' onchange='onChangeMaintain(this)' data-fid='" + game.fid + "' ";
+            if (game.maintain == 0) {
+                html += " style='color:black'> <option selected='' value='0'>운영</option><option value='1'>점검</option></select>";
+            } else {
+                html += " style='color:red'> <option value='0'>운영</option><option selected='' value='1'>점검</option></select>";
             }
             html += "</td><tr>";
             nRow++;
@@ -61,24 +70,27 @@ function onChangeHidden(objSelect) {
 
     var jsonData = {
         "hidden": iType == 1 ? 1 : 0,
-        "name": $(objSelect).data("name"),
+        "fid": $(objSelect).data("fid"),
     };
-    // console.log(jsonData);
-    jsonData = JSON.stringify(jsonData);
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: FURL + "/api/kcasset",
-        data: { json_: jsonData },
-        success: function(jResult) {
-            // console.log(jResult);
-            if (jResult.status == "success") {}
-        },
-        error: function(request, status, error) {
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-        }
-    });
 
+    requestGameSet(jsonData);
+
+}
+
+
+function onChangeMaintain(objSelect) {
+
+    let iType = $(objSelect).val();
+    if (iType == 1)
+        $(objSelect).css("color", "red");
+    else
+        $(objSelect).css("color", "black");
+
+    var jsonData = {
+        "maintain": iType == 1 ? 1 : 0,
+        "fid": $(objSelect).data("fid"),
+    };
+    requestGameSet(jsonData);
 }
 
 function requestGame() {
@@ -98,7 +110,7 @@ function requestGame() {
     $.ajax({
         type: "POST",
         dataType: "json",
-        url: FURL + "/api/kcaslist",
+        url: FURL + "/api/kgonlist",
         data: { json_: jsonData },
         success: function(jResult) {
             // console.log(jResult);
@@ -133,7 +145,7 @@ function requestTotalPage() {
     jsonData = JSON.stringify(jsonData);
 
     $.ajax({
-        url: FURL + '/api/kcascnt',
+        url: FURL + '/api/kgoncnt',
         data: { json_: jsonData },
         dataType: 'json',
         type: 'post',
@@ -149,5 +161,23 @@ function requestTotalPage() {
             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
+    });
+}
+
+
+function requestGameSet(data){
+    let jsonData = JSON.stringify(data);
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: FURL + "/api/kgonset",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+            if (jResult.status == "success") {}
+        },
+        error: function(request, status, error) {
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
     });
 }

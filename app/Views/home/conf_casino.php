@@ -50,9 +50,11 @@
 			<thead>
 				<tr>
 					<th>번호</th>
+					<th>업체 아이디</th>
 					<th>게임업체(ko)</th>
 					<th>게임업체(en)</th>
 					<th>로출상태</th>
+					<th>운영상태</th>
 				</tr>
 			</thead>
 			<tbody  id="confsite-table-data">
@@ -111,10 +113,10 @@
 <?php if(array_key_exists("app.produce", $_ENV)) :?>
     <script src="<?php echo site_furl('/assets/js/confcs-script.js?t='.time());?>"></script>
     <script src="<?php echo site_furl('/assets/js/page.js?t='.time());?>"></script>
-    <script src="<?php echo site_furl('/assets/js/confkgon-script.js?t='.time());?>"></script>
+    <script src="<?php echo site_furl('/assets/js/confkg-script.js?t='.time());?>"></script>
 <?php else : ?>
     <script src="<?php echo site_furl('/assets/js/confcs-script.js?v=1');?>"></script>
     <script src="<?php echo site_furl('/assets/js/page.js?v=1');?>"></script>
-    <script src="<?php echo site_furl('/assets/js/confkgon-script.js?v=1');?>"></script>
+    <script src="<?php echo site_furl('/assets/js/confkg-script.js?v=1');?>"></script>
 <?php endif ?>
 <?= $this->endSection() ?>

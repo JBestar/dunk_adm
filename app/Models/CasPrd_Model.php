@@ -31,4 +31,52 @@ class CasPrd_Model extends Model {
                     ->first();
     }
     
+    public function changeAct($arrReqData)
+    {
+        $data = [];
+
+        if(array_key_exists('hidden', $arrReqData)){
+            $data['hidden'] =  $arrReqData['hidden'];
+            return $this->update($arrReqData['fid'], $data);
+
+        } else if(array_key_exists('maintain', $arrReqData)){
+            $data['maintain'] =  $arrReqData['maintain'];
+            return $this->update($arrReqData['fid'], $data);
+
+        } else return false;
+    
+    }
+
+    public function search($arrReqData){
+        
+        $strSql = " SELECT * FROM ".$this->table;
+        $strSql.= " WHERE is_enable = '1' AND cat = ".GAME_CASINO_KGON;
+        if(strlen($arrReqData['name']) > 0){
+            $strSql.= " AND (key LIKE '%".$arrReqData['name']."%' OR name LIKE '%".$arrReqData['name']."%' ) ";
+        }
+
+        $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
+        $strSql.=" ORDER BY fid ASC LIMIT ".$nStartRow.", ".$arrReqData['count'];
+        
+        $query = $this -> db -> query($strSql);
+        $result = $query -> getResult();
+        
+        return $result; 
+
+    }
+
+    public function searchCount($arrReqData){
+        
+        $strSql = "SELECT count(*) as count FROM ".$this->table;
+        $strSql.= " WHERE is_enable = '1' AND cat = ".GAME_CASINO_KGON;
+        if(strlen($arrReqData['name']) > 0){
+            $strSql.= " AND (key LIKE '%".$arrReqData['name']."%' OR name LIKE '%".$arrReqData['name']."%' ) ";
+        }
+
+        $query = $this -> db -> query($strSql);
+        $result = $query -> getRow();
+        
+        return $result; 
+    }
+
 }
