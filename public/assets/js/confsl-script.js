@@ -84,22 +84,7 @@ function onChangeHidden(objSelect) {
         "hidden": iType == 1 ? 1 : 0,
         "name": $(objSelect).data("name"),
     };
-    // console.log(jsonData);
-    jsonData = JSON.stringify(jsonData);
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: FURL + "/api/fslotset",
-        data: { json_: jsonData },
-        success: function(jResult) {
-            // console.log(jResult);
-            if (jResult.status == "success") {}
-        },
-        error: function(request, status, error) {
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-        }
-    });
-
+    requestGameSet(jsonData);
 }
 
 function onChangeMaintain(objSelect) {
@@ -114,21 +99,7 @@ function onChangeMaintain(objSelect) {
         "maintain": iType == 1 ? 1 : 0,
         "name": $(objSelect).data("name"),
     };
-    // console.log(jsonData);
-    jsonData = JSON.stringify(jsonData);
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: FURL + "/api/fslotset",
-        data: { json_: jsonData },
-        success: function(jResult) {
-            // console.log(jResult);
-            if (jResult.status == "success") {}
-        },
-        error: function(request, status, error) {
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-        }
-    });
+    requestGameSet(jsonData);
 }
 
 function onChangeAct(objSelect) {
@@ -144,24 +115,8 @@ function onChangeAct(objSelect) {
         "act": iType == 1 ? 0 : 1,
         "fid": $(objSelect).data("fid"),
     };
-
-    jsonData = JSON.stringify(jsonData);
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: FURL + "/api/fslotset",
-        data: { json_: jsonData },
-        success: function(jResult) {
-            // console.log(jResult);
-            if (jResult.status == "success") {}
-        },
-        error: function(request, status, error) {
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-        }
-
-    });
-
-
+    requestGameSet(jsonData);
+    
 }
 
 function requestGame() {
@@ -232,5 +187,26 @@ function requestTotalPage() {
             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
+    });
+
+
+}
+
+
+
+function requestGameSet(data){
+    let jsonData = JSON.stringify(data);
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: FURL + "/api/fslotset",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+            if (jResult.status == "success") {}
+        },
+        error: function(request, status, error) {
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
     });
 }

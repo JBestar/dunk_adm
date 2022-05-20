@@ -63,22 +63,8 @@ function onChangeHidden(objSelect) {
         "hidden": iType == 1 ? 1 : 0,
         "name": $(objSelect).data("name"),
     };
-    // console.log(jsonData);
-    jsonData = JSON.stringify(jsonData);
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: FURL + "/api/xslotset",
-        data: { json_: jsonData },
-        success: function(jResult) {
-            // console.log(jResult);
-            if (jResult.status == "success") {}
-        },
-        error: function(request, status, error) {
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-        }
-    });
 
+    requestGameSet(jsonData);
 }
 
 function requestGame() {
@@ -151,3 +137,22 @@ function requestTotalPage() {
 
     });
 }
+
+
+function requestGameSet(data){
+    let jsonData = JSON.stringify(data);
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: FURL + "/api/xslotset",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+            if (jResult.status == "success") {}
+        },
+        error: function(request, status, error) {
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+    });
+}
+
