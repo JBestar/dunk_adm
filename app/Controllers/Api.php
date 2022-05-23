@@ -1,6 +1,5 @@
 <?php namespace App\Controllers;
 
-use App\Models\Member_Model;
 use App\Models\Notice_Model;
 use App\Models\Charge_Model;
 use App\Models\Clean_model;
@@ -16,6 +15,7 @@ use App\Models\SlotPrd_Model;
 use App\Models\SessLog_Model;
 use App\Models\Block_Model;
 use App\Models\Reward_Model;
+use App\Models\SessTry_Model;
 
 use App\Libraries\ApiCas_Lib;
 use App\Libraries\ApiSlot_Lib;
@@ -37,34 +37,62 @@ class Api extends BaseController{
 	public function login(){ 
 		$jsonData = $_REQUEST['json_'];
 		$arrLoginData = json_decode($jsonData, true);
-		$this->modelSess->deleteLast();
-		//model
-        $modelMember = new Member_Model();
-        $member = $modelMember->where('mb_uid', $arrLoginData['username'])->first();
-        $iResult = 0;
 		$ip = $this->request->getIPAddress();
-		$modelConfsite = new ConfSite_Model();
-
+		//model
 		$modelBlock = new Block_Model();
-		if(is_null($member)){
+		$modelConfsite = new ConfSite_Model();
+		$modelSessTry = new SessTry_Model();
+
+        $iResult = 0;
+
+		$user_id = "";
+		$user_pw = ""; 
+		if(array_key_exists('username', $arrLoginData) && array_key_exists('password', $arrLoginData)){
+			$user_id = trim($arrLoginData['username']);
+			$user_pw = trim($arrLoginData['password']);
+		} 
+
+		$sessTry = $modelSessTry->getByIp($ip);
+		$iTry = 5;
+		if(!is_null($sessTry)){
+			$iTry = time() - strtotime($sessTry->log_time);
+		}
+
+		$member = null;
+		if(strlen($user_id) > 0 && strlen($user_pw) > 0){
+			$member = $this->modelMember->login($user_id, $user_pw);
+		}
+
+		if($iTry < 3){
 			$iResult = 0;
+		}
+		else if(is_null($member)){
+			$iResult = 0;
+			$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_FAIL);
 		} else if($member['mb_level'] < LEVEL_ADMIN && !is_null($modelBlock->getByIp($ip, true))){
 			$iResult = 2;
+			$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_IPBLOCK);
 		} else if($member['mb_level'] == LEVEL_ADMIN && $member['mb_state_view'] == STATE_ACTIVE &&
 			$member['mb_ip_join'] !== $ip){
 			$iResult = 3;
+			$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_IPDENIED);
 		} else if($member['mb_level'] < LEVEL_ADMIN && $modelConfsite->IsMaintain()){
 			$iResult = 4;
-		}  else if(!$modelMember->isPermitMember((object)$member)){
+			$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_MAINTAIN);
+		}  else if(!$this->modelMember->isPermitMember((object)$member)){
 			$iResult = 3;
+			$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_IDBLOCK);
 		}
-		else if ( $member['mb_pwd'] === $arrLoginData['password'])
+		else
         {
+			$this->modelSess->deleteLast();
+
 			$sessId = $this->session->session_id;
 			$sess = $this->modelSess->getByUid($member['mb_uid']);
 
 			if($member['mb_level'] < LEVEL_ADMIN && !$modelConfsite->IsMultiLogin() && !is_null($sess) && $sess->sess_id != $sessId /*$sess->sess_ip != $ip*/){
 				$iResult = 4;
+				$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_LOGINING);
             } else if ($member['mb_state_active'] == STATE_ACTIVE){
                 $sessData = [
                     'user_id' => $member['mb_uid'], 
@@ -72,14 +100,16 @@ class Api extends BaseController{
                 ];
 				$this->session->set($sessData);
 				$member['mb_ip_last'] = $ip;
-				$modelMember->updateLogin($member);
+				$this->modelMember->updateLogin($member);
                 $iResult = 1;
 				
 				$this->modelSess->add((object)$member, $sessId);
-				if($member['mb_level'] <= LEVEL_ADMIN){
+				// if($member['mb_level'] <= LEVEL_ADMIN){
 					$modelSessLog = new SessLog_Model();
 					$modelSessLog->add($member);
-				}
+				// }
+				$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_SUCCESS);
+
             }
         }   
 		//결과값 
@@ -178,9 +208,9 @@ class Api extends BaseController{
 		if(is_login())
 		{
 			$bPermit = false;
-			$memberModel  = new Member_Model();
+			
 			$strUid = $this->session->user_id;
-			$objUser = $memberModel->getInfo($strUid);
+			$objUser = $this->modelMember->getInfo($strUid);
 			
 			if(!is_null($objUser))
 			{				
@@ -210,9 +240,9 @@ class Api extends BaseController{
 		if(is_login())
 		{
 			$bPermit = false;
-			$memberModel  = new Member_Model();
+			
 			$strUid = $this->session->user_id;
-			$objUser = $memberModel->getInfo($strUid);
+			$objUser = $this->modelMember->getInfo($strUid);
 			
 			if(!is_null($objUser))
 			{				
@@ -244,9 +274,9 @@ class Api extends BaseController{
 		if(is_login())
 		{
 			$bPermit = false;
-			$memberModel  = new Member_Model();
+			
 			$strUid = $this->session->user_id;
-			$objUser = $memberModel->getInfo($strUid);
+			$objUser = $this->modelMember->getInfo($strUid);
 			
 			if(!is_null($objUser))
 			{				
@@ -270,10 +300,10 @@ class Api extends BaseController{
 	public function getBetSite(){
 		if(is_login())
 		{
-			$memberModel  = new Member_Model();
+			
 			$confsiteModel = new ConfSite_Model();
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 
 				$arrResult['data'] = $confsiteModel->getBetSite($objAdmin->mb_level);
@@ -292,10 +322,10 @@ class Api extends BaseController{
 		$arrData = json_decode($jsonData, true);		
 		if(is_login())
 		{
-			$memberModel  = new Member_Model();
+			
 			$confsiteModel = new ConfSite_Model();
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 				
 				$confsiteModel->setBetSite($objAdmin->mb_level, $arrData);
@@ -313,10 +343,10 @@ class Api extends BaseController{
 	public function getsoundconf(){
 		if(is_login())
 		{
-			$memberModel  = new Member_Model();
+			
 			$confsiteModel = new ConfSite_Model();
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 
 				$arrResult['data'] = $confsiteModel->getSoundConf();
@@ -336,10 +366,10 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
-			$memberModel  = new Member_Model();
+			
 			$confsiteModel = new ConfSite_Model();
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 				$confsiteModel->saveSoundConf($arrData);				
 
@@ -361,12 +391,15 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
-			$memberModel  = new Member_Model();
-			$strUid = $this->session->user_id;
-			$iResult = $memberModel->changepassword($strUid, $arrData);
 			
-			if($iResult == 1)
+			$strUid = $this->session->user_id;
+			$query = "";
+			$iResult = $this->modelMember->changepassword($strUid, $arrData, $query);
+			
+			if($iResult == 1){
+				$this->modelModify->add($this->session->user_id, MOD_MB_PWD, $query, $this->request->getIPAddress());
 				$arrResult['status'] = "success";
+			}
 			else if($iResult == 2)
 				$arrResult['status'] = "mistake";
 			else $arrResult['status'] = "fail";
@@ -385,9 +418,9 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
-			$memberModel  = new Member_Model();
+			
 			$strUid = $this->session->user_id;
-			$iResult = $memberModel->changeAlarmState($strUid, $arrData);
+			$iResult = $this->modelMember->changeAlarmState($strUid, $arrData);
 			
 			if($iResult == 1)
 				$arrResult['status'] = "success";
@@ -407,7 +440,7 @@ class Api extends BaseController{
 		$arrReqData = json_decode($jsonData, true);
 		if(is_login())
 		{
-			$memberModel  = new Member_Model();
+			
 			$chargeModel = new Charge_Model();
 			$strUid = $this->session->user_id;
 
@@ -449,15 +482,15 @@ class Api extends BaseController{
 		{
 			$strUid = $this->session->user_id;
 			$chargeModel = new Charge_Model();
-			$memberModel  = new Member_Model();
+			
 			$moneyhistoryModel = new MoneyHistory_Model();
 			$bResult = false;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 
 			if($objAdmin->mb_level >= LEVEL_ADMIN) {
 				$objCharge = $chargeModel->get($arrReqData['charge_fid']);
 				if(!is_null($objCharge)){
-					$objUser = $memberModel->getInfo($objCharge->charge_mb_uid);
+					$objUser = $this->modelMember->getInfo($objCharge->charge_mb_uid);
 					if(!is_null($objUser)){
 						if($arrReqData['process'] == 0){//취소
 							if($objCharge->charge_action_state == 2){//승인된 상태에서만 진행
@@ -466,7 +499,7 @@ class Api extends BaseController{
 								if($objUser->mb_money >= $objCharge->charge_money){
 									$dtMoney = 0-$objCharge->charge_money;
 									$nCharge = 0-$objCharge->charge_money;
-									$bResult = $memberModel->moneyProc($objUser, $dtMoney, 0, $nCharge, 0);
+									$bResult = $this->modelMember->moneyProc($objUser, $dtMoney, 0, $nCharge, 0);
 									if($bResult){
 										//moneyhistory Table
 										$moneyhistoryModel->cancelCharge($objUser, $objCharge->charge_money);
@@ -484,7 +517,7 @@ class Api extends BaseController{
 								
 								$dtMoney = $objCharge->charge_money;
 								$nCharge = $objCharge->charge_money;
-								$bResult = $memberModel->moneyProc($objUser, $dtMoney, 0, $nCharge, 0);
+								$bResult = $this->modelMember->moneyProc($objUser, $dtMoney, 0, $nCharge, 0);
 								if($bResult){
 									//moneyhistory Table
 									$moneyhistoryModel->registerCharge($objUser, $objCharge->charge_money);
@@ -573,16 +606,16 @@ public function withdrawlist(){
 		{
 			$strUid = $this->session->user_id;
 			$exchangeModel = new Exchange_Model();
-			$memberModel  = new Member_Model();
+			
 			$moneyhistoryModel = new MoneyHistory_Model();
 			$bResult = false;
 			
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 
 			if($objAdmin->mb_level >= LEVEL_ADMIN) {
 				$objExchange = $exchangeModel->get($arrReqData['exchange_fid']);
 				if(!is_null($objExchange)){
-					$objUser = $memberModel->getInfo($objExchange->exchange_mb_uid);
+					$objUser = $this->modelMember->getInfo($objExchange->exchange_mb_uid);
 					if(!is_null($objUser)){
 						if($arrReqData['process'] == 0){	//취소
 							if($objExchange->exchange_action_state == 2){	//승인된 상태에서만 진행
@@ -590,7 +623,7 @@ public function withdrawlist(){
 								//member Table
 								$dtMoney = $objExchange->exchange_money;
 								$nExchange = 0-$objExchange->exchange_money;
-								$bResult = $memberModel->moneyProc($objUser, $dtMoney, 0, 0, $nExchange);
+								$bResult = $this->modelMember->moneyProc($objUser, $dtMoney, 0, 0, $nExchange);
 								if($bResult){
 									//moneyhistory Table
 									$moneyhistoryModel->cancelExchange($objUser, $objExchange->exchange_money);
@@ -613,7 +646,7 @@ public function withdrawlist(){
 								if($iResult==1 &&  $objUser->mb_money >= $objExchange->exchange_money){
 									$dtMoney = 0-$objExchange->exchange_money;
 									$nExchange = $objExchange->exchange_money;
-									$bResult = $memberModel->moneyProc($objUser, $dtMoney, 0, 0, $nExchange);
+									$bResult = $this->modelMember->moneyProc($objUser, $dtMoney, 0, 0, $nExchange);
 									if($bResult){
 										//moneyhistory Table
 										$moneyhistoryModel->registerExchange($objUser, $objExchange->exchange_money);
@@ -668,9 +701,9 @@ public function withdrawlist(){
 		{
 			$bPermit = false;
 			$noticeModel = new Notice_Model();
-			$memberModel  = new Member_Model();
+			
 			$strUid = $this->session->user_id;
-			$objUser = $memberModel->getInfo($strUid);
+			$objUser = $this->modelMember->getInfo($strUid);
 			
 			//현재 가입한 유저가 요청한 유저보다 레벨이 높은 경우에 변경이 가능하다.
 			if(!is_null($objUser))
@@ -707,9 +740,9 @@ public function withdrawlist(){
 		{
 			$bPermit = false;
 			$noticeModel = new Notice_Model();
-			$memberModel  = new Member_Model();
+			
 			$strUid = $this->session->user_id;
-			$objUser = $memberModel->getInfo($strUid);
+			$objUser = $this->modelMember->getInfo($strUid);
 			
 			//현재 가입한 유저가 요청한 유저보다 레벨이 높은 경우에 변경이 가능하다.
 			if(!is_null($objUser))
@@ -745,9 +778,9 @@ public function withdrawlist(){
 		{
 			$bPermit = false;
 			$noticeModel = new Notice_Model();
-			$memberModel  = new Member_Model();
+			
 			$strUid = $this->session->user_id;
-			$objUser = $memberModel->getInfo($strUid);
+			$objUser = $this->modelMember->getInfo($strUid);
 			
 			//현재 가입한 유저가 요청한 유저보다 레벨이 높은 경우에 변경이 가능하다.
 			if(!is_null($objUser))
@@ -763,7 +796,7 @@ public function withdrawlist(){
 					if($iInsFid > 0){
 						//date_default_timezone_set('Asia/Seoul');
 
-						$arrMember = $memberModel->getMemberByLevel(LEVEL_ADMIN, true);
+						$arrMember = $this->modelMember->getMemberByLevel(LEVEL_ADMIN, true);
 						//회원들에게 쪽지작성
 						$arrData['notice_type'] = 4;
 						$arrData['notice_emp_fid'] = $iInsFid;
@@ -778,7 +811,7 @@ public function withdrawlist(){
 					}
 				}
 				else {					
-					$objMember = $memberModel->getInfo($arrData['notice_mb_uid']);		
+					$objMember = $this->modelMember->getInfo($arrData['notice_mb_uid']);		
 					if(!is_null($objMember))
 					{
 						$bResult = $noticeModel->addNotice($arrData);
@@ -805,10 +838,10 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$moneyhistoryModel = new MoneyHistory_Model();
-			$memberModel  = new Member_Model();
+			
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			
 			$arrBetResults = $moneyhistoryModel->search($objAdmin, $arrGetData);
 		
@@ -836,10 +869,10 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$moneyhistoryModel = new MoneyHistory_Model();
-			$memberModel  = new Member_Model();
+			
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			
 			$objCount = $moneyhistoryModel->searchCount($objAdmin, $arrGetData);
 			
@@ -864,10 +897,10 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$transferhistoryModel = new Transfer_Model();
-			$memberModel  = new Member_Model();
+			
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			
 			$arrData = $transferhistoryModel->search($objAdmin, $arrGetData);
 		
@@ -896,10 +929,10 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$transferhistoryModel = new Transfer_Model();
-			$memberModel  = new Member_Model();
+			
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			
 			$objCount = $transferhistoryModel->searchCount($objAdmin, $arrGetData);
 			
@@ -924,16 +957,16 @@ public function withdrawlist(){
 		//var_dump($arrBetData);
 		if(is_login()) {
 			//model
-			$memberModel  = new Member_Model();
+			
 			$strUid = $this->session->user_id;
-			$objUser = $memberModel->getInfo($strUid);
+			$objUser = $this->modelMember->getInfo($strUid);
 			$arrResult = array();
 			$arrEmp = array();
 			//회원정보가 없다면
 			$bResult = false;
 			if($arrReqData['mb_fid'] == 0){	
 				if($objUser->mb_level > LEVEL_COMPANY){//관리자이면 부본사정보를 반환
-					$arrEmp = $memberModel->getMemberByLevel(LEVEL_COMPANY);
+					$arrEmp = $this->modelMember->getMemberByLevel(LEVEL_COMPANY);
 					$bResult = true;
 					
 				} else if($objUser->mb_level >= LEVEL_MIN){	// 가입한 성원자정보를 반환
@@ -943,11 +976,11 @@ public function withdrawlist(){
 				}
 
 			} else {						//요청한 등급이하 정보를 반환
-					$objReqEmp = $memberModel->getInfoByFid($arrReqData['mb_fid']);
+					$objReqEmp = $this->modelMember->getInfoByFid($arrReqData['mb_fid']);
 					
 					if(!is_null($objReqEmp)){
 						if($objReqEmp->mb_level <= $objUser->mb_level){
-							$arrEmp = $memberModel->getMemberByEmpFid($objReqEmp->mb_fid, $objReqEmp->mb_level-1);
+							$arrEmp = $this->modelMember->getMemberByEmpFid($objReqEmp->mb_fid, $objReqEmp->mb_level-1);
 							if(is_null($arrEmp))	$bResult = false;
 							else $bResult = true; 
 							
@@ -973,11 +1006,11 @@ public function withdrawlist(){
 		            $objCalc['mb_charge'] = $chargeModel->calcChargeMoney($objEmp, $arrReqData);         	//충전금액합산
 		            $objCalc['mb_exchange'] = $exchangeModel->calcExchangeMoney($objEmp, $arrReqData);     	//환전금액합산
 		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  		//충환손익
-		            $arrEmpMoney = $memberModel->calcEmpMoney($objEmp);
-		            $arrUserMoney = $memberModel->calcUserMoney($objEmp->mb_fid);
+		            $arrEmpMoney = $this->modelMember->calcEmpMoney($objEmp);
+		            $arrUserMoney = $this->modelMember->calcUserMoney($objEmp->mb_fid);
 					$objCalc['mb_emp_money'] =  $arrEmpMoney[0]+$arrEmpMoney[1]+$arrEmpMoney[2]+$arrEmpMoney[3];                        					//관리자보유금;
 	            	$objCalc['mb_user_money'] =$arrUserMoney[0]+$arrUserMoney[1]+$arrUserMoney[2]+$arrUserMoney[3];											//유저보유금;
-		            $arrBetData = $memberModel->calcBetMoneys($objEmp, $arrReqData, $siteConfs);
+		            $arrBetData = $this->modelMember->calcBetMoneys($objEmp, $arrReqData, $siteConfs);
 			        $objCalc['mb_bet_money'] = $arrBetData['bet_money'] ;          							//베팅머니
 					$objCalc['mb_bet_win_money'] = $arrBetData['bet_win_money'] ;      						//적중머니
          			$objCalc['mb_bet_benefit_money'] = $arrBetData['bet_benefit_money'];  					//베팅손익
@@ -1015,16 +1048,16 @@ public function withdrawlist(){
 		// return var_dump($arrReqData);
 		if(is_login()) {
 			//model
-			$memberModel  = new Member_Model();
+			
 			$strUid = $this->session->user_id;
-			$objUser = $memberModel->getInfo($strUid);
+			$objUser = $this->modelMember->getInfo($strUid);
 			$arrResult = array();
 			$arrEmp = array();
 			//회원정보가 없다면
 			$bResult = false;
 			if($arrReqData['mb_fid'] == 0){	
 				if($objUser->mb_level > LEVEL_COMPANY){//관리자이면 부본사정보를 반환
-					$arrEmp = $memberModel->getMemberByLevel(LEVEL_COMPANY);
+					$arrEmp = $this->modelMember->getMemberByLevel(LEVEL_COMPANY);
 					$bResult = true;
 					
 				} else if($objUser->mb_level >= LEVEL_MIN){	// 가입한 성원자정보를 반환
@@ -1034,10 +1067,10 @@ public function withdrawlist(){
 				}
 
 			} else {						//요청한 등급이하 정보를 반환
-					$objReqEmp = $memberModel->getInfoByFid($arrReqData['mb_fid']);
+					$objReqEmp = $this->modelMember->getInfoByFid($arrReqData['mb_fid']);
 					if(!is_null($objReqEmp)){
 						if($objReqEmp->mb_level <= $objUser->mb_level){
-							$arrEmp = $memberModel->getMemberByEmpFid($objReqEmp->mb_fid, $objReqEmp->mb_level-1);
+							$arrEmp = $this->modelMember->getMemberByEmpFid($objReqEmp->mb_fid, $objReqEmp->mb_level-1);
 							if(is_null($arrEmp))	$bResult = false;
 							else $bResult = true; 
 						}
@@ -1060,8 +1093,8 @@ public function withdrawlist(){
 		            $objCalc['mb_charge'] = $chargeModel->calcChargeMoney($objEmp, $arrReqData);         //충전금액합산
 		            $objCalc['mb_exchange'] = $exchangeModel->calcExchangeMoney($objEmp, $arrReqData);     //환전금액합산
 		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  //충환손익
-		            $arrEmpMoney = $memberModel->calcEmpMoney($objEmp);
-		            $arrUserMoney = $memberModel->calcUserMoney($objEmp->mb_fid);
+		            $arrEmpMoney = $this->modelMember->calcEmpMoney($objEmp);
+		            $arrUserMoney = $this->modelMember->calcUserMoney($objEmp->mb_fid);
 					$objCalc['mb_emp_money'] = $arrEmpMoney[0]+$arrEmpMoney[1]+$arrEmpMoney[2]+$arrEmpMoney[3];                        					//관리자보유금;
 	            	$objCalc['mb_user_money'] = $arrUserMoney[0]+$arrUserMoney[1]+$arrUserMoney[2]+$arrUserMoney[3];
 					// switch($arrReqData['type']){
@@ -1082,7 +1115,7 @@ public function withdrawlist(){
 					// 		$objCalc['mb_user_money'] = $arrUserMoney[0];						//유저보유금;
 					// 		break;
 					// }
-		            $arrBetData = $memberModel->calcBetMoneysByGame($objEmp, $arrReqData);
+		            $arrBetData = $this->modelMember->calcBetMoneysByGame($objEmp, $arrReqData);
 					
 		            if(is_null($arrBetData))	break;
 			        $objCalc['mb_bet_money'] = $arrBetData['bet_money'] ;          //베팅머니
@@ -1173,16 +1206,16 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$csbetModel = new CsBet_model();
-			$memberModel  = new Member_Model();
+			
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 
 			$bPoint = false;
 			$arrBetAccount = null;
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 				if(strlen(trim($arrGetData['emp'])) > 0){
-					$objAdmin = $memberModel->getInfo(trim($arrGetData['emp']));
+					$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
 					$bPoint = true;
 				}
 				else 	
@@ -1219,12 +1252,12 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$csbetModel = new CsBet_model();
-			$memberModel  = new Member_Model();
+			
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level >= LEVEL_ADMIN && strlen(trim($arrGetData['emp'])) > 0){
-				$objAdmin = $memberModel->getInfo(trim($arrGetData['emp']));
+				$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
 			}
 			$objCount = $csbetModel->searchCount($objAdmin, $arrGetData);
 			
@@ -1249,15 +1282,15 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$slbetModel = new SlBet_model();
-			$memberModel  = new Member_Model();
+			
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			$bPoint = false;
 			$arrBetAccount = null;
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 				if(strlen(trim($arrGetData['emp'])) > 0){
-					$objAdmin = $memberModel->getInfo(trim($arrGetData['emp']));
+					$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
 					$bPoint = true;
 				}
 				else 	
@@ -1294,12 +1327,12 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$slbetModel = new SlBet_model();
-			$memberModel  = new Member_Model();
+			
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level >= LEVEL_ADMIN && strlen(trim($arrGetData['emp'])) > 0){
-				$objAdmin = $memberModel->getInfo(trim($arrGetData['emp']));
+				$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
 			}
 			$objCount = $slbetModel->searchCount($objAdmin, $arrGetData);
 			
@@ -1324,10 +1357,10 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$slgameModel = new SlotGame_Model();
-			$memberModel  = new Member_Model();
+			
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level < LEVEL_ADMIN){
 				$objResult->status = "fail";
 			} else {
@@ -1352,10 +1385,10 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$slgameModel = new SlotGame_Model();
-			$memberModel  = new Member_Model();
+			
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level < LEVEL_ADMIN){
 				$objResult->status = "fail";
 			} else {
@@ -1379,10 +1412,10 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$slgameModel = new SlotGame_Model();
-			$memberModel  = new Member_Model();
+			
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level < LEVEL_ADMIN){
 				$objResult->status = "fail";
 			} else {
@@ -1408,10 +1441,10 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$slprdModel = new SlotPrd_Model();
-			$memberModel  = new Member_Model();
+			
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level < LEVEL_ADMIN){
 				$objResult->status = "fail";
 			} else {
@@ -1436,10 +1469,10 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$slprdModel = new SlotPrd_Model();
-			$memberModel  = new Member_Model();
+			
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level < LEVEL_ADMIN){
 				$objResult->status = "fail";
 			} else {
@@ -1463,10 +1496,10 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$slprdModel = new SlotPrd_Model();
-			$memberModel  = new Member_Model();
+			
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level < LEVEL_ADMIN){
 				$objResult->status = "fail";
 			} else {
@@ -1489,11 +1522,11 @@ public function withdrawlist(){
 		$arrReqData = json_decode($jsonData, true);
 
 		if(is_login()) {
-			$memberModel  = new Member_Model();
+			
 			$cleanModel = new Clean_model();
 
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 
 			$iResult = 0;
 
