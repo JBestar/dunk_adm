@@ -18,6 +18,7 @@ use CodeIgniter\Controller;
 use App\Models\Sess_Model;
 use App\Models\Member_Model;
 use App\Models\ConfSite_Model;
+use App\Models\Modify_Model;
 
 use App\Libraries\ApiCas_Lib;
 use App\Libraries\ApiSlot_Lib;
@@ -36,6 +37,7 @@ class BaseController extends Controller
 	protected $helpers = ['url', 'session', 'common_helper', 'curl_helper'];
 	protected $session ;
 	protected $modelMember;
+	protected $modelModify;
 
 	protected $libApicas;
 	protected $libApislot;
@@ -58,6 +60,7 @@ class BaseController extends Controller
 		$this->session = session();
 		$this->modelSess = new Sess_Model();
 		$this->modelMember = new Member_Model();
+		$this->modelModify = new Modify_Model();
 
 		$this->libApicas = new ApiCas_Lib();
 		$this->libApislot = new ApiSlot_Lib();
