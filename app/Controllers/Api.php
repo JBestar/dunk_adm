@@ -1530,10 +1530,9 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$casprdModel = new CasPrd_Model();
-			$memberModel  = new Member_Model();
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level < LEVEL_ADMIN){
 				$objResult->status = "fail";
 			} else {
@@ -1558,10 +1557,9 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$casprdModel = new CasPrd_Model();
-			$memberModel  = new Member_Model();
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level < LEVEL_ADMIN){
 				$objResult->status = "fail";
 			} else {
@@ -1585,10 +1583,9 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$casprdModel = new CasPrd_Model();
-			$memberModel  = new Member_Model();
 			
 			$strUid = $this->session->user_id;
-			$objAdmin = $memberModel->getInfo($strUid);
+			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level < LEVEL_ADMIN){
 				$objResult->status = "fail";
 			} else {
