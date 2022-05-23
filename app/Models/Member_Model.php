@@ -1060,7 +1060,12 @@ class Member_Model extends Model
 
     public function searchMemberByLevel($arrReqData, $iEmpFid)
     {
-        $strTbColum = " ".implode(", ", $this->getFields);
+        $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid','mb_nickname', 'mb_ip_last',
+            'mb_money', 'mb_point', 'mb_grade', 'mb_color', 'mb_state_active', 
+            'mb_game_pb', 'mb_game_ps', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 
+            'mb_live_money', 'mb_slot_money', 'mb_fslot_money' ];
+
+        $strTbColum = " ".implode(", ", $fields);
         $strTbColum.= ", block_ip, block_state ";
 
         $tbBlock = "block_list";
@@ -1099,8 +1104,12 @@ class Member_Model extends Model
         {
             return $this->searchMemberByLevel($arrReqData, $iEmpFid);
         } else {
-            $strTbColum = " ".implode(", ", $this->getFields);
-            $strTbRColum = " r.".implode(", r.", $this->getFields);
+            $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid', 'mb_nickname', 
+            'mb_money', 'mb_point', 'mb_grade', 'mb_color', 'mb_state_active',
+            'mb_live_money', 'mb_slot_money', 'mb_fslot_money' ];
+
+            $strTbColum = " ".implode(", ", $fields);
+            $strTbRColum = " r.".implode(", r.", $fields);
 
             $strSQL = "WITH RECURSIVE tbmember (".$strTbColum.") AS";
             $strSQL .= " ( SELECT ".$strTbColum." FROM ".$this->table." WHERE mb_emp_fid = '".$objUser->mb_fid."'";
