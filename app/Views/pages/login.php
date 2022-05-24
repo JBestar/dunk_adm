@@ -63,7 +63,7 @@
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_f.ico');?>">
         <?php break; 
         case APP_ORANGE :?>
-            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_org.ico?v=1');?>">
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_org.ico?v=2');?>">
         <?php break; 
         case APP_CT :?>
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_ct.ico');?>">
