@@ -159,7 +159,7 @@ function requestBetHistory() {
         dataType: "json",
         success: function(jResult) {
             $(".loading").hide();
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 ShowBetHistory(jResult.data, 1);
                 ShowBetAccount(jResult.account);
@@ -201,7 +201,7 @@ function requestTotalPage() {
         dataType: 'json',
         type: 'post',
         success: function(jResult) {
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();

@@ -31,7 +31,7 @@ function requestConfPowerball() {
         success: function(jResult) {
             $("#refresh_btn").removeClass("refresh");
 
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 showConfPowerball(jResult.data, jResult.agent);
             } else if (jResult.status == "fail") {
@@ -41,7 +41,7 @@ function requestConfPowerball() {
         error: function(request, status, error) {
             $("#refresh_btn").removeClass("refresh");
 
-            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });

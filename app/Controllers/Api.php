@@ -2,14 +2,14 @@
 
 use App\Models\Notice_Model;
 use App\Models\Charge_Model;
-use App\Models\Clean_model;
+use App\Models\Clean_Model;
 use App\Models\ConfGame_model;
 use App\Models\Exchange_Model;
 use App\Models\MoneyHistory_Model;
 use App\Models\Transfer_Model;
 use App\Models\ConfSite_Model;
-use App\Models\CsBet_model;
-use App\Models\SlBet_model;
+use App\Models\CsBet_Model;
+use App\Models\SlBet_Model;
 use App\Models\SlotGame_Model;
 use App\Models\SlotPrd_Model;
 use App\Models\SessLog_Model;
@@ -70,14 +70,14 @@ class Api extends BaseController{
 		else if(is_null($member)){
 			$iResult = 0;
 			$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_FAIL);
-		} else if($member['mb_level'] < LEVEL_ADMIN && !is_null($modelBlock->getByIp($ip, true))){
+		} else if($member->mb_level < LEVEL_ADMIN && !is_null($modelBlock->getByIp($ip, true))){
 			$iResult = 2;
 			$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_IPBLOCK);
-		} else if($member['mb_level'] == LEVEL_ADMIN && $member['mb_state_view'] == STATE_ACTIVE &&
-			$member['mb_ip_join'] !== $ip){
+		} else if($member->mb_level == LEVEL_ADMIN && $member->mb_state_view == STATE_ACTIVE &&
+			$member->mb_ip_join !== $ip){
 			$iResult = 3;
 			$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_IPDENIED);
-		} else if($member['mb_level'] < LEVEL_ADMIN && $modelConfsite->IsMaintain()){
+		} else if($member->mb_level < LEVEL_ADMIN && $modelConfsite->IsMaintain()){
 			$iResult = 4;
 			$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_MAINTAIN);
 		}  else if(!$this->modelMember->isPermitMember((object)$member)){
@@ -89,26 +89,24 @@ class Api extends BaseController{
 			$this->modelSess->deleteLast();
 
 			$sessId = $this->session->session_id;
-			$sess = $this->modelSess->getByUid($member['mb_uid']);
+			$sess = $this->modelSess->getByUid($member->mb_uid);
 
-			if($member['mb_level'] < LEVEL_ADMIN && !$modelConfsite->IsMultiLogin() && !is_null($sess) && $sess->sess_id != $sessId /*$sess->sess_ip != $ip*/){
+			if($member->mb_level < LEVEL_ADMIN && !$modelConfsite->IsMultiLogin() && !is_null($sess) && $sess->sess_id != $sessId /*$sess->sess_ip != $ip*/){
 				$iResult = 4;
 				$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_LOGINING);
-            } else if ($member['mb_state_active'] == STATE_ACTIVE){
+            } else if ($member->mb_state_active == STATE_ACTIVE){
                 $sessData = [
-                    'user_id' => $member['mb_uid'], 
+                    'user_id' => $member->mb_uid, 
                     'logged_in' => TRUE, 
                 ];
 				$this->session->set($sessData);
-				$member['mb_ip_last'] = $ip;
+				$member->mb_ip_last = $ip;
 				$this->modelMember->updateLogin($member);
                 $iResult = 1;
 				
-				$this->modelSess->add((object)$member, $sessId);
-				// if($member['mb_level'] <= LEVEL_ADMIN){
-					$modelSessLog = new SessLog_Model();
-					$modelSessLog->add($member);
-				// }
+				$this->modelSess->add($member, $sessId);
+				$modelSessLog = new SessLog_Model();
+				$modelSessLog->add($member);
 				$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_SUCCESS);
 
             }
@@ -186,10 +184,10 @@ class Api extends BaseController{
 			
 			$agInfo = null;
 			if(!is_null($agConf)){
-				$arrInfo = explode("#", $agConf['conf_content']);
+				$arrInfo = explode("#", $agConf->conf_content);
 				if(count($arrInfo) >= 3){ //0-host, 1-ag_code, 2-ag_token
 					$agInfo['code'] = $arrInfo[1];
-					$agInfo['egg'] = $agConf['conf_active'];
+					$agInfo['egg'] = $agConf->conf_active;
 				}	
 				
 			}
@@ -1012,11 +1010,11 @@ public function withdrawlist(){
 		            $objCalc['mb_charge'] = $chargeModel->calcChargeMoney($objEmp, $arrReqData);         	//충전금액합산
 		            $objCalc['mb_exchange'] = $exchangeModel->calcExchangeMoney($objEmp, $arrReqData);     	//환전금액합산
 		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  		//충환손익
-		            $arrEmpMoney = $memberModel->calcEmpMoney($objEmp);
-		            $arrUserMoney = $memberModel->calcUserMoney($objEmp->mb_fid);
+		            $arrEmpMoney = $this->modelMember->calcEmpMoney($objEmp);
+		            $arrUserMoney = $this->modelMember->calcUserMoney($objEmp->mb_fid);
 	            	$objCalc['mb_emp_money'] =  $arrEmpMoney[0]+$arrEmpMoney[1]+$arrEmpMoney[2]+$arrEmpMoney[3]+$arrEmpMoney[4];                        					//관리자보유금;
 	            	$objCalc['mb_user_money'] =$arrUserMoney[0]+$arrUserMoney[1]+$arrUserMoney[2]+$arrUserMoney[3]+$arrUserMoney[4];											//유저보유금;
-		            $arrBetData = $memberModel->calcBetMoneys($objEmp, $arrReqData, $siteConfs);
+		            $arrBetData = $this->modelMember->calcBetMoneys($objEmp, $arrReqData, $siteConfs);
 			        $objCalc['mb_bet_money'] = $arrBetData['bet_money'] ;          							//베팅머니
 					$objCalc['mb_bet_win_money'] = $arrBetData['bet_win_money'] ;      						//적중머니
          			$objCalc['mb_bet_benefit_money'] = $arrBetData['bet_benefit_money'];  					//베팅손익
@@ -1099,8 +1097,8 @@ public function withdrawlist(){
 		            $objCalc['mb_charge'] = $chargeModel->calcChargeMoney($objEmp, $arrReqData);         //충전금액합산
 		            $objCalc['mb_exchange'] = $exchangeModel->calcExchangeMoney($objEmp, $arrReqData);     //환전금액합산
 		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  //충환손익
-		            $arrEmpMoney = $memberModel->calcEmpMoney($objEmp);
-		            $arrUserMoney = $memberModel->calcUserMoney($objEmp->mb_fid);
+		            $arrEmpMoney = $this->modelMember->calcEmpMoney($objEmp);
+		            $arrUserMoney = $this->modelMember->calcUserMoney($objEmp->mb_fid);
 					$objCalc['mb_emp_money'] = $arrEmpMoney[0]+$arrEmpMoney[1]+$arrEmpMoney[2]+$arrEmpMoney[3]+$arrEmpMoney[4];                        					//관리자보유금;
 	            	$objCalc['mb_user_money'] = $arrUserMoney[0]+$arrUserMoney[1]+$arrUserMoney[2]+$arrUserMoney[3]+$arrUserMoney[4];
 					// switch($arrReqData['type']){
@@ -1163,7 +1161,6 @@ public function withdrawlist(){
 			$noticeModel = new Notice_Model();
 			$arrResult = $noticeModel->searchMessage($arrGetData);
 		
-			//var_dump($arrBetHistory);
 			$objResult = new \StdClass;
 			$objResult->data = $arrResult;			
 			$objResult->status = "success";
@@ -1211,7 +1208,7 @@ public function withdrawlist(){
 
 		if(is_login()) {
 			//model
-			$csbetModel = new CsBet_model();
+			$csbetModel = new CsBet_Model();
 			
 			
 			$strUid = $this->session->user_id;
@@ -1257,7 +1254,7 @@ public function withdrawlist(){
 
 		if(is_login()) {
 			//model
-			$csbetModel = new CsBet_model();
+			$csbetModel = new CsBet_Model();
 			
 			
 			$strUid = $this->session->user_id;
@@ -1287,7 +1284,7 @@ public function withdrawlist(){
 
 		if(is_login()) {
 			//model
-			$slbetModel = new SlBet_model();
+			$slbetModel = new SlBet_Model();
 			
 			
 			$strUid = $this->session->user_id;
@@ -1332,7 +1329,7 @@ public function withdrawlist(){
 
 		if(is_login()) {
 			//model
-			$slbetModel = new SlBet_model();
+			$slbetModel = new SlBet_Model();
 			
 			
 			$strUid = $this->session->user_id;
@@ -1610,7 +1607,7 @@ public function withdrawlist(){
 
 		if(is_login()) {
 			
-			$cleanModel = new Clean_model();
+			$cleanModel = new Clean_Model();
 
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
@@ -1620,8 +1617,12 @@ public function withdrawlist(){
 			if($objAdmin->mb_level>LEVEL_ADMIN){
 				if($arrReqData['clean'] == 0){
 					$iResult = $cleanModel->cleanDb();
+					$this->modelModify->add($this->session->user_id, MOD_DB_DELETE, "Delete DB", $this->request->getIPAddress());
+
 				} else if($arrReqData['clean'] == 1){
 					$iResult = $cleanModel->initDb();
+					$this->modelModify->add($this->session->user_id, MOD_DB_DELETE, "Clear DB", $this->request->getIPAddress());
+
 				}
 			} else {
 				 $iResult = 2;
