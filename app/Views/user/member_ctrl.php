@@ -62,7 +62,7 @@
 	<div class="user-panel">	
 		<div>
 			<?php if($mb_level >= LEVEL_ADMIN) {  ?>
-			<a href="<?php echo siteFurl().'user/member_edit/0';?>" class="user-panel-add-a" >회원 등록</a>
+			<a href="javascript:showMemEditDlg('');" class="user-panel-add-a" >회원 등록</a>
 			<?php } ?>
 			<label>추천인</label>
             <input type="text" class="pbresult-text-input" id="userpanel-empid-input-id" value= "<?=$emp_uid ?>">
@@ -154,15 +154,17 @@
 	
 <?php if(array_key_exists("app.produce", $_ENV)) :?>
     <script src="<?php echo site_furl('/assets/js/page.js?t='.time());?>"></script>
+    <script src="<?php echo site_furl('/assets/js/member_common-script.js?t='.time());?>"></script>
     <script src="<?php echo site_furl('/assets/js/member_ctrl-script.js?t='.time());?>"></script>
 <?php else : ?>
     <script src="<?php echo site_furl('/assets/js/page.js?v=1');?>"></script>
+    <script src="<?php echo site_furl('/assets/js/member_common-script.js?v=1');?>"></script>
     <script src="<?php echo site_furl('/assets/js/member_ctrl-script.js?v=1');?>"></script>
 <?php endif ?>
 
 
 <div class="row" style="font-size:12px;">
-	<div id="create_member_modal" class="modal fade in" tabindex="-2" role="dialog" aria-hidden="false" style="display:block; color:#333;">
+	<div id="edit_member_modal" class="modal fade in" tabindex="-2" role="dialog" aria-hidden="false" style="display:none; color:#333;">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -203,9 +205,9 @@
 									<div class="col-md-2">상태</div>
 									<div class="col-md-4">
 										<select id="status">
-											<option value="0">신청 </option>
-											<option value="1">허용 </option>
-											<option value="2">금지 </option>
+											<option value="2">대기 </option>
+											<option value="0">차단 </option>
+											<option value="1">승인 </option>
 										</select>
 									</div>
 
@@ -279,7 +281,7 @@
 				</div>
 				<div class="modal-footer" style="padding: 10px !important;">
 					<a id="btn-apply" onclick="onApply()" class="btn btn-primary">추가 </a>
-					<a data-dismiss="modal" class="btn btn-warning">취소 </a>
+					<a data-dismiss="modal" class="btn btn-warning"  onclick="closeMemEditDlg();">취소 </a>
 				</div>
 			</div>
 		</div>
@@ -307,7 +309,8 @@
 									<div class="col-md-4">닉네임 :</div>
 									<div class="col-md-8">
 										<input id="charge_user_name" type="text" placeholder="" class="form-control" disabled="" />
-										<input id="charge_user_id" type="hidden" placeholder="" class="form-control" disabled="" value="142" />
+										<input id="charge_user_id" type="hidden" placeholder="" class="form-control" disabled="" value="" />
+										<input id="charge_user_fid" type="hidden" placeholder="" class="form-control" disabled="" value="" />
 									</div>
 								</div>
 								<div class="row">
@@ -319,7 +322,7 @@
 								<div class="row">
 									<div class="col-md-4"><span class="c_type_money">충전금액</span></div>
 									<div class="col-md-8">
-										<input id="charge_money" min="0" type="number" placeholder="" class="form-control" />
+										<input id="charge_money" type="text" placeholder="" class="form-control" />
 									</div>
 								</div>
 							</div>
@@ -327,9 +330,9 @@
 					</div>
 				</div>
 				<div class="modal-footer" style="padding: 10px !important;">
-					<a id="btn-apply" onclick="onChargeApply()" class="btn btn-primary btn-charge"><span class="c_type">충전</span></a>
-					<a id="btn-apply" onclick="onDisChargeApply()" class="btn btn-primary btn-discharge" style="display: none;"><span class="c_type">충전</span></a>
-					<a data-dismiss="modal" class="btn btn-warning">취소 </a>
+					<a id="btn-charge-apply" onclick="onChargeApply()" class="btn btn-primary btn-charge"><span class="c_type">충전</span></a>
+					<a id="btn-discharge-apply" onclick="onDisChargeApply()" class="btn btn-primary btn-discharge"><span class="c_type">환전</span></a>
+					<a data-dismiss="modal" class="btn btn-warning"  onclick="closeChargeDlg();">취소 </a>
 				</div>
 			</div>
 		</div>

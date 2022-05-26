@@ -256,6 +256,43 @@ class UserApi extends BaseController
         echo json_encode($arrResult);
     }
 
+    // 사용자 강제아웃
+    public function logoutmember()
+    {
+        $jsonData = $_REQUEST['json_'];
+        $arrData = json_decode($jsonData, true);
+
+        if (is_login()) {
+            $bPermit = false;
+            
+            $strUid = $this->session->user_id;
+            $objUser = $this->modelMember->getInfo($strUid);
+            $objReqUser = $this->modelMember->getInfoByFid($arrData['mb_fid']);
+
+            // 현재 가입한 유저가 요청한 유저보다 레벨이 높은 경우에 삭제가 가능하다.
+            if (!is_null($objUser) && !is_null($objReqUser)) {
+                if ($objUser->mb_level >= LEVEL_ADMIN) {
+                    $bPermit = true;
+                }
+            }
+            if ($bPermit) {
+                
+                $bResult = $this->modelSess->deleteByMember($objReqUser->mb_fid);
+                
+                if ($bResult) {
+                    $arrResult['status'] = 'success';
+                } else {
+                    $arrResult['status'] = 'fail';
+                }
+            } else {
+                $arrResult['status'] = 'nopermit';
+            }
+        } else {
+            $arrResult['status'] = 'logout';
+        }
+        echo json_encode($arrResult);
+    }
+
     // 회원정보  대기 승인 라이브게임아이디 생성한다.
     public function wait_permit()
     {
@@ -573,7 +610,8 @@ class UserApi extends BaseController
             } else {
                 $arrMember = [];
             }
-
+            
+            $confs['emp_level'] = $objUser->mb_level; 
             $objResult->status = 'success';
             $objResult->confs = $confs;
             $objResult->data = $arrMember;

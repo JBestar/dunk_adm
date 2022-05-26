@@ -1,5 +1,7 @@
 var mOrdItem = '';
 var mOrdDir = '';
+var mArrMember = null;
+var mConfs = null;
 
 $(document).ready(function() {
     addEventListner();
@@ -26,8 +28,11 @@ function getMemberLevelString(nLevel) {
 
 function showMember(arrMember, confs) {
 
-    var strBuf = "";
 
+    mArrMember = arrMember;
+    mConfs = confs;
+
+    var strBuf = "";
     var curPage = getActivePage();
     var firstIdx = (curPage - 1) * CountPerPage;
     for (var nRow in arrMember) {
@@ -60,9 +65,9 @@ function showMember(arrMember, confs) {
         strBuf += "</td> <td>";
         strBuf += parseInt(arrMember[nRow].mb_grade).toLocaleString() + "레벨";
         strBuf += "</td> <td>";
-        strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >충전</button>";
+        strBuf += "<button name='" + nRow + "' data-fid='" + arrMember[nRow].mb_fid + "' >충전</button>";
         strBuf += "</td> <td>";
-        strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >환전</button>";
+        strBuf += "<button name='" + nRow + "' data-fid='" + arrMember[nRow].mb_fid + "' >환전</button>";
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_phone;
 
@@ -92,7 +97,7 @@ function showMember(arrMember, confs) {
         strBuf += "</td> <td>";
         strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >상세</button>";
         strBuf += "</td> <td>";
-        strBuf += "<a href='"+FURL+"/user/member_edit/" + arrMember[nRow].mb_fid + "' >수정</a>";
+        strBuf += "<button name='" + nRow + "' data-fid='" + arrMember[nRow].mb_fid + "' >수정</button>";
         strBuf += "</td> <td>";
         strBuf += "<button name='" + arrMember[nRow].mb_fid + "'>삭제</button>   ";
         strBuf += "</td> <td>";
@@ -108,7 +113,7 @@ function showMember(arrMember, confs) {
             strBuf += ">차단</button>";
         }
         strBuf += "</td> <td>";
-        strBuf += "<button name='" + arrMember[nRow].mb_fid + "'>강제아웃</button>   ";
+        strBuf += "<button name='" + arrMember[nRow].mb_fid + "' data-nickname='" + arrMember[nRow].mb_nickname + "'>강제아웃</button>   ";
         strBuf += "</td></tr>";
     }
 
@@ -123,6 +128,15 @@ function showMember(arrMember, confs) {
 
 
 function addEventListner() {
+
+    $(document).on("click", function(e){
+        if($("#charge_modal").is(e.target)){
+            closeChargeDlg();
+        } else if($("#edit_member_modal").is(e.target)){
+            closeMemEditDlg();
+        }
+    });
+
     $("#userpanel-list-view-but-id").click(function() {
         requestTotalPage();
     });
@@ -135,8 +149,20 @@ function addEventListner() {
         requestTotalPage();
     });
 
+    $("#charge_money").on("propertychange change keyup paste input", function() {
+        calcAmount("#charge_money");
+    });
+
     $("#userpanel-number-select-id").change(function() {
         requestTotalPage();
+    });
+
+    $("#charge_modal .close").click(function() {
+        closeChargeDlg();
+    });
+
+    $("#edit_member_modal .close").click(function() {
+        closeMemEditDlg();
     });
 
     $(".user-table .sort-by").click(function() {
@@ -284,21 +310,37 @@ function requestTotalPage() {
 function addButtonElementListener(buttonElement) {
     buttonElement.addEventListener("click", function() {
 
-        if (this.innerHTML.search("삭제") >= 0) {
+        let tHtml = this.innerHTML; 
+        if (tHtml.search("삭제") >= 0) {
             if (!confirm("삭제하시겠습니까?"))
                 return;
             var jsonData = { "mb_fid": this.name };
-            requestDeleteCompany(jsonData);
-        } else if (this.innerHTML.search("승인") >= 0) {
+            requestDeleteMember(jsonData);
+        } else if (tHtml.search("승인") >= 0) {
             var jsonData = { "mb_fid": this.name, "mb_state_active": 0 };
-            requestUpdateCompany(jsonData);
-        } else if (this.innerHTML.search("차단") >= 0) {
+            requestUpdateMember(jsonData);
+        } else if (tHtml.search("차단") >= 0) {
             var jsonData = { "mb_fid": this.name, "mb_state_active": 1 };
-            requestUpdateCompany(jsonData);
-        } else if (this.innerHTML.search("대기") >= 0) {
+            requestUpdateMember(jsonData);
+        } else if (tHtml.search("대기") >= 0) {
             var jsonData = { "mb_fid": this.name, "mb_state_active": 1 };
             requestWaitToPermit(this, jsonData);
-        } 
+        } else if (tHtml.search("충전") >= 0) {
+            showMemCharge(this.name, $(this).data('fid'));
+        } else if (tHtml.search("환전") >= 0) {
+            showMemDischarge(this.name, $(this).data('fid'));
+        } else if (tHtml.search("수정") >= 0) {
+            showMemEditDlg(this.name);
+        } else if (tHtml.search("강제아웃") >= 0) {
+            let nickname  = $(this).data('nickname');
+            if(nickname.length > 0){
+                if (!confirm(nickname+" 회원을 강제아웃 시키겠습니까?"))
+                    return;
+                var jsonData = { "mb_fid": this.name };
+                requestLogoutMember(jsonData);
+            }
+            
+        }
     });
 }
 
@@ -316,175 +358,103 @@ function addBtnEvent() {
     }
 }
 
-function requestWaitToPermit(elemBut, jsData) {
 
-    if (mAudio != undefined && mAudio != null) {
-        mAudio.pause();
+/*=============================================================*/
+
+function closeChargeDlg(){
+    $('#charge_modal').slideUp(100);
+}
+
+function showChargeDlg(){
+    $('#charge_modal').slideDown(200);
+}
+
+function showMemCharge(idx, mbFid){
+
+    if(mArrMember == null)
+        return;
+    let member = mArrMember[idx];
+    if(member == undefined || parseInt(member.mb_fid) != mbFid )
+        return;
+
+    $("#charge_modal .c_type_forced").text("강제충전");
+    $("#charge_modal .c_type_admin").text("충전해주는 업체");
+    $("#charge_modal .c_type_money").text("충전금액");
+    $("#charge_user_name").val(member.mb_nickname);
+    $("#charge_user_id").val(member.mb_uid);
+    $("#charge_user_money").val(parseInt(member.mb_money).toLocaleString());
+    $("#charge_money").val('');
+
+    showChargeDlg();
+}
+
+function showMemDischarge(idx, mbFid){
+    if(mArrMember == null)
+        return;
+    let member = mArrMember[idx];
+    if(member == undefined || parseInt(member.mb_fid) != mbFid )
+        return;
+
+    $("#charge_modal .c_type_forced").text("강제환전");
+    $("#charge_modal .c_type_admin").text("환전해주는 업체");
+    $("#charge_modal .c_type_money").text("환전금액");
+    $("#charge_user_name").val(member.mb_nickname);
+    $("#charge_user_id").val(member.mb_uid);
+    $("#charge_user_money").val(parseInt(member.mb_money).toLocaleString());
+    $("#charge_money").val('');
+
+    showChargeDlg();
+}
+
+function reqMemCharge(){
+    var nAmount = parseInt($("#charge_money").val().replace(/,/g, ""));
+    if (isNaN(nAmount) || nAmount == "") {
+        nAmount = 0;
+    }
+    if (nAmount == 0) {
+        confirmAlert("충전금액을 입력 해주세요.");
+        return false;
     }
 
-    $(elemBut).attr('disabled', true);
-    jsonData = JSON.stringify(jsData);
+    if (!confirm(nAmount.toLocaleString() + "원을 직충전하시겠습니까?"))
+        return;
 
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: FURL + "/userapi/wait_permit",
-        data: { json_: jsonData },
-        success: function(jResult) {
-            //console.log(jResult);
-            $(elemBut).attr('disabled', false);
+    var jsonData = {
+        'mb_fid': $("#charge_user_fid").val(),
+        'amount': nAmount,
+        'type':0
+    }
+    requestTrasnfer(jsonData);
+}
 
-            if (jResult.status == "success") {
-                requestEmployeeInfo();
-                requestMember();
+function reqMemDischarge(){
+    var nAmount = parseInt($("#charge_money").val().replace(/,/g, ""));
+    if (isNaN(nAmount) || nAmount == "") {
+        nAmount = 0;
+    }
+    if (nAmount == 0) {
+        confirmAlert("환전금액을 입력 해주세요.");
+        return false;
+    }
 
-            } else if (jResult.status == "usererror") {
-                alert('회원정보가 정확하지 않습니다.\n 다시 확인해주세요');
-            } else if (jResult.status == "fail") {
-                alert('회원승인이 실패되었습니다.');
-            } else if (jResult.status == "nopermit") {
-                alert('변경권한이 없습니다.');
-                window.location.replace( FURL +'/pages/nopermit');
-            } else if (jResult.status == "logout") {
-                window.location.replace( FURL +'/');
-            }
-        },
-        error: function(request, status, error) {
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-        }
+    if (!confirm(nAmount.toLocaleString() + "원을 직환전하시겠습니까?"))
+        return;
 
-    });
+    var jsonData = {
+        'mb_fid': $("#charge_user_fid").val(),
+        'amount': nAmount,
+        'type':1
+    }
+    requestTrasnfer(jsonData);
 }
 
 
-function requestUpdateCompany(jsData) {
-
-    var jsonData = JSON.stringify(jsData);
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: FURL + "/userapi/updatemember",
-        data: { json_: jsonData },
-        success: function(jResult) {
-            // console.log(jResult);
-
-            if (jResult.status == "success") {
-                requestMember();
-                // updateMember(jResult.data, jResult.level);
-            } else if (jResult.status == "fail") {
-
-            } else if (jResult.status == "nopermit") {
-                alert('변경권한이 없습니다.');
-                location.replace( FURL +'/pages/nopermit');
-            } else if (jResult.status == "logout") {
-                location.replace( FURL +'/');
-            }
-        },
-        error: function(request, status, error) {
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-        }
-
-    });
+function showMemEditDlg(mbFid){
+    $('#edit_member_modal').slideDown(200);
 
 }
 
-function requestAddBlock(jsData) {
-
-    var jsonData = JSON.stringify(jsData);
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: FURL + "/userapi/add_block",
-        data: { json_: jsonData },
-        success: function(jResult) {
-            // console.log(jResult);
-
-            if (jResult.status == "success") {
-                location.replace( FURL +'/user/member_block');
-                // updateMember(jResult.data, jResult.level);
-            } else if (jResult.status == "fail") {
-
-            } else if (jResult.status == "nopermit") {
-                alert('변경권한이 없습니다.');
-                location.replace( FURL +'/pages/nopermit');
-            } else if (jResult.status == "logout") {
-                location.replace( FURL +'/');
-            }
-        },
-        error: function(request, status, error) {
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-        }
-
-    });
+function closeMemEditDlg(){
+    $('#edit_member_modal').slideUp(100);
 
 }
-
-
-function requestDeleteCompany(jsData) {
-
-    var jsonData = JSON.stringify(jsData);
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: FURL + "/userapi/deletemember",
-        data: { json_: jsonData },
-        success: function(jResult) {
-            //console.log(jResult);
-
-            if (jResult.status == "success") {
-                requestMember();
-                //window.location.reload();
-            } else if (jResult.status == "fail") {
-
-            } else if (jResult.status == "nopermit") {
-                alert('변경권한이 없습니다.');
-                window.location.replace( FURL +'/pages/nopermit');
-            } else if (jResult.status == "logout") {
-                window.location.replace( FURL +'/');
-            }
-        },
-        error: function(request, status, error) {
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-        }
-
-    });
-
-}
-
-function refreshEv(mbFid, elBtn) {
-    var jsonData = { "mb_fid": mbFid };
-    jsonData = JSON.stringify(jsonData);
-    $(elBtn).addClass("refresh");
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: FURL + "/userapi/egginfo",
-        data: { json_: jsonData },
-        success: function(jResult) {
-            // console.log(jResult);
-            $(elBtn).removeClass("refresh");
-
-            if (jResult.status == "success") {
-                $("#mm_" + mbFid).text(parseInt(jResult.money).toLocaleString() + "원");
-                $("#mp_" + mbFid).text(parseInt(jResult.point).toLocaleString());
-
-            } else if (jResult.status == "fail") {
-
-            } else if (jResult.status == "logout") {
-                window.location.replace( FURL +'/');
-            }
-        },
-        error: function(request, status, error) {
-            $(elBtn).removeClass("refresh");
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-        }
-
-    });
-
-}
-
-

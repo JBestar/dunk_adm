@@ -355,36 +355,6 @@ function addBtnEvent() {
 
 }
 
-function requestTrasnfer(jsonData){
-    $(".loading").show();
-    
-    jsonData = JSON.stringify(jsonData);
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: FURL + "/userapi/transfer",
-        data: { json_: jsonData },
-        success: function(jResult) {
-            $(".loading").hide();
-            // console.log(jResult);
-            if (jResult.status == "success") {
-                location.reload();
-            } else if (jResult.status == "logout") {
-                window.location.replace( FURL +'/');
-            } else if (jResult.status == "fail") {
-                if (jResult.msg) {
-                    alert(jResult.msg);
-                } else alert("조작이 실패되었습니다.")
-            }
-        },
-        error: function(request, status, error) {
-            $(".loading").hide();
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-        }
-
-    });
-
-}
 
 function requestWithdraw(iType){
     var jsonData = {
@@ -479,15 +449,3 @@ function tr_price(price) {
 }
 
 
-function calcAmount(elemName){
-    $(elemName).val(
-        $(elemName)
-        .val()
-        .replace(/[^0-9]/g, "")
-    );
-    $(elemName).val(
-        $(elemName)
-        .val()
-        .replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
-    );
-}
