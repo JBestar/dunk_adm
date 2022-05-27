@@ -4,7 +4,7 @@
 	
 	<!--Sub Navbar-->
 	<div class = "sub-navbar">
-		<p><i class="glyphicon glyphicon-user"></i> 회원관리::회원</p>
+		<p><i class="glyphicon glyphicon-user"></i> 매장관리</p>
 	</div>
 	<style>
 		.user-table{

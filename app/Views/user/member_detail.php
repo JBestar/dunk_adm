@@ -1,13 +1,8 @@
 <?= $this->extend('header') ?>
 <?= $this->section('content') ?>
 <link rel="stylesheet" href="<?php echo site_furl('assets/css/app.css?v=1');?>">
-<style>
-	.empty_table {
-		text-align: center;
-		height: 100px;
-		vertical-align: middle !important;
-	}
-</style>
+<link rel="stylesheet" href="<?php echo site_furl('assets/css/admin.css?v=1');?>">
+
 	<!--Sub Navbar-->
 	<div class = "sub-navbar">
 		<p><i class="glyphicon glyphicon-user"></i> 매장관리:: 회원 상세정보</p>
@@ -24,7 +19,7 @@
                                     <div class="row">
                                         <div class="square_box col-xs-7 text-right">
                                             <span>누적 충전총액 </span>
-                                            <div class="number" id="total_charge_money">20,000,000</div>
+                                            <div class="number" id="total_charge_money">0</div>
                                         </div>
                                         <i class="livicon  pull-right" data-name="money" data-l="true" data-c="#fff" data-hc="#fff" data-s="70" id="livicon-63" style="width: 70px; height: 70px;"><svg height="70" version="1.1" width="70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative; left: -0.3px;" id="canvas-for-livicon-63"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.1.2</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><path fill="#ffffff" stroke="none" d="M2,10V26H30V10H2ZM29,25H3V11H29V25ZM4,12V24H28V12H4ZM27,22H26V23H6V22H5V14H6V13H26V14H27V22ZM24,19H22V17H24V19ZM10,19H8V17H10V19ZM19,18C19,20.209,17.657,22,16,22C14.343,22,13,20.209,13,18S14.343,14,16,14C17.657,14,19,15.791,19,18Z" opacity="0" transform="matrix(2.1875,0,0,2.1875,8.75,61.25)" stroke-width="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 0;"></path><path fill="#ffffff" stroke="none" d="M29,9H3V8H29V9ZM28,7H4V6H28V7ZM2,10V26H30V10H2ZM29,25H3V11H29V25ZM4,12V24H28V12H4ZM27,22H26V23H6V22H5V14H6V13H26V14H27V22ZM9.7,19H8.3C8.134,19,8,18.866,8,18.7V17.3C8,17.134,8.134,17,8.3,17H9.7C9.866,17,10,17.134,10,17.3V18.7C10,18.866,9.866,19,9.7,19ZM23.7,19H22.3C22.134,19,22,18.866,22,18.7V17.3C22,17.134,22.134,17,22.3,17H23.7C23.866,17,24,17.134,24,17.3V18.7C24,18.866,23.866,19,23.7,19ZM16.941,19.078C16.941,19.279,16.894,19.602,16.246,19.665V18.52C16.709,18.683,16.941,18.87,16.941,19.078ZM15.101,16.923C15.101,17.159999999999997,15.314,17.328,15.742,17.427999999999997V16.363999999999997C15.198,16.411,15.101,16.742,15.101,16.923ZM19,18C19,20.209,17.657,22,16,22S13,20.209,13,18S14.343,14,16,14S19,15.791,19,18ZM17.929,18.955C17.942,18.709999999999997,17.692999999999998,18.104999999999997,17.369,17.918999999999997C17.111,17.772,16.594,17.606999999999996,16.292,17.551V16.391C16.594,16.410999999999998,16.695,16.608999999999998,16.782,16.758999999999997C16.864,16.949999999999996,17.011,17.045999999999996,17.219,17.045999999999996H17.765C17.747,16.581999999999997,17.494,15.710999999999995,16.292,15.585999999999995L16.295,15.012999999999995C16.295,15.012999999999995,15.938000000000002,14.999999999999995,15.801000000000002,14.999999999999995H15.787000000000003V15.585999999999995C14.498000000000003,15.610999999999995,14.247000000000003,16.513999999999996,14.232000000000003,16.977999999999994C14.200000000000003,17.907999999999994,14.598000000000003,18.105999999999995,15.742000000000003,18.406999999999993V19.602999999999994C15.586000000000002,19.575999999999993,15.143000000000002,19.502999999999993,15.091000000000003,18.914999999999996H14.163000000000002C14.199000000000002,19.426999999999996,14.643000000000002,20.501999999999995,15.742000000000003,20.501999999999995V21H16.241000000000003V20.501C17.493,20.501,17.893,19.603,17.929,18.955Z" stroke-width="0" transform="matrix(2.1875,0,0,2.1875,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path></svg></i>
                                     </div>
@@ -57,7 +52,7 @@
                                     <div class="row">
                                         <div class="square_box col-xs-7 text-right">
                                             <span>당일 충전총액</span>
-                                            <div class="number" id="today_charge_money">20,000,000</div>
+                                            <div class="number" id="today_charge_money">0</div>
                                         </div>
                                         <i class="livicon  pull-right" data-name="money" data-l="true" data-c="#fff" data-hc="#fff" data-s="70" id="livicon-65" style="width: 70px; height: 70px;"><svg height="70" version="1.1" width="70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative; left: -0.9px;" id="canvas-for-livicon-65"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.1.2</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><path fill="#ffffff" stroke="none" d="M2,10V26H30V10H2ZM29,25H3V11H29V25ZM4,12V24H28V12H4ZM27,22H26V23H6V22H5V14H6V13H26V14H27V22ZM24,19H22V17H24V19ZM10,19H8V17H10V19ZM19,18C19,20.209,17.657,22,16,22C14.343,22,13,20.209,13,18S14.343,14,16,14C17.657,14,19,15.791,19,18Z" opacity="0" transform="matrix(2.1875,0,0,2.1875,8.75,61.25)" stroke-width="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 0;"></path><path fill="#ffffff" stroke="none" d="M29,9H3V8H29V9ZM28,7H4V6H28V7ZM2,10V26H30V10H2ZM29,25H3V11H29V25ZM4,12V24H28V12H4ZM27,22H26V23H6V22H5V14H6V13H26V14H27V22ZM9.7,19H8.3C8.134,19,8,18.866,8,18.7V17.3C8,17.134,8.134,17,8.3,17H9.7C9.866,17,10,17.134,10,17.3V18.7C10,18.866,9.866,19,9.7,19ZM23.7,19H22.3C22.134,19,22,18.866,22,18.7V17.3C22,17.134,22.134,17,22.3,17H23.7C23.866,17,24,17.134,24,17.3V18.7C24,18.866,23.866,19,23.7,19ZM16.941,19.078C16.941,19.279,16.894,19.602,16.246,19.665V18.52C16.709,18.683,16.941,18.87,16.941,19.078ZM15.101,16.923C15.101,17.159999999999997,15.314,17.328,15.742,17.427999999999997V16.363999999999997C15.198,16.411,15.101,16.742,15.101,16.923ZM19,18C19,20.209,17.657,22,16,22S13,20.209,13,18S14.343,14,16,14S19,15.791,19,18ZM17.929,18.955C17.942,18.709999999999997,17.692999999999998,18.104999999999997,17.369,17.918999999999997C17.111,17.772,16.594,17.606999999999996,16.292,17.551V16.391C16.594,16.410999999999998,16.695,16.608999999999998,16.782,16.758999999999997C16.864,16.949999999999996,17.011,17.045999999999996,17.219,17.045999999999996H17.765C17.747,16.581999999999997,17.494,15.710999999999995,16.292,15.585999999999995L16.295,15.012999999999995C16.295,15.012999999999995,15.938000000000002,14.999999999999995,15.801000000000002,14.999999999999995H15.787000000000003V15.585999999999995C14.498000000000003,15.610999999999995,14.247000000000003,16.513999999999996,14.232000000000003,16.977999999999994C14.200000000000003,17.907999999999994,14.598000000000003,18.105999999999995,15.742000000000003,18.406999999999993V19.602999999999994C15.586000000000002,19.575999999999993,15.143000000000002,19.502999999999993,15.091000000000003,18.914999999999996H14.163000000000002C14.199000000000002,19.426999999999996,14.643000000000002,20.501999999999995,15.742000000000003,20.501999999999995V21H16.241000000000003V20.501C17.493,20.501,17.893,19.603,17.929,18.955Z" stroke-width="0" transform="matrix(2.1875,0,0,2.1875,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path></svg></i>
                                     </div>
@@ -153,11 +148,10 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="panel ">
+                        <div class="panel" id="info-panel">
                             <div class="panel-heading">
                                 <h3 class="panel-title">
-                                    <i class="livicon" data-name="clock" data-size="16" data-loop="true" data-c="#fff" data-hc="white" id="livicon-67" style="width: 16px; height: 16px;"><svg height="16" version="1.1" width="16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative; top: -0.9875px;" id="canvas-for-livicon-67"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.1.2</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><path fill="#ffffff" stroke="none" d="M16,2C8.269,2,2,8.269,2,16S8.269,30,16,30S30,23.731,30,16S23.731,2,16,2ZM16.691,26.965L16.5,24.101H15.5L15.309,26.965C9.788,26.621,5.379,22.213,5.036,16.692L7.9,16.5V15.5L5.035,15.309C5.3790000000000004,9.788,9.786999999999999,5.379,15.308,5.036L15.5,7.9H16.5L16.691,5.035C22.212,5.3790000000000004,26.621,9.786999999999999,26.964,15.308L24.101,15.5V16.5L26.965,16.691C26.621,22.213,22.213,26.621,16.691,26.965Z" transform="matrix(0.5,0,0,0.5,0,0)" stroke-width="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><path fill="#ffffff" stroke="none" d="M22.632,12.287C22.908,12.766,16.979000000000003,16.59,16.5,16.866S15.41,16.979,15.134,16.5C14.858,16.021,15.022,15.411,15.5,15.134S22.355,11.809,22.632,12.287Z" transform="matrix(0.5,0,0,0.5,0,0)" stroke-width="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><path fill="#ffffff" stroke="none" d="M17.082,15.375C17.428,15.973,17.223,16.737000000000002,16.625,17.083C16.028,17.427999999999997,15.263,17.223,14.917,16.625S10.403,7.685,11,7.34C11.598,6.995,16.737,14.777,17.082,15.375Z" stroke-width="0" transform="matrix(0.5,0,0,0.5,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path></svg></i>
-                                    <label id="user_name" style="font-size: 16px;">김두한</label>님의 회원 상세 정보
+                                    <label id="user_name" style="font-size: 16px;"><?=$objMember->mb_nickname?></label> 님의 회원 상세 정보
                                 </h3>
                                 <span class="pull-right">
                                     <i class="glyphicon glyphicon-chevron-up clickable"></i>
@@ -168,46 +162,56 @@
                                 <table style="width: 100%; " class="table table-bordered table-black user_info">
                                     <tbody><tr>
                                         <td>등록번호 </td>
-                                        <td><label id="id">143</label></td>
+                                        <td><label id="user_fid"><?=$objMember->mb_fid?></label></td>
                                         <td>등록날짜 </td>
-                                        <td><label id="created_at">2022-05-27 14:38:00</label></td>
+                                        <td><label id="created_at"><?=$objMember->mb_time_join?></label></td>
                                     </tr>
                                     <tr>
                                         <td>로그인아이디 </td>
-                                        <td><label id="login_name">sharp2</label></td>
+                                        <td><label id="user_uid"><?=$objMember->mb_uid?></label></td>
                                         <td>비밀번호 </td>
-                                        <td><label id="password">123456</label></td>
+                                        <td><label id="password"><?=$objMember->mb_pwd?></label></td>
                                     </tr>
                                     <tr>
-                                        <td>연락처 연락처</td>
-                                        <td><label id="phone">0908766554</label></td>
+                                        <td>연락처</td>
+                                        <td><label id="user_phone"><?=$objMember->mb_phone?></label></td>
                                         <td>추천인코드 </td>
-                                        <td><label id="partner_id">admincode</label></td>
+                                        <td><label id="partner_id"><?=$objMember->mb_emp_uid?></label></td>
                                     </tr>
                                     <tr>
                                         <td>계정상태 </td>
-                                        <td><label id="status"><span class="badge btn-success">허용</span></label></td>
+                                        <td><label id="user_status">
+                                            <?php if ($objMember->mb_state_active == PERMIT_OK) :  ?>
+                                                <span class="badge btn-success">승인</span>
+                                            <?php elseif ($objMember->mb_state_active == PERMIT_CANCEL) :  ?>
+                                                <span class="badge btn-default">차단</span>
+                                            <?php elseif ($objMember->mb_state_active == PERMIT_WAIT) :  ?>
+                                                <span class="badge btn-primary">대기</span>
+                                            <?php endif ?>
+                                        </label></td>
+                                        <td>레벨 </td>
+                                        <td><label id="money"><?=$objMember->mb_grade?>레벨</label></td>
+                                    </tr>
+                                    <tr>
                                         <td>보유머니 </td>
-                                        <td><label id="money">20000000</label></td>
+                                        <td><label id="money"><?=number_format(allMoney($objMember))?></label></td>
+                                        <td>보유포인트 </td>
+                                        <td><label id="money"><?=number_format($objMember->mb_point)?></label></td>
                                         
                                     </tr>
-
                                     <tr>
                                         <td>환전은행명 </td>
-                                        <td><label id="bank_name">기업</label></td>
+                                        <td><label id="bank_name"><?=$objMember->mb_bank_name?></label></td>
                                         <td>예금주 </td>
-                                        <td><label id="bank_master">김두한</label></td>
+                                        <td><label id="bank_master"><?=$objMember->mb_bank_own?></label></td>
                                     </tr>
                                     <tr>
                                         <td>계좌번호 </td>
-                                        <td><label id="bank_number">110  358625 359</label></td>
+                                        <td><label id="bank_number"><?=$objMember->mb_bank_num?></label></td>
                                         <td>환전비번 </td>
-                                        <td><label id="withdraw_password">123456</label></td>
+                                        <td><label id="withdraw_password"><?=$objMember->mb_bank_pwd?></label></td>
                                     </tr>
-                                    <tr>
-                                        <td>메모 </td>
-                                        <td colspan="3"><label id="memo"></label></td>
-                                    </tr>
+                                    
                                 </tbody></table>
 
                             </div>
@@ -215,7 +219,7 @@
 
                     </div>
                     <div class="col-md-6">
-                        <div class="panel">
+                        <div class="panel"  id="bet-panel">
                             <div class="panel-heading">
                                 <h3 class="panel-title">
                                     <i class="livicon" data-name="clock" data-size="16" data-loop="true" data-c="#fff" data-hc="white" id="livicon-68" style="width: 16px; height: 16px;"><svg height="16" version="1.1" width="16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative; left: -0.6px; top: -0.9875px;" id="canvas-for-livicon-68"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.1.2</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><path fill="#ffffff" stroke="none" d="M16,2C8.269,2,2,8.269,2,16S8.269,30,16,30S30,23.731,30,16S23.731,2,16,2ZM16.691,26.965L16.5,24.101H15.5L15.309,26.965C9.788,26.621,5.379,22.213,5.036,16.692L7.9,16.5V15.5L5.035,15.309C5.3790000000000004,9.788,9.786999999999999,5.379,15.308,5.036L15.5,7.9H16.5L16.691,5.035C22.212,5.3790000000000004,26.621,9.786999999999999,26.964,15.308L24.101,15.5V16.5L26.965,16.691C26.621,22.213,22.213,26.621,16.691,26.965Z" transform="matrix(0.5,0,0,0.5,0,0)" stroke-width="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><path fill="#ffffff" stroke="none" d="M22.632,12.287C22.908,12.766,16.979000000000003,16.59,16.5,16.866S15.41,16.979,15.134,16.5C14.858,16.021,15.022,15.411,15.5,15.134S22.355,11.809,22.632,12.287Z" transform="matrix(0.5,0,0,0.5,0,0)" stroke-width="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><path fill="#ffffff" stroke="none" d="M17.082,15.375C17.428,15.973,17.223,16.737000000000002,16.625,17.083C16.028,17.427999999999997,15.263,17.223,14.917,16.625S10.403,7.685,11,7.34C11.598,6.995,16.737,14.777,17.082,15.375Z" stroke-width="0" transform="matrix(0.5,0,0,0.5,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path></svg></i>
@@ -236,8 +240,6 @@
                                             <th>베팅횟수 </th>
                                             <th>베팅 </th>
                                             <th>당첨 </th>
-                                            <th>베팅전 </th>
-                                            <th>베팅후 </th>
                                         </tr>
                                     </thead>
 
@@ -250,7 +252,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <div class="panel ">
+                        <div class="panel "  id="charge-panel">
                             <div class="panel-heading">
                                 <h3 class="panel-title">
                                     <i class="livicon" data-name="clock" data-size="16" data-loop="true" data-c="#fff" data-hc="white" id="livicon-69" style="width: 16px; height: 16px;"><svg height="16" version="1.1" width="16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative; top: -0.3875px;" id="canvas-for-livicon-69"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.1.2</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><path fill="#ffffff" stroke="none" d="M16,2C8.269,2,2,8.269,2,16S8.269,30,16,30S30,23.731,30,16S23.731,2,16,2ZM16.691,26.965L16.5,24.101H15.5L15.309,26.965C9.788,26.621,5.379,22.213,5.036,16.692L7.9,16.5V15.5L5.035,15.309C5.3790000000000004,9.788,9.786999999999999,5.379,15.308,5.036L15.5,7.9H16.5L16.691,5.035C22.212,5.3790000000000004,26.621,9.786999999999999,26.964,15.308L24.101,15.5V16.5L26.965,16.691C26.621,22.213,22.213,26.621,16.691,26.965Z" transform="matrix(0.5,0,0,0.5,0,0)" stroke-width="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><path fill="#ffffff" stroke="none" d="M22.632,12.287C22.908,12.766,16.979000000000003,16.59,16.5,16.866S15.41,16.979,15.134,16.5C14.858,16.021,15.022,15.411,15.5,15.134S22.355,11.809,22.632,12.287Z" transform="matrix(0.5,0,0,0.5,0,0)" stroke-width="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><path fill="#ffffff" stroke="none" d="M17.082,15.375C17.428,15.973,17.223,16.737000000000002,16.625,17.083C16.028,17.427999999999997,15.263,17.223,14.917,16.625S10.403,7.685,11,7.34C11.598,6.995,16.737,14.777,17.082,15.375Z" stroke-width="0" transform="matrix(0.5,0,0,0.5,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path></svg></i>
@@ -273,7 +275,7 @@
                                             </tr>
                                         </thead>
 
-                                        <tbody id="charge_table"><tr><td>1</td><td>18000000</td><td>강제충전 </td><td>2022-05-27 14:39:16</td></tr><tr><td>2</td><td>2000000</td><td>강제충전 </td><td>2022-05-27 14:39:03</td></tr></tbody>
+                                        <tbody id="charge_table"><tr><td colspan="50" class="empty_table"> 현시할 내역이 없습니다</td></tr></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -281,7 +283,7 @@
 
                     </div>
                     <div class="col-md-4">
-                        <div class="panel ">
+                        <div class="panel "   id="discharge-panel">
                             <div class="panel-heading">
                                 <h3 class="panel-title">
                                     <i class="livicon" data-name="clock" data-size="16" data-loop="true" data-c="#fff" data-hc="white" id="livicon-70" style="width: 16px; height: 16px;"><svg height="16" version="1.1" width="16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative; left: -0.0625px; top: -0.3875px;" id="canvas-for-livicon-70"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.1.2</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><path fill="#ffffff" stroke="none" d="M16,2C8.269,2,2,8.269,2,16S8.269,30,16,30S30,23.731,30,16S23.731,2,16,2ZM16.691,26.965L16.5,24.101H15.5L15.309,26.965C9.788,26.621,5.379,22.213,5.036,16.692L7.9,16.5V15.5L5.035,15.309C5.3790000000000004,9.788,9.786999999999999,5.379,15.308,5.036L15.5,7.9H16.5L16.691,5.035C22.212,5.3790000000000004,26.621,9.786999999999999,26.964,15.308L24.101,15.5V16.5L26.965,16.691C26.621,22.213,22.213,26.621,16.691,26.965Z" transform="matrix(0.5,0,0,0.5,0,0)" stroke-width="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><path fill="#ffffff" stroke="none" d="M22.632,12.287C22.908,12.766,16.979000000000003,16.59,16.5,16.866S15.41,16.979,15.134,16.5C14.858,16.021,15.022,15.411,15.5,15.134S22.355,11.809,22.632,12.287Z" transform="matrix(0.5,0,0,0.5,0,0)" stroke-width="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><path fill="#ffffff" stroke="none" d="M17.082,15.375C17.428,15.973,17.223,16.737000000000002,16.625,17.083C16.028,17.427999999999997,15.263,17.223,14.917,16.625S10.403,7.685,11,7.34C11.598,6.995,16.737,14.777,17.082,15.375Z" stroke-width="0" transform="matrix(0.5,0,0,0.5,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path></svg></i>
@@ -312,7 +314,7 @@
 
                     </div>
                     <div class="col-md-4">
-                        <div class="panel ">
+                        <div class="panel "   id="iplog-panel">
                             <div class="panel-heading">
                                 <h3 class="panel-title">
                                     <i class="livicon" data-name="clock" data-size="16" data-loop="true" data-c="#fff" data-hc="white" id="livicon-71" style="width: 16px; height: 16px;"><svg height="16" version="1.1" width="16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative; left: -0.125px; top: -0.3875px;" id="canvas-for-livicon-71"><desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.1.2</desc><defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs><path fill="#ffffff" stroke="none" d="M16,2C8.269,2,2,8.269,2,16S8.269,30,16,30S30,23.731,30,16S23.731,2,16,2ZM16.691,26.965L16.5,24.101H15.5L15.309,26.965C9.788,26.621,5.379,22.213,5.036,16.692L7.9,16.5V15.5L5.035,15.309C5.3790000000000004,9.788,9.786999999999999,5.379,15.308,5.036L15.5,7.9H16.5L16.691,5.035C22.212,5.3790000000000004,26.621,9.786999999999999,26.964,15.308L24.101,15.5V16.5L26.965,16.691C26.621,22.213,22.213,26.621,16.691,26.965Z" transform="matrix(0.5,0,0,0.5,0,0)" stroke-width="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><path fill="#ffffff" stroke="none" d="M22.632,12.287C22.908,12.766,16.979000000000003,16.59,16.5,16.866S15.41,16.979,15.134,16.5C14.858,16.021,15.022,15.411,15.5,15.134S22.355,11.809,22.632,12.287Z" transform="matrix(0.5,0,0,0.5,0,0)" stroke-width="0" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path><path fill="#ffffff" stroke="none" d="M17.082,15.375C17.428,15.973,17.223,16.737000000000002,16.625,17.083C16.028,17.427999999999997,15.263,17.223,14.917,16.625S10.403,7.685,11,7.34C11.598,6.995,16.737,14.777,17.082,15.375Z" stroke-width="0" transform="matrix(0.5,0,0,0.5,0,0)" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></path></svg></i>
@@ -350,8 +352,8 @@
 <!--main_navbar.php-main-container-->
 </div>
 <?php if(array_key_exists("app.produce", $_ENV)) :?>
-    <script src="<?php echo site_furl('/assets/js/page.js?t='.time());?>"></script>
+    <script src="<?php echo site_furl('/assets/js/member_detail-script.js?t='.time());?>"></script>
 <?php else : ?>
-    <script src="<?php echo site_furl('/assets/js/page.js?v=1');?>"></script>
+    <script src="<?php echo site_furl('/assets/js/member_detail-script.js?v=1');?>"></script>
 <?php endif ?>
 <?= $this->endSection() ?>

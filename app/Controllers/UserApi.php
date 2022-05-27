@@ -479,6 +479,85 @@ class UserApi extends BaseController
         }
     }
 
+    // 유저의 충환전, 배팅총액
+    public function userinfo()
+    {
+        $jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+        if (is_login()) {
+            $strUid = $this->session->user_id;
+            // model
+            
+            $chargeModel = new Charge_Model();
+            $exchangeModel = new Exchange_Model();
+            $confsiteModel = new ConfSite_Model();
+            $siteConfs = $this->getSiteConf($confsiteModel);
+
+            $objUser = $this->modelMember->getInfo($strUid);
+
+            $objResult = new \stdClass();
+            if ($objUser->mb_level >= LEVEL_ADMIN) {
+                
+                $arrInfo['charge_total'] = $chargeModel->calcAdminCharge($arrReqData);
+                $arrInfo['discharge_total'] = $exchangeModel->calcAdminExchange($arrReqData);
+                $arrBet = $this->modelMember->calcUserBet($arrReqData, $siteConfs);
+                $arrInfo['bet_total'] = $arrBet['bet_money'];
+                $arrInfo['win_total'] = $arrBet['bet_win_money'];
+
+                $arrReqData['start'] = date('Y-m-d');
+                $arrReqData['end'] = $arrReqData['start'];
+                $arrInfo['charge_today'] = $chargeModel->calcAdminCharge($arrReqData);
+                $arrInfo['discharge_today'] = $exchangeModel->calcAdminExchange($arrReqData);
+                $arrBet = $this->modelMember->calcUserBet($arrReqData, $siteConfs);
+                $arrInfo['bet_today'] = $arrBet['bet_money'];
+                $arrInfo['win_today'] = $arrBet['bet_win_money'];
+
+                $objResult->data = $arrInfo;
+                $objResult->status = 'success';
+            } else {
+                $objResult->status = 'fail';
+            }
+
+            echo json_encode($objResult);
+        } else {
+            $arrResult['status'] = 'logout';
+            echo json_encode($arrResult);
+        }
+    }
+
+    
+    // 유저의 충환전, 배팅총액
+    public function userbet()
+    {
+        $jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+        if (is_login()) {
+            $strUid = $this->session->user_id;
+            // model
+            $confsiteModel = new ConfSite_Model();
+            $siteConfs = $this->getSiteConf($confsiteModel);
+
+            $objUser = $this->modelMember->getInfo($strUid);
+
+            $objResult = new \stdClass();
+            if ($objUser->mb_level >= LEVEL_ADMIN) {
+                
+                $arrReqData['start'] = date('Y-m-d');
+                $arrReqData['end'] = $arrReqData['start'];
+                $objResult->date = $arrReqData['start'];
+                $objResult->data = $this->modelMember->statistUserBet($arrReqData, $siteConfs);
+                $objResult->status = 'success';
+            } else {
+                $objResult->status = 'fail';
+            }
+
+            echo json_encode($objResult);
+        } else {
+            $arrResult['status'] = 'logout';
+            echo json_encode($arrResult);
+        }
+    }
+
     public function getmembers()
     {
         $jsonData = $_REQUEST['json_'];
