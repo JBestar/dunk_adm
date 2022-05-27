@@ -269,7 +269,7 @@ function addBtnEvent() {
             nAmount = 0;
         }
         if (nAmount == 0) {
-            confirmAlert("충전금액을 입력 해주세요.");
+            alert("충전금액을 입력 해주세요.");
             return false;
         }
 
@@ -291,7 +291,7 @@ function addBtnEvent() {
             nAmount = 0;
         }
         if (nAmount == 0) {
-            confirmAlert("환전금액을 입력 해주세요.");
+            alert("환전금액을 입력 해주세요.");
             return false;
         }
 
@@ -313,7 +313,7 @@ function addBtnEvent() {
             nAmount = 0;
         }
         if (nAmount == 0) {
-            confirmAlert("이송금액을 입력 해주세요.");
+            alert("이송금액을 입력 해주세요.");
             return false;
         }
 
@@ -336,7 +336,7 @@ function addBtnEvent() {
             nAmount = 0;
         }
         if (nAmount == 0) {
-            confirmAlert("환수금액을 입력 해주세요.");
+            alert("환수금액을 입력 해주세요.");
             return false;
         }
 

@@ -220,7 +220,7 @@ function refreshEv(mbFid, elBtn) {
 
 
 
-function requestTrasnfer(jsonData){
+function requestTrasnfer(jsonData, bReload = true){
     $(".loading").show();
     
     jsonData = JSON.stringify(jsonData);
@@ -231,9 +231,11 @@ function requestTrasnfer(jsonData){
         data: { json_: jsonData },
         success: function(jResult) {
             $(".loading").hide();
-            // console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
-                location.reload();
+                if(bReload)
+                    location.reload();
+                else requestMember();
             } else if (jResult.status == "logout") {
                 window.location.replace( FURL +'/');
             } else if (jResult.status == "fail") {

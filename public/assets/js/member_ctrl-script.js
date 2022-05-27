@@ -382,8 +382,11 @@ function showMemCharge(idx, mbFid){
     $("#charge_modal .c_type_money").text("충전금액");
     $("#charge_user_name").val(member.mb_nickname);
     $("#charge_user_id").val(member.mb_uid);
+    $("#charge_user_fid").val(member.mb_fid);
     $("#charge_user_money").val(parseInt(member.mb_money).toLocaleString());
     $("#charge_money").val('');
+    $("#btn-charge-apply").show();
+    $("#btn-discharge-apply").hide();
 
     showChargeDlg();
 }
@@ -400,8 +403,11 @@ function showMemDischarge(idx, mbFid){
     $("#charge_modal .c_type_money").text("환전금액");
     $("#charge_user_name").val(member.mb_nickname);
     $("#charge_user_id").val(member.mb_uid);
+    $("#charge_user_fid").val(member.mb_fid);
     $("#charge_user_money").val(parseInt(member.mb_money).toLocaleString());
     $("#charge_money").val('');
+    $("#btn-charge-apply").hide();
+    $("#btn-discharge-apply").show();
 
     showChargeDlg();
 }
@@ -412,7 +418,7 @@ function reqMemCharge(){
         nAmount = 0;
     }
     if (nAmount == 0) {
-        confirmAlert("충전금액을 입력 해주세요.");
+        alert("충전금액을 입력 해주세요.");
         return false;
     }
 
@@ -424,7 +430,8 @@ function reqMemCharge(){
         'amount': nAmount,
         'type':0
     }
-    requestTrasnfer(jsonData);
+    requestTrasnfer(jsonData, false);
+    closeChargeDlg();
 }
 
 function reqMemDischarge(){
@@ -433,7 +440,7 @@ function reqMemDischarge(){
         nAmount = 0;
     }
     if (nAmount == 0) {
-        confirmAlert("환전금액을 입력 해주세요.");
+        alert("환전금액을 입력 해주세요.");
         return false;
     }
 
@@ -445,7 +452,9 @@ function reqMemDischarge(){
         'amount': nAmount,
         'type':1
     }
-    requestTrasnfer(jsonData);
+    requestTrasnfer(jsonData, false);
+    closeChargeDlg();
+
 }
 
 

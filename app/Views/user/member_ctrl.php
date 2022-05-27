@@ -330,8 +330,8 @@
 					</div>
 				</div>
 				<div class="modal-footer" style="padding: 10px !important;">
-					<a id="btn-charge-apply" onclick="onChargeApply()" class="btn btn-primary btn-charge"><span class="c_type">충전</span></a>
-					<a id="btn-discharge-apply" onclick="onDisChargeApply()" class="btn btn-primary btn-discharge"><span class="c_type">환전</span></a>
+					<a id="btn-charge-apply" onclick="reqMemCharge()" class="btn btn-primary btn-charge"><span class="c_type">충전</span></a>
+					<a id="btn-discharge-apply" onclick="reqMemDischarge()" class="btn btn-primary btn-discharge"><span class="c_type">환전</span></a>
 					<a data-dismiss="modal" class="btn btn-warning"  onclick="closeChargeDlg();">취소 </a>
 				</div>
 			</div>
