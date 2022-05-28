@@ -2,6 +2,7 @@
 namespace App\Controllers;
 use App\Models\SlotPrd_Model;
 use App\Models\CasPrd_Model;
+use App\Models\ConfSite_Model;
 
 class Bet extends StdController {
 
@@ -47,7 +48,18 @@ class Bet extends StdController {
 	
 	public function cshistory(){
 		$modelCasprd = new CasPrd_Model();
-		$arrPrd = $modelCasprd->gets();
+		$arrPrd = [];
+		$modelCasprd->gets();
+
+		$confsiteModel = new ConfSite_Model();
+		$confs = $this->getSiteConf($confsiteModel);
+		if(!$confs["cas_deny"]){
+			$arrPrd =  $modelCasprd->gets(GAME_CASINO_EVOL);
+		}
+		if($confs["kgon_enable"]){
+			$arrPrd +=  $modelCasprd->gets(GAME_CASINO_KGON);
+		}
+
 
 		$param = [
 			'prds' => $arrPrd

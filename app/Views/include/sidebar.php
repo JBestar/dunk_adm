@@ -12,6 +12,8 @@
       <a href="<?php echo siteFurl().'home/conf_bogleball';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
     <?php elseif(!$cas_deny) :?>
       <a href="<?php echo siteFurl().'home/conf_evol';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
+    <?php elseif($kgon_enable) :?>
+      <a href="<?php echo siteFurl().'home/conf_casino';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
     <?php elseif(!$slot_deny) :?>
       <a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
     <?php endif ?>   
@@ -81,7 +83,7 @@
     <a href="<?php echo siteFurl().'bet/pbhistory';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>
     <?php elseif(!$bpg_deny) :?>
     <a href="<?php echo siteFurl().'bet/bbhistory';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>
-    <?php elseif(!$cas_deny) :?>
+    <?php elseif(!$cas_deny || $kgon_enable) :?>
     <a href="<?php echo siteFurl().'bet/cshistory';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>
     <?php elseif(!$slot_deny) :?>
     <a href="<?php echo siteFurl().'bet/slhistory';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>

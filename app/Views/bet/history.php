@@ -11,7 +11,7 @@
 			<a href="<?php echo site_furl('bet/bbhistory');?>" class="sub-navbar-a" >보글볼</a>
 			<a href="<?php echo site_furl('bet/bshistory');?>" class="sub-navbar-a" >보글사다리</a>
    		<?php endif ?>   
-		<?php if(!$cas_deny) :?>
+		<?php if(!$cas_deny || $kgon_enable) :?>
 			<a href="<?php echo site_furl('bet/cshistory');?>" class="sub-navbar-a" >카지노</a>
 		<?php endif ?>
 		<?php if(!$slot_deny) :?>
@@ -47,9 +47,7 @@
 			<label>아이디</label>
             <input type="text" class="pbresult-text-input" id="pbhistory-userid-input-id" >
 
-            <select class="pbresult-game-select" id="pbhistory-game-select-id">
-                <?= $this->renderSection('history_game_options') ?>
-			</select>
+            <?= $this->renderSection('history_game_options') ?>
 
 			<select name="pbresult-number" class="pbresult-number-select" id="pbhistory-number-select-id" style="width:70px;">
 				<option value="10">10개</option>

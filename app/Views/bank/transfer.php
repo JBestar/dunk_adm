@@ -19,7 +19,7 @@
 
             <select class="pbresult-game-select" id="transfer-type-select-id">
 				<option value="0">::분류::</option>
-				<?php if(!$cas_deny) :?>
+				<?php if(!$cas_deny  || $kgon_enable) :?>
 					<option value="1">사이트 => 카지노</option>
 					<option value="2">카지노 => 사이트</option>
 				<?php endif ?>   

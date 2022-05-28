@@ -12,7 +12,7 @@
 			<a href="<?php echo site_furl('bet/bbcalculate');?>" class="sub-navbar-a" >보글볼</a>
 			<a href="<?php echo site_furl('bet/bscalculate');?>" class="sub-navbar-a" >보글사다리</a>
    		<?php endif ?>   
-		<?php if(!$cas_deny) :?>
+		<?php if(!$cas_deny || $kgon_enable) :?>
 		   <a href="<?php echo site_furl('bet/cscalculate');?>" class="sub-navbar-a" >카지노</a>
    		<?php endif ?>   
 		<?php if(!$slot_deny) :?>

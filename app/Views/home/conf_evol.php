@@ -13,10 +13,10 @@
    		<?php endif ?>   
 		<?php if(!$cas_deny) :?>
 			<a href="<?php echo siteFurl().'home/conf_evol';?>" class="sub-navbar-a active" >에볼루션</a>
-			<?php if($kgon_enable) :?>
-				<a href="<?php echo siteFurl().'home/conf_casino';?>" class="sub-navbar-a" >호텔카지노</a>
-			<?php endif ?>  
-   		<?php endif ?>   
+   		<?php endif ?> 
+		<?php if($kgon_enable) :?>
+			<a href="<?php echo siteFurl().'home/conf_casino';?>" class="sub-navbar-a" >호텔카지노</a>
+		<?php endif ?>   
 		<?php if(!$slot_deny) :?>
 			<?php if($_ENV['app.type'] != APPTYPE_2) :?>
 			<a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="sub-navbar-a">정품슬롯</a>
@@ -36,6 +36,20 @@
 			<p>유저 게임승인:</p> 
 			<input type="checkbox" id="confpb-bet-check-id" style="zoom:120%; margin-top:4px;">
 			<label style="font-size:13px; font-weight:normal; padding-top:0px;"> 유저게임승인</label>
+		</div>
+		<div class="confsite-game-text-div">
+			<p> 운영상태</p>			
+			<select class="pbresult-number-select" id="confpb-maintain-select-id" style="margin-left:0px; width: 200px;">
+				<option value="0">운영</option>
+				<option value="1">점검</option>
+			</select>
+		</div>
+		<div class="confsite-game-text-div">
+			<p> 로출상태</p>			
+			<select class="pbresult-number-select" id="confpb-display-select-id" style="margin-left:0px; width: 200px;">
+				<option value="0">보이기</option>
+				<option value="1">감추기</option>
+			</select>
 		</div>
 		<div class="confsite-game-text-div">
 			<p>에이젼트 코드:</p> 
@@ -65,7 +79,9 @@
 </div>
 <?php if(array_key_exists("app.produce", $_ENV)) :?>
     <script src="<?php echo site_furl('/assets/js/confcs-script.js?t='.time());?>"></script>
+    <script src="<?php echo site_furl('/assets/js/confev-script.js?t='.time());?>"></script>
 <?php else : ?>
     <script src="<?php echo site_furl('/assets/js/confcs-script.js?v=1');?>"></script>
+    <script src="<?php echo site_furl('/assets/js/confev-script.js?v=1');?>"></script>
 <?php endif ?>
 <?= $this->endSection() ?>

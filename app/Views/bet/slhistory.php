@@ -2,10 +2,12 @@
 <?= $this->section('history-active') ?>"<?=$game_name?>"<?= $this->endSection() ?>
 <?= $this->section('history-title') ?><?=$game_name?> 배팅내역<?= $this->endSection() ?>
 <?= $this->section('history_game_options') ?>	
-	<option value="0">::업체선택::</option>	
-	<?php foreach ($prds as $prd):?>
-		<option value="<?=$prd->code?>"><?=$prd->name_kr?></option>
-	<?php endforeach;?>
+	<select class="pbresult-game-select" id="pbhistory-game-select-id">
+		<option value="0">::업체선택::</option>	
+		<?php foreach ($prds as $prd):?>
+			<option value="<?=$prd->code?>"><?=$prd->name_kr?></option>
+		<?php endforeach;?>
+	</select>
 <?= $this->endSection() ?>
 <?= $this->section('history-bet-table-headers') ?>		
 	<th>번호</th>

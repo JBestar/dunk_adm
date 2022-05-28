@@ -41,6 +41,8 @@ function showMember(arrMember) {
         strBuf += arrMember[nRow].sess_join;
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].sess_update;
+        strBuf += "</td> <td>";
+        strBuf += "<button name='" + arrMember[nRow].sess_mb_fid + "' data-nickname='" + arrMember[nRow].mb_nickname + "'>강제아웃</button>   ";
         strBuf += "</td></tr>";
     }
 
@@ -49,9 +51,43 @@ function showMember(arrMember) {
     }
 
     $("#user-member-table-id").html(strBuf);
+
+    addBtnEvent();
 }
 
 
+function addBtnEvent() {
+    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+
+    var elemTable = document.getElementById("user-member-table-id");
+    var elemTableBtns = elemTable.getElementsByTagName("button");
+    if (elemTableBtns == null)
+        return;
+
+    var i;
+    for (i = 0; i < elemTableBtns.length; i++) {
+        addButtonElementListener(elemTableBtns[i]);
+    }
+}
+
+
+
+function addButtonElementListener(buttonElement) {
+    buttonElement.addEventListener("click", function() {
+
+        let tHtml = this.innerHTML; 
+        if (tHtml.search("강제아웃") >= 0) {
+            let nickname  = $(this).data('nickname');
+            if(nickname.length > 0){
+                if (!confirm(nickname+" 회원을 강제아웃 시키겠습니까?"))
+                    return;
+                var jsonData = { "mb_fid": this.name };
+                requestLogoutMember(jsonData);
+            }
+            
+        }
+    });
+}
 
 function addEventListner() {
     $("#userpanel-list-view-but-id").click(function() {
@@ -134,4 +170,36 @@ function requestTotalPage() {
         }
 
     });
+}
+
+function requestLogoutMember(jsData) {
+
+    var jsonData = JSON.stringify(jsData);
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: FURL + "/userapi/logoutmember",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            console.log(jResult);
+
+            if (jResult.status == "success") {
+                requestMember();
+                alert('로그아웃되었습니다.');
+            } else if (jResult.status == "fail") {
+
+            } else if (jResult.status == "nopermit") {
+                alert('변경권한이 없습니다.');
+                window.location.replace( FURL +'/pages/nopermit');
+            } else if (jResult.status == "logout") {
+                window.location.replace( FURL +'/');
+            }
+        },
+        error: function(request, status, error) {
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+
+    });
+
 }

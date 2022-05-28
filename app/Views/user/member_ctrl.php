@@ -325,7 +325,7 @@
 					<?php endif ?>
 							<div class="col-md-12">
 								<div class="row">
-								<?php if(!$cas_deny) :?>
+								<?php if(!$cas_deny || $kgon_enable) :?>
 									<div class="col-md-2">카지노 배당율 (%)</div>
 									<div class="col-md-2">
 										<input type="number" id="cs_ratio" step="0.01" class="form-control" value="0.00" min="0" />

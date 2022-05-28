@@ -102,7 +102,7 @@ function requestGame() {
         "count": CountPerPage,
         "page": nPage,
         "name": sGame,
-
+        "cat":3
     };
 
     jsonData = JSON.stringify(jsonData);
@@ -140,6 +140,7 @@ function requestTotalPage() {
     var jsonData = {
         "count": CountPerPage,
         "name": sGame,
+        "cat":3
     };
 
     jsonData = JSON.stringify(jsonData);

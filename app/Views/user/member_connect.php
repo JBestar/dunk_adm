@@ -44,6 +44,7 @@
 					<th>접속IP</th>
 					<th>접속시간</th>
 					<th>업뎃시간</th>
+					<th>강제아웃</th>
 				</tr>
 			</thead>
 			<tbody  id="user-member-table-id">

@@ -17,7 +17,7 @@ class PbRound_Model extends Model {
         'round_result_4', 
         'round_result_5', 
         'round_power', 
-        'round_mormal',
+        'round_normal',
     ];
     protected $primaryKey = 'round_fid';
 

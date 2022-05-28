@@ -117,7 +117,7 @@ function showMember(arrMember, confs) {
                     strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >보글사다리</button>";
                 }
             }
-            if(!confs.cas_deny){
+            if(!confs.cas_deny || confs.kgon_enable){
                 if (arrMember[nRow].mb_game_cs == 1) {
                     strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>카지노</button>";
                 } else {
@@ -239,7 +239,7 @@ function requestTotalPage() {
         dataType: 'json',
         type: 'post',
         success: function(jResult) {
-            // console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();

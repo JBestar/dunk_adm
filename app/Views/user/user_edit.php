@@ -229,7 +229,7 @@
 				<?php endif?>
 			</div>	
 		<?php endif ?>   
-		<?php if(!$cas_deny) :?>
+		<?php if(!$cas_deny || $kgon_enable) :?>
 			<div class="useredit-percent-div">
 				<p>카지노:</p>			 
 				<label> 배당율(%)</label>

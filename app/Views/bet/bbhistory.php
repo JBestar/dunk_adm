@@ -2,12 +2,14 @@
 <?= $this->section('history-active') ?>"보글볼"<?= $this->endSection() ?>
 <?= $this->section('history-title') ?>보글볼 배팅내역<?= $this->endSection() ?>
 <?= $this->section('history_game_options') ?>		
-	<option value="0">::배팅선택::</option>	
-	<option value="1">파워볼 단폴</option>
-	<option value="2">파워볼 조합</option>
-	<option value="3">일반볼 대중소</option>
-	<option value="4">파워볼 3조합</option>
-	<option value="5">파워볼 숫자</option>
+	<select class="pbresult-game-select" id="pbhistory-game-select-id">
+		<option value="0">::배팅선택::</option>	
+		<option value="1">파워볼 단폴</option>
+		<option value="2">파워볼 조합</option>
+		<option value="3">일반볼 대중소</option>
+		<option value="4">파워볼 3조합</option>
+		<option value="5">파워볼 숫자</option>
+	</select>
 <?= $this->endSection() ?>
 <?= $this->section('history-add-round-search') ?>
 	<label>회차</label>

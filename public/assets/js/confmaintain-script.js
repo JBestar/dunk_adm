@@ -1,4 +1,7 @@
-addBtnEvent();
+$(document).ready(function() {
+
+    addBtnEvent();
+});
 
 function readConfigToObject() {
 

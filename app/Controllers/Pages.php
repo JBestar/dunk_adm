@@ -11,9 +11,10 @@ class Pages extends BaseController
 
 	public function login()
 	{		
-        $model = new ConfSite_Model();
-        $siteName = $model->getSiteName();
-		return view('/pages/login', ['site_name'=> $siteName]);		
+		$this->response->redirect("/");
+        // $model = new ConfSite_Model();
+        // $siteName = $model->getSiteName();
+		// return view('/pages/login', ['site_name'=> $siteName]);		
 	}
 
 

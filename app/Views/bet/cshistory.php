@@ -3,15 +3,15 @@
 <?= $this->section('history-title') ?>		
 	카지노 배팅내역
 <?= $this->endSection() ?>
-<?= $this->section('history_game_options') ?>		
-	<option value="-1">::업체선택::</option>	
-	<?php foreach ($prds as $prd):?>
-		<option value="<?=$prd->vendor_id?>"><?=$prd->name?></option>
-	<?php endforeach;?>
-	<!-- <option value="1">바카라</option>
-	<option value="2">룰렛</option>
-	<option value="3">식보</option>
-	<option value="4">바카라보</option> -->
+<?= $this->section('history_game_options') ?>	
+	<?php if($kgon_enable) :?>
+		<select class="pbresult-game-select" id="pbhistory-game-select-id">
+			<option value="-1">::업체선택::</option>	
+			<?php foreach ($prds as $prd):?>
+				<option value="<?=$prd->vendor_id?>"><?=$prd->name?></option>
+			<?php endforeach;?>
+		</select>
+	<?php endif ?>   
 <?= $this->endSection() ?>
 <?= $this->section('history-bet-table-headers') ?>		
 	<th>ID</th>

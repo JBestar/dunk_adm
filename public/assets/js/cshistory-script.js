@@ -134,7 +134,10 @@ function requestBetHistory() {
     var dtStart = $("#pbhistory-datestart-input-id").val();
     var dtEnd = $("#pbhistory-dateend-input-id").val();
     var strUser = $("#pbhistory-userid-input-id").val();
-    var nMode = $("#pbhistory-game-select-id").val();
+    var nMode = 0;
+    if($("#pbhistory-game-select-id").length > 0)
+        nMode = $("#pbhistory-game-select-id").val();
+
     var nPage = getActivePage();
     var strEmp = "";
     if ($("#pbhistory-empid-input-id").length > 0) {
@@ -180,7 +183,9 @@ function requestTotalPage() {
     var dtEnd = $("#pbhistory-dateend-input-id").val();
     CountPerPage = $("#pbhistory-number-select-id").val();
     var strUser = $("#pbhistory-userid-input-id").val();
-    var nMode = $("#pbhistory-game-select-id").val();
+    var nMode = 0;
+    if($("#pbhistory-game-select-id").length > 0)
+        nMode = $("#pbhistory-game-select-id").val();
     var strEmp = "";
     if ($("#pbhistory-empid-input-id").length > 0) {
         strEmp = $("#pbhistory-empid-input-id").val();

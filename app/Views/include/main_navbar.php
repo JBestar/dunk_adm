@@ -20,7 +20,7 @@
 					<?php if(!$bpg_deny) :?>
 						<td>보글볼<span id="main-navbar-emp_bbrate-id">0 % | 0 %</span></td>
 					<?php endif ?>     
-					<?php if(!$cas_deny) :?>
+					<?php if(!$cas_deny || $kgon_enable) :?>
 						<td>카지노<span id="main-navbar-emp_evrate-id">0 %</span></td>
 					<?php endif ?>   
 				<?php } else { ?>

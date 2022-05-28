@@ -51,7 +51,7 @@ class CasPrd_Model extends Model {
     public function search($arrReqData){
         
         $strSql = " SELECT * FROM ".$this->table;
-        $strSql.= " WHERE is_enable = '1' AND cat = ".GAME_CASINO_KGON;
+        $strSql.= " WHERE is_enable = '1' AND cat = ".$arrReqData['cat'];
         if(strlen($arrReqData['name']) > 0){
             $strSql.= " AND (key LIKE '%".$arrReqData['name']."%' OR name LIKE '%".$arrReqData['name']."%' ) ";
         }
@@ -69,7 +69,7 @@ class CasPrd_Model extends Model {
     public function searchCount($arrReqData){
         
         $strSql = "SELECT count(*) as count FROM ".$this->table;
-        $strSql.= " WHERE is_enable = '1' AND cat = ".GAME_CASINO_KGON;
+        $strSql.= " WHERE is_enable = '1' AND cat = ".$arrReqData['cat'];
         if(strlen($arrReqData['name']) > 0){
             $strSql.= " AND (key LIKE '%".$arrReqData['name']."%' OR name LIKE '%".$arrReqData['name']."%' ) ";
         }

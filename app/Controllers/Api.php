@@ -34,6 +34,7 @@ class Api extends BaseController{
 			$this->response->redirect( $_ENV['app.furl'].'/pages/login');
 		}	
 	}
+	/*
     //관리자 로그인
 	public function login(){ 
 		$jsonData = $_REQUEST['json_'];
@@ -91,7 +92,7 @@ class Api extends BaseController{
 			$sessId = $this->session->session_id;
 			$sess = $this->modelSess->getByUid($member->mb_uid);
 
-			if($member->mb_level < LEVEL_ADMIN && !$modelConfsite->IsMultiLogin() && !is_null($sess) && $sess->sess_id != $sessId /*$sess->sess_ip != $ip*/){
+			if($member->mb_level < LEVEL_ADMIN && !$modelConfsite->IsMultiLogin() && !is_null($sess) && $sess->sess_id != $sessId ){
 				$iResult = 4;
 				$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_LOGINING);
             } else if ($member->mb_state_active == STATE_ACTIVE){
@@ -125,7 +126,7 @@ class Api extends BaseController{
 		}
         return $this->response->setJSON($arrResult);
 	}
-
+	*/
 	public function logout()
 	{
 		$this->sess_destroy();

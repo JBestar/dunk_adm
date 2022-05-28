@@ -11,13 +11,12 @@
 			<a href="<?php echo siteFurl().'home/conf_bogleball';?>" class="sub-navbar-a" >보글파워볼</a>
 			<a href="<?php echo siteFurl().'home/conf_bogleladder';?>" class="sub-navbar-a " >보글사다리</a>
 		<?php endif ?>   
-		<?php if(!$cas_deny) :?>
+		<?php if(!$cas_deny ) :?>
 			<a href="<?php echo siteFurl().'home/conf_evol';?>" class="sub-navbar-a " >에볼루션</a>
-			<?php if($kgon_enable) :?>
-				<a href="<?php echo siteFurl().'home/conf_casino';?>" class="sub-navbar-a active" >호텔카지노</a>
-			<?php endif ?>  
 		<?php endif ?>   
-		
+		<?php if($kgon_enable) :?>
+				<a href="<?php echo siteFurl().'home/conf_casino';?>" class="sub-navbar-a active" >호텔카지노</a>
+			<?php endif ?>
 		<?php if(!$slot_deny) :?>
 			<?php if($_ENV['app.type'] != APPTYPE_2) :?>
 			<a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="sub-navbar-a">정품슬롯</a>

@@ -440,7 +440,7 @@ class Member_Model extends Model
             $strSQL .= ' GROUP BY bet_mb_uid) ';
         }
 
-        if(!$confs['cas_deny']){
+        if(!$confs['cas_deny'] || $confs['kgon_enable']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_casino ';
             $strSQL .= $strCond;
             $strSQL .= ' GROUP BY bet_mb_uid) ';
@@ -563,7 +563,7 @@ class Member_Model extends Model
             $strSQL .= $strCond;
         }
 
-        if(!$confs['cas_deny']){
+        if(!$confs['cas_deny'] || $confs['kgon_enable']){
             $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_casino ';
             $strSQL .= $strCond;
         }
@@ -615,7 +615,7 @@ class Member_Model extends Model
             $strSQL.= $strCond." ) AS bet_bs_g ";
         }
 
-        if(!$confs['cas_deny']){
+        if(!$confs['cas_deny'] || $confs['kgon_enable']){
             $strSQL.= " UNION All SELECT bet_money, bet_win_money, bet_count, bet_name, '".GAME_CASINO_EVOL."' As bet_kind From ";
             $strSQL.= " (SELECT bet_casino_g.*, name_ko AS bet_name from (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count, bet_game_id FROM bet_casino ";
             $strSQL.=  $strCond." group by bet_game_id) AS bet_casino_g ";
@@ -1124,7 +1124,9 @@ class Member_Model extends Model
             $sqlBuilder->where('mb_state_active', $arrReqData['mb_state']);
         }
         if (strlen($arrReqData['mb_uid']) > 0){
-            $sqlBuilder->like('mb_uid', $arrReqData['mb_uid']);
+            $where = "  mb_uid LIKE '%".$arrReqData['mb_uid']."%' OR mb_fid = '".$arrReqData['mb_uid']."' ";
+
+            $sqlBuilder->where($where);
         }
         return $sqlBuilder->get()->getRow();
     }
@@ -1180,7 +1182,7 @@ class Member_Model extends Model
             $where .= " AND mb_emp_fid = '".$iEmpFid."'";
         }
         if (strlen($arrReqData['mb_uid']) > 0) {
-            $where .= " AND mb_uid LIKE '%".$arrReqData['mb_uid']."%'";
+            $where .= " AND ( mb_uid LIKE '%".$arrReqData['mb_uid']."%' OR mb_fid = '".$arrReqData['mb_uid']."') ";
         }
         if ($arrReqData['mb_grade'] != 0){
             $where .= " AND mb_grade = '".$arrReqData['mb_grade']."'";
@@ -1310,7 +1312,7 @@ class Member_Model extends Model
             $strBetM.= " + bet_bb.bet_m + bet_bl.bet_m "; 
             $strBetW.= " + bet_bb.bet_w + bet_bl.bet_w "; 
         }
-        if(!$confs['cas_deny']){
+        if(!$confs['cas_deny'] || $confs['kgon_enable']){
             $strBetM.= " + bet_cs.bet_m "; 
             $strBetW.= " + bet_cs.bet_w "; 
         }
@@ -1325,7 +1327,7 @@ class Member_Model extends Model
             $where .= " AND mb_emp_fid = '".$iEmpFid."'";
         }
         if (strlen($arrReqData['mb_uid']) > 0) {
-            $where .= " AND mb_uid LIKE '%".$arrReqData['mb_uid']."%'";
+            $where .= " AND ( mb_uid LIKE '%".$arrReqData['mb_uid']."%' OR mb_fid = '".$arrReqData['mb_uid']."') ";
         }
         if ($arrReqData['mb_grade'] != 0){
             $where .= " AND mb_grade = '".$arrReqData['mb_grade']."'";
@@ -1346,7 +1348,7 @@ class Member_Model extends Model
             $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_bogleball group by bet_mb_uid ) bet_bb ON bet_bb.bet_mb_uid = member.mb_uid";
             $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_bogleladder group by bet_mb_uid ) bet_bl ON bet_bl.bet_mb_uid = member.mb_uid";
         }
-        if(!$confs['cas_deny']){
+        if(!$confs['cas_deny'] || $confs['kgon_enable']){
             $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_casino group by bet_mb_uid ) bet_cs ON bet_cs.bet_mb_uid = member.mb_uid";
         }
 	    $strSQL.= " LEFT JOIN ( select rw_mb_fid, sum(rw_point) AS rw_point from bet_reward group by rw_mb_fid ) sum_reward ON sum_reward.rw_mb_fid = member.mb_fid";
