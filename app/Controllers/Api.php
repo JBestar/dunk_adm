@@ -291,7 +291,11 @@ class Api extends BaseController{
 			if($bPermit){
 				//model
 				$confgameModel = new ConfGame_Model();
-				$confgameModel->saveData($arrData);
+                $query = "";
+				if($confgameModel->saveData($arrData, $query)){
+                    $this->modelModify->add($this->session->user_id, MOD_GM_CONF, $query, $this->request->getIPAddress());
+
+				}
 			
 				$arrResult['status'] = "success";
 			} else $arrResult['status'] = "nopermit";

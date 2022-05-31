@@ -86,6 +86,9 @@ class UserApi extends BaseController
                 } elseif (10 == $iResult) {
                     $arrResult['status'] = 'bs_ratio_error';
                     $arrResult['error'] = $strError;
+                } elseif (11 == $iResult) {
+                    $arrResult['status'] = 'eo_ratio_error';
+                    $arrResult['error'] = $strError;
                 } elseif (-1 == $iResult) {
                     $arrResult['status'] = 'val_error';
                     $arrResult['error'] = $strError;
@@ -164,6 +167,9 @@ class UserApi extends BaseController
                     $arrResult['error'] = $strError;
                 } elseif (10 == $iResult) {
                     $arrResult['status'] = 'bs_ratio_error';
+                    $arrResult['error'] = $strError;
+                } elseif (11 == $iResult) {
+                    $arrResult['status'] = 'eo_ratio_error';
                     $arrResult['error'] = $strError;
                 } elseif (-1 == $iResult) {
                     $arrResult['status'] = 'val_error';

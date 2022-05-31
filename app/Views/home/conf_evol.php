@@ -2,7 +2,7 @@
 <?= $this->section('content') ?>
 	  <!--Sub Navbar-->
 	<div class = "sub-navbar">
-		<p><i class="glyphicon glyphicon-play-circle"></i> 기본설정::게임설정</p>
+		<p><i class="glyphicon glyphicon-play-circle"></i> 게임설정</p>
 		<?php if(!$npg_deny) :?>
 			<a href="<?php echo siteFurl().'home/conf_powerball';?>" class="sub-navbar-a" >파워볼</a>
 			<a href="<?php echo siteFurl().'home/conf_powerladder';?>" class="sub-navbar-a " >파워사다리</a>
@@ -12,10 +12,10 @@
 			<a href="<?php echo siteFurl().'home/conf_bogleladder';?>" class="sub-navbar-a " >보글사다리</a>
    		<?php endif ?>   
 		<?php if($eos5_enable) :?>
-			<a href="<?php echo site_furl('home/conf_eos5ball');?>" class="sub-navbar-a" >EOS5분파워볼</a>
+			<a href="<?php echo site_furl('home/conf_eos5ball');?>" class="sub-navbar-a" >EOS5분</a>
    		<?php endif ?>
 		<?php if($eos3_enable) :?>
-			<a href="<?php echo site_furl('home/conf_eos3ball');?>" class="sub-navbar-a" >EOS5분파워볼</a>
+			<a href="<?php echo site_furl('home/conf_eos3ball');?>" class="sub-navbar-a" >EOS3분</a>
    		<?php endif ?>    
 		<?php if(!$cas_deny) :?>
 			<a href="<?php echo siteFurl().'home/conf_evol';?>" class="sub-navbar-a active" >에볼루션</a>

@@ -146,7 +146,7 @@ class Result extends StdController {
 	{
 		$param = [
 			'game_name' => "보글사다리",
-			'game_id' => GAME_BOGLE_BALL,
+			'game_id' => GAME_BOGLE_LADDER,
 		];
 		$roundModel = new BsRound_Model();
 		$this->result_edit_page(
@@ -164,7 +164,7 @@ class Result extends StdController {
 			'game_name' => "EOS5분파워볼",
 			'game_id' => GAME_EOS5_BALL,
 		];	
-		$this->load_view_page('result/pbresult', 'gameresult', LEVEL_ADMIN, $param);			
+		$this->load_view_page('result/bbresult', 'gameresult', LEVEL_ADMIN, $param);			
 	}
 
 	public function e5result_edit($strRoundFid)
@@ -190,7 +190,7 @@ class Result extends StdController {
 			'game_name' => "EOS3분파워볼",
 			'game_id' => GAME_EOS3_BALL,
 		];	
-		$this->load_view_page('result/pbresult', 'gameresult', LEVEL_ADMIN, $param);			
+		$this->load_view_page('result/bbresult', 'gameresult', LEVEL_ADMIN, $param);			
 	}
 
 	public function e3result_edit($strRoundFid)

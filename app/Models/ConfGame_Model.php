@@ -56,15 +56,17 @@ class ConfGame_Model extends Model {
         return $this->where(array('game_index'=>$strIndex))->first();
     }
 
-    public function saveData($arrData){
+    public function saveData($arrData, &$query){
 
         if($arrData == null) return false;
         if (!array_key_exists("game_index", $arrData)) return false;
         if (!array_key_exists("game_bet_permit", $arrData)) return false;
                 
-        $arrBatch = array();
-        $arrBatch[0] = $arrData;
-        return  $this->builder()->updateBatch($arrBatch, 'game_index');
+        $bResult =  $this->update($arrData['game_index'], $arrData);
+        if($bResult){
+            $query = $this->db->getLastQuery();
+        }
+        return $bResult;
     }
 
 }

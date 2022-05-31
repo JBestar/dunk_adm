@@ -34,6 +34,7 @@ class User extends StdController
 				$objEmpMember = $this->modelMember->find($objMember->mb_emp_fid);
 				if ($objEmpMember != null)
 					$empUid = $objEmpMember->mb_uid;
+				$bChild = $objMember->mb_emp_fid == $objAdmin->mb_fid;
 				$bPermit = true;
 			}
 		}

@@ -824,7 +824,7 @@ Style - powerball
 }
 
 .confsite-game-text-div label {
-    width: 150px;
+    min-width: 50px;
     font-size: 12px;
     text-align: left;
     color: var(--bar-font-color);

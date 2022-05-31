@@ -293,8 +293,9 @@ defined('SLOTCODE_API_FAIL')        || define('SLOTCODE_API_FAIL', 100);    //AP
 
 defined('MOD_MB_PWD')           || define('MOD_MB_PWD', 1);     
 defined('MOD_MB_INFO')          || define('MOD_MB_INFO', 2);     
-defined('MOD_MB_STATE')         || define('MOD_MB_STATE', 3); 
+defined('MOD_MB_STATE')         || define('MOD_MB_STATE', 3);
 
+defined('MOD_GM_CONF')          || define('MOD_GM_CONF', 10); 
 defined('MOD_DB_DELETE')        || define('MOD_DB_DELETE', 11);     
 defined('MOD_DB_CLEAR')         || define('MOD_DB_CLEAR', 12);     
 

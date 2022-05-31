@@ -951,7 +951,7 @@ class Member_Model extends Model
 
     public function modifyMember($arrData, &$strError, &$query)
     {
-        // 결과 0:오유 1:성공 2:아이디중복 3:추천인 오유 4:파워볼 배당율오유 5:파워사다리 배당율오유 6:키노사다리 배당율 오유, 11 중복닉네임
+        // 결과 0:오유 1:성공 2:아이디중복 3:추천인 오유 4:파워볼 배당율오유 5:파워사다리 배당율오유 6:키노사다리 배당율 오유, 12 중복닉네임
 
         // 아이디검사
         $objMember = $this->getInfoByFid($arrData['mb_fid']);
@@ -964,7 +964,7 @@ class Member_Model extends Model
 
             $objUser = $this->getByNickname($arrData['mb_nickname']);
             if (!is_null($objUser) && $objUser->mb_fid != $arrData['mb_fid']) {
-                return 11;
+                return 12;
             }
         } elseif ($arrData['mb_emp_fid'] > 0) {
             // 추천인 검사
@@ -977,7 +977,7 @@ class Member_Model extends Model
             if ($objMember->mb_level >= LEVEL_EMPLOYEE) {
                 $objUser = $this->getByNickname($arrData['mb_nickname']);
                 if (!is_null($objUser) && $objUser->mb_fid != $arrData['mb_fid']) {
-                    return 11;
+                    return 12;
                 }
             }
             $resultRatio = $this->checkGameRatio($objEmployee, $arrData, $strError);

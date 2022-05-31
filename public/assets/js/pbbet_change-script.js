@@ -210,10 +210,10 @@ function addTableBtnEvent() {
         elemTableBtns[i].addEventListener("click", function() {
 
             if (this.innerHTML.search("결과처리") >= 0 || this.innerHTML.search("복구처리") >= 0) {
-                var jsData = [this.name];
+                var jsData = {"data":[this.name], "game":mGameId};
                 requestBetProcess(jsData);
             } else if (this.innerHTML.search("무효처리") >= 0) {
-                var jsData = [this.name];
+                var jsData = {"data":[this.name], "game":mGameId};
                 requestBetIgnore(jsData);
             }
         });
@@ -255,10 +255,11 @@ function addEventListner() {
         if (mBetData == null) return;
         if (mBetData.length < 1) return;
 
-        var jsData = new Array();
+        var arrData = new Array();
         for (nRow in mBetData)
-            jsData[nRow] = mBetData[nRow].bet_fid;
+            arrData[nRow] = mBetData[nRow].bet_fid;
 
+        var jsData = {"data":arrData, "game":mGameId};
         requestBetIgnore(jsData);
     });
 
@@ -268,10 +269,11 @@ function addEventListner() {
         if (mBetData == null) return;
         if (mBetData.length < 1) return;
 
-        var jsData = new Array();
+        var arrData = new Array();
         for (nRow in mBetData)
-            jsData[nRow] = mBetData[nRow].bet_fid;
+            arrData[nRow] = mBetData[nRow].bet_fid;
 
+        var jsData = {"data":arrData, "game":mGameId};
         requestBetProcess(jsData);
     });
 }

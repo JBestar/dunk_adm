@@ -181,6 +181,12 @@ function showMemberInfo(objUser) {
 
         strBuf = objUser.mb_game_bs_ratio + " %";
         $("#main-navbar-emp_bsrate-id").text(strBuf);
+
+        strBuf = objUser.mb_game_eo_ratio + " % | ";
+        strBuf += objUser.mb_game_eo2_ratio + " %";
+        $("#main-navbar-emp_eorate-id").text(strBuf);
+
+
     }
 
     document.getElementById("main-navbar-alarm-check-id").checked = objUser.mb_state_alarm == 1 ? true : false;

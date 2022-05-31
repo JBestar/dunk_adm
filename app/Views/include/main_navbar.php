@@ -5,7 +5,7 @@
 		<div class="load lds-ellipsis"></div>
 	</div>
 	<div class="main-navbar" id="main-navbar-id">
-		<h4 style="float: left; margin: 5px 40px 5px 10px;  font-weight: bold; color: #0090ff; font-size: 20px;"
+		<h4 style="float: left; margin: 5px 20px 5px 10px;  font-weight: bold; color: #0090ff; font-size: 20px;"
 			id="main-navbar-level-id"></h4>
 
 		<Table class="main-navbar-info-table" id="main-navbar-table-id">
@@ -19,13 +19,14 @@
 					<?php endif ?>     
 					<?php if(!$bpg_deny) :?>
 						<td>보글볼<span id="main-navbar-emp_bbrate-id">0 % | 0 %</span></td>
-					<?php endif ?>    
-					<?php if($eos5_enable || $eos3_enable) :?>
-						<td>EOS파워볼<span id="main-navbar-emp_eorate-id">0 % | 0 %</span></td>
 					<?php endif ?>  
 					<?php if(!$cas_deny || $kgon_enable) :?>
 						<td>카지노<span id="main-navbar-emp_evrate-id">0 %</span></td>
 					<?php endif ?>   
+					<?php if($eos5_enable || $eos3_enable) :?>
+						<td>EOS파워볼<span id="main-navbar-emp_eorate-id">0 % | 0 %</span></td>
+					<?php endif ?>  
+					  
 				<?php } else { ?>
 
 				<td>새 문의&nbsp;<a href="<?php echo site_furl('/board/message');?>" id="main-navbar-newmessage-id">0 통</a></td>

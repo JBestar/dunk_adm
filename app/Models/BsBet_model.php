@@ -53,7 +53,7 @@ class BsBet_Model extends Model {
 
 
     function getByFid($nBetFid){        
-        return $this->where($this->table, array('bet_fid'=>$nBetFid))->first();
+        return $this->where(array('bet_fid'=>$nBetFid))->first();
     }
 
     function getByUserId($strUserId, $nCount)

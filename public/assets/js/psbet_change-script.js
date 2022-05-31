@@ -123,10 +123,10 @@ function addTableBtnEvent() {
         elemTableBtns[i].addEventListener("click", function() {
 
             if (this.innerHTML.search("결과처리") >= 0 || this.innerHTML.search("복구처리") >= 0) {
-                var jsData = {"data":this.name, "game":mGameId};
+                var jsData = {"data":[this.name], "game":mGameId};
                 requestBetProcess(jsData);
             } else if (this.innerHTML.search("무효처리") >= 0) {
-                var jsData = {"data":this.name, "game":mGameId};
+                var jsData = {"data":[this.name], "game":mGameId};
                 requestBetIgnore(jsData);
             }
         });

@@ -318,7 +318,7 @@ function reqMemSave(objMember, closeDlg = null){
                         alert("중복된 아이디입니다.");
                     else if (jResult.error == 3)
                         alert("등록된 매장이 아닙니다.");
-                    else if (jResult.error == 11)
+                    else if (jResult.error == 12)
                         alert("중복된 닉네임입니다.");
                     else alert("수정이 실패되었습니다.");
                 } else if (jResult.status == "val_error") {
@@ -339,6 +339,8 @@ function reqMemSave(objMember, closeDlg = null){
                     alert("보글볼 배당율이 추천인설정값 " + jResult.error + "보다 클수 없습니다.");
                 } else if (jResult.status == "bs_ratio_error") {
                     alert("보글사다리 배당율이 추천인설정값 " + jResult.error + "보다 클수 없습니다.");
+                } else if (jResult.status == "eo_ratio_error") {
+                    alert("EOS파워볼 배당율이 추천인설정값 " + jResult.error + "보다 클수 없습니다.");
                 } else if (jResult.status == "employee_error") {
                     alert("추천인 아이디가 존재하지 않습니다.");
                 }
@@ -375,7 +377,7 @@ function reqMemSave(objMember, closeDlg = null){
                 } else if (jResult.status == "fail") {
                     if (jResult.error == 2)
                         alert("중복된 아이디입니다.");
-                    else if (jResult.error == 11)
+                    else if (jResult.error == 12)
                         alert("중복된 닉네임입니다.");
                     else if (jResult.error == 3)
                         alert("등록된 추천인이 아닙니다.");
@@ -392,6 +394,8 @@ function reqMemSave(objMember, closeDlg = null){
                     alert("보글볼 배당율이 추천인설정값 " + jResult.error + "보다 클수 없습니다.");
                 } else if (jResult.status == "bs_ratio_error") {
                     alert("보글사다리 배당율이 추천인설정값 " + jResult.error + "보다 클수 없습니다.");
+                } else if (jResult.status == "eo_ratio_error") {
+                    alert("EOS파워볼 배당율이 추천인설정값 " + jResult.error + "보다 클수 없습니다.");
                 } else if (jResult.status == "employee_error") {
                     alert("추천인 아이디가 존재하지 않습니다.");
                 }
