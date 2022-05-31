@@ -1,41 +1,7 @@
-<?= $this->extend('header') ?>
-<?= $this->section('content') ?>
-	  <!--Sub Navbar-->
-	<div class = "sub-navbar">
-		<p><i class="glyphicon glyphicon-play-circle"></i> 게임설정</p>
-		<?php if(!$npg_deny) :?>
-			<a href="<?php echo siteFurl().'home/conf_powerball';?>" class="sub-navbar-a" >파워볼</a>
-			<a href="<?php echo siteFurl().'home/conf_powerladder';?>" class="sub-navbar-a " >파워사다리</a>
-		<?php endif ?>   
-    	<?php if(!$bpg_deny) :?>
-			<a href="<?php echo siteFurl().'home/conf_bogleball';?>" class="sub-navbar-a" >보글파워볼</a>
-			<a href="<?php echo siteFurl().'home/conf_bogleladder';?>" class="sub-navbar-a " >보글사다리</a>
-		<?php endif ?>   
-		<?php if($eos5_enable) :?>
-			<a href="<?php echo site_furl('home/conf_eos5ball');?>" class="sub-navbar-a" >EOS5분</a>
-   		<?php endif ?>
-		<?php if($eos3_enable) :?>
-			<a href="<?php echo site_furl('home/conf_eos3ball');?>" class="sub-navbar-a" >EOS3분</a>
-   		<?php endif ?> 
-		<?php if(!$cas_deny) :?>
-			<a href="<?php echo siteFurl().'home/conf_evol';?>" class="sub-navbar-a " >에볼루션</a>
-		<?php endif ?>   
-		<?php if($kgon_enable) :?>
-				<a href="<?php echo siteFurl().'home/conf_casino';?>" class="sub-navbar-a" >호텔카지노</a>
-			<?php endif ?> 
-		<?php if(!$slot_deny) :?>
-			<?php if($_ENV['app.type'] != APPTYPE_2) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="sub-navbar-a ">정품슬롯</a>
-			<?php endif ?>
-			<?php if($_ENV['app.type'] == APPTYPE_0 || $_ENV['app.type'] == APPTYPE_1) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a active">네츄럴슬롯</a>
-			<?php elseif($_ENV['app.type'] == APPTYPE_2) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a active" >네츄럴슬롯</a>
-			<?php endif ?>
-		<?php endif ?>   
-	</div>
-	<!--Site Setting-->
-	<div class="confsite-game-panel"  id="<?=$game_id?>">
+<?= $this->extend('/home/conf_game') ?>
+<?= $this->section('confgame-active') ?><?=$game_name?><?= $this->endSection() ?>
+<?= $this->section('confgame-content') ?>
+	 
 	<?php if($_ENV['app.type'] == APPTYPE_1) :?>
 		<!---->
 		<h4 style="font-size:16px; font-weight:bold;"><i class="glyphicon glyphicon-hand-right"></i> 게임별 설정</h4>	
@@ -107,28 +73,20 @@
 			<p>에이젼트 페이지:</p>
 			<button class="confsite-cancel-button" id="confsite-agent-btn-id" style="margin-bottom:20px; width:200px;">바로 가기</button>
 		</div>
-		<!-- <div class="confsite-game-text-div">
-			<p>입금 금액:</p> 
-			<input type = "text" class="conf-text-input"  style="min-width:200px;" id="confpb-minmoney-input-id"><label> 원 / 회</label>
-		</div> -->
+		
 		
 		<div class = "confsite-button-group" style="margin-top:20px;">
 			<button class="confsite-cancel-button" id="confsite-cancel-btn-id">취소</button>
 			<button class="confsite-ok-button"  id="confsite-ok-btn-id">저장</button>
 		</div>
-		
-	</div>
+	<?= $this->endSection() ?>
 
-<!--main_navbar.php-->
-</div>
-
+<?= $this->section('confgame-script') ?>
 <?php if(array_key_exists("app.produce", $_ENV)) :?>
     <script src="<?php echo site_furl('/assets/js/confcs-script.js?t='.time());?>"></script>
-    <script src="<?php echo site_furl('/assets/js/page.js?t='.time());?>"></script>
     <script src="<?php echo site_furl('/assets/js/confsl-script.js?t='.time());?>"></script>
 <?php else : ?>
     <script src="<?php echo site_furl('/assets/js/confcs-script.js?v=1');?>"></script>
-    <script src="<?php echo site_furl('/assets/js/page.js?v=1');?>"></script>
     <script src="<?php echo site_furl('/assets/js/confsl-script.js?v=1');?>"></script>
 <?php endif ?>
 <?= $this->endSection() ?>

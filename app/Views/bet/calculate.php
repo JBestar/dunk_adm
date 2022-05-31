@@ -1,7 +1,7 @@
 <?= $this->extend('header') ?>
 <?= $this->section('content') ?>
 	<!--Sub Navbar-->
-	<div class = "sub-navbar" value=<?= $this->renderSection('calculate-active') ?>>
+	<div class = "sub-navbar" value="<?= $this->renderSection('calculate-active') ?>">
 		<p><i class="glyphicon glyphicon-tag"></i> 정산</p>
 		<a href="<?php echo site_furl('bet/allcalculate');?>" class="sub-navbar-a" >전체</a>
 		<?php if(!$npg_deny) :?>

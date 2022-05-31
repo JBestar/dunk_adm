@@ -1,41 +1,6 @@
-<?= $this->extend('header') ?>
-<?= $this->section('content') ?>
-  	<!--Sub Navbar-->
-  	<div class="sub-navbar">
-  		<p><i class="glyphicon glyphicon-play-circle"></i> 게임설정</p>
-		<?php if(!$npg_deny) :?>
-			<a href="<?php echo siteFurl().'home/conf_powerball';?>" class="sub-navbar-a <?=$active_pb?>">파워볼</a>
-			<a href="<?php echo siteFurl().'home/conf_powerladder';?>" class="sub-navbar-a">파워사다리</a>
-		<?php endif ?>   
-    	<?php if(!$bpg_deny) :?>
-			<a href="<?php echo siteFurl().'home/conf_bogleball';?>" class="sub-navbar-a <?=$active_bb?>">보글파워볼</a>
-			<a href="<?php echo siteFurl().'home/conf_bogleladder';?>" class="sub-navbar-a">보글사다리</a>
-		<?php endif ?>  
-		<?php if($eos5_enable) :?>
-			<a href="<?php echo site_furl('home/conf_eos5ball');?>" class="sub-navbar-a <?=$active_e5?>" >EOS5분</a>
-   		<?php endif ?>
-		<?php if($eos3_enable) :?>
-			<a href="<?php echo site_furl('home/conf_eos3ball');?>" class="sub-navbar-a <?=$active_e3?>" >EOS3분</a>
-   		<?php endif ?>  
-		<?php if(!$cas_deny) :?>
-	  		<a href="<?php echo siteFurl().'home/conf_evol';?>" class="sub-navbar-a">에볼루션</a>
-		<?php endif ?>   
-		<?php if($kgon_enable) :?>
-			<a href="<?php echo siteFurl().'home/conf_casino';?>" class="sub-navbar-a" >호텔카지노</a>
-		<?php endif ?> 
-		<?php if(!$slot_deny) :?>
-			<?php if($_ENV['app.type'] != APPTYPE_2) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="sub-navbar-a">정품슬롯</a>
-			<?php endif ?>
-			<?php if($_ENV['app.type'] == APPTYPE_0 || $_ENV['app.type'] == APPTYPE_1) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a">네츄럴슬롯</a>
-			<?php elseif($_ENV['app.type'] == APPTYPE_2) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a" >네츄럴슬롯</a>
-			<?php endif ?>
-		<?php endif ?>   
-  	</div>
-  	<!--Site Setting-->
-  	<div class="confsite-game-panel" id="<?=$game_id?>">
+<?= $this->extend('/home/conf_game') ?>
+	<?= $this->section('confgame-active') ?><?=$game_name?><?= $this->endSection() ?>
+	<?= $this->section('confgame-content') ?>
   		<!---->
   		<h4><i class="glyphicon glyphicon-hand-right"></i> <?=$game_name?> 게임관련 설정</h4>
 
@@ -48,48 +13,6 @@
   			<p>배팅 마감시간:</p>
   			<input type="number" class="conf-seconds-input" id="confpb-endsec-input-id"><label> 초</label>
   		</div>
-  		<div class="confsite-game-text-div">
-			<div>
-				<p>단폴 최소배팅금액:</p>
-				<input type="number" class="conf-text-input" id="confpb-minmoney-input-id"><label> 원</label>
-			</div>
-			<div>
-				<p>조합 최소배팅금액:</p>
-				<input type="number" class="conf-text-input" id="confpb-min2money-input-id"><label> 원</label>
-			</div>
-  		</div>
-  		<div class="confsite-game-text-div">
-		  	<div>
-				<p>단폴 최대배팅금액:</p>
-				<input type="number" class="conf-text-input" id="confpb-maxmoney-input-id"><label> 원</label>
-  			</div>
-			<div>
-				<p>조합 최대배팅금액:</p>
-				<input type="number" class="conf-text-input" id="confpb-max2money-input-id"><label> 원</label>
-			</div>
-		</div>
-		<div class="confsite-game-text-div">
-			<div>
-				<p>단폴 최대적중금액:</p>
-				<input type="number" class="conf-text-input" id="confpb-winmoney-input-id"><label> 원</label>
-			</div>
-			<div>
-				<p>조합 최대적중금액:</p>
-				<input type="number" class="conf-text-input" id="confpb-win2money-input-id"><label> 원</label>
-			</div>
-		</div>
-		<?php if(!$gameper_full) :?>
-			<div class="confsite-game-text-div">
-				<div>
-					<p>단폴 누르기율:</p> 
-					<input type = "number" class="conf-text-input"  id="confpb-percent-input-id"><label> %</label>
-				</div>
-				<div>
-					<p>조합 누르기율:</p> 
-					<input type = "number" class="conf-text-input"  id="confpb-percent2-input-id"><label> %</label>
-				</div>
-			</div>
-		<?php endif?>
 		
   		<div class="confsite-game-text-div">
   			<p style="font-size: 16px; font-weight: bold;">파워볼단폴</p>
@@ -114,6 +37,28 @@
   				<input type="text" class="conf-text-input" id="confpb-ratio4-input-id">
   			</div>
   		</div>
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최소배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-minmoney-input-id"><label> 원</label>
+			</div>
+			<div>
+				<p>최대배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-maxmoney-input-id"><label> 원</label>
+  			</div>
+  		</div>
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최대적중금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-winmoney-input-id"><label> 원</label>
+			</div>
+			<?php if(!$gameper_full) :?>
+			<div>
+				<p>누르기율:</p> 
+				<input type = "number" class="conf-text-input"  id="confpb-percent-input-id"><label> %</label>
+			</div>
+			<?php endif?>
+		</div>
   		<div class="confsite-game-text-div">
   			<p style="font-size: 16px; font-weight: bold;">파워볼조합</p>
 
@@ -138,6 +83,28 @@
   				<input type="text" class="conf-text-input" id="confpb-ratio8-input-id">
   			</div>
   		</div>
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최소배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-min2money-input-id"><label> 원</label>
+			</div>
+			<div>
+				<p>최대배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-max2money-input-id"><label> 원</label>
+			</div>
+  		</div>
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최대적중금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-win2money-input-id"><label> 원</label>
+			</div>
+			<?php if(!$gameper_full) :?>
+			<div>
+				<p>누르기율:</p> 
+				<input type = "number" class="conf-text-input"  id="confpb-percent2-input-id"><label> %</label>
+			</div>
+			<?php endif?>
+		</div>
   		<div class="confsite-game-text-div">
   			<p style="font-size: 16px; font-weight: bold;">일반볼조합</p>
 
@@ -162,6 +129,29 @@
   				<input type="text" class="conf-text-input" id="confpb-ratio12-input-id">
   			</div>
   		</div>
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최소배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-min3money-input-id"><label> 원</label>
+			</div>
+			<div>
+				<p>최대배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-max3money-input-id"><label> 원</label>
+			</div>
+  		</div>
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최대적중금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-win3money-input-id"><label> 원</label>
+			</div>
+			<?php if(!$gameper_full) :?>
+			<div>
+				<p>누르기율:</p> 
+				<input type = "number" class="conf-text-input"  id="confpb-percent3-input-id"><label> %</label>
+			</div>
+			<?php endif?>
+		</div>
+	<?php if(!array_key_exists('bet.np_deny', $_ENV) || !$_ENV['bet.np_deny']) : ?>
   		<div class="confsite-game-text-div">
   			<p style="font-size: 16px; font-weight: bold;">일반+파워조합</p>
 
@@ -206,6 +196,30 @@
   				<input type="text" class="conf-text-input" id="confpb-ratio20-input-id">
   			</div>
   		</div>
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최소배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-min4money-input-id"><label> 원</label>
+			</div>
+			<div>
+				<p>최대배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-max4money-input-id"><label> 원</label>
+			</div>
+  		</div>
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최대적중금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-win4money-input-id"><label> 원</label>
+			</div>
+			<?php if(!$gameper_full) :?>
+			<div>
+				<p>누르기율:</p> 
+				<input type = "number" class="conf-text-input"  id="confpb-percent4-input-id"><label> %</label>
+			</div>
+			<?php endif?>
+		</div>
+	<?php endif ?>
+	<?php if(!array_key_exists('bet.nl_deny', $_ENV) || !$_ENV['bet.nl_deny']) : ?>
   		<div class="confsite-game-text-div">
   			<p style="font-size: 16px; font-weight: bold;">일반볼 대중소</p>
   		</div>
@@ -255,6 +269,30 @@
   				<input type="text" class="conf-text-input" id="confpb-ratio29-input-id">
   			</div>
   		</div>
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최소배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-min5money-input-id"><label> 원</label>
+			</div>
+			<div>
+				<p>최대배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-max5money-input-id"><label> 원</label>
+			</div>
+  		</div>
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최대적중금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-win5money-input-id"><label> 원</label>
+			</div>
+			<?php if(!$gameper_full) :?>
+			<div>
+				<p>누르기율:</p> 
+				<input type = "number" class="conf-text-input"  id="confpb-percent5-input-id"><label> %</label>
+			</div>
+			<?php endif?>
+		</div>
+	<?php endif ?>
+	<?php if(!array_key_exists('bet.n2p_deny', $_ENV) || !$_ENV['bet.n2p_deny']) : ?>
   		<div class="confsite-game-text-div">
   			<p style="font-size: 16px; font-weight: bold;">일반볼 조합+파워볼 홀짝</p>
   		</div>
@@ -265,6 +303,30 @@
   			</div>
   		</div>
 		<div class="confsite-game-text-div">
+			<div>
+				<p>최소배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-min6money-input-id"><label> 원</label>
+			</div>
+			<div>
+				<p>최대배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-max6money-input-id"><label> 원</label>
+			</div>
+  		</div>
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최대적중금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-win6money-input-id"><label> 원</label>
+			</div>
+			<?php if(!$gameper_full) :?>
+			<div>
+				<p>누르기율:</p> 
+				<input type = "number" class="conf-text-input"  id="confpb-percent6-input-id"><label> %</label>
+			</div>
+			<?php endif?>
+		</div>
+	<?php endif?>
+	<?php if(!array_key_exists('bet.pn_deny', $_ENV) || !$_ENV['bet.pn_deny']) : ?>
+		<div class="confsite-game-text-div">
   			<p style="font-size: 16px; font-weight: bold;">파워볼 숫자</p>
   		</div>
 		<div class="confsite-game-text-div">
@@ -273,18 +335,39 @@
   				<input type="text" class="conf-text-input" id="confpb-ratio30-input-id">
   			</div>
   		</div>
-		  <div class="confsite-button-group" style="margin-top:50px;">
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최소배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-min7money-input-id"><label> 원</label>
+			</div>
+			<div>
+				<p>최대배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-max7money-input-id"><label> 원</label>
+			</div>
+  		</div>
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최대적중금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-win7money-input-id"><label> 원</label>
+			</div>
+			<?php if(!$gameper_full) :?>
+			<div>
+				<p>누르기율:</p> 
+				<input type = "number" class="conf-text-input"  id="confpb-percent7-input-id"><label> %</label>
+			</div>
+			<?php endif?>
+		</div>
+	<?php endif ?>
+		<div class="confsite-button-group" style="margin-top:50px;">
   			<button class="confsite-cancel-button" id="confsite-cancel-btn-id">취소</button>
   			<button class="confsite-ok-button" id="confsite-ok-btn-id">저장</button>
   		</div>
-  	</div>
+	<?= $this->endSection() ?>
 
-  	<!--main_navbar.php-->
-  	</div>
-
+<?= $this->section('confgame-script') ?>
 	<?php if(array_key_exists("app.produce", $_ENV)) :?>
 		<script src="<?php echo site_furl('/assets/js/confpb-script.js?t='.time());?>"></script>
 	<?php else : ?>
 		<script src="<?php echo site_furl('/assets/js/confpb-script.js?v=1');?>"></script>
 	<?php endif ?>
-	<?= $this->endSection() ?>
+<?= $this->endSection() ?>

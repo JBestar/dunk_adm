@@ -148,6 +148,12 @@ defined('CONF_KGON_ENABLE')     || define('CONF_KGON_ENABLE', 31);
 defined('CONF_EOS5_ENABLE')     || define('CONF_EOS5_ENABLE', 32);
 defined('CONF_EOS3_ENABLE')     || define('CONF_EOS3_ENABLE', 33);
 
+defined('CONF_BET_CANCEL')      || define('CONF_BET_CANCEL', 35);
+defined('CONF_BET_NL_DENY')     || define('CONF_BET_NL_DENY', 36);
+defined('CONF_BET_NP_DENY')     || define('CONF_BET_NP_DENY', 37);
+defined('CONF_BET_N2P_DENY')    || define('CONF_BET_N2P_DENY', 38);
+defined('CONF_BET_PN_DENY')     || define('CONF_BET_PN_DENY', 39);
+
 defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);
 defined('LEVEL_ADMIN')         || define('LEVEL_ADMIN', 100);
 defined('LEVEL_COMPANY')       || define('LEVEL_COMPANY', 99);

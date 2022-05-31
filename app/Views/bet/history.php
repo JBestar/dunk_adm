@@ -1,7 +1,7 @@
 <?= $this->extend('header') ?>
 <?= $this->section('content') ?>
 	<!--Sub Navbar-->
-	<div class = "sub-navbar" value=<?= $this->renderSection('history-active') ?>>
+	<div class = "sub-navbar" value="<?= $this->renderSection('history-active') ?>">
 		<p><i class="glyphicon glyphicon-book"></i> 배팅내역</p>
 		<?php if(!$npg_deny) :?>
 			<a href="<?php echo site_furl('bet/pbhistory');?>" class="sub-navbar-a" >파워볼</a>

@@ -241,4 +241,25 @@ class ConfSite_Model extends Model
         }
         return false;
     }
+
+    
+    public function readBetConf(){
+        $confIds = [CONF_BET_NL_DENY, CONF_BET_NP_DENY, CONF_BET_N2P_DENY, CONF_BET_PN_DENY];  
+        $arrConf = $this->find($confIds);
+
+        foreach($arrConf as $objConf){
+			switch($objConf->conf_id){
+				case CONF_BET_NL_DENY:	$_ENV['bet.nl_deny'] = $objConf->conf_active == STATE_ACTIVE?true:false;
+					break;
+				case CONF_BET_NP_DENY:	$_ENV['bet.np_deny'] = $objConf->conf_active == STATE_ACTIVE?true:false;
+					break;
+				case CONF_BET_N2P_DENY:	$_ENV['bet.n2p_deny'] = $objConf->conf_active == STATE_ACTIVE?true:false;
+					break;
+				case CONF_BET_PN_DENY: $_ENV['bet.pn_deny'] = $objConf->conf_active == STATE_ACTIVE?true:false;
+					break;
+				default:break;
+			}
+		}
+    }
+    
 }

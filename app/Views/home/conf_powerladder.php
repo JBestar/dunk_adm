@@ -1,42 +1,7 @@
-<?= $this->extend('header') ?>
-<?= $this->section('content') ?>
-	  <!--Sub Navbar-->
-	<div class = "sub-navbar">
-		<p><i class="glyphicon glyphicon-play-circle"></i> 게임설정</p>
-		<?php if(!$npg_deny) :?>
-		<a href="<?php echo siteFurl().'home/conf_powerball';?>" class="sub-navbar-a" >파워볼</a>
-		<a href="<?php echo siteFurl().'home/conf_powerladder';?>" class="sub-navbar-a <?=$active_ps?>" >파워사다리</a>
-		<?php endif ?>   
-    	<?php if(!$bpg_deny) :?>
-			<a href="<?php echo siteFurl().'home/conf_bogleball';?>" class="sub-navbar-a" >보글파워볼</a>
-			<a href="<?php echo siteFurl().'home/conf_bogleladder';?>" class="sub-navbar-a <?=$active_bs?>" >보글사다리</a>
-   		<?php endif ?>   
-		<?php if($eos5_enable) :?>
-			<a href="<?php echo site_furl('home/conf_eos5ball');?>" class="sub-navbar-a" >EOS5분</a>
-   		<?php endif ?>
-		<?php if($eos3_enable) :?>
-			<a href="<?php echo site_furl('home/conf_eos3ball');?>" class="sub-navbar-a" >EOS3분</a>
-   		<?php endif ?> 
-		<?php if(!$cas_deny) :?>
-			<a href="<?php echo siteFurl().'home/conf_evol';?>" class="sub-navbar-a">에볼루션</a>
-		<?php endif ?>   
-		<?php if($kgon_enable) :?>
-			<a href="<?php echo siteFurl().'home/conf_casino';?>" class="sub-navbar-a" >호텔카지노</a>
-		<?php endif ?>  
-		<?php if(!$slot_deny) :?>
-			<?php if($_ENV['app.type'] != APPTYPE_2) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="sub-navbar-a">정품슬롯</a>
-			<?php endif ?>
-			<?php if($_ENV['app.type'] == APPTYPE_0 || $_ENV['app.type'] == APPTYPE_1) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a">네츄럴슬롯</a>
-			<?php elseif($_ENV['app.type'] == APPTYPE_2) :?>
-			<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a" >네츄럴슬롯</a>
-			<?php endif ?>
-		<?php endif ?>
-	</div>
-	<!--Site Setting-->
-	<div class="confsite-game-panel" id="<?=$game_id?>">
-		<!---->
+<?= $this->extend('/home/conf_game') ?>
+<?= $this->section('confgame-active') ?><?=$game_name?><?= $this->endSection() ?>
+<?= $this->section('confgame-content') ?>
+	 	<!---->
 		<h4><i class="glyphicon glyphicon-hand-right"></i> <?=$game_name?> 게임관련 설정</h4>	
 		
 		<div class="confsite-game-text-div">
@@ -48,49 +13,7 @@
 			<p>배팅 마감시간:</p> 
 			<input type = "number" class="conf-seconds-input" id="confpb-endsec-input-id"><label> 초</label>
 		</div>
-		<div class="confsite-game-text-div">
-			<div>
-				<p>단폴 최소배팅금액:</p>
-				<input type="number" class="conf-text-input" id="confpb-minmoney-input-id"><label> 원</label>
-			</div>
-			<div>
-				<p>조합 최소배팅금액:</p>
-				<input type="number" class="conf-text-input" id="confpb-min2money-input-id"><label> 원</label>
-			</div>
-  		</div>
-  		<div class="confsite-game-text-div">
-		  	<div>
-				<p>단폴 최대배팅금액:</p>
-				<input type="number" class="conf-text-input" id="confpb-maxmoney-input-id"><label> 원</label>
-  			</div>
-			<div>
-				<p>조합 최대배팅금액:</p>
-				<input type="number" class="conf-text-input" id="confpb-max2money-input-id"><label> 원</label>
-			</div>
-		</div>
-		<div class="confsite-game-text-div">
-			<div>
-				<p>단폴 최대적중금액:</p>
-				<input type="number" class="conf-text-input" id="confpb-winmoney-input-id"><label> 원</label>
-			</div>
-			<div>
-				<p>조합 최대적중금액:</p>
-				<input type="number" class="conf-text-input" id="confpb-win2money-input-id"><label> 원</label>
-			</div>
-		</div>
-		<?php if(!$gameper_full) :?>
-		<div class="confsite-game-text-div">
-			<div>
-				<p>단폴 누르기율:</p> 
-				<input type = "number" class="conf-text-input"  id="confpb-percent-input-id"><label> %</label>
-			</div>
-			<div>
-				<p>조합 누르기율:</p> 
-				<input type = "number" class="conf-text-input"  id="confpb-percent2-input-id"><label> %</label>
-			</div>
-		</div>
-		<?php endif?>
-
+		
 		<div class="confsite-game-text-div">
 		<p style="font-size: 16px; font-weight: bold;"><?=$game_name?> 단폴</p>
   		</div>
@@ -106,7 +29,28 @@
 			<p> 홀 :: 짝 배당율</p> 
 			<input type = "text" class="conf-text-input"  id="confpb-ratio3-input-id">
 		</div>
-
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최소배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-minmoney-input-id"><label> 원</label>
+			</div>
+			<div>
+				<p>최대배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-maxmoney-input-id"><label> 원</label>
+  			</div>
+  		</div>
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최대적중금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-winmoney-input-id"><label> 원</label>
+			</div>
+			<?php if(!$gameper_full) :?>
+			<div>
+				<p>누르기율:</p> 
+				<input type = "number" class="conf-text-input"  id="confpb-percent-input-id"><label> %</label>
+			</div>
+			<?php endif?>
+		</div>
 		<div class="confsite-game-text-div">
   			<p style="font-size: 16px; font-weight: bold;"><?=$game_name?> 조합</p>
 
@@ -131,16 +75,35 @@
   				<input type="text" class="conf-text-input" id="confpb-ratio7-input-id">
   			</div>
   		</div>
+		  <div class="confsite-game-text-div">
+			<div>
+				<p>최소배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-min2money-input-id"><label> 원</label>
+			</div>
+			<div>
+				<p>최대배팅금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-max2money-input-id"><label> 원</label>
+			</div>
+  		</div>
+		<div class="confsite-game-text-div">
+			<div>
+				<p>최대적중금액:</p>
+				<input type="number" class="conf-text-input" id="confpb-win2money-input-id"><label> 원</label>
+			</div>
+			<?php if(!$gameper_full) :?>
+			<div>
+				<p>누르기율:</p> 
+				<input type = "number" class="conf-text-input"  id="confpb-percent2-input-id"><label> %</label>
+			</div>
+			<?php endif?>
+		</div>
 		<div class = "confsite-button-group" style="margin-top:50px;">
 			<button class="confsite-cancel-button" id="confsite-cancel-btn-id">취소</button>
 			<button class="confsite-ok-button"  id="confsite-ok-btn-id">저장</button>
 		</div>
-	</div>
+	<?= $this->endSection() ?>
 
-
-
-<!--main_navbar.php-->
-</div>
+<?= $this->section('confgame-script') ?>
 <?php if(array_key_exists("app.produce", $_ENV)) :?>
     <script src="<?php echo site_furl('/assets/js/confps-script.js?t='.time());?>"></script>
 <?php else : ?>

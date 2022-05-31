@@ -35,13 +35,11 @@ class Home extends StdController
 	}
 
 	public function conf_powerball(){
+		$confsiteModel = new ConfSite_Model();
+		$confsiteModel->readBetConf();
 		$param = [
 			'game_name' => "파워볼",
-			'game_id' => GAME_POWER_BALL,
-			'active_pb' => 'active',
-			'active_bb' => '',
-			'active_e5' => '',
-			'active_e3' => ''
+			'game_id' => GAME_POWER_BALL
 		];
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);		
 	}
@@ -49,22 +47,19 @@ class Home extends StdController
 	public function conf_powerladder(){
 		$param = [
 			'game_name' => "파워사다리",
-			'game_id' => GAME_POWER_LADDER,
-			'active_ps' => 'active',
-			'active_bs' => ''
+			'game_id' => GAME_POWER_LADDER
 		];
 		$this->load_view_page('home/conf_powerladder', 'conf_game', LEVEL_ADMIN, $param);
 	}
 
 
 	public function conf_bogleball(){
+		$confsiteModel = new ConfSite_Model();
+		$confsiteModel->readBetConf();
+		
 		$param = [
 			'game_name' => "보글파워볼",
-			'game_id' => GAME_BOGLE_BALL,
-			'active_pb' => '',
-			'active_bb' => 'active',
-			'active_e5' => '',
-			'active_e3' => ''
+			'game_id' => GAME_BOGLE_BALL
 		];
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);
 	}
@@ -73,33 +68,29 @@ class Home extends StdController
 	public function conf_bogleladder(){
 		$param = [
 			'game_name' => "보글사다리",
-			'game_id' => GAME_BOGLE_LADDER,
-			'active_ps' => '',
-			'active_bs' => 'active'
+			'game_id' => GAME_BOGLE_LADDER
 		];
 		$this->load_view_page('home/conf_powerladder', 'conf_game', LEVEL_ADMIN, $param);	
 	}
 
 	public function conf_eos5ball(){
+		$confsiteModel = new ConfSite_Model();
+		$confsiteModel->readBetConf();
+		
 		$param = [
-			'game_name' => "EOS5분파워볼",
-			'game_id' => GAME_EOS5_BALL,
-			'active_pb' => '',
-			'active_bb' => '',
-			'active_e5' => 'active',
-			'active_e3' => ''
+			'game_name' => "EOS5분",
+			'game_id' => GAME_EOS5_BALL
 		];
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);
 	}
 
 	public function conf_eos3ball(){
+		$confsiteModel = new ConfSite_Model();
+		$confsiteModel->readBetConf();
+		
 		$param = [
-			'game_name' => "EOS3분파워볼",
-			'game_id' => GAME_EOS3_BALL,
-			'active_pb' => '',
-			'active_bb' => '',
-			'active_e5' => '',
-			'active_e3' => 'active'
+			'game_name' => "EOS3분",
+			'game_id' => GAME_EOS3_BALL
 		];
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);
 	}
@@ -122,7 +113,7 @@ class Home extends StdController
 
 	public function conf_slot_1(){
 		$param = [
-			'game_name' => "슬롯",
+			'game_name' => "정품슬롯",
 			'game_id' => GAME_SLOT_1
 		];
 		$this->load_view_page('home/conf_slot', 'conf_game', LEVEL_ADMIN, $param);	
