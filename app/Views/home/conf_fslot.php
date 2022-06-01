@@ -67,7 +67,7 @@
 		<div class="confsite-game-text-div">
 			<p>에이젼트 보유알:</p> 
 			<input type = "text" class="conf-text-input" style="min-width:200px;" id="confpb-agent-egg-id"  disabled>
-			<button class="refresh_btn" id="refresh_btn" style="margin-left:5px; margin-top:5px;"></button>
+			<button class="refresh_btn" id="refresh_egg" style="margin-left:5px; margin-top:5px;"></button>
 		</div>
 		<div class="confsite-game-text-div">
 			<p>에이젼트 페이지:</p>

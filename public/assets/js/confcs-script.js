@@ -30,7 +30,7 @@ function requestConfPowerball() {
         url: FURL + "/api/conf_game",
         data: { json_: jsonData },
         success: function(jResult) {
-            $("#refresh_btn").removeClass("refresh");
+            $("#refresh_egg").removeClass("refresh");
 
             // console.log(jResult);
             if (jResult.status == "success") {
@@ -40,7 +40,7 @@ function requestConfPowerball() {
             }
         },
         error: function(request, status, error) {
-            $("#refresh_btn").removeClass("refresh");
+            $("#refresh_egg").removeClass("refresh");
 
             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
@@ -99,9 +99,8 @@ function addBtnEvent() {
     });
 
     
-    $('#refresh_btn').on('click', function() {
+    $('#refresh_egg').on('click', function() {
         $(this).addClass("refresh");
-        
         requestConfPowerball();
     });
 

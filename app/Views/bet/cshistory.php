@@ -1,7 +1,7 @@
 <?= $this->extend('/bet/history') ?>
-<?= $this->section('history-active') ?>"카지노"<?= $this->endSection() ?>
+<?= $this->section('history-active') ?><?=$game_name?><?= $this->endSection() ?>
 <?= $this->section('history-title') ?>		
-	카지노 배팅내역
+<?=$game_name?> 배팅내역
 <?= $this->endSection() ?>
 <?= $this->section('history_game_options') ?>	
 	<?php if($kgon_enable) :?>

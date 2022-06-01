@@ -1,7 +1,5 @@
 <?= $this->extend('/bet/calculate') ?>
-<?= $this->section('calculate-active') ?>
-<?=$game_name?>
-<?= $this->endSection() ?>
+<?= $this->section('calculate-active') ?><?=$game_name?><?= $this->endSection() ?>
 <?= $this->section('calculate-title') ?>
 <?=$game_name?> 정산내역
 <?= $this->endSection() ?>
