@@ -15,7 +15,7 @@
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_m.ico');?>">
         <?php break; 
         case APP_KANGNUM :?>                        
-            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_k.ico');?>">
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_k.ico?v=1');?>">
         <?php break; 
         case APP_MAX :?>
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_x.ico?v=1');?>">
@@ -27,7 +27,7 @@
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_w.ico');?>">
         <?php break; 
         case APP_ROYAL :?>
-            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_r.ico');?>">
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_r.ico?v=1');?>">
         <?php break; 
         case APP_COD :?>
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_c.ico');?>">

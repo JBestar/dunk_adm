@@ -1,5 +1,5 @@
 <?= $this->extend('/bet/history') ?>
-<?= $this->section('history-active') ?>"<?=$game_name?>"<?= $this->endSection() ?>
+<?= $this->section('history-active') ?><?=$game_name?><?= $this->endSection() ?>
 <?= $this->section('history-title') ?><?=$game_name?> 배팅내역<?= $this->endSection() ?>
 <?= $this->section('history_game_options') ?>	
 	<select class="pbresult-game-select" id="pbhistory-game-select-id">

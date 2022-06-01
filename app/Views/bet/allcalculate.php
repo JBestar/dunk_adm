@@ -1,7 +1,5 @@
 <?= $this->extend('/bet/calculate') ?>
-<?= $this->section('calculate-active') ?>
-"전체"
-<?= $this->endSection() ?>
+<?= $this->section('calculate-active') ?>전체<?= $this->endSection() ?>
 <?= $this->section('calculate-title') ?>
 전체 정산내역
 <?= $this->endSection() ?>
