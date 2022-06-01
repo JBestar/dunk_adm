@@ -105,7 +105,7 @@ class Home extends StdController
 
 	public function conf_casino(){
 		$param = [
-			'game_name' => "에볼루션",
+			'game_name' => "호텔카지노",
 			'game_id' => GAME_CASINO_KGON
 		];
 		$this->load_view_page('home/conf_casino', 'conf_game', LEVEL_ADMIN, $param);	
