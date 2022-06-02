@@ -1170,6 +1170,30 @@ class Member_Model extends Model
         return $objResult;
     }
 
+    // 게임별 머니
+    public function calcGameEgg($iGame)
+    {
+        if($iGame == GAME_CASINO_EVOL){
+            $strSQL = 'SELECT SUM(mb_live_money) AS mb_game_money FROM '.$this->table;
+            $strSQL .= ' WHERE mb_live_id > 0 ';
+        }
+        else if($iGame == GAME_CASINO_KGON){
+            $strSQL = 'SELECT SUM(mb_kgon_money) AS mb_game_money FROM '.$this->table;
+            $strSQL .= ' WHERE mb_kgon_id > 0 ';
+        }
+        else if($iGame == GAME_SLOT_1){
+            $strSQL = 'SELECT SUM(mb_slot_money) AS mb_game_money FROM '.$this->table;
+            $strSQL .= " WHERE LENGTH(mb_slot_uid) > 0 ";
+        }
+        else if($iGame == GAME_SLOT_2){
+            $strSQL = 'SELECT SUM(mb_fslot_money) AS mb_game_money FROM '.$this->table;
+            $strSQL .= ' WHERE mb_fslot_id > 0';
+        } else null;
+
+        $objResult = $this->db->query($strSQL)->getRow();
+
+        return $objResult->mb_game_money;
+    }
     
     public function searchCountByLevel($arrReqData, $iEmpFid)
     {

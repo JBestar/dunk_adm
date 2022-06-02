@@ -14,8 +14,10 @@
 			border-right:solid 0.4px #888;
 		}
 		button.refresh_btn{
-			padding-right: 10px;
+			margin-right: 2px;
+			margin-left: 1px;
 			position: relative;
+			float:right;
 		}
 		th.sort-by { 
 			padding-right: 10px;
@@ -107,6 +109,7 @@
 						<th class="sort-by">추천인</th>
 						<th class="sort-by">아이디</th>
 						<th class="sort-by">닉네임</th>
+						<th class="sort-by">등록번호</th>
 						<th class="sort-by">레벨</th>
 						<th>충전</th>
 						<th>환전</th>
@@ -122,6 +125,9 @@
 						<th >수정</th>
 						<th >삭제</th>
 						<th>상태</th>
+						<?php if ($mb_level >= LEVEL_ADMIN) {?>	
+						<th>알반환</th>
+						<?php } ?>
 						<th>로그아웃</th>
 					</tr>
 				</thead>

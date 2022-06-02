@@ -185,7 +185,7 @@ function requestLogoutMember(jsData) {
 }
 
 
-function refreshEv(mbFid, elBtn) {
+function refreshEgg(mbFid, elBtn) {
     var jsonData = { "mb_fid": mbFid };
     jsonData = JSON.stringify(jsonData);
     $(elBtn).addClass("refresh");
@@ -218,6 +218,37 @@ function refreshEv(mbFid, elBtn) {
 
 }
 
+
+function collectEgg(mbFid) {
+    var jsonData = { "mb_fid": mbFid };
+    jsonData = JSON.stringify(jsonData);
+    $(".loading").show();
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: FURL + "/userapi/eggcollect",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+            $(".loading").hide();
+            if (jResult.status == "success") {
+                $("#mm_" + mbFid).text(parseInt(jResult.money).toLocaleString() + "원");
+                alert("회수되었습니다.");
+            } else if (jResult.status == "fail") {
+                alert("게임서버응답이 실패되었습니다.");
+            } else if (jResult.status == "logout") {
+                window.location.replace( FURL +'/');
+            }
+        },
+        error: function(request, status, error) {
+            $(".loading").hide();
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+
+    });
+
+}
 
 
 function requestTrasnfer(jsonData, bReload = true){

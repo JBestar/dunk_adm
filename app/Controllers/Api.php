@@ -189,6 +189,7 @@ class Api extends BaseController{
 				if(count($arrInfo) >= 3){ //0-host, 1-ag_code, 2-ag_token
 					$agInfo['code'] = $arrInfo[1];
 					$agInfo['egg'] = $agConf->conf_active;
+					$agInfo['useregg'] = $this->modelMember->calcGameEgg($gameId);
 				}	
 				
 			}

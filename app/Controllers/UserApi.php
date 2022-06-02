@@ -1282,4 +1282,37 @@ class UserApi extends BaseController
 		echo json_encode($result);
 
 	}
+     
+	public function eggcollect(){
+        $jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+
+		$result = new \StdClass;
+		if(!is_login())
+		{
+            $result->status = STATUS_LOGOUT;
+		} else {
+            $strUid = $this->session->user_id;
+            $objEmp = $this->modelMember->getInfo($strUid);
+            $objMember = $this->modelMember->getInfoByFid($arrReqData['mb_fid']);
+			
+            if(!is_null($objMember) && $objEmp->mb_level >= LEVEL_ADMIN){
+                $iResult = $this->alltoGame($objMember);
+                if($iResult == 1){
+                    $result->money = allMoney($objMember);
+                    $result->status = STATUS_SUCCESS;
+                } else 
+                    $result->status = STATUS_FAIL;
+    
+            } else {
+                $result->status = STATUS_FAIL;
+
+            }
+
+
+		}
+		echo json_encode($result);
+
+	}
+
 }

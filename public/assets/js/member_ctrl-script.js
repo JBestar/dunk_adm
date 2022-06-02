@@ -63,6 +63,8 @@ function showMember(arrMember, confs) {
             strBuf += "<br>(오플라인)";    
         }
         strBuf += "</td> <td>";
+        strBuf += arrMember[nRow].mb_fid;
+        strBuf += "</td> <td>";
         strBuf += parseInt(arrMember[nRow].mb_grade).toLocaleString() + "레벨";
         strBuf += "</td> <td>";
         strBuf += "<button name='" + nRow + "' data-fid='" + arrMember[nRow].mb_fid + "' >충전</button>";
@@ -73,7 +75,7 @@ function showMember(arrMember, confs) {
 
         strBuf += "</td><td> <span id='mm_" + arrMember[nRow].mb_fid + "'>";
         strBuf += parseInt(arrMember[nRow].mb_money).toLocaleString() + "</span>";
-        strBuf += '<button class="refresh_btn" onclick="refreshEv(' + arrMember[nRow].mb_fid + ', this);"></button>';
+        strBuf += '<button class="refresh_btn" onclick="refreshEgg(' + arrMember[nRow].mb_fid + ', this);"></button>';
         strBuf += "</td> <td id='mp_" + arrMember[nRow].mb_fid + "'>";
         strBuf += parseInt(arrMember[nRow].mb_point).toLocaleString();
         strBuf += "</td> <td>";
@@ -111,6 +113,10 @@ function showMember(arrMember, confs) {
             strBuf += ">대기</button>";
         } else {
             strBuf += ">차단</button>";
+        }
+        if (confs.emp_level > LEVEL_ADMIN) {
+        strBuf += "</td> <td>";
+        strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >알회수</button>   ";
         }
         strBuf += "</td> <td>";
         strBuf += "<button name='" + arrMember[nRow].mb_fid + "' data-nickname='" + arrMember[nRow].mb_nickname + "'>강제아웃</button>   ";
@@ -175,6 +181,7 @@ function addEventListner() {
             case "추천인": item='mb_emp_fid'; break;
             case "아이디": item='mb_uid'; break;
             case "닉네임": item='mb_nickname'; break;
+            case "등록번호": item='mb_fid'; break;
             case "레벨": item='mb_grade'; break;
             case "연락처": item='mb_phone'; break;
             case "보유금액": item='mb_money'; break;
@@ -338,8 +345,9 @@ function addButtonElementListener(buttonElement) {
                 var jsonData = { "mb_fid": this.name };
                 requestLogoutMember(jsonData);
             }
-            
-        }
+        } else if (tHtml.search("알회수") >= 0) {
+            collectEgg(this.name);
+        } 
     });
 }
 

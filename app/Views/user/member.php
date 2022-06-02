@@ -5,6 +5,17 @@
 	<div class = "sub-navbar">
 		<p><i class="glyphicon glyphicon-user"></i> 회원관리</p>
 	</div>
+	<style>
+			
+	button.refresh_btn {
+		float:right;
+		margin-left: 1px;
+		margin-right: 2px;
+	}
+	.user-table td{
+		border-right:solid 0.4px #888;
+	}
+	</style>
 	<!--Site Setting-->
 	<div class="user-panel">	
 		<div>
@@ -52,6 +63,7 @@
 					<th>추천인</th>
 					<th>아이디</th>
 					<th>닉네임</th>
+					<th>등록번호</th>
 					<th>레벨</th>
 					<th>현재금액</th>
 					<th>포인트</th>

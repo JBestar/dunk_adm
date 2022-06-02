@@ -55,10 +55,12 @@ function showMember(arrMember, confs) {
             strBuf += "<br>(오플라인)";    
         }
         strBuf += "</td> <td>";
+        strBuf += arrMember[nRow].mb_fid;
+        strBuf += "</td> <td>";
         strBuf += parseInt(arrMember[nRow].mb_grade).toLocaleString() + "레벨";
         strBuf += "</td><td> <span id='mm_" + arrMember[nRow].mb_fid + "'>";
         strBuf += (parseInt(arrMember[nRow].mb_money) + parseInt(arrMember[nRow].mb_live_money) + parseInt(arrMember[nRow].mb_slot_money) + parseInt(arrMember[nRow].mb_fslot_money) + parseInt(arrMember[nRow].mb_kgon_money)).toLocaleString() + "원</span>";
-        strBuf += '<button class="refresh_btn" onclick="refreshEv(' + arrMember[nRow].mb_fid + ', this);"></button>';
+        strBuf += '<button class="refresh_btn" onclick="refreshEgg(' + arrMember[nRow].mb_fid + ', this);"></button>';
         strBuf += "</td> <td id='mp_" + arrMember[nRow].mb_fid + "'>";
         strBuf += parseInt(arrMember[nRow].mb_point).toLocaleString();
         strBuf += "</td> <td>";
@@ -99,9 +101,9 @@ function showMember(arrMember, confs) {
                     strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >파워볼</button>";
                 }
                 if (arrMember[nRow].mb_game_ps == 1) {
-                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>파워사다리</button>";
+                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>파사달</button>";
                 } else {
-                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >파워사다리</button>";
+                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >파사달</button>";
                 }
             }
 
@@ -112,16 +114,16 @@ function showMember(arrMember, confs) {
                     strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >보글볼</button>";
                 }
                 if (arrMember[nRow].mb_game_bs == 1) {
-                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>보글사다리</button>";
+                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>보사달</button>";
                 } else {
-                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >보글사다리</button>";
+                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >보사달</button>";
                 }
             }
             if(confs.eos5_enable || confs.eos3_enable){
                 if (arrMember[nRow].mb_game_eo == 1) {
-                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>EOS파워볼</button>";
+                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>EOS</button>";
                 } else {
-                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >EOS파워볼</button>";
+                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >EOS</button>";
                 }
             }
             if(!confs.cas_deny || confs.kgon_enable){
@@ -292,7 +294,7 @@ function addButtonElementListener(buttonElement) {
                 var jsonData = { "mb_fid": this.name, "mb_game_pb": 1 };
                 requestUpdateMember(jsonData);
             }
-        } else if (this.innerHTML.search("파워사다리") >= 0) {
+        } else if (this.innerHTML.search("파사달") >= 0) {
             if (this.className.search("button-active") >= 0) {
                 var jsonData = { "mb_fid": this.name, "mb_game_ps": 0 };
                 requestUpdateMember(jsonData);
@@ -308,7 +310,7 @@ function addButtonElementListener(buttonElement) {
                 var jsonData = { "mb_fid": this.name, "mb_game_bb": 1 };
                 requestUpdateMember(jsonData);
             }
-        } else if (this.innerHTML.search("보글사다리") >= 0) {
+        } else if (this.innerHTML.search("보사달") >= 0) {
             if (this.className.search("button-active") >= 0) {
                 var jsonData = { "mb_fid": this.name, "mb_game_bs": 0 };
                 requestUpdateMember(jsonData);
@@ -332,7 +334,7 @@ function addButtonElementListener(buttonElement) {
                 var jsonData = { "mb_fid": this.name, "mb_game_sl": 1 };
                 requestUpdateMember(jsonData);
             }
-        } else if (this.innerHTML === "EOS파워볼") {
+        } else if (this.innerHTML === "EOS") {
             if (this.className.search("button-active") >= 0) {
                 var jsonData = { "mb_fid": this.name, "mb_game_eo": 0 };
                 requestUpdateMember(jsonData);

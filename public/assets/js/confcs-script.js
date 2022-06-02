@@ -10,11 +10,13 @@ function showConfPowerball(objConfig, objAgent) {
         $("#confpb-bet-check-id").prop('checked', true);
     else $("#confpb-bet-check-id").prop('checked', false);
 
-    // $("#confpb-minmoney-input-id").val(objConfig.game_min_bet_money);
-
     if (objAgent != null) {
         $("#confpb-agent-code-id").val(objAgent.code);
         $("#confpb-agent-egg-id").val(parseInt(objAgent.egg).toLocaleString());
+        
+        if(objAgent.useregg != null)
+            $("#confpb-user-egg-id").val(parseInt(objAgent.useregg).toLocaleString());
+        else $("#confpb-user-egg-id").val(0);
     }
 }
 
@@ -31,8 +33,9 @@ function requestConfPowerball() {
         data: { json_: jsonData },
         success: function(jResult) {
             $("#refresh_egg").removeClass("refresh");
+            $("#refresh_useregg").removeClass("refresh");
 
-            // console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 showConfPowerball(jResult.data, jResult.agent);
             } else if (jResult.status == "fail") {
@@ -41,7 +44,7 @@ function requestConfPowerball() {
         },
         error: function(request, status, error) {
             $("#refresh_egg").removeClass("refresh");
-
+            $("#refresh_useregg").removeClass("refresh");
             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
@@ -100,6 +103,11 @@ function addBtnEvent() {
 
     
     $('#refresh_egg').on('click', function() {
+        $(this).addClass("refresh");
+        requestConfPowerball();
+    });
+
+    $('#refresh_useregg').on('click', function() {
         $(this).addClass("refresh");
         requestConfPowerball();
     });

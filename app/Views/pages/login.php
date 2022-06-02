@@ -27,7 +27,7 @@
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_w.ico');?>">
         <?php break; 
         case APP_ROYAL :?>
-            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_r.ico?v=1');?>">
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_r.ico?v=2');?>">
         <?php break; 
         case APP_COD :?>
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_c.ico');?>">
@@ -66,7 +66,7 @@
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_org.ico?v=2');?>">
         <?php break; 
         case APP_CT :?>
-            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_ct.ico');?>">
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_ct.ico?v=1');?>">
         <?php break; 
         case APP_HI :?>
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_hi.ico?v=1');?>">

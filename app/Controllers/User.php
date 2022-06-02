@@ -13,6 +13,8 @@ class User extends StdController
 			return $this->response->redirect( $_ENV['app.furl'].'/pages/login');
 		}
 
+		$empUid = '';
+		$bChild = false;
 		$objMember = null;
 		$bPermit = false;
 		
@@ -28,8 +30,6 @@ class User extends StdController
 			if(count($arrEmp) > 0)
 				$objMember = reset($arrEmp);					
 			
-			$empUid = '';
-			$bChild = false;
 			if ($objMember != null){
 				$objEmpMember = $this->modelMember->find($objMember->mb_emp_fid);
 				if ($objEmpMember != null)

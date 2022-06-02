@@ -200,8 +200,10 @@ class BsBet_Model extends Model {
             $strCondition.=" AND bet_round_no = '".$arrReqData['round']."' ";            
         }
         if((int)$arrReqData['mode'] > 0){
-            $strCondition.=" AND bet_mode = '".$arrReqData['mode']."' ";
-
+            if($arrReqData['mode'] <= 3)
+                $strCondition.=" AND bet_mode = '".$arrReqData['mode']."' ";
+            else 
+                $strCondition.=" AND bet_mode >= 4 AND bet_mode <= 7 ";
         }
         //총배팅금, 적중금
         $arrSum = array();
