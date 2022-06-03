@@ -62,6 +62,7 @@ class Member_Model extends Model
         'mb_game_bs_percent',
         'mb_game_eo_percent',
         'mb_game_eo2_percent',
+        'mb_blank_count',
         'mb_live_id',
         'mb_live_uid',
         'mb_live_money',
@@ -86,7 +87,7 @@ class Member_Model extends Model
         'mb_game_pb_ratio', 'mb_game_pb2_ratio','mb_game_ps_ratio', 'mb_game_bb_ratio', 'mb_game_bb2_ratio', 
         'mb_game_bs_ratio', 'mb_game_cs_ratio', 'mb_game_sl_ratio', 'mb_game_eo_ratio', 'mb_game_eo2_ratio', 
         'mb_game_pb_percent', 'mb_game_pb2_percent', 'mb_game_ps_percent', 'mb_game_bb_percent',
-        'mb_game_bb2_percent', 'mb_game_bs_percent', 'mb_game_eo_percent', 'mb_game_eo2_percent', 
+        'mb_game_bb2_percent', 'mb_game_bs_percent', 'mb_game_eo_percent', 'mb_game_eo2_percent', 'mb_blank_count',
         'mb_live_id', 'mb_live_uid', 'mb_live_money', 
         'mb_slot_uid', 'mb_slot_money', 
         'mb_fslot_id', 'mb_fslot_uid', 'mb_fslot_money',
@@ -887,6 +888,34 @@ class Member_Model extends Model
         }
     }
 
+    private function setZeroGamePercent(&$arrData){
+
+        if (array_key_exists('mb_game_pb_percent', $arrData) && strlen($arrData['mb_game_pb_percent']) < 1) {
+            $arrData['mb_game_pb_percent'] = 0;
+        }
+        if (array_key_exists('mb_game_pb2_percent', $arrData) && strlen($arrData['mb_game_pb2_percent']) < 1) {
+            $arrData['mb_game_pb2_percent'] = 0;
+        }
+        if (array_key_exists('mb_game_ps_percent', $arrData) && strlen($arrData['mb_game_ps_percent']) < 1) {
+            $arrData['mb_game_ps_percent'] = 0;
+        }
+        if (array_key_exists('mb_game_bb_percent', $arrData) && strlen($arrData['mb_game_bb_percent']) < 1) {
+            $arrData['mb_game_bb_percent'] = 0;
+        }
+        if (array_key_exists('mb_game_bb2_percent', $arrData) && strlen($arrData['mb_game_bb2_percent']) < 1) {
+            $arrData['mb_game_bb2_percent'] = 0;
+        }
+        if (array_key_exists('mb_game_bs_percent', $arrData) && strlen($arrData['mb_game_bs_percent']) < 1) {
+            $arrData['mb_game_bs_percent'] = 0;
+        }
+        if (array_key_exists('mb_game_eo_percent', $arrData) && strlen($arrData['mb_game_eo_percent']) < 1) {
+            $arrData['mb_game_eo_percent'] = 0;
+        }
+        if (array_key_exists('mb_game_eo2_percent', $arrData) && strlen($arrData['mb_game_eo2_percent']) < 1) {
+            $arrData['mb_game_eo2_percent'] = 0;
+        }
+    }
+
     public function register($arrRegData, &$strError)
     {
         // 결과 -1: query error 0:오유 1:성공 3:추천인 오유 4:파워볼 배당율오유 5:파워사다리 배당율오유 6:키노사다리 배당율 오유
@@ -923,13 +952,7 @@ class Member_Model extends Model
         $arrRegData['mb_bank_num'] = trim($arrRegData['mb_bank_num']);
         $arrRegData['mb_bank_pwd'] = trim($arrRegData['mb_bank_pwd']);
         $arrRegData['mb_time_join'] = date('Y-m-d H:i:s');
-        // if ($arrRegData['mb_money'] < 0) {
-        //     $arrRegData['mb_money'] = 0;
-        // }
-
-        // if ($arrRegData['mb_point'] < 0) {
-        //     $arrRegData['mb_point'] = 0;
-        // }
+        
         if(!array_key_exists('mb_stage_active', $arrRegData)){
             $arrRegData['mb_state_active'] = PERMIT_WAIT;
         }
@@ -991,31 +1014,8 @@ class Member_Model extends Model
         }
 
         $this->setZeroGameRatio($arrData);
+        $this->setZeroGamePercent($arrData);
 
-        if (array_key_exists('mb_game_pb_percent', $arrData) && strlen($arrData['mb_game_pb_percent']) < 1) {
-            $arrData['mb_game_pb_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_pb2_percent', $arrData) && strlen($arrData['mb_game_pb2_percent']) < 1) {
-            $arrData['mb_game_pb2_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_ps_percent', $arrData) && strlen($arrData['mb_game_ps_percent']) < 1) {
-            $arrData['mb_game_ps_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_bb_percent', $arrData) && strlen($arrData['mb_game_bb_percent']) < 1) {
-            $arrData['mb_game_bb_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_bb2_percent', $arrData) && strlen($arrData['mb_game_bb2_percent']) < 1) {
-            $arrData['mb_game_bb2_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_bs_percent', $arrData) && strlen($arrData['mb_game_bs_percent']) < 1) {
-            $arrData['mb_game_bs_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_eo_percent', $arrData) && strlen($arrData['mb_game_eo_percent']) < 1) {
-            $arrData['mb_game_eo_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_eo2_percent', $arrData) && strlen($arrData['mb_game_eo2_percent']) < 1) {
-            $arrData['mb_game_eo2_percent'] = 0;
-        }
         
         $arrData['mb_bank_name'] = trim($arrData['mb_bank_name']);
         $arrData['mb_bank_own'] = trim($arrData['mb_bank_own']);
@@ -1066,31 +1066,7 @@ class Member_Model extends Model
 
         
         $this->setZeroGameRatio($arrData);
-
-        if (array_key_exists('mb_game_pb_percent', $arrData) && strlen($arrData['mb_game_pb_percent']) < 1) {
-            $arrData['mb_game_pb_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_pb2_percent', $arrData) && strlen($arrData['mb_game_pb2_percent']) < 1) {
-            $arrData['mb_game_pb2_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_ps_percent', $arrData) && strlen($arrData['mb_game_ps_percent']) < 1) {
-            $arrData['mb_game_ps_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_bb_percent', $arrData) && strlen($arrData['mb_game_bb_percent']) < 1) {
-            $arrData['mb_game_bb_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_bb2_percent', $arrData) && strlen($arrData['mb_game_bb2_percent']) < 1) {
-            $arrData['mb_game_bb2_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_bs_percent', $arrData) && strlen($arrData['mb_game_bs_percent']) < 1) {
-            $arrData['mb_game_bs_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_eo_percent', $arrData) && strlen($arrData['mb_game_eo_percent']) < 1) {
-            $arrData['mb_game_eo_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_eo2_percent', $arrData) && strlen($arrData['mb_game_eo2_percent']) < 1) {
-            $arrData['mb_game_eo2_percent'] = 0;
-        }
+        $this->setZeroGamePercent($arrData);
 
         $this->builder()->set('mb_color', $arrData['mb_color']);
         if(array_key_exists('mb_state_delete', $arrData)){
@@ -1103,6 +1079,41 @@ class Member_Model extends Model
         $query = $this->db->getLastQuery();
 
         return 1;
+    }
+
+    private function builderSetGameRatioAndPercent($arrRegData)
+    {
+        if(array_key_exists('mb_game_pb_ratio', $arrRegData))
+            $this->builder()->set('mb_game_pb_ratio', $arrRegData['mb_game_pb_ratio']);
+        if(array_key_exists('mb_game_pb2_ratio', $arrRegData))
+            $this->builder()->set('mb_game_pb2_ratio', $arrRegData['mb_game_pb2_ratio']);
+        if(array_key_exists('mb_game_ps_ratio', $arrRegData))
+            $this->builder()->set('mb_game_ps_ratio', $arrRegData['mb_game_ps_ratio']);
+        if(array_key_exists('mb_game_cs_ratio', $arrRegData))
+            $this->builder()->set('mb_game_cs_ratio', $arrRegData['mb_game_cs_ratio']);
+        if(array_key_exists('mb_game_sl_ratio', $arrRegData))
+            $this->builder()->set('mb_game_sl_ratio', $arrRegData['mb_game_sl_ratio']);
+        if(array_key_exists('mb_game_eo_ratio', $arrRegData))
+            $this->builder()->set('mb_game_eo_ratio', $arrRegData['mb_game_eo_ratio']);
+        if(array_key_exists('mb_game_eo2_ratio', $arrRegData))
+            $this->builder()->set('mb_game_eo2_ratio', $arrRegData['mb_game_eo2_ratio']);
+            
+        if(array_key_exists('mb_game_pb_percent', $arrRegData))
+            $this->builder()->set('mb_game_pb_percent', $arrRegData['mb_game_pb_percent']);
+        if(array_key_exists('mb_game_pb2_percent', $arrRegData))
+            $this->builder()->set('mb_game_pb2_percent', $arrRegData['mb_game_pb2_percent']);
+        if(array_key_exists('mb_game_ps_percent', $arrRegData))
+            $this->builder()->set('mb_game_ps_percent', $arrRegData['mb_game_ps_percent']);
+        if(array_key_exists('mb_game_bb_percent', $arrRegData))
+            $this->builder()->set('mb_game_bb_percent', $arrRegData['mb_game_bb_percent']);
+        if(array_key_exists('mb_game_bb2_percent', $arrRegData))
+            $this->builder()->set('mb_game_bb2_percent', $arrRegData['mb_game_bb2_percent']);
+        if(array_key_exists('mb_game_bs_percent', $arrRegData))
+            $this->builder()->set('mb_game_bs_percent', $arrRegData['mb_game_bs_percent']);
+        if(array_key_exists('mb_game_eo_percent', $arrRegData))
+            $this->builder()->set('mb_game_eo_percent', $arrRegData['mb_game_eo_percent']);
+        if(array_key_exists('mb_game_eo2_percent', $arrRegData))
+            $this->builder()->set('mb_game_eo2_percent', $arrRegData['mb_game_eo2_percent']);
     }
 
     public function updateMemberByFid($arrData, &$query)
@@ -1125,6 +1136,8 @@ class Member_Model extends Model
             $this->builder()->set('mb_game_sl', $arrData['mb_game_sl']);
         } elseif (array_key_exists('mb_game_eo', $arrData)) {
             $this->builder()->set('mb_game_eo', $arrData['mb_game_eo']);
+        } elseif (array_key_exists('mb_blank_count', $arrData)) {
+            $this->builder()->set('mb_blank_count', $arrData['mb_blank_count']);
         } else {
             return false;
         }
@@ -1257,7 +1270,7 @@ class Member_Model extends Model
     {
         $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid','mb_nickname', 'mb_ip_last',
             'mb_money', 'mb_point', 'mb_grade', 'mb_color', 'mb_state_active', 
-            'mb_game_pb', 'mb_game_ps', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 'mb_game_eo',
+            'mb_game_pb', 'mb_game_ps', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 'mb_game_eo', 'mb_blank_count',
             'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money' ];
 
         $strTbColum = " ".implode(", ", $fields);
@@ -1301,7 +1314,7 @@ class Member_Model extends Model
             return $this->searchMemberByLevel($arrReqData, $iEmpFid);
         } else {
             $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid', 'mb_nickname', 
-            'mb_money', 'mb_point', 'mb_grade', 'mb_color', 'mb_state_active',
+            'mb_money', 'mb_point', 'mb_grade', 'mb_color', 'mb_state_active', 'mb_blank_count',
             'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money' ];
 
             $strTbColum = " ".implode(", ", $fields);
@@ -1388,7 +1401,7 @@ class Member_Model extends Model
         $strTbColum.= ' mb_point, mb_grade, mb_color, mb_state_active, mb_state_delete, ' ;
         $strTbColum .= ' mb_game_pb, mb_game_ps, mb_game_bb, mb_game_bs, mb_game_cs, mb_game_sl, mb_game_eo, mb_game_pb_ratio, mb_game_pb2_ratio, mb_game_ps_ratio, ';
         $strTbColum .= ' mb_game_bb_ratio, mb_game_bb2_ratio, mb_game_bs_ratio, mb_game_cs_ratio, mb_game_sl_ratio, mb_game_eo_ratio, mb_game_eo2_ratio, ';
-        $strTbColum .= ' mb_game_pb_percent, mb_game_pb2_percent, mb_game_ps_percent, mb_game_bb_percent, mb_game_bb2_percent, mb_game_bs_percent, mb_game_eo_percent, mb_game_eo2_percent, ';
+        $strTbColum .= ' mb_game_pb_percent, mb_game_pb2_percent, mb_game_ps_percent, mb_game_bb_percent, mb_game_bb2_percent, mb_game_bs_percent, mb_game_eo_percent, mb_game_eo2_percent, mb_blank_count, ';
 
         $strBetM = " ( bet_sl.bet_m ";
         $strBetW = " ( bet_sl.bet_w ";

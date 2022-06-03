@@ -95,6 +95,12 @@ function showMember(arrMember, confs) {
             arrMember[nRow].chg_point = 0;
         strBuf += parseInt(arrMember[nRow].chg_point).toLocaleString();
         strBuf += "</td> <td>";
+        strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >-</button>   ";
+        strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >-10</button>   ";
+        strBuf += "<input type='text' id='blank_" + arrMember[nRow].mb_fid + "' value='" + arrMember[nRow].mb_blank_count + "' disabled>   ";
+        strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >+</button>   ";
+        strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >+10</button>   ";
+        strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_time_join;
         strBuf += "</td> <td>";
         strBuf += "<a href='"+FURL+"/user/member_detail/" + arrMember[nRow].mb_fid + "' >상세</a>";
@@ -115,8 +121,8 @@ function showMember(arrMember, confs) {
             strBuf += ">차단</button>";
         }
         if (confs.emp_level > LEVEL_ADMIN) {
-        strBuf += "</td> <td>";
-        strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >알회수</button>   ";
+            strBuf += "</td> <td>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >알회수</button>   ";
         }
         strBuf += "</td> <td>";
         strBuf += "<button name='" + arrMember[nRow].mb_fid + "' data-nickname='" + arrMember[nRow].mb_nickname + "'>강제아웃</button>   ";
@@ -191,6 +197,7 @@ function addEventListner() {
             case "총롤링금": item='rw_point'; break;
             case "환전롤링금": item='chg_point'; break;
             case "등록날짜": item='mb_time_join'; break;
+            case "공배팅": item='mb_blank_count'; break;
             default:break;
         }
 
@@ -347,6 +354,14 @@ function addButtonElementListener(buttonElement) {
             }
         } else if (tHtml.search("알회수") >= 0) {
             collectEgg(this.name);
+        } else if (tHtml === "-") {
+            countBlank(this.name, -1);
+        } else if (tHtml === "-10") {
+            countBlank(this.name, -10);
+        } else if (tHtml === "+") {
+            countBlank(this.name, 1);
+        } else if (tHtml === "+10") {
+            countBlank(this.name, 10);
         } 
     });
 }

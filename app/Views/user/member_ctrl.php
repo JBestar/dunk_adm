@@ -8,10 +8,14 @@
 	</div>
 	<style>
 		.user-table{
-			min-width:1500px;		
+			min-width:1700px;		
 		}
 		.user-table td{
 			border-right:solid 0.4px #888;
+		}
+		.user-table input{
+			width:50px;
+			text-align:center;		
 		}
 		button.refresh_btn{
 			margin-right: 2px;
@@ -120,12 +124,13 @@
 						<th class="sort-by">총획득금</th>
 						<th class="sort-by">총롤링금</th>
 						<th class="sort-by">환전롤링금</th>
+						<th class="sort-by">공배팅</th>
 						<th class="sort-by">등록날짜</th>
 						<th >상세</th>
 						<th >수정</th>
 						<th >삭제</th>
 						<th>상태</th>
-						<?php if ($mb_level >= LEVEL_ADMIN) {?>	
+						<?php if ($mb_level > LEVEL_ADMIN) {?>	
 						<th>알반환</th>
 						<?php } ?>
 						<th>로그아웃</th>

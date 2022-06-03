@@ -335,7 +335,7 @@ function reqMemSave(objMember, closeDlg = null){
             url: FURL + "/userapi/modifymember",
             data: { json_: jsonData },
             success: function(jResult) {
-                // console.log(jResult);
+                console.log(jResult);
                 if (jResult.status == "success") {
                     if(closeDlg != null){
                         closeDlg();
@@ -437,5 +437,60 @@ function reqMemSave(objMember, closeDlg = null){
 
         });
     }
+
+}
+
+
+function countBlank(fid, chgCnt){
+    if(chgCnt == 0){
+        return;
+    }
+    if($("#blank_"+fid).length < 1)
+        return;
+
+    let curCnt = parseInt($("#blank_"+fid).val());
+
+    let blankCnt = curCnt + chgCnt;
+    if(blankCnt < 0){
+        blankCnt = 0;
+    }
+    $("#blank_"+fid).val(blankCnt);
+
+    var objData = { "mb_fid": fid, "mb_blank_count": blankCnt };
+    reqSetBlank(objData, curCnt);
+}
+
+
+function reqSetBlank(objData, beforeCnt) {
+    $(".blank-btn_"+objData.mb_fid).attr("disabled", true);
+
+    var jsonData = JSON.stringify(objData);
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: FURL + "/userapi/updatemember",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+            $(".blank-btn_"+objData.mb_fid).attr("disabled", false);
+
+            if (jResult.status == "success") {
+                $("#blank_"+objData.mb_fid).val(objData.mb_blank_count);
+            } else if (jResult.status == "fail") {
+                $("#blank_"+objData.mb_fid).val(beforeCnt);
+            } else if (jResult.status == "nopermit") {
+                alert('변경권한이 없습니다.');
+                location.replace( FURL +'/pages/nopermit');
+            } else if (jResult.status == "logout") {
+                location.replace( FURL +'/');
+            }
+        },
+        error: function(request, status, error) {
+            $(".blank-btn_"+objData.mb_fid).attr("disabled", false);
+            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+
+    });
 
 }
