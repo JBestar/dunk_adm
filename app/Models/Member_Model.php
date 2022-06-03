@@ -464,8 +464,10 @@ class Member_Model extends Model
         }
 
         $strSQL .= ' )AS bet_table ON bet_table.bet_mb_uid = mb_table.mb_uid ';
+        // writeLog($strSQL);
 
         $objResult = $this->db->query($strSQL)->getRow();
+        // writeLog("calcBetMoneys End");
 
         $arrBetData['bet_money'] = 0;          // 베팅머니
         $arrBetData['bet_win_money'] = 0;      // 적중머니
