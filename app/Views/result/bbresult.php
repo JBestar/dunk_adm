@@ -2,7 +2,7 @@
 <?= $this->section('bet-result-title') ?><?=$game_name?><?= $this->endSection() ?>
 <?= $this->section('bet-result-round-name') ?>일회차<?= $this->endSection() ?>
 <?= $this->section('bet-result-edit') ?>
-<a href="<?php echo siteFurl().'result/pbresult_edit/0';?>" class="user-panel-add-a" >회차등록</a>
+<!-- <a href="<?php echo siteFurl().'result/bbresult_edit/0';?>" class="user-panel-add-a" >회차등록</a> -->
 <?= $this->endSection() ?>
 <?= $this->section('bet-result-table-header') ?>
 	<th>추첨일</th>

@@ -94,12 +94,14 @@ function showMember(arrMember, confs) {
         if(arrMember[nRow].chg_point == null)
             arrMember[nRow].chg_point = 0;
         strBuf += parseInt(arrMember[nRow].chg_point).toLocaleString();
-        strBuf += "</td> <td>";
-        strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >-</button>   ";
-        strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >-10</button>   ";
-        strBuf += "<input type='text' id='blank_" + arrMember[nRow].mb_fid + "' value='" + arrMember[nRow].mb_blank_count + "' disabled>   ";
-        strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >+</button>   ";
-        strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >+10</button>   ";
+        if (!confs.slot_deny) {
+            strBuf += "</td> <td>";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >-</button>   ";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >-10</button>   ";
+            strBuf += "<input type='text' id='blank_" + arrMember[nRow].mb_fid + "' value='" + arrMember[nRow].mb_blank_count + "' disabled>   ";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >+</button>   ";
+            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >+10</button>   ";
+        }
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_time_join;
         strBuf += "</td> <td>";

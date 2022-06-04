@@ -15,6 +15,10 @@
 	.user-table td{
 		border-right:solid 0.4px #888;
 	}
+	.user-table input{
+		width:50px;
+		text-align:center;		
+	}
 	</style>
 	<!--Site Setting-->
 	<div class="user-panel">	
@@ -69,6 +73,9 @@
 					<th>포인트</th>
 					<!-- <th>게임사별<br>보유알</th> -->
 					<?php if ($mb_level >= LEVEL_ADMIN) {?>	
+						<?php if(!$slot_deny) :?>
+							<th style="width:130px;">공배팅</th>
+						<?php endif ?> 
 					<th>접속IP</th>
 					<?php } ?>
 					<th>승인</th>

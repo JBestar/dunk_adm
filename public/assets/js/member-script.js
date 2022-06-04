@@ -65,12 +65,21 @@ function showMember(arrMember, confs) {
         strBuf += parseInt(arrMember[nRow].mb_point).toLocaleString();
         strBuf += "</td> <td>";
         if (confs.emp_level >= LEVEL_ADMIN) {
+            if (!confs.slot_deny) {
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >-</button>   ";
+                strBuf += "<input type='text' id='blank_" + arrMember[nRow].mb_fid + "' value='" + arrMember[nRow].mb_blank_count + "' disabled>   ";
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >+</button>   ";
+                strBuf += "<br><button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >-10</button>   ";
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >+10</button>   ";
+                strBuf += "</td> <td>";
+            }
             strBuf += arrMember[nRow].mb_ip_last;
             if (arrMember[nRow].block_state == 1) {
                 strBuf += "<br><br><button name='" + arrMember[nRow].mb_ip_last + "' >차단해제</button>";
             } else
                 strBuf += "<br><br><button name='" + arrMember[nRow].mb_ip_last + "' >IP차단</button>";
             strBuf += "</td> <td>";
+            
         }
         strBuf += "<button name='" + arrMember[nRow].mb_fid + "'";
         if (confs.emp_level < LEVEL_ADMIN) {
@@ -342,6 +351,14 @@ function addButtonElementListener(buttonElement) {
                 var jsonData = { "mb_fid": this.name, "mb_game_eo": 1 };
                 requestUpdateMember(jsonData);
             }
+        }  else if (this.innerHTML === "-") {
+            countBlank(this.name, -1);
+        } else if (this.innerHTML === "-10") {
+            countBlank(this.name, -10);
+        } else if (this.innerHTML === "+") {
+            countBlank(this.name, 1);
+        } else if (this.innerHTML === "+10") {
+            countBlank(this.name, 10);
         } 
     });
 }

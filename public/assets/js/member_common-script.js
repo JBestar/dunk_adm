@@ -335,7 +335,7 @@ function reqMemSave(objMember, closeDlg = null){
             url: FURL + "/userapi/modifymember",
             data: { json_: jsonData },
             success: function(jResult) {
-                console.log(jResult);
+                // console.log(jResult);
                 if (jResult.status == "success") {
                     if(closeDlg != null){
                         closeDlg();

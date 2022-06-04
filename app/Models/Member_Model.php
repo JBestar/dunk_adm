@@ -1089,6 +1089,14 @@ class Member_Model extends Model
             $this->builder()->set('mb_game_pb2_ratio', $arrRegData['mb_game_pb2_ratio']);
         if(array_key_exists('mb_game_ps_ratio', $arrRegData))
             $this->builder()->set('mb_game_ps_ratio', $arrRegData['mb_game_ps_ratio']);
+        
+        if(array_key_exists('mb_game_bb_ratio', $arrRegData))
+            $this->builder()->set('mb_game_bb_ratio', $arrRegData['mb_game_bb_ratio']);
+        if(array_key_exists('mb_game_bb2_ratio', $arrRegData))
+            $this->builder()->set('mb_game_bb2_ratio', $arrRegData['mb_game_bb2_ratio']);
+        if(array_key_exists('mb_game_bs_ratio', $arrRegData))
+            $this->builder()->set('mb_game_bs_ratio', $arrRegData['mb_game_bs_ratio']);
+        
         if(array_key_exists('mb_game_cs_ratio', $arrRegData))
             $this->builder()->set('mb_game_cs_ratio', $arrRegData['mb_game_cs_ratio']);
         if(array_key_exists('mb_game_sl_ratio', $arrRegData))

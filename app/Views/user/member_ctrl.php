@@ -124,7 +124,9 @@
 						<th class="sort-by">총획득금</th>
 						<th class="sort-by">총롤링금</th>
 						<th class="sort-by">환전롤링금</th>
-						<th class="sort-by">공배팅</th>
+						<?php if(!$slot_deny) :?>
+							<th class="sort-by">공배팅</th>
+						<?php endif ?>   
 						<th class="sort-by">등록날짜</th>
 						<th >상세</th>
 						<th >수정</th>
