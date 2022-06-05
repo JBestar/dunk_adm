@@ -1,7 +1,20 @@
 $(document).ready(function() {
     addEventListner();
     requestTotalPage();
+    setTimeout(function() {
+        pageLoop();
+    }, 120000);
 });
+
+
+function pageLoop() {
+    requestPageInfo();
+    // 1초뒤에 다시 실행
+    setTimeout(function() {
+        pageLoop();
+    }, 120000);
+
+}
 
 function requestPageInfo() {
     requestDepositList();

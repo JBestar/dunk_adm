@@ -56,17 +56,17 @@ class MoneyHistory_Model extends Model
         return $this->builder()->insert();
     }
     
-    function registerExchange($objUser, $nExchangeMoney)
+    function registerExchange($objUser, $objExchange)
     {
         if(is_null($objUser)) return false;    
-        if($nExchangeMoney < 1) return false;
+        if(is_null($objExchange)) return false;
 
         $this->builder()->set('money_mb_fid', $objUser->mb_fid);
         $this->builder()->set('money_mb_uid', $objUser->mb_uid);
         $this->builder()->set('money_mb_emp_fid', $objUser->mb_emp_fid);        
-        $this->builder()->set('money_amount', (-1) * $nExchangeMoney);
-        $this->builder()->set('money_before', allMoney($objUser));
-        $this->builder()->set('money_after', allMoney($objUser)-$nExchangeMoney);
+        $this->builder()->set('money_amount', (-1) * $objExchange->exchange_money);
+        $this->builder()->set('money_before', $objExchange->exchange_money_before);
+        $this->builder()->set('money_after', $objExchange->exchange_money_after);
         $this->builder()->set('money_change_type', MONEYCHANGE_EXCHANGE);     //환전일때
         $this->builder()->set('money_update_time', 'NOW()', false);
         
