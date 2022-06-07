@@ -118,6 +118,7 @@
       //회차 마감시간설정
       $strRoundEnd = $strDate." ".$nHour.":".$nMinute.":"."0";
       $tmRoundEnd = strtotime($strRoundEnd);
+      $tmRoundEnd = strtotime("-".TM_OFFSET." seconds", $tmRoundEnd);
       $arrRoundInfo['round_end'] = date("Y-m-d H:i:s", $tmRoundEnd);
       
       //회차 시작시간설정
