@@ -125,6 +125,9 @@ class ApiKgon_Lib  {
 		if(!is_null($arrResult) && array_key_exists("code", $arrResult)) {
 			if($arrResult['code'] == 0){
                 $arrResult['status'] = 1;
+                if(array_key_exists('balanceSum', $arrResult)){
+                    $arrResult['balance'] += $arrResult['balanceSum'];
+                }
                 //"code": 0,
                 //"balance": 40000
             } else { //
