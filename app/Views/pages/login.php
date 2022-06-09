@@ -27,7 +27,7 @@
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_w.ico');?>">
         <?php break; 
         case APP_ROYAL :?>
-            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_r.ico?v=2');?>">
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_r.ico?v=3');?>">
         <?php break; 
         case APP_COD :?>
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_c.ico');?>">
