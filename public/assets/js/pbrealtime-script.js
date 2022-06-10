@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    setNavBarElement();
     requestBetRealtime();
     pbrealtimeLoop();
 });
@@ -433,7 +434,6 @@ function requestBetRealtime() {
             $(".loading").hide();
             // console.log(jResult);
             if (jResult.status == "success") {
-                setNavBarElement();
                 ShowBetRealtime(jResult.data);
             }
         },

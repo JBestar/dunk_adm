@@ -21,6 +21,7 @@
 			<select name="pbresult-number" class="" id="conf-bettype-select-id" style="padding:5px; width: 200px; margin-left:0px;">
 				<option value="0" >OUR</option>
 				<option value="1" >GALAXY</option>
+				<option value="2" >WOORI</option>
 			</select>
 		</div>
 		<div class="confsite-game-text-div">

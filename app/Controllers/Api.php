@@ -1168,29 +1168,16 @@ public function withdrawlist(){
 			//model
 			$csbetModel = new CsBet_Model();
 			
-			
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
 
-			$bPoint = false;
-			$arrBetAccount = null;
-			if($objAdmin->mb_level >= LEVEL_ADMIN){
-				if(strlen(trim($arrGetData['emp'])) > 0){
-					$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
-					$bPoint = true;
-				}
-				else 	
-					$arrBetAccount = $csbetModel->getBetAccount($arrGetData);
-			} else {
-				$bPoint = true;
-			}
-
+			if($objAdmin->mb_level >= LEVEL_ADMIN && strlen(trim($arrGetData['emp'])) > 0){
+				$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
+			} 
 			$arrBetResults = $csbetModel->search($objAdmin, $arrGetData);
 			
 			$objResult = new \StdClass;
 			$objResult->data = $arrBetResults;	
-			$objResult->account = $arrBetAccount;	
-			$objResult->point = $bPoint?1:0;	
 			$objResult->status = "success";
 		
 			echo json_encode($objResult);
@@ -1214,15 +1201,21 @@ public function withdrawlist(){
 			//model
 			$csbetModel = new CsBet_Model();
 			
-			
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
-			if($objAdmin->mb_level >= LEVEL_ADMIN && strlen(trim($arrGetData['emp'])) > 0){
-				$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
+			
+			$arrBetAccount = null;
+			if($objAdmin->mb_level >= LEVEL_ADMIN){
+				if(strlen(trim($arrGetData['emp'])) > 0){
+					$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
+				}
+				else 	
+					$arrBetAccount = $csbetModel->getBetAccount($arrGetData);
 			}
 			$objCount = $csbetModel->searchCount($objAdmin, $arrGetData);
 			
 			$arrResult['data'] = $objCount;
+			$arrResult['account'] = $arrBetAccount;
 			$arrResult['status'] = "success";
 		
 			echo json_encode($arrResult);
@@ -1247,25 +1240,13 @@ public function withdrawlist(){
 			
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
-			$bPoint = false;
-			$arrBetAccount = null;
-			if($objAdmin->mb_level >= LEVEL_ADMIN){
-				if(strlen(trim($arrGetData['emp'])) > 0){
-					$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
-					$bPoint = true;
-				}
-				else 	
-					$arrBetAccount = $slbetModel->getBetAccount($arrGetData);
-			} else {
-				$bPoint = true;
+			if($objAdmin->mb_level >= LEVEL_ADMIN && strlen(trim($arrGetData['emp'])) > 0){
+				$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
 			}
-
 			$arrBetResults = $slbetModel->search($objAdmin, $arrGetData);
 			
 			$objResult = new \StdClass;
 			$objResult->data = $arrBetResults;	
-			$objResult->account = $arrBetAccount;	
-			$objResult->point = $bPoint?1:0;	
 			$objResult->status = "success";
 		
 			echo json_encode($objResult);
@@ -1292,12 +1273,19 @@ public function withdrawlist(){
 			
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
-			if($objAdmin->mb_level >= LEVEL_ADMIN && strlen(trim($arrGetData['emp'])) > 0){
-				$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
-			}
+			
+			$arrBetAccount = null;
+			if($objAdmin->mb_level >= LEVEL_ADMIN){
+				if(strlen(trim($arrGetData['emp'])) > 0){
+					$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
+				}
+				else 	
+					$arrBetAccount = $slbetModel->getBetAccount($arrGetData);
+			} 
 			$objCount = $slbetModel->searchCount($objAdmin, $arrGetData);
 			
 			$arrResult['data'] = $objCount;
+			$arrResult['account'] = $arrBetAccount;	
 			$arrResult['status'] = "success";
 		
 			echo json_encode($arrResult);

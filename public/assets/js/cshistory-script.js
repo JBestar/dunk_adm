@@ -1,6 +1,10 @@
 $(document).ready(function() {
+    setNavBarElement();
     addEventListner();
-    requestTotalPage();
+    requestPageInfo();
+    setTimeout(function() {
+        requestTotalPage(false);
+    }, 1000);
     setTimeout(function() {
         pbhitoryLoop();
     }, 300000);
@@ -12,7 +16,7 @@ function requestPageInfo() {
 
 
 //Function to Show Betting History
-function ShowBetHistory(jsonBetData, hasPoint) {
+function ShowBetHistory(jsonBetData) {
     var elemBetDataTb = document.getElementById("pbbet-table-id");
     var strBuf = "";
     var strWinMoney = "";
@@ -25,9 +29,6 @@ function ShowBetHistory(jsonBetData, hasPoint) {
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td><td>";
         strBuf += jsonBetData[nRow].bet_mb_uid;
-        strBuf += "</td><td>";
-        if(jsonBetData[nRow].mb_nickname != null)
-            strBuf += jsonBetData[nRow].mb_nickname;
         strBuf += "</td><td>";
         strBuf += jsonBetData[nRow].bet_time;
         strBuf += "</td><td>";
@@ -133,6 +134,7 @@ function requestBetHistory() {
 
     var dtStart = $("#pbhistory-datestart-input-id").val();
     var dtEnd = $("#pbhistory-dateend-input-id").val();
+    CountPerPage = $("#pbhistory-number-select-id").val();
     var strUser = $("#pbhistory-userid-input-id").val();
     var nMode = 0;
     if($("#pbhistory-game-select-id").length > 0)
@@ -164,8 +166,7 @@ function requestBetHistory() {
             $(".loading").hide();
             // console.log(jResult);
             if (jResult.status == "success") {
-                ShowBetHistory(jResult.data, 1);
-                ShowBetAccount(jResult.account);
+                ShowBetHistory(jResult.data);
             }
         },
         error: function(request, status, error) {
@@ -177,7 +178,7 @@ function requestBetHistory() {
 }
 
 
-function requestTotalPage() {
+function requestTotalPage(bReqPage = true) {
 
     var dtStart = $("#pbhistory-datestart-input-id").val();
     var dtEnd = $("#pbhistory-dateend-input-id").val();
@@ -210,8 +211,10 @@ function requestTotalPage() {
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();
-                setNavBarElement();
-                requestBetHistory();
+                if(bReqPage)
+                    requestBetHistory();
+                ShowBetAccount(jResult.account);
+                
             }
         },
         error: function(request, status, error) {

@@ -1,12 +1,9 @@
 var mBetData = null;
-initBetChange();
-
-function initBetChange() {
+$(document).ready(function() {
     setNavBarElement();
     requestBetHistory();
     addEventListner();
-}
-
+});
 
 //Function to Show Betting History
 function ShowBetHistory(jsonBetData) {

@@ -24,20 +24,14 @@ class PbBet_Model extends Model {
         'user_before_money', 
         'user_after_money', 
         'user_view_state', 
-        'auto_config_id', 
-        'auto_config_step', 
-        'cumulate_amount', 
         'account_time', 
-        'point_amount', 
-        'employee_amount', 
-        'agency_amount', 
-        'company_amount',
     ];
     protected $primaryKey = 'bet_fid';
     private $mMemberTable = 'member';
     private $mRewardTable = 'bet_reward';
+    private $mGameId = GAME_POWER_BALL;
     
-    function gets($nCount)
+    public function gets($nCount)
     {
         
         $strSql = "SELECT bet_fid, bet_state, bet_mb_uid, bet_round_fid, bet_round_no, bet_time, bet_mode, bet_target, bet_ratio, bet_money, bet_result, bet_win_money, user_before_money, user_after_money FROM ".$this->table." ORDER BY bet_time DESC LIMIT 0, ".$nCount;
@@ -47,16 +41,16 @@ class PbBet_Model extends Model {
         return $result;  
     }
 
-    function get($nRoundFid){        
+    public function get($nRoundFid){        
         return $this->where(array('bet_round_fid'=>$nRoundFid))->findAll();
     }
 
 
-    function getByFid($nBetFid){        
+    public function getByFid($nBetFid){        
         return $this->where(array('bet_fid'=>$nBetFid))->first();
     }
 
-    function getByUserId($strUserId, $nCount)
+    public function getByUserId($strUserId, $nCount)
     {
         
         $strSql = "SELECT bet_state, bet_round_fid, bet_round_no, bet_time, bet_mode, bet_target, bet_money, bet_win_money  FROM ".$this->table;
@@ -67,7 +61,7 @@ class PbBet_Model extends Model {
         return $result;  
     }
 
-    function getBetSumByMode($arrRoundInfo, $objConfPb){
+    public function getBetSumByMode($arrRoundInfo, $objConf){
 
         $arrSumData = array();
 
@@ -75,9 +69,8 @@ class PbBet_Model extends Model {
         for($i = 0; $i <4; $i ++){
 
             $iMode = $i+1;
-            // $strSql = " SELECT SUM(bet_money_sum * mb_game_pb_percent DIV 100) AS bet_money_allsum FROM ( ";
             $strSql = ' SELECT SUM(bet_money_sum) AS bet_money_allsum FROM ( ';
-            $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum, mb_game_pb_percent, mb_game_pb2_percent FROM ".$this->table;
+            $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum FROM ".$this->table;
             $strSql .= " JOIN ".$this->mMemberTable." ON ".$this->mMemberTable.".mb_uid = ".$this->table.".bet_mb_uid ";
             $strSql .= " WHERE bet_round_no='".$arrRoundInfo['round_no']."' AND bet_state = '1' ";
             $strSql .= " AND bet_time > '".$arrRoundInfo['round_start']."' AND bet_time < '".$arrRoundInfo['round_end']."' ";
@@ -91,12 +84,11 @@ class PbBet_Model extends Model {
                 $nSum = $objResult->bet_money_allsum;
             }
             //게임별 누르기율 계산
-            // $nSum = $nSum * $objConfPb->game_percent_1 / 100;
+            // $nSum = $nSum * $objConf->game_percent_1 / 100;
             $arrSum[0] = (int)$nSum;
             
-            // $strSql = " SELECT SUM(bet_money_sum * mb_game_pb_percent DIV 100) AS bet_money_allsum FROM ( ";
             $strSql = " SELECT SUM(bet_money_sum) AS bet_money_allsum FROM ( ";
-            $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum, mb_game_pb_percent, mb_game_pb2_percent FROM ".$this->table;
+            $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum FROM ".$this->table;
             $strSql .= " JOIN ".$this->mMemberTable." ON ".$this->mMemberTable.".mb_uid = ".$this->table.".bet_mb_uid ";
             $strSql .= " WHERE bet_round_no='".$arrRoundInfo['round_no']."' AND bet_state = '1' ";
             $strSql .= " AND bet_time > '".$arrRoundInfo['round_start']."' AND bet_time < '".$arrRoundInfo['round_end']."' ";
@@ -110,7 +102,7 @@ class PbBet_Model extends Model {
                 $nSum = $objResult->bet_money_allsum;
             }
             //게임별 누르기율 계산
-            // $nSum = $nSum * $objConfPb->game_percent_1 / 100;
+            // $nSum = $nSum * $objConf->game_percent_1 / 100;
             $arrSum[1] = (int)$nSum;
         
             $arrSumData[$i] = $arrSum;
@@ -118,9 +110,8 @@ class PbBet_Model extends Model {
         $arrSum = array();
         for($i = 4; $i <29; $i ++){
            $iMode = $i+1;
-            // $strSql = " SELECT SUM(bet_money_sum * mb_game_pb2_percent DIV 100) AS bet_money_allsum FROM ( ";
             $strSql = " SELECT SUM(bet_money_sum) AS bet_money_allsum FROM ( ";
-            $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum, mb_game_pb_percent, mb_game_pb2_percent FROM ".$this->table;
+            $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum FROM ".$this->table;
             $strSql .= " JOIN ".$this->mMemberTable." ON ".$this->mMemberTable.".mb_uid = ".$this->table.".bet_mb_uid ";
             $strSql .= " WHERE bet_round_no='".$arrRoundInfo['round_no']."' AND bet_state = '1' ";
             $strSql .= " AND bet_time > '".$arrRoundInfo['round_start']."' AND bet_time < '".$arrRoundInfo['round_end']."' ";
@@ -133,7 +124,7 @@ class PbBet_Model extends Model {
                 $nSum = $objResult->bet_money_allsum;
             }
             //게임별 누르기율 계산
-            // $nSum = $nSum * $objConfPb->game_percent_2 / 100;
+            // $nSum = $nSum * $objConf->game_percent_2 / 100;
             $arrSum[0] = (int)$nSum;
     
             $arrSumData[$i] = $arrSum;
@@ -143,7 +134,7 @@ class PbBet_Model extends Model {
         return $arrSumData;  
     }
 
-    function getBetSumByDay($arrReqInfo, $objConfPb){
+    public function getBetSumByDay($arrReqInfo, $objConf){
 
         $arrSumData = array();
 
@@ -163,27 +154,8 @@ class PbBet_Model extends Model {
             $nSum = $objResult->win_money_sum;
         }
         $arrSum[1] = $nSum;
-           
-        //단폴 누르기율
-        // $strSql = " SELECT SUM(bet_money_sum * mb_game_pb_percent DIV 100) AS bet_money_allsum FROM ( ";
-        // $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum, mb_game_pb_percent, mb_game_pb2_percent FROM ".$this->table;
-        // $strSql .= " JOIN ".$this->mMemberTable." ON ".$this->mMemberTable.".mb_uid = ".$this->table.".bet_mb_uid ";
-        // $strSql .= " WHERE bet_time >= '".$arrReqInfo['start']."' AND bet_time <= '".$arrReqInfo['end']."' ";
-        // $strSql .= " AND bet_mode>='1' AND bet_mode<='4' AND bet_state != 4 GROUP BY bet_mb_uid ";
-        // $strSql .= " ) tb_sum ";            
-        // $objResult = $this -> db -> query($strSql)->getRow();
-        
-        //유저별 배팅결과 합
-        // $nSum = 0;
-        // if(!is_null($objResult->bet_money_allsum)) {
-        //     $nSum = $objResult->bet_money_allsum;
-        // }
-        // //게임별 누르기율 계산
-        // $nSum = $nSum * $objConfPb->game_percent_1 / 100;
-        // $arrSum[2] = $nSum;
 
         $arrSumData[0] = $arrSum;
-
 
         $arrSum = array();
         $strSql = " SELECT SUM(bet_money) AS bet_money_sum, SUM(bet_win_money) AS win_money_sum  FROM ".$this->table;
@@ -202,23 +174,6 @@ class PbBet_Model extends Model {
         }
         $arrSum[1] = $nSum;
 
-        //조합 누르기율
-        // $strSql = " SELECT SUM(bet_money_sum * mb_game_pb2_percent DIV 100) AS bet_money_allsum FROM ( ";
-        // $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum, mb_game_pb_percent, mb_game_pb2_percent FROM ".$this->table;
-        // $strSql .= " JOIN ".$this->mMemberTable." ON ".$this->mMemberTable.".mb_uid = ".$this->table.".bet_mb_uid ";
-        // $strSql .= " WHERE bet_time > '".$arrReqInfo['start']."' AND bet_time < '".$arrReqInfo['end']."' ";
-        // $strSql .= " AND bet_mode>='5' AND bet_mode<='38'  AND bet_state != 4 GROUP BY bet_mb_uid ";
-        // $strSql .= " ) tb_sum ";
-        // $objResult = $this -> db -> query($strSql)->getRow();
-        // //유저별 배팅결과 합
-        // $nSum = 0;
-        // if(!is_null($objResult->bet_money_allsum)) {
-        //     $nSum = $objResult->bet_money_allsum;
-        // }
-        // //게임별 누르기율 계산
-        // $nSum = $nSum * $objConfPb->game_percent_2 / 100;
-        // $arrSum[2] = (int)$nSum;
-
         $arrSumData[1] = $arrSum;
 
 
@@ -226,7 +181,7 @@ class PbBet_Model extends Model {
     }
 
 
-    function getBetAccount($arrReqData){
+    public function getBetAccount($arrReqData){
 
         
         $strCondition = " WHERE bet_state != 4 ";
@@ -297,11 +252,10 @@ class PbBet_Model extends Model {
     }
 
 
-    function search($objEmp, $arrReqData)
+    public function search($objEmp, $arrReqData)
     {
         if(is_null($objEmp))
             return [];
-        $gameId = GAME_POWER_BALL;
             
         $strTbColum = ' mb_fid, mb_uid, mb_level, mb_emp_fid ';
         $strTbRColum = ' r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid ';
@@ -348,6 +302,9 @@ class PbBet_Model extends Model {
             else if($arrReqData['mode'] == 5)
                 $strWhere.=" bet_mode = 30 ";
         }
+        if($objEmp->mb_level < LEVEL_ADMIN){
+            $strWhere.=" AND bet_mb_uid in ( SELECT mb_uid FROM  tbmember UNION ALL SELECT '".$objEmp->mb_uid."' AS mb_uid ) ";
+        }
         $nStartRow = ($arrReqData['page'] - 1) * $arrReqData['count'];
         $strWhere .= ' ORDER BY bet_fid DESC LIMIT '.$nStartRow.', '.$arrReqData['count'];
         
@@ -366,14 +323,14 @@ class PbBet_Model extends Model {
             $strSql .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
 
             $strSql .= " SELECT * FROM ".$this->table;  
-            $strSql .= '  JOIN (SELECT  * FROM tbmember UNION SELECT '.$strTbColum.' FROM '.$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";
-            $strSql .= ' ) AS mb_table ';
-            $strSql .= ' ON '.$this->table.'.bet_mb_uid = mb_table.mb_uid ';
+            // $strSql .= '  JOIN (SELECT  * FROM tbmember UNION SELECT '.$strTbColum.' FROM '.$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";
+            // $strSql .= ' ) AS mb_table ';
+            // $strSql .= ' ON '.$this->table.'.bet_mb_uid = mb_table.mb_uid ';
             $strSql .=$strWhere.") ".$tbBetSearch;
 
             //Join bet_reward
-            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
-                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".$gameId."' ";
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->mRewardTable.".rw_game = '".$this->mGameId."' ";
+                $strSql .= ' AND '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
                 $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = '".$objEmp->mb_uid."' ";
             
         } else {
@@ -381,8 +338,8 @@ class PbBet_Model extends Model {
             $strSql .=$strWhere.") ".$tbBetSearch;
 
             //Join bet_reward
-            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
-                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".$gameId."' ";
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->mRewardTable.".rw_game = '".$this->mGameId."' ";
+                $strSql .= ' AND '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
                 $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = ".$tbBetSearch.".bet_mb_uid ";
             
         }
@@ -396,7 +353,7 @@ class PbBet_Model extends Model {
     }
 
 
-    function searchCount($objEmp, $arrReqData)
+    public function searchCount($objEmp, $arrReqData)
     {
         $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid ";
         $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid ";
@@ -412,9 +369,9 @@ class PbBet_Model extends Model {
 
             $strSql .= "SELECT count(*) as count  FROM ".$this->table;
 
-            $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";         
-            $strSql .=" ) AS mb_table ";
-            $strSql .=" ON ".$this->table.".bet_mb_uid = mb_table.mb_uid ";
+            // $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";         
+            // $strSql .=" ) AS mb_table ";
+            // $strSql .=" ON ".$this->table.".bet_mb_uid = mb_table.mb_uid ";
         } else {
             $strSql .= "SELECT count(*) as count  FROM ".$this->table;
         }
@@ -453,6 +410,11 @@ class PbBet_Model extends Model {
                 $strSql.=" bet_mode = 30 ";
             $bWhere = true;
         }
+        if($objEmp->mb_level < LEVEL_ADMIN){
+            if($bWhere) $strSql.= " AND ";
+            else $strSql.= " WHERE ";    
+            $strSql.=" bet_mb_uid in ( SELECT mb_uid FROM  tbmember UNION ALL SELECT '".$objEmp->mb_uid."' AS mb_uid ) ";
+        }
 
         $query = $this -> db -> query($strSql);
         $result = $query -> getRow();
@@ -462,7 +424,7 @@ class PbBet_Model extends Model {
     }
 
     //배팅 무효처리
-    function ignore($objBet)
+    public function ignore($objBet)
     {
         $this->builder()->set('bet_state', 4);
         $this->builder()->set('bet_win_money', 0);
@@ -474,7 +436,7 @@ class PbBet_Model extends Model {
         return $this->builder()->update();
     }
     
-    function updateBetRound($objRoundInfo, $objBetInfo)
+    public function updateBetRound($objRoundInfo, $objBetInfo)
     {
         if(is_null($objRoundInfo)) return false;
         if(is_null($objBetInfo)) return false;

@@ -16,7 +16,7 @@ class BsBet_Model extends Model {
         'bet_time', 
         'bet_mode', 
         'bet_target', 
-        'bt_ratio', 
+        'bet_ratio', 
         'bet_money', 
         'bet_bonus', 
         'bet_result', 
@@ -36,6 +36,7 @@ class BsBet_Model extends Model {
     protected $primaryKey = 'bet_fid';
     private $mMemberTable = 'member';
     private $mRewardTable = 'bet_reward';
+    private $mGameId =  GAME_BOGLE_LADDER;
 
     function gets($nCount)
     {
@@ -75,9 +76,8 @@ class BsBet_Model extends Model {
 
             $iMode = $i+1;
             
-            // $strSql = " SELECT SUM(bet_money_sum * mb_game_bs_percent DIV 100) AS bet_money_allsum FROM ( ";
             $strSql = " SELECT SUM(bet_money_sum) AS bet_money_allsum FROM ( ";
-            $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum, mb_game_bs_percent FROM ".$this->table;
+            $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum FROM ".$this->table;
             $strSql .= " JOIN ".$this->mMemberTable." ON ".$this->mMemberTable.".mb_uid = ".$this->table.".bet_mb_uid ";
             $strSql .= " WHERE bet_round_no='".$arrRoundInfo['round_no']."' AND bet_state = '1' ";
             $strSql .= " AND bet_time >= '".$arrRoundInfo['round_start']."' AND bet_time <= '".$arrRoundInfo['round_end']."' ";
@@ -94,9 +94,8 @@ class BsBet_Model extends Model {
             $arrSum[0] = (int)$nSum;
 
             
-            // $strSql = " SELECT SUM(bet_money_sum * mb_game_bs_percent DIV 100) AS bet_money_allsum FROM ( ";
             $strSql = " SELECT SUM(bet_money_sum) AS bet_money_allsum FROM ( ";
-            $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum, mb_game_bs_percent FROM ".$this->table;
+            $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum FROM ".$this->table;
             $strSql .= " JOIN ".$this->mMemberTable." ON ".$this->mMemberTable.".mb_uid = ".$this->table.".bet_mb_uid ";
             $strSql .= " WHERE bet_round_no='".$arrRoundInfo['round_no']."' AND bet_state = '1' ";
             $strSql .= " AND bet_time >= '".$arrRoundInfo['round_start']."' AND bet_time <= '".$arrRoundInfo['round_end']."' ";
@@ -118,9 +117,8 @@ class BsBet_Model extends Model {
         $arrSum = array();
         for($i = 3; $i <7; $i ++){
             $iMode = $i+1;
-            // $strSql = " SELECT SUM(bet_money_sum * mb_game_bs_percent DIV 100) AS bet_money_allsum FROM ( ";
             $strSql = " SELECT SUM(bet_money_sum) AS bet_money_allsum FROM ( ";
-            $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum, mb_game_bs_percent FROM ".$this->table;
+            $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum FROM ".$this->table;
             $strSql .= " JOIN ".$this->mMemberTable." ON ".$this->mMemberTable.".mb_uid = ".$this->table.".bet_mb_uid ";
             $strSql .= " WHERE bet_round_no='".$arrRoundInfo['round_no']."' AND bet_state = '1' ";
             $strSql .= " AND bet_time > '".$arrRoundInfo['round_start']."' AND bet_time < '".$arrRoundInfo['round_end']."' ";
@@ -164,24 +162,6 @@ class BsBet_Model extends Model {
         }
         $arrSum[1] = $nSum;
            
-        //단폴 누르기율
-        // $strSql = " SELECT SUM(bet_money_sum * mb_game_bs_percent DIV 100) AS bet_money_allsum FROM ( ";
-        // $strSql .= " SELECT bet_mb_uid, bet_mode, bet_target, bet_ratio, SUM(bet_money) AS bet_money_sum, mb_game_bs_percent FROM ".$this->table;
-        // $strSql .= " JOIN ".$this->mMemberTable." ON ".$this->mMemberTable.".mb_uid = ".$this->table.".bet_mb_uid ";
-        // $strSql .= " WHERE bet_time >= '".$arrReqInfo['start']."' AND bet_time <= '".$arrReqInfo['end']."' ";
-        // $strSql .= " AND bet_mode>='1' AND bet_mode<='3' AND bet_state != 4 GROUP BY bet_mb_uid ";
-        // $strSql .= " ) tb_sum ";            
-        // $objResult = $this -> db -> query($strSql)->getRow();
-        
-        // //유저별 배팅결과 합
-        // $nSum = 0;
-        // if(!is_null($objResult->bet_money_allsum)) {
-        //     $nSum = $objResult->bet_money_allsum;
-        // }
-        // //게임별 누르기율 계산
-        // $nSum = $nSum * $objConf->game_percent_1 / 100;
-        // $arrSum[2] = $nSum;
-
         return $arrSum;
     }
     
@@ -204,6 +184,7 @@ class BsBet_Model extends Model {
                 $strCondition.=" AND bet_mode = '".$arrReqData['mode']."' ";
             else 
                 $strCondition.=" AND bet_mode >= 4 AND bet_mode <= 7 ";
+
         }
         //총배팅금, 적중금
         $arrSum = array();
@@ -251,9 +232,9 @@ class BsBet_Model extends Model {
 
     function search($objEmp, $arrReqData)
     {
+        
         if(is_null($objEmp))
             return [];
-        $gameId = GAME_BOGLE_LADDER;
 
         $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid ";
         $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid ";
@@ -294,6 +275,9 @@ class BsBet_Model extends Model {
             else 
                 $strWhere.=" bet_mode >= 4 AND bet_mode <= 7 ";
         }
+        if($objEmp->mb_level < LEVEL_ADMIN){
+            $strWhere.=" AND bet_mb_uid in ( SELECT mb_uid FROM  tbmember UNION ALL SELECT '".$objEmp->mb_uid."' AS mb_uid ) ";
+        }
         $nStartRow = ($arrReqData['page'] - 1) * $arrReqData['count'];
         $strWhere .= ' ORDER BY bet_fid DESC LIMIT '.$nStartRow.', '.$arrReqData['count'];
 
@@ -311,14 +295,14 @@ class BsBet_Model extends Model {
             $strSql .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
 
             $strSql .= " SELECT * FROM ".$this->table;  
-            $strSql .= '  JOIN (SELECT  * FROM tbmember UNION SELECT '.$strTbColum.' FROM '.$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";
-            $strSql .= ' ) AS mb_table ';
-            $strSql .= ' ON '.$this->table.'.bet_mb_uid = mb_table.mb_uid ';
+            // $strSql .= '  JOIN (SELECT  * FROM tbmember UNION SELECT '.$strTbColum.' FROM '.$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";
+            // $strSql .= ' ) AS mb_table ';
+            // $strSql .= ' ON '.$this->table.'.bet_mb_uid = mb_table.mb_uid ';
             $strSql .=$strWhere.") ".$tbBetSearch;
 
             //Join bet_reward
-            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
-                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".$gameId."' ";
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->mRewardTable.".rw_game = '".$this->mGameId."' ";
+                $strSql .= ' AND '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
                 $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = '".$objEmp->mb_uid."' ";
             
         } else {
@@ -326,8 +310,8 @@ class BsBet_Model extends Model {
             $strSql .=$strWhere.") ".$tbBetSearch;
 
             //Join bet_reward
-            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
-                $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".$gameId."' ";
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->mRewardTable.".rw_game = '".$this->mGameId."' ";
+                $strSql .= ' AND '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
                 $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = ".$tbBetSearch.".bet_mb_uid ";
             
         }
@@ -343,7 +327,6 @@ class BsBet_Model extends Model {
 
     function searchCount($objEmp, $arrReqData)
     {
-        
         $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid ";
         $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid ";
 
@@ -357,9 +340,9 @@ class BsBet_Model extends Model {
 
             $strSql .= "SELECT count(*) as count  FROM ".$this->table;
             
-            $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";      ;       
-            $strSql .=" ) AS mb_table ";
-            $strSql .=" ON ".$this->table.".bet_mb_uid = mb_table.mb_uid ";
+            // $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";      ;       
+            // $strSql .=" ) AS mb_table ";
+            // $strSql .=" ON ".$this->table.".bet_mb_uid = mb_table.mb_uid ";
         } else {
             $strSql .= "SELECT count(*) as count  FROM ".$this->table;
         }
@@ -388,6 +371,11 @@ class BsBet_Model extends Model {
                 $strSql.=" bet_mode = '".$arrReqData['mode']."' ";
             else 
                 $strSql.=" bet_mode >= 4 AND bet_mode <= 7 ";
+        }
+        if($objEmp->mb_level < LEVEL_ADMIN){
+            if($bWhere) $strSql.= " AND ";
+            else $strSql.= " WHERE ";    
+            $strSql.=" bet_mb_uid in ( SELECT mb_uid FROM  tbmember UNION ALL SELECT '".$objEmp->mb_uid."' AS mb_uid ) ";
         }
 
         $query = $this -> db -> query($strSql);
@@ -466,7 +454,6 @@ class BsBet_Model extends Model {
                 break;
             default:return false;
         } 
-
 
         if($isWin){                     //적중
             $objBetInfo->bet_state = 3;

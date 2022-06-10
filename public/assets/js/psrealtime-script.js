@@ -1,9 +1,8 @@
-initRealtime();
-
-function initRealtime() {
+$(document).ready(function() {
+    setNavBarElement();
     requestBetRealtime();
     psrealtimeLoop();
-}
+});
 
 //Function to Show Betting History
 function ShowBetRealtime(jRealBet) {
@@ -211,10 +210,8 @@ function requestBetRealtime() {
         dataType: "json",
         success: function(jResult) {
             $(".loading").hide();
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
-                //console.log(jResult.data);
-                setNavBarElement();
                 ShowBetRealtime(jResult.data);
             }
         },

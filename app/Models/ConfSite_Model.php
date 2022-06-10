@@ -43,10 +43,7 @@ class ConfSite_Model extends Model
             $arrSiteInfo = explode('#', $strSite);
             if(count($arrSiteInfo) >= 3){
                 $arrSiteInfo[3] = $objConfig->conf_active;
-                if($objConfig->conf_idx == 1){
-                    $arrSiteInfo[4] = 1;
-                } else 
-                    $arrSiteInfo[4] = 0;
+                $arrSiteInfo[4] = intval($objConfig->conf_idx);
                 return $arrSiteInfo;
             }
         }

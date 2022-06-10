@@ -1,14 +1,10 @@
-initCalculate();
-
-function initCalculate() {
+$(document).ready(function() {
     setNavBarElement();
     addButtonEvent();
-    //
     var nEmpFid = 0;
     var nTbRow = -1;
     requestCalculate(nEmpFid, nTbRow);
-
-}
+});
 
 
 function showCalcualte(arrCalcData) {
@@ -94,7 +90,6 @@ function requestCalculate(nFid, nRow) {
             $(".loading").hide();
             //console.log(jResult);
             if (jResult.status == "success") {
-                // setNavBarElement();
                 if (nRow < 0) showCalcualte(jResult.data);
                 else addRow(nRow, jResult.data, jResult.level);
             } else if (jResult.status == "logout") {

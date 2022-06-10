@@ -1,14 +1,11 @@
-initCalculate();
-
-function initCalculate() {
+$(document).ready(function() {
     setNavBarElement();
     addButtonEvent();
     //
     var nEmpFid = 0;
     var nTbRow = -1;
     requestCalculate(nEmpFid, nTbRow);
-
-}
+});
 
 
 

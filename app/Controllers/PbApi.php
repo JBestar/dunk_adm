@@ -157,20 +157,14 @@ class PbApi extends BaseController {
 			} else $bResult = false;
 				
 			if($bResult){
-				$arrBetAccount = null;
-				if($objAdmin->mb_level >= LEVEL_ADMIN){
-					if(strlen(trim($arrReqData['emp'])) > 0){
-						$objAdmin = $this->modelMember->getInfo(trim($arrReqData['emp']));
-					}
-					else 	
-						$arrBetAccount = $betModel->getBetAccount($arrReqData);
-				} 
-
+				
+				if($objAdmin->mb_level >= LEVEL_ADMIN && strlen(trim($arrReqData['emp'])) > 0){
+					$objAdmin = $this->modelMember->getInfo(trim($arrReqData['emp']));
+				}
 				$arrBetResults = $betModel->search($objAdmin, $arrReqData);
 				
 				$objResult = new \StdClass;
 				$objResult->data = $arrBetResults;	
-				$objResult->account = $arrBetAccount;		
 				$objResult->status = "success";
 			
 				echo json_encode($objResult);
@@ -194,7 +188,7 @@ class PbApi extends BaseController {
 	public function betlistcnt(){ 
 		$jsonData = $_REQUEST['json_'];
 		$arrReqData = json_decode($jsonData, true);
-		//var_dump($arrBetData);
+
 		if(is_login()) {
 			//model
 			$bResult = true;
@@ -221,13 +215,20 @@ class PbApi extends BaseController {
 			}  else $bResult = false;
 			
 			if($bResult){
-			
-				if($objAdmin->mb_level >= LEVEL_ADMIN && strlen(trim($arrReqData['emp'])) > 0){
-					$objAdmin = $this->modelMember->getInfo(trim($arrReqData['emp']));
-				}
+
+				$arrBetAccount = null;
+				if($objAdmin->mb_level >= LEVEL_ADMIN){
+					if(strlen(trim($arrReqData['emp'])) > 0){
+						$objAdmin = $this->modelMember->getInfo(trim($arrReqData['emp']));
+					}
+					else 	
+						$arrBetAccount = $betModel->getBetAccount($arrReqData);
+				} 
+				
 				$objCount = $betModel->searchCount($objAdmin, $arrReqData);
 				
 				$arrResult['data'] = $objCount;
+				$arrResult['account'] = $arrBetAccount;		
 				$arrResult['status'] = "success";
 			
 				echo json_encode($arrResult);

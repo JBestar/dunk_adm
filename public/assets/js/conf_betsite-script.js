@@ -91,12 +91,10 @@ function addBtnEvent() {
 }
 
 function changeBetType(){
-    if($("#conf-bettype-select-id").val() == "1"){
+    if($("#conf-bettype-select-id").val() == "1" || $("#conf-bettype-select-id").val() == "2"){
         $("#conf-pw-label").text("계정 토큰키");
-        // $("conf-money-div").show();
     } else{
         $("#conf-pw-label").text("계정 비밀번호");
-        // $("conf-money-div").hide();
     } 
 }
 

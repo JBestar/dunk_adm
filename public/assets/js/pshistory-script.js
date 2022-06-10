@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    setNavBarElement();
     addEventListner();
     requestTotalPage();
     setTimeout(function() {
@@ -204,7 +205,6 @@ function requestBetHistory() {
             // console.log(jResult);
             if (jResult.status == "success") {
                 ShowBetHistory(jResult.data);
-                ShowBetAccount(jResult.account);
             }
         },
         error: function(request, status, error) {
@@ -251,8 +251,8 @@ function requestTotalPage() {
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();
-                setNavBarElement();
                 requestBetHistory();
+                ShowBetAccount(jResult.account);
             }
         },
         error: function(request, status, error) {

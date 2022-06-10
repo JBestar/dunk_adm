@@ -30,38 +30,38 @@ class Clean_Model extends Model {
         $strSql = " DELETE FROM bet_bogleladder WHERE bet_time < '".$strDate."' ";
         $this -> db -> query($strSql);
         
-        $strSql = " DELETE FROM board_notice WHERE notice_time_create < '".$strDate."'  AND notice_type != '".NOTICE_BOARD."' ";
-        $this -> db -> query($strSql);
+        // $strSql = " DELETE FROM board_notice WHERE notice_time_create < '".$strDate."'  AND notice_type != '".NOTICE_BOARD."' ";
+        // $this -> db -> query($strSql);
 
-        $strSql = " DELETE FROM member_charge WHERE charge_time_require < '".$strDate."' ";
-        $this -> db -> query($strSql);
+        // $strSql = " DELETE FROM member_charge WHERE charge_time_require < '".$strDate."' ";
+        // $this -> db -> query($strSql);
         
-        $strSql = " DELETE FROM member_exchange WHERE exchange_time_require < '".$strDate."' ";
-        $this -> db -> query($strSql);
+        // $strSql = " DELETE FROM member_exchange WHERE exchange_time_require < '".$strDate."' ";
+        // $this -> db -> query($strSql);
         
-        $strSql = " DELETE FROM money_history WHERE money_update_time < '".$strDate."' ";
-        $this -> db -> query($strSql);
+        // $strSql = " DELETE FROM money_history WHERE money_update_time < '".$strDate."' ";
+        // $this -> db -> query($strSql);
         
-        $strSql = " DELETE FROM transfer_history WHERE money_update_time < '".$strDate."' ";
-        $this -> db -> query($strSql);
+        // $strSql = " DELETE FROM transfer_history WHERE money_update_time < '".$strDate."' ";
+        // $this -> db -> query($strSql);
                 
-        $strSql = " DELETE FROM round_powerball WHERE round_date < '".$strDate."' ";
-        $this -> db -> query($strSql);
+        // $strSql = " DELETE FROM round_powerball WHERE round_date < '".$strDate."' ";
+        // $this -> db -> query($strSql);
 
-        $strSql = " DELETE FROM round_powerladder WHERE round_date < '".$strDate."' ";
-        $this -> db -> query($strSql);
+        // $strSql = " DELETE FROM round_powerladder WHERE round_date < '".$strDate."' ";
+        // $this -> db -> query($strSql);
 
-        $strSql = " DELETE FROM round_bogleball WHERE round_date < '".$strDate."' ";
-        $this -> db -> query($strSql);
+        // $strSql = " DELETE FROM round_bogleball WHERE round_date < '".$strDate."' ";
+        // $this -> db -> query($strSql);
 
-        $strSql = " DELETE FROM round_bogleladder WHERE round_date < '".$strDate."' ";
-        $this -> db -> query($strSql);
+        // $strSql = " DELETE FROM round_bogleladder WHERE round_date < '".$strDate."' ";
+        // $this -> db -> query($strSql);
 
-        $strSql = " DELETE FROM sess_try WHERE log_time < '".$strDate."' ";
-        $this -> db -> query($strSql);
+        // $strSql = " DELETE FROM sess_try WHERE log_time < '".$strDate."' ";
+        // $this -> db -> query($strSql);
         
-        $strSql = " DELETE FROM sess_log WHERE log_time < '".$strDate."' ";
-        $this -> db -> query($strSql);
+        // $strSql = " DELETE FROM sess_log WHERE log_time < '".$strDate."' ";
+        // $this -> db -> query($strSql);
 
         $this->db->query("TRUNCATE sessions");
 

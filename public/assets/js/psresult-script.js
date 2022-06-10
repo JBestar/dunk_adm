@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    setNavBarElement();
     addEventListner();
     requestTotalPage();
     psresultLoop();
@@ -119,7 +120,6 @@ function requestTotalPage() {
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();
-                setNavBarElement();
                 requestGameResult();
             }
         },

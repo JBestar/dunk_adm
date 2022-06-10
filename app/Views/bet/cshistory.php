@@ -16,7 +16,6 @@
 <?= $this->section('history-bet-table-headers') ?>		
 	<th>ID</th>
 	<th>아이디</th>
-	<th>닉네임</th>	
 	<th>배팅시간</th>
 	<th>업체명</th>
 	<th>게임종류</th>
