@@ -119,34 +119,21 @@ class Charge_Model extends Model
         $strSQL .= " UNION ALL SELECT ".$strTbRColum." FROM ".$this->mMemberTable." r ";
         $strSQL .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
 
-        $strSQL .= " SELECT SUM(charge_money) AS charge_money";
-        $strSQL .="  FROM (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";        
-        $strSQL .=" ) AS mb_table ";
-        
-        $strSQL .= " JOIN (SELECT SUM(charge_money) AS charge_money, charge_mb_uid FROM ".$this->table;
+        $strSQL .= " SELECT SUM(charge_money) AS charge_money, charge_mb_uid FROM ".$this->table;
         $strSQL.=" WHERE (charge_action_state = '2'  OR charge_action_state = '5') ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
             $strSQL.=" AND ".getTimeRange("charge_time_require", $arrReqData);
-        $strSQL .= " GROUP BY charge_mb_uid";
-        $strSQL .= " )AS charge_table ON charge_table.charge_mb_uid = mb_table.mb_uid ";      
-
+        $strSQL .= " AND charge_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) ";
+            
+        // writeLog($strSQL);
         $objResult = $this -> db -> query($strSQL)->getRow();
+        // writeLog("calcChargeMoney END");
 
         $nTotalCharge = 0;
         if(!is_null($objResult->charge_money)) $nTotalCharge += $objResult->charge_money;
 
         return $nTotalCharge;
-         /*
-         $objResult = null;
-         //Own Charge
-         $strSQL = "SELECT SUM(charge_money) AS charge_money FROM member_charge WHERE charge_mb_uid = '".$objEmp->mb_uid."'";
-         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
-            $strSQL.=" AND charge_time_require >= '".$arrReqData['start']." 0:0:0' AND charge_time_require <= '".$arrReqData['end']." 23:59:59' " ;
         
-         $objResult = $this -> db -> query($strSql)->getRow();
-         if(!is_null($objResult->charge_money)) $nTotalCharge += $objResult->charge_money;
-        */
-         
     }
 
 

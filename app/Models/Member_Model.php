@@ -7,6 +7,9 @@ use CodeIgniter\Model;
 class Member_Model extends Model
 {
     protected $table = 'member';
+    private $chargeTb = 'member_charge';
+    protected $exchangeTb = 'member_exchange';
+    protected $rewardTb = 'bet_reward';
     protected $returnType = 'object'; 
 
     protected $allowedFields = [
@@ -337,7 +340,7 @@ class Member_Model extends Model
 
     public function calcMemberMoney($strMemFid, $upLevel)
     {
-        $arrTotalMoney = [0, 0, 0, 0, 0];
+        $arrTotalMoney = [0];
 
         $strTbColum = ' mb_fid, mb_uid, mb_level, mb_emp_fid, mb_state_active, mb_money, mb_live_money, mb_slot_money, mb_fslot_money, mb_kgon_money ';
         $strTbRColum = ' r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_state_active, r.mb_money, r.mb_live_money, r.mb_slot_money, r.mb_fslot_money, r.mb_kgon_money ';
@@ -352,30 +355,19 @@ class Member_Model extends Model
         $strSQL .= ' UNION ALL SELECT '.$strTbRColum.' FROM '.$this->table.' r ';
         $strSQL .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
 
-        $strSQL .= ' SELECT SUM(mb_money) AS mb_money, SUM(mb_live_money) AS mb_live_money, SUM(mb_slot_money) AS mb_slot_money, SUM(mb_fslot_money) AS mb_fslot_money, SUM(mb_kgon_money) AS mb_kgon_money FROM tbmember ';
+        $strSQL .= ' SELECT SUM(mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money) AS mb_money FROM tbmember ';
         $strSQL .=" WHERE mb_state_active != '".PERMIT_DELETE."' ";
         if ($upLevel) {
             $strSQL .= " AND mb_level >= '".getEmpLevel()."' ";
         } else {
             $strSQL .= " AND mb_level < '".getEmpLevel()."' ";
         }
-
+        // writeLog($strSQL);
         $objResult = $this->db->query($strSQL)->getRow();
+        // writeLog("calcMemberMoney END");
 
         if (!is_null($objResult->mb_money)) {
             $arrTotalMoney[0] = $objResult->mb_money;
-        }
-        if (!is_null($objResult->mb_live_money)) {
-            $arrTotalMoney[1] = $objResult->mb_live_money;
-        }
-        if (!is_null($objResult->mb_slot_money)) {
-            $arrTotalMoney[2] = $objResult->mb_slot_money;
-        }
-        if (!is_null($objResult->mb_fslot_money)) {
-            $arrTotalMoney[3] = $objResult->mb_fslot_money;
-        }
-        if (!is_null($objResult->mb_kgon_money)) {
-            $arrTotalMoney[4] = $objResult->mb_kgon_money;
         }
         return $arrTotalMoney;
     }
@@ -389,14 +381,10 @@ class Member_Model extends Model
     // 직원별 보유금
     public function calcEmpMoney($objEmp)
     {
-        $arrTotalMoney = [0, 0, 0, 0, 0];
+        $arrTotalMoney = [0];
         if ($objEmp->mb_level >= getEmpLevel()) {
             $arrResult = $this->calcMemberMoney($objEmp->mb_fid, true);
-            $arrTotalMoney[0] = $arrResult[0] + $objEmp->mb_money;
-            $arrTotalMoney[1] = $arrResult[1] + $objEmp->mb_live_money;
-            $arrTotalMoney[2] = $arrResult[2] + $objEmp->mb_slot_money;
-            $arrTotalMoney[3] = $arrResult[3] + $objEmp->mb_fslot_money;
-            $arrTotalMoney[4] = $arrResult[4] + $objEmp->mb_kgon_money;
+            $arrTotalMoney[0] = $arrResult[0] + allMoney($objEmp);
         }
 
         return $arrTotalMoney;
@@ -513,52 +501,49 @@ class Member_Model extends Model
         $strSQL .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
 
         $strSQL .= ' SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money ';
-        $strSQL .= '  FROM (SELECT  * FROM tbmember UNION SELECT '.$strTbColum.' FROM '.$this->table." where mb_fid='".$objEmp->mb_fid."'";
-        $strSQL .= ' ) AS mb_table ';
-        
-        $strSQL .= ' JOIN ( (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_slot';
+        $strSQL .= '  FROM ( SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_slot';
         $strSQL .= " WHERE bet_fid >= ".$arrReqData['slot_range'][0]." AND bet_fid <= ".$arrReqData['slot_range'][1];
-        $strSQL .= ' GROUP BY bet_mb_uid) ';
+        $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) ";
 
         if(!$confs['npg_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_powerball ';
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerball ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['npb_range'][0]." AND bet_fid <= ".$arrReqData['npb_range'][1];
-            $strSQL .= ' GROUP BY bet_mb_uid) ';
+            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
 
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_powerladder ';
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerladder ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['nps_range'][0]." AND bet_fid <= ".$arrReqData['nps_range'][1];
-            $strSQL .= ' GROUP BY bet_mb_uid) ';
+            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
         }
 
         if(!$confs['bpg_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_bogleball ';
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleball ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['bpb_range'][0]." AND bet_fid <= ".$arrReqData['bpb_range'][1];
-            $strSQL .= ' GROUP BY bet_mb_uid) ';
+            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
 
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_bogleladder ';
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleladder ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['bps_range'][0]." AND bet_fid <= ".$arrReqData['bps_range'][1];
-            $strSQL .= ' GROUP BY bet_mb_uid) ';
+            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
         }
 
         if($confs['eos5_enable']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_eos5ball ';
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_eos5ball ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['eos5_range'][0]." AND bet_fid <= ".$arrReqData['eos5_range'][1];
-            $strSQL .= ' GROUP BY bet_mb_uid) ';
+            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
         }
 
         if($confs['eos3_enable']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_eos3ball ';
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_eos3ball ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['eos3_range'][0]." AND bet_fid <= ".$arrReqData['eos3_range'][1];
-            $strSQL .= ' GROUP BY bet_mb_uid) ';
+            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
         }
 
         if(!$confs['cas_deny'] || $confs['kgon_enable']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM bet_casino ';
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_casino ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['cas_range'][0]." AND bet_fid <= ".$arrReqData['cas_range'][1];
-            $strSQL .= ' GROUP BY bet_mb_uid) ';
+            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
         }
+        $strSQL .= " ) AS bet_table ";
 
-        $strSQL .= ' )AS bet_table ON bet_table.bet_mb_uid = mb_table.mb_uid ';
         // writeLog($strSQL);
 
         $objResult = $this->db->query($strSQL)->getRow();
@@ -597,11 +582,7 @@ class Member_Model extends Model
         $strSQL .= ' UNION ALL SELECT '.$strTbRColum.' FROM '.$this->table.' r ';
         $strSQL .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
 
-        $strSQL .= ' SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money ';
-        $strSQL .= '  FROM (SELECT  * FROM tbmember UNION SELECT '.$strTbColum.' FROM '.$this->table." where mb_fid='".$objEmp->mb_fid."'";
-        $strSQL .= ' ) AS mb_table ';
-
-        $strSQL .= ' JOIN ( SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, bet_emp_fid, bet_mb_uid FROM ';
+        $strSQL .= ' SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM ';
         if ($arrReqData['type'] == GAME_POWER_BALL ) {
             $strSQL .= ' bet_powerball ';
         } elseif ($arrReqData['type'] == GAME_POWER_LADDER ) {
@@ -625,8 +606,7 @@ class Member_Model extends Model
         if ($arrReqData['type'] == GAME_SLOT_1 || $arrReqData['type'] == GAME_SLOT_2){
             $strSQL .= " AND bet_game_id = '".$arrReqData['type']."' ";
         }
-        $strSQL .= ' GROUP BY bet_mb_uid ';
-        $strSQL .= ' )AS bet_table ON bet_table.bet_mb_uid = mb_table.mb_uid ';
+        $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) ";
         // writeLog($strSQL);
         $objResult = $this->db->query($strSQL)->getRow();
         // writeLog("calcBetMoneysByGame END");
@@ -653,6 +633,99 @@ class Member_Model extends Model
         return $arrBetData;
     }
 
+    public function calculate($objEmp, $arrReqData, $confs){
+        $strTbColum = ' mb_fid, mb_uid, mb_level, mb_emp_fid, mb_state_active, mb_money, mb_live_money, mb_slot_money, mb_fslot_money, mb_kgon_money ';
+        $strTbRColum = ' r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_state_active, r.mb_money, r.mb_live_money, r.mb_slot_money, r.mb_fslot_money, r.mb_kgon_money ';
+
+        $strSQL = 'WITH RECURSIVE tbmember ('.$strTbColum.') AS';
+        $strSQL .= ' ( SELECT '.$strTbColum.' FROM '.$this->table." WHERE "; 
+        $strSQL .= " mb_fid = '".$objEmp->mb_fid."'";
+        $strSQL .= ' UNION ALL SELECT '.$strTbRColum.' FROM '.$this->table.' r ';
+        $strSQL .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
+        //보유금액
+        $strSQL .= " SELECT SUM(CASE WHEN mb_level >= ".getEmpLevel()." THEN mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money ELSE 0 END) AS result_1, ";
+        $strSQL .= " SUM(CASE WHEN mb_level < ".getEmpLevel()." THEN mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money ELSE 0 END) AS result_2 ";
+        $strSQL .= " FROM tbmember  WHERE mb_state_active != '".PERMIT_DELETE."' ";
+        //충전금액
+        $strSQL .= " UNION ALL ( SELECT SUM(charge_money) AS result_1, '0' AS result_2 FROM ".$this->chargeTb;
+        $strSQL.=" WHERE (charge_action_state = '2'  OR charge_action_state = '5') ";
+        if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
+            $strSQL.=" AND ".getTimeRange("charge_time_require", $arrReqData);
+        $strSQL .= " AND charge_mb_uid IN (SELECT mb_uid from tbmember ) )";
+        //환전금액
+        $strSQL .= " UNION ALL ( SELECT SUM(exchange_money) AS result_1, '0' AS result_2 FROM ".$this->exchangeTb;
+        $strSQL.=" WHERE (exchange_action_state = '2'  OR exchange_action_state = '5') ";
+        if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
+            $strSQL.=" AND ".getTimeRange("exchange_time_require", $arrReqData);
+        $strSQL .= " AND exchange_mb_uid IN (SELECT mb_uid from tbmember ) )";
+        //베팅금액
+        $strSQL .= ' UNION ALL ( SELECT SUM(bet_money) AS result_1, SUM(bet_win_money) AS result_2 ';
+        $strSQL .= '  FROM ( SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_slot';
+        $strSQL .= " WHERE bet_fid >= ".$arrReqData['slot_range'][0]." AND bet_fid <= ".$arrReqData['slot_range'][1];
+        $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) ";
+
+        if(!$confs['npg_deny']){
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerball ';
+            $strSQL .= " WHERE bet_fid >= ".$arrReqData['npb_range'][0]." AND bet_fid <= ".$arrReqData['npb_range'][1];
+            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerladder ';
+            $strSQL .= " WHERE bet_fid >= ".$arrReqData['nps_range'][0]." AND bet_fid <= ".$arrReqData['nps_range'][1];
+            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+        }
+
+        if(!$confs['bpg_deny']){
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleball ';
+            $strSQL .= " WHERE bet_fid >= ".$arrReqData['bpb_range'][0]." AND bet_fid <= ".$arrReqData['bpb_range'][1];
+            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleladder ';
+            $strSQL .= " WHERE bet_fid >= ".$arrReqData['bps_range'][0]." AND bet_fid <= ".$arrReqData['bps_range'][1];
+            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+        }
+
+        if($confs['eos5_enable']){
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_eos5ball ';
+            $strSQL .= " WHERE bet_fid >= ".$arrReqData['eos5_range'][0]." AND bet_fid <= ".$arrReqData['eos5_range'][1];
+            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+        }
+
+        if($confs['eos3_enable']){
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_eos3ball ';
+            $strSQL .= " WHERE bet_fid >= ".$arrReqData['eos3_range'][0]." AND bet_fid <= ".$arrReqData['eos3_range'][1];
+            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+        }
+
+        if(!$confs['cas_deny'] || $confs['kgon_enable']){
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_casino ';
+            $strSQL .= " WHERE bet_fid >= ".$arrReqData['cas_range'][0]." AND bet_fid <= ".$arrReqData['cas_range'][1];
+            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+        }
+        $strSQL .= " ) AS bet_table ) ";
+        //포인트
+        $strSQL = " UNION ALL ( SELECT SUM(rw_point) AS result_1, '0' AS result_2 FROM ".$this->rewardTb;
+        $strSQL .= " WHERE rw_fid >= ".$arrReqData['rw_range'][0]." AND rw_fid <= ".$arrReqData['rw_range'][1];
+        $strSQL.=" AND rw_mb_fid = '".$objEmp->mb_fid."' ";
+        if($gameId == GAME_SLOT_12)
+            $strSQL.=" AND (rw_game = '".GAME_SLOT_1."' OR rw_game = '".GAME_SLOT_2."') ";
+        else if($gameId > 0)
+            $strSQL.=" AND rw_game = '".$gameId."' ";
+        if($bBlank){
+            $strSQL.=" AND rw_state = '0' ";
+        }
+        $strSQL = " ) ";
+
+        // writeLog($strSQL);
+        $arrResult = $this->db->query($strSQL)->getResult();
+        // writeLog("calcPoint END");
+
+        return $arrResult;
+
+    }
+
+    public function calculateByGame(){
+        
+    }
     
     // 배팅금액 (하부포함)
     public function calcUserBet($arrReqData, $confs)

@@ -48,7 +48,10 @@ class CsBet_Model extends Model
         }
         //총배팅금, 적중금
         $arrSum = array();
-        $strSql = " SELECT SUM(bet_money) AS bet_money_sum, SUM(bet_win_money) AS win_money_sum  FROM ".$this->table;
+        $strSql = " SELECT SUM(bet_money) AS bet_money_sum, SUM(bet_win_money) AS win_money_sum, ";
+        $strSql .= " SUM(CASE WHEN bet_win_money= 0 THEN bet_money ELSE 0 END) AS loss_money_sum, ";
+        $strSql .= " SUM(CASE WHEN bet_win_money > 0 THEN bet_win_money-bet_money ELSE 0 END) AS benefit_money_sum ";
+        $strSql .= " FROM ".$this->table;
         $strSql .= $strCondition;
         $objResult = $this -> db -> query($strSql)->getRow();
 
@@ -63,24 +66,12 @@ class CsBet_Model extends Model
         }
         $arrSum[1] = $nSum;
         //총미적중금
-        $strSql = " SELECT SUM(bet_money) AS loss_money_sum  FROM ".$this->table;
-        $strSql .= $strCondition;
-        $strSql .= " AND bet_win_money = 0 ";
-        
-        $objResult = $this -> db -> query($strSql)->getRow();
-
         $nSum = 0;
         if(!is_null($objResult->loss_money_sum)) {
             $nSum = $objResult->loss_money_sum;
         }
         $arrSum[2] = $nSum;
         //총당첨금
-        $strSql = " SELECT SUM(bet_win_money-bet_money) AS benefit_money_sum  FROM ".$this->table;
-        $strSql .= $strCondition;
-        $strSql .= " AND bet_win_money > 0 ";
-        
-        $objResult = $this -> db -> query($strSql)->getRow();
-
         $nSum = 0;
         if(!is_null($objResult->benefit_money_sum)) {
             $nSum = $objResult->benefit_money_sum;
@@ -187,13 +178,13 @@ class CsBet_Model extends Model
             $strSql .= " UNION ALL SELECT ".$strTbRColum." FROM ".$this->mMemberTable." r ";
             $strSql .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
 
-            $strSql .= "SELECT count(*) as count  FROM ".$this->table;
+            $strSql .= "SELECT count(bet_fid) as count  FROM ".$this->table;
 
             // $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";         
             // $strSql .=" ) AS mb_table ";
             // $strSql .=" ON ".$this->table.".bet_mb_uid = mb_table.mb_uid ";
         } else {
-            $strSql .= "SELECT count(*) as count  FROM ".$this->table;
+            $strSql .= "SELECT count(bet_fid) as count  FROM ".$this->table;
             // $strSql .= " JOIN member ON ".$this->table.".bet_mb_uid = ".$this->mMemberTable.".mb_uid ";
         }
         

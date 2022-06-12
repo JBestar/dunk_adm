@@ -121,32 +121,20 @@ class Exchange_Model extends Model {
         $strSQL .= " UNION ALL SELECT ".$strTbRColum." FROM ".$this->mMemberTable." r ";
         $strSQL .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
 
-        $strSQL .= " SELECT SUM(exchange_money) AS exchange_money";
-        $strSQL .="  FROM (SELECT  *  FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";        
-        $strSQL .=" ) AS mb_table ";
-
-        $strSQL .= " JOIN (SELECT SUM(exchange_money) AS exchange_money, exchange_mb_uid FROM ".$this->table;
+        $strSQL .= " SELECT SUM(exchange_money) AS exchange_money, exchange_mb_uid FROM ".$this->table;
         $strSQL.=" WHERE (exchange_action_state = '2' OR exchange_action_state = '5')  ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
             $strSQL.=" AND ".getTimeRange("exchange_time_require", $arrReqData);
-        $strSQL .= " GROUP BY exchange_mb_uid";
-        $strSQL .= " )AS exchange_table ON exchange_table.exchange_mb_uid = mb_table.mb_uid ";      
-
-         $objResult = $this -> db -> query($strSQL)->getRow();
-
-         $nTotalExchange = 0;
-         if(!is_null($objResult->exchange_money)) $nTotalExchange += $objResult->exchange_money;
-         
-         return $nTotalExchange;
-         /*
-         //Own Exchange
-         $strSQL = "SELECT SUM(exchange_money) AS exchange_money FROM member_exchange WHERE exchange_mb_uid = '".$objEmp->mb_uid."'";
-         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
-            $strSQL.=" AND exchange_time_require >= '".$arrReqData['start']." 0:0:0' AND exchange_time_require <= '".$arrReqData['end']." 23:59:59' " ;
+        $strSQL .= " AND exchange_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) ";
         
-         $objResult = $this -> db -> query($strSql)->getRow();
-         if(!is_null($objResult->exchange_money)) $nTotalExchange += $objResult->exchange_money;
-        */
+        // writeLog($strSQL);
+        $objResult = $this -> db -> query($strSQL)->getRow();
+        // writeLog("calcExchangeMoney END");
+
+        $nTotalExchange = 0;
+        if(!is_null($objResult->exchange_money)) $nTotalExchange += $objResult->exchange_money;
+        
+        return $nTotalExchange;
          
     }
 

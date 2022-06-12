@@ -984,8 +984,8 @@ public function withdrawlist(){
 		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  		//충환손익
 		            $arrEmpMoney = $this->modelMember->calcEmpMoney($objEmp);
 		            $arrUserMoney = $this->modelMember->calcUserMoney($objEmp->mb_fid);
-	            	$objCalc['mb_emp_money'] =  $arrEmpMoney[0]+$arrEmpMoney[1]+$arrEmpMoney[2]+$arrEmpMoney[3]+$arrEmpMoney[4];                        					//관리자보유금;
-	            	$objCalc['mb_user_money'] =$arrUserMoney[0]+$arrUserMoney[1]+$arrUserMoney[2]+$arrUserMoney[3]+$arrUserMoney[4];											//유저보유금;
+	            	$objCalc['mb_emp_money'] = $arrEmpMoney[0];                        						//관리자보유금;
+	            	$objCalc['mb_user_money'] = $arrUserMoney[0];											//유저보유금;
 		            $arrBetData = $this->modelMember->calcBetMoneys($objEmp, $arrReqData, $siteConfs);
 			        $objCalc['mb_bet_money'] = $arrBetData['bet_money'] ;          							//베팅머니
 					$objCalc['mb_bet_win_money'] = $arrBetData['bet_win_money'] ;      						//적중머니
@@ -1074,8 +1074,8 @@ public function withdrawlist(){
 		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  //충환손익
 		            $arrEmpMoney = $this->modelMember->calcEmpMoney($objEmp);
 		            $arrUserMoney = $this->modelMember->calcUserMoney($objEmp->mb_fid);
-					$objCalc['mb_emp_money'] = $arrEmpMoney[0]+$arrEmpMoney[1]+$arrEmpMoney[2]+$arrEmpMoney[3]+$arrEmpMoney[4];                        					//관리자보유금;
-	            	$objCalc['mb_user_money'] = $arrUserMoney[0]+$arrUserMoney[1]+$arrUserMoney[2]+$arrUserMoney[3]+$arrUserMoney[4];
+					$objCalc['mb_emp_money'] = $arrEmpMoney[0];                        					//관리자보유금;
+	            	$objCalc['mb_user_money'] = $arrUserMoney[0];
 
 		            $arrBetData = $this->modelMember->calcBetMoneysByGame($objEmp, $arrReqData);
 					
