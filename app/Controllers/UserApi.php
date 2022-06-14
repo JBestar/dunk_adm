@@ -376,7 +376,9 @@ class UserApi extends BaseController
             
             if ($bPermit) {
 				$this->modelSess->updateLast($sess_id);
-
+                if($objUser->mb_level < LEVEL_ADMIN)
+                    $this->modelMember->calcTransfer($objUser);
+                
                 $objResult->data = $objUser;
                 $objResult->status = 'success';
             } else {

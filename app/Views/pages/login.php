@@ -48,7 +48,7 @@
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_b.ico');?>">
         <?php break; 
         case APP_BIG :?>
-            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_bg.ico');?>">
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_bg.ico?v=1');?>">
         <?php break; 
         case APP_DREAM :?>
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_d.ico');?>">

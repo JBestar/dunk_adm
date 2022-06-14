@@ -621,6 +621,25 @@ class Member_Model extends Model
         return $arrBetData;
     }
 
+    //유저별 충환전 총액
+    public function calcTransfer(&$objUser){
+        $strSQL = " SELECT SUM(charge_money) AS result_1 FROM ".$this->chargeTb;
+        $strSQL.=" WHERE (charge_action_state = '".STATE_VERIFY."' OR charge_action_state = '".STATE_HOT."') "; 
+        $strSQL.=" AND charge_mb_uid = '".$objUser->mb_uid."' ";
+        $strSQL .= " UNION ALL (SELECT SUM(exchange_money) AS result_1 FROM ".$this->exchangeTb;
+        $strSQL.=" WHERE (exchange_action_state = '".STATE_VERIFY."' OR exchange_action_state = '".STATE_HOT."') "; 
+        $strSQL.=" AND exchange_mb_uid = '".$objUser->mb_uid."') ";
+        $arrResult = $this->db->query($strSQL)->getResult();
+
+        if(is_null($arrResult) || count($arrResult) != 2){
+            $objUser->mb_money_charge = 0;
+            $objUser->mb_money_exchange = 0;
+        } else {
+            $objUser->mb_money_charge = $arrResult[0]->result_1 != null ? $arrResult[0]->result_1 : 0 ;
+            $objUser->mb_money_exchange = $arrResult[1]->result_1 != null ? $arrResult[1]->result_1 : 0 ;
+        }
+    }
+
     public function calculate($objEmp, $arrReqData, $confs){
         $strTbColum = ' mb_fid, mb_uid, mb_level, mb_emp_fid, mb_state_active, mb_money, mb_live_money, mb_slot_money, mb_fslot_money, mb_kgon_money ';
         $strTbRColum = ' r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_state_active, r.mb_money, r.mb_live_money, r.mb_slot_money, r.mb_fslot_money, r.mb_kgon_money ';
