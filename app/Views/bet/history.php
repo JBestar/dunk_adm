@@ -42,7 +42,7 @@
 		
 		<div class="pbresult-list-div">
 			<label>기간</label>
-			<input type="datetime-local" id="pbhistory-datestart-input-id"  value="<?php echo date('Y-m')."-01T00:00"; ?>">
+			<input type="datetime-local" id="pbhistory-datestart-input-id"  value="<?php echo date('Y-m-d')."T00:00"; ?>">
             <label> ~ </label>
             <input type="datetime-local" id="pbhistory-dateend-input-id"  value="<?php echo date('Y-m-d')."T23:59"; ?>">
             <?= $this->renderSection('history-add-round-search') ?>

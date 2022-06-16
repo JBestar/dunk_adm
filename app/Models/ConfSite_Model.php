@@ -135,6 +135,16 @@ class ConfSite_Model extends Model
         $arrBatch[] = $updateData;
 
         $updateData = array();
+        $updateData['conf_id'] = CONF_CHARGE_MANUAL;
+        $updateData['conf_content'] = $arrData['chargemanual'];
+        $arrBatch[] = $updateData;
+
+        $updateData = array();
+        $updateData['conf_id'] = CONF_DISCHA_MANUAL;
+        $updateData['conf_content'] = $arrData['discharmanual'];
+        $arrBatch[] = $updateData;
+
+        $updateData = array();
         $updateData['conf_id'] = CONF_MULTI_LOGIN;
         $updateData['conf_active'] = $arrData['multilog_ok'];
         $arrBatch[] = $updateData;
@@ -261,4 +271,16 @@ class ConfSite_Model extends Model
 		}
     }
     
+    public function readMemConf(){
+        $confIds = [CONF_TRANS_DENY];  
+        $arrConf = $this->find($confIds);
+
+        foreach($arrConf as $objConf){
+			switch($objConf->conf_id){
+				case CONF_TRANS_DENY:	$_ENV['mem.trans_deny'] = $objConf->conf_active == STATE_ACTIVE?true:false;
+					break;
+				default:break;
+			}
+		}
+    }
 }

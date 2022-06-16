@@ -136,10 +136,13 @@ defined('CONF_SOUND_2')        || define('CONF_SOUND_2', 16);
 defined('CONF_SOUND_3')        || define('CONF_SOUND_3', 17);
 defined('CONF_SOUND_4')        || define('CONF_SOUND_4', 18);
 
-defined('CONF_CASINO_KGON')     || define('CONF_CASINO_KGON', 20);
+defined('CONF_CASINO_KGON')    || define('CONF_CASINO_KGON', 20);
 defined('CONF_CASINO_EVOL')    || define('CONF_CASINO_EVOL', 21);
 defined('CONF_SLOT_1')         || define('CONF_SLOT_1', 22);
 defined('CONF_SLOT_2')         || define('CONF_SLOT_2', 23);
+
+defined('CONF_CHARGE_MANUAL')  || define('CONF_CHARGE_MANUAL', 24);
+defined('CONF_DISCHA_MANUAL')  || define('CONF_DISCHA_MANUAL', 25);
 
 defined('CONF_NPG_DENY')        || define('CONF_NPG_DENY', 26);
 defined('CONF_BPG_DENY')        || define('CONF_BPG_DENY', 27);
@@ -156,6 +159,7 @@ defined('CONF_BET_N2P_DENY')    || define('CONF_BET_N2P_DENY', 38);
 defined('CONF_BET_PN_DENY')     || define('CONF_BET_PN_DENY', 39);
 
 defined('CONF_BET_BLANK_EN')    || define('CONF_BET_BLANK_EN', 43);
+defined('CONF_TRANS_DENY')      || define('CONF_TRANS_DENY', 44);
 
 
 defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);

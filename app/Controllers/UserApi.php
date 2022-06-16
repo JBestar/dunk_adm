@@ -63,33 +63,12 @@ class UserApi extends BaseController
                 $strError = '';
 
                 $iResult = $this->modelMember->register($arrData, $strError);
-                if (1 == $iResult) {
+                if ( $iResult == 1 ) {
                     $arrResult['status'] = 'success';
-                } elseif (4 == $iResult) {
-                    $arrResult['status'] = 'pb_ratio_error';
+                } elseif ( $iResult == 4 || $iResult == 5 ) {
+                    $arrResult['status'] = 'ratio_error';
                     $arrResult['error'] = $strError;
-                } elseif (5 == $iResult) {
-                    $arrResult['status'] = 'ps_ratio_error';
-                    $arrResult['error'] = $strError;
-                } elseif (6 == $iResult) {
-                    $arrResult['status'] = 'ks_ratio_error';
-                    $arrResult['error'] = $strError;
-                } elseif (7 == $iResult) {
-                    $arrResult['status'] = 'ev_ratio_error';
-                    $arrResult['error'] = $strError;
-                } elseif (8 == $iResult) {
-                    $arrResult['status'] = 'sl_ratio_error';
-                    $arrResult['error'] = $strError;
-                } elseif (9 == $iResult) {
-                    $arrResult['status'] = 'bb_ratio_error';
-                    $arrResult['error'] = $strError;
-                } elseif (10 == $iResult) {
-                    $arrResult['status'] = 'bs_ratio_error';
-                    $arrResult['error'] = $strError;
-                } elseif (11 == $iResult) {
-                    $arrResult['status'] = 'eo_ratio_error';
-                    $arrResult['error'] = $strError;
-                } elseif (-1 == $iResult) {
+                } elseif ( $iResult == -1 ) {
                     $arrResult['status'] = 'val_error';
                     $arrResult['error'] = $strError;
                 } else {
@@ -144,34 +123,13 @@ class UserApi extends BaseController
                     $iResult = $this->modelMember->modifyMemberRatio($arrData, $strError,  $query);
                 }
 
-                if (1 == $iResult) {
+                if ($iResult == 1) {
 				    $this->modelModify->add($this->session->user_id, MOD_MB_INFO, $query, $this->request->getIPAddress());
                     $arrResult['status'] = 'success';
-                } elseif (4 == $iResult) {
-                    $arrResult['status'] = 'pb_ratio_error';
+                } elseif ( $iResult == 4 || $iResult == 5 ) {
+                    $arrResult['status'] = 'ratio_error';
                     $arrResult['error'] = $strError;
-                } elseif (5 == $iResult) {
-                    $arrResult['status'] = 'ps_ratio_error';
-                    $arrResult['error'] = $strError;
-                } elseif (6 == $iResult) {
-                    $arrResult['status'] = 'ks_ratio_error';
-                    $arrResult['error'] = $strError;
-                } elseif (7 == $iResult) {
-                    $arrResult['status'] = 'ev_ratio_error';
-                    $arrResult['error'] = $strError;
-                } elseif (8 == $iResult) {
-                    $arrResult['status'] = 'sl_ratio_error';
-                    $arrResult['error'] = $strError;
-                } elseif (9 == $iResult) {
-                    $arrResult['status'] = 'bb_ratio_error';
-                    $arrResult['error'] = $strError;
-                } elseif (10 == $iResult) {
-                    $arrResult['status'] = 'bs_ratio_error';
-                    $arrResult['error'] = $strError;
-                } elseif (11 == $iResult) {
-                    $arrResult['status'] = 'eo_ratio_error';
-                    $arrResult['error'] = $strError;
-                } elseif (-1 == $iResult) {
+                } elseif ( $iResult == -1 ) {
                     $arrResult['status'] = 'val_error';
                     $arrResult['error'] = $strError;
                 } else {
@@ -1118,13 +1076,18 @@ class UserApi extends BaseController
                 } 
                  
             } else {
+                $confsiteModel = new ConfSite_Model();
+		        $confsiteModel->readMemConf();
+                
                 $objChMember = null;            //하부회원찾기
                 $arrEmp = $this->modelMember->getMemberByEmpFid($objEmp->mb_fid, $objEmp->mb_level,  $objEmp->mb_level, true, $objMember->mb_fid);
                 if(count($arrEmp) > 0)
                     $objChMember = reset($arrEmp);
 
                 $objResult->status = 'fail';
-                if(is_null($objChMember)){
+                if(array_key_exists('mem.trans_deny', $_ENV) && $_ENV['mem.trans_deny']) {
+                    $objResult->status = 'fail';
+                } else if(is_null($objChMember)){
                     $objResult->status = 'fail';
                 }else if($arrData['type'] == 2){                      //이송
                     

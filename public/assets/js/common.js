@@ -83,3 +83,42 @@ function getCookie(name) {
     }
     return "";
 }
+
+function setNavBarElement() {
+    var activeGame = $(".sub-navbar").attr("value");
+    // console.log("activeGame:" + activeGame);
+    if (typeof activeGame !== typeof undefined && activeGame !== false) {
+        var navbarlist = $(".sub-navbar-a");
+        // console.log("activeGame:" + activeGame + "navbar length:" + navbarlist.length);
+        for (var i = 0; i < navbarlist.length; i++) {
+            // console.log("activeGame:" + activeGame + "navbarText:" + $(navbarlist[i]).text());
+            if (activeGame == $(navbarlist[i]).text()) {
+                $(navbarlist[i]).attr("class", "sub-navbar-a active");
+            }
+        }
+    }
+}
+
+function showAlert(txt){
+    Swal.fire({
+        // position: 'top',
+        title: txt,
+        confirmButtonText: '닫기',
+    });
+}
+
+function showConfirm(txt, callFunc = null){
+    
+    Swal.fire({
+        title: txt,
+        showCancelButton: true,
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+    }).then((result) => {
+        if (result.value == true) {
+            if(callFunc != null){
+                callFunc();
+            }
+        } 
+    })
+}

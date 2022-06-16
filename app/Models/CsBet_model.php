@@ -34,18 +34,17 @@ class CsBet_Model extends Model
     function getBetAccount($arrReqData){
 
         
-        $strCondition = " WHERE bet_money > 0 ";
+        $strCondition = " WHERE bet_money != bet_win_money ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
             $strCondition.=" AND ".getBetTimeRange($arrReqData);
-                        
         }
         if(strlen($arrReqData['user']) > 0){
             $strCondition.=" AND bet_mb_uid = '".$arrReqData['user']."' ";            
         }
         if(intval($arrReqData['mode']) >= 0){
             $strCondition.=" AND bet_game_id = '".$arrReqData['mode']."' ";
-
         }
+
         //총배팅금, 적중금
         $arrSum = array();
         $strSql = " SELECT SUM(bet_money) AS bet_money_sum, SUM(bet_win_money) AS win_money_sum, ";

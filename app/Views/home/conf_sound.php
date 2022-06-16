@@ -1,13 +1,10 @@
-<?= $this->extend('header') ?>
-<?= $this->section('content') ?>
-<!--Sub Navbar-->
-	<div class = "sub-navbar">
-		<p><i class="glyphicon glyphicon-user"></i> 기타설정::알람설정</p>
-		<!-- <a href="<?php echo siteFurl().'home/conf_sound';?>" class="sub-navbar-a active" >알람설정</a> -->
-		
-	</div>
-	<!--Site Setting-->
-	<div class="confsite-game-panel">
+<?= $this->extend('/home/conf_site') ?>
+<?= $this->section('confsite-active') ?>알람설정<?= $this->endSection() ?>
+
+<?= $this->section('confsite-navbar') ?>
+<?= $this->endSection() ?>
+
+<?= $this->section('confsite-content') ?>
 		<!---->
 		<h4><i class="glyphicon glyphicon-hand-right"></i> 알람설정</h4>
 		
@@ -121,13 +118,10 @@
 			<button class="confsite-cancel-button"  id="confsite-cancel-btn-id">취소</button>
 			<button class="confsite-ok-button" id="confsite-ok-btn-id">저장</button>
 		</div>
-	</div>
+	
+<?= $this->endSection() ?>
 
-
-
-<!--main_navbar.php-->
-</div>
-
+<?= $this->section('confsite-script') ?>
 <?php if(array_key_exists("app.produce", $_ENV)) :?>
     <script src="<?php echo site_furl('/assets/js/confsound-script.js?t='.time());?>"></script>
 <?php else : ?>

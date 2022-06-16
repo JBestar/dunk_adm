@@ -182,14 +182,9 @@ class Member_Model extends Model
             ->first();
     }
 
-    // public function deleteMemberByFid($arrDeleteData)
-    // {
-    //     return $this->delete($arrDeleteData['mb_fid']);
-    // }
-
     public function changePassword($strUserId, $arrPwd, &$query)
     {
-        if (null == $arrPwd) {
+        if (is_null($arrPwd)) {
             return 0;
         }
         if (!array_key_exists('password', $arrPwd)) {
@@ -204,7 +199,7 @@ class Member_Model extends Model
 
         
         $objUser = $this->login($strUserId, $arrPwd['password']);
-        if (null == $objUser) {
+        if (is_null($objUser) ) {
             return 2;
         }
 
@@ -235,7 +230,7 @@ class Member_Model extends Model
 
     public function changeAlarmState($strUserId, $arrReqData)
     {
-        if (null == $arrReqData) {
+        if (is_null($arrReqData)) {
             return 0;
         }
         if (!array_key_exists('mb_state_alarm', $arrReqData)) {
@@ -953,7 +948,6 @@ class Member_Model extends Model
 
     public function getMemberByLevel($strLevel, $bLowLev = false, $mbFid = 0)
     {
-        $query = null;
 
         $where =" mb_state_active != '".PERMIT_DELETE."' ";
 
@@ -965,12 +959,8 @@ class Member_Model extends Model
         if($mbFid > 0)
             $where .= " AND mb_fid = '".$mbFid."' ";
         
-        $query = $this->where($where);
-        if (null == $query) {
-            return [];
-        }
-
-        return $query->findAll();
+        return $this->where($where)->findAll();
+        
     }
 
 
@@ -1012,50 +1002,89 @@ class Member_Model extends Model
         }
     }
 
+    private function getChildsRatio($mbFid){
+        $strSQL = "SELECT MAX(mb_game_pb_ratio) AS mb_game_pb_ratio, MAX(mb_game_pb2_ratio) AS mb_game_pb2_ratio,  MAX(mb_game_ps_ratio) AS mb_game_ps_ratio, ";
+        $strSQL.= "  MAX(mb_game_bb_ratio) AS mb_game_bb_ratio, MAX(mb_game_bb2_ratio) AS mb_game_bb2_ratio, MAX(mb_game_bs_ratio) AS mb_game_bs_ratio, ";
+        $strSQL.= "  MAX(mb_game_cs_ratio) AS mb_game_cs_ratio, MAX(mb_game_sl_ratio) AS mb_game_sl_ratio, ";
+        $strSQL.= "  MAX(mb_game_eo_ratio) AS mb_game_eo_ratio, MAX(mb_game_eo2_ratio) AS mb_game_eo2_ratio ";
+        $strSQL.= " FROM ".$this->table." WHERE mb_emp_fid = '".$mbFid."' ";
+        
+        // writeLog($strSQL);
+        $objResult = $this->db->query($strSQL)->getRow();
+        return $objResult;
+    }
 
     private function checkGameRatio($objEmployee, $arrRegData, &$strError)
     {
         // 배당율 검사
-        if ($objEmployee->mb_game_pb_ratio < $arrRegData['mb_game_pb_ratio']) {
-            $strError = $objEmployee->mb_game_pb_ratio;
+        if(!is_null($objEmployee)){
+            if ($objEmployee->mb_game_pb_ratio < $arrRegData['mb_game_pb_ratio']) {
+                $strError = "파워볼 단폴 배당율이 추천인설정값 ".$objEmployee->mb_game_pb_ratio."보다 클수 없습니다.";
+                return 4;
+            } elseif ($objEmployee->mb_game_pb2_ratio < $arrRegData['mb_game_pb2_ratio']) {
+                $strError = "파워볼 조합 배당율이 추천인설정값 ".$objEmployee->mb_game_pb2_ratio."보다 클수 없습니다.";
+                return 4;
+            } elseif ($objEmployee->mb_game_ps_ratio < $arrRegData['mb_game_ps_ratio']) {
+                $strError = "파워사다리 배당율이 추천인설정값 ".$objEmployee->mb_game_ps_ratio."보다 클수 없습니다.";
+                return 4;
+            } elseif ($objEmployee->mb_game_cs_ratio < $arrRegData['mb_game_cs_ratio']) {
+                $strError = "카지노 배당율이 추천인설정값 ".$objEmployee->mb_game_cs_ratio."보다 클수 없습니다.";
+                return 4;
+            } elseif ($objEmployee->mb_game_sl_ratio < $arrRegData['mb_game_sl_ratio']) {
+                $strError = "슬롯 배당율이 추천인설정값 ".$objEmployee->mb_game_sl_ratio."보다 클수 없습니다.";
+                return 4;
+            } elseif ($objEmployee->mb_game_bb_ratio < $arrRegData['mb_game_bb_ratio']) {
+                $strError = "보글볼 단폴 배당율이 추천인설정값 ".$objEmployee->mb_game_bb_ratio."보다 클수 없습니다.";
+                return 4;
+            } elseif ($objEmployee->mb_game_bb2_ratio < $arrRegData['mb_game_bb2_ratio']) {
+                $strError = "보글볼 조합 배당율이 추천인설정값 ".$objEmployee->mb_game_bb2_ratio."보다 클수 없습니다.";
+                return 4;
+            } elseif ($objEmployee->mb_game_bs_ratio < $arrRegData['mb_game_bs_ratio']) {
+                $strError = "보글사다리 배당율이 추천인설정값 ".$objEmployee->mb_game_bs_ratio."보다 클수 없습니다.";
+                return 4;
+            } elseif ($objEmployee->mb_game_eo_ratio < $arrRegData['mb_game_eo_ratio']) {
+                $strError = "EOS파워볼 단폴 배당율이 추천인설정값 ".$objEmployee->mb_game_eo_ratio."보다 클수 없습니다.";
+                return 4;
+            } elseif ($objEmployee->mb_game_eo2_ratio < $arrRegData['mb_game_eo2_ratio']) {
+                $strError = "EOS파워볼 조합 배당율이 추천인설정값 ".$objEmployee->mb_game_eo2_ratio."보다 클수 없습니다.";
+                return 4;
+            }
+        }
+        if(array_key_exists('mb_fid', $arrRegData) && $arrRegData['mb_fid'] > 0 ){
+            $chRatio = $this->getChildsRatio($arrRegData['mb_fid']);
 
-            return 4;
-        } elseif ($objEmployee->mb_game_pb2_ratio < $arrRegData['mb_game_pb2_ratio']) {
-            $strError = $objEmployee->mb_game_pb2_ratio;
-
-            return 4;
-        } elseif ($objEmployee->mb_game_ps_ratio < $arrRegData['mb_game_ps_ratio']) {
-            $strError = $objEmployee->mb_game_ps_ratio;
-
-            return 5;
-        } elseif ($objEmployee->mb_game_cs_ratio < $arrRegData['mb_game_cs_ratio']) {
-            $strError = $objEmployee->mb_game_cs_ratio;
-
-            return 7;
-        } elseif ($objEmployee->mb_game_sl_ratio < $arrRegData['mb_game_sl_ratio']) {
-            $strError = $objEmployee->mb_game_sl_ratio;
-
-            return 8;
-        } elseif ($objEmployee->mb_game_bb_ratio < $arrRegData['mb_game_bb_ratio']) {
-            $strError = $objEmployee->mb_game_bb_ratio;
-
-            return 9;
-        } elseif ($objEmployee->mb_game_bb2_ratio < $arrRegData['mb_game_bb2_ratio']) {
-            $strError = $objEmployee->mb_game_bb2_ratio;
-
-            return 9;
-        } elseif ($objEmployee->mb_game_bs_ratio < $arrRegData['mb_game_bs_ratio']) {
-            $strError = $objEmployee->mb_game_bs_ratio;
-
-            return 10;
-        } elseif ($objEmployee->mb_game_eo_ratio < $arrRegData['mb_game_eo_ratio']) {
-            $strError = $objEmployee->mb_game_eo_ratio;
-
-            return 11;
-        } elseif ($objEmployee->mb_game_eo2_ratio < $arrRegData['mb_game_eo2_ratio']) {
-            $strError = $objEmployee->mb_game_eo2_ratio;
-
-            return 11;
+            if ($chRatio->mb_game_pb_ratio != null && $chRatio->mb_game_pb_ratio > $arrRegData['mb_game_pb_ratio']) {
+                $strError = "파워볼 단폴 배당율이 하위설정값 ".$chRatio->mb_game_pb_ratio."보다 작을수 없습니다.";
+                return 5;
+            } elseif ($chRatio->mb_game_pb2_ratio != null && $chRatio->mb_game_pb2_ratio > $arrRegData['mb_game_pb2_ratio']) {
+                $strError = "파워볼 조합 배당율이 하위설정값 ".$chRatio->mb_game_pb2_ratio."보다 작을수 없습니다.";
+                return 5;
+            } elseif ($chRatio->mb_game_ps_ratio != null && $chRatio->mb_game_ps_ratio > $arrRegData['mb_game_ps_ratio']) {
+                $strError = "파워사다리 배당율이 하위설정값 ".$chRatio->mb_game_ps_ratio."보다 작을수 없습니다.";
+                return 5;
+            } elseif ($chRatio->mb_game_cs_ratio != null && $chRatio->mb_game_cs_ratio > $arrRegData['mb_game_cs_ratio']) {
+                $strError = "카지노 배당율이 하위설정값 ".$chRatio->mb_game_cs_ratio."보다 작을수 없습니다.";
+                return 5;
+            } elseif ($chRatio->mb_game_sl_ratio != null && $chRatio->mb_game_sl_ratio > $arrRegData['mb_game_sl_ratio']) {
+                $strError = "슬롯 배당율이 하위설정값 ".$chRatio->mb_game_sl_ratio."보다 작을수 없습니다.";
+                return 5;
+            } elseif ($chRatio->mb_game_bb_ratio != null && $chRatio->mb_game_bb_ratio > $arrRegData['mb_game_bb_ratio']) {
+                $strError = "보글볼 단폴 배당율이 하위설정값 ".$chRatio->mb_game_bb_ratio."보다 작을수 없습니다.";
+                return 5;
+            } elseif ($chRatio->mb_game_bb2_ratio != null && $chRatio->mb_game_bb2_ratio > $arrRegData['mb_game_bb2_ratio']) {
+                $strError = "보글볼 조합 배당율이 하위설정값 ".$chRatio->mb_game_bb2_ratio."보다 작을수 없습니다.";
+                return 5;
+            } elseif ($chRatio->mb_game_bs_ratio != null && $chRatio->mb_game_bs_ratio > $arrRegData['mb_game_bs_ratio']) {
+                $strError = "보글사다리 배당율이 하위설정값 ".$chRatio->mb_game_bs_ratio."보다 작을수 없습니다.";
+                return 5;
+            } elseif ($chRatio->mb_game_eo_ratio != null && $chRatio->mb_game_eo_ratio > $arrRegData['mb_game_eo_ratio']) {
+                $strError = "EOS파워볼 단폴 배당율이 하위설정값 ".$chRatio->mb_game_eo_ratio."보다 작을수 없습니다.";
+                return 5;
+            } elseif ($chRatio->mb_game_eo2_ratio != null && $chRatio->mb_game_eo2_ratio > $arrRegData['mb_game_eo2_ratio']) {
+                $strError = "EOS파워볼 배당율이 하위설정값 ".$chRatio->mb_game_eo2_ratio."보다 작을수 없습니다.";
+                return 5;
+            }
+    
         }
 
         return 1;
@@ -1157,7 +1186,7 @@ class Member_Model extends Model
     public function register($arrRegData, &$strError)
     {
         // 결과 -1: query error 0:오유 1:성공 3:추천인 오유 4:파워볼 배당율오유 5:파워사다리 배당율오유 6:키노사다리 배당율 오유
-
+        $objEmployee = null;
         if (LEVEL_COMPANY == $arrRegData['mb_level']) {
             $arrRegData['mb_emp_fid'] = 0;
             // $objUser = $this->getByNickname(trim($arrData['mb_nickname']));
@@ -1178,16 +1207,17 @@ class Member_Model extends Model
             // if (!is_null($objUser)) {
             //     return 12;
             // }
-            // 배당율 검사
-            $ratioResult = $this->checkGameRatio($objEmployee, $arrRegData, $strError);
-            if (1 != $ratioResult) {
-                return $ratioResult;
-            }
+            
             
         } else {
             return 0;
         }
         $this->setZeroGameRatio($arrRegData);
+        // 배당율 검사
+        $ratioResult = $this->checkGameRatio($objEmployee, $arrRegData, $strError);
+        if ($ratioResult != 1) {
+            return $ratioResult;
+        }
 
         // 자료기지 등록
         $arrRegData['mb_uid'] = trim($arrRegData['mb_uid']);
@@ -1229,6 +1259,7 @@ class Member_Model extends Model
             return 0;
         }
 
+        $objEmployee = null;
         if (LEVEL_COMPANY == $objMember->mb_level) {
             $arrData['mb_emp_fid'] = 0;
 
@@ -1248,18 +1279,18 @@ class Member_Model extends Model
             // if (!is_null($objUser) && $objUser->mb_fid != $arrData['mb_fid']) {
             //     return 12;
             // }
-            $resultRatio = $this->checkGameRatio($objEmployee, $arrData, $strError);
-            if (1 != $resultRatio) {
-                return $resultRatio;
-            }
+           
         } else {
             return 0;
         }
 
         $this->setZeroGameRatio($arrData);
         $this->setZeroGamePercent($arrData);
+        $resultRatio = $this->checkGameRatio($objEmployee, $arrData, $strError);
+        if ($resultRatio != 1) {
+            return $resultRatio;
+        }
 
-        
         $arrData['mb_bank_name'] = trim($arrData['mb_bank_name']);
         $arrData['mb_bank_own'] = trim($arrData['mb_bank_own']);
         $arrData['mb_bank_num'] = trim($arrData['mb_bank_num']);
@@ -1295,12 +1326,15 @@ class Member_Model extends Model
         if ($objMember->mb_level < LEVEL_ADMIN) {
             // 추천인 검사
             $objEmployee = $this->getInfoByFid($objMember->mb_emp_fid);
-            if (null == $objEmployee) {
+            if (is_null($objEmployee)) {
                 return 0;
             }
+            
+            $this->setZeroGameRatio($arrData);
+            $this->setZeroGamePercent($arrData);
 
             $resultRatio = $this->checkGameRatio($objEmployee, $arrData, $strError);
-            if (1 != $resultRatio) {
+            if ($resultRatio != 1) {
                 return $resultRatio;
             }
         } else {
@@ -1308,8 +1342,6 @@ class Member_Model extends Model
         }
 
         
-        $this->setZeroGameRatio($arrData);
-        $this->setZeroGamePercent($arrData);
 
         $this->builder()->set('mb_color', $arrData['mb_color']);
         if(array_key_exists('mb_state_delete', $arrData)){

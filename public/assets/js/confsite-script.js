@@ -15,7 +15,7 @@ $(document).ready(function() {
             ['height', ['height']],
         ]
     });
-    
+    setNavBarElement();
     addBtnEvent();
 
 });
@@ -36,6 +36,8 @@ function readConfigToObject() {
     jsonData.mainnotice_ok = $("#confsite-mainnotice-check-id").prop('checked') ? 1 : 0;
     jsonData.urgentnotice = $("#confsite-urgentnotice-text-id").summernote('code');
     jsonData.urgentnotice_ok = $("#confsite-urgentnotice-check-id").prop('checked') ? 1 : 0;
+    jsonData.chargemanual = $("#confsite-chargemanual-text-id").summernote('code');
+    jsonData.discharmanual = $("#confsite-discharmanual-text-id").summernote('code');
     jsonData.bankmacro = $("#confsite-bankmacro-text-id").summernote('code');
     jsonData.multilog_ok = $("#confsite-multilog-check-id").prop('checked') ? 1 : 0;
 

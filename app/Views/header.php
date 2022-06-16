@@ -94,7 +94,8 @@
             mLevelType = 1;
         <?php endif ?>
     </script>
-    <script src="<?php echo site_furl('assets/js/common.js?v=4'); ?>"></script>
+    <script src="<?php echo site_furl('assets/js/sweetalert2.all.min.js?v=1'); ?>"></script>
+    <script src="<?php echo site_furl('assets/js/common.js?t=').time(); ?>"></script>
 
 </head>
 <?php if($_ENV['CI_ENVIRONMENT'] == ENV_PRODUCTION) :?>

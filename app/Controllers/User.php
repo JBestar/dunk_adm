@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\ConfSite_Model;
+
 class User extends StdController
 {
 
@@ -108,6 +110,8 @@ class User extends StdController
 	}
 
 	public function member_edit($mbFid){
+		$confsiteModel = new ConfSite_Model();
+		$confsiteModel->readMemConf();
 		$this->user_edit_page(
 			'user/member_edit', 
 			'user_member', 

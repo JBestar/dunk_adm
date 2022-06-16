@@ -363,6 +363,8 @@
 					<label>P</label>
 				</div>
 
+				<?php if(!array_key_exists('mem.trans_deny', $_ENV) || !$_ENV['mem.trans_deny']) :  ?>
+
 				<div class="useredit-text-div">
 					<p>이동금액:</p> 
 					<input type = "text" id="useredit-transfer-input-id" value="0" >
@@ -376,6 +378,7 @@
 					<button class="pbresult-list-view-but" id="useredit-transfer-but-id" style="margin-right:0px;">이송</button>  
 					<button class="pbresult-list-view-but" id="useredit-return-but-id" style="margin-left:5px;">환수</button>  
 				</div>
+				<?php endif ?>
 
 			<?php } ?>
 		<?php } ?>

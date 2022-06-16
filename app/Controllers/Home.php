@@ -19,7 +19,7 @@ class Home extends StdController
 	public function conf_site(){		
 		$confsiteModel = new ConfSite_Model();
 		$arrConfig = $confsiteModel->findAll();		
-		$this->load_view_page('home/conf_site', 'conf_site', LEVEL_ADMIN, ['arrConfig' => $arrConfig]);	
+		$this->load_view_page('home/conf_siteinfo', 'conf_site', LEVEL_ADMIN, ['arrConfig' => $arrConfig]);	
 	}
 
 	
@@ -32,6 +32,10 @@ class Home extends StdController
 	// 보험설정
 	public function conf_betsite(){
 		$this->load_view_page('home/conf_betsite', 'conf_site', LEVEL_ADMIN);	
+	}
+
+	public function conf_sound(){
+		$this->load_view_page('home/conf_sound', 'conf_site', LEVEL_ADMIN);	
 	}
 
 	public function conf_powerball(){
@@ -127,9 +131,6 @@ class Home extends StdController
 		$this->load_view_page('home/conf_fslot', 'conf_game', LEVEL_ADMIN, $param);	
 	}
 
-	public function conf_sound(){
-		$this->load_view_page('home/conf_sound', 'conf_other', LEVEL_ADMIN);	
-	}
 	
 	public function conf_password(){
 		$this->load_view_page('home/conf_password', 'conf_password');

@@ -1,13 +1,11 @@
 $(document).ready(function() {
+    setNavBarElement();
     initConfig();
 });
 
 function initConfig() {
-
     requestSoundInfo();
-
     addEventListner();
-
 }
 
 function addEventListner() {

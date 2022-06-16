@@ -54,7 +54,7 @@ function ShowBetHistory(jsonBetData) {
             strWinMoney = (parseInt(jsonBetData[nRow].bet_win_money) - parseInt(jsonBetData[nRow].bet_money)).toLocaleString() + "원";
 
         } else if (jsonBetData[nRow].bet_win_money == jsonBetData[nRow].bet_money) {
-            strResult = "<td  class = 'pb-home-table-betstate-wait'>비김";
+            strResult = "<td  class = 'pb-home-table-betstate-wait'>타이";
         } else {
             strResult = "<td  class = 'pb-home-table-betstate-loss'>미적중"; //
         }

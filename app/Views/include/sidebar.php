@@ -22,7 +22,6 @@
       <a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
     <?php endif ?>   
 
-    <a href="<?php echo siteFurl().'home/conf_sound';?>" class="<?=$conf_other?>"><i class="glyphicon glyphicon-wrench"></i>  기타설정</a>
     <?php } ?>
     <a href="<?php echo siteFurl().'home/conf_password';?>" class="<?=$conf_password?>"><i class="glyphicon glyphicon-lock"></i> 정보변경</a>
   </div>
