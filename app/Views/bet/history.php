@@ -44,18 +44,18 @@
 			<label>기간</label>
 			<input type="datetime-local" id="pbhistory-datestart-input-id"  value="<?php echo date('Y-m-d')."T00:00"; ?>">
             <label> ~ </label>
-            <input type="datetime-local" id="pbhistory-dateend-input-id"  value="<?php echo date('Y-m-d')."T23:59"; ?>">
+            <input type="datetime-local" id="pbhistory-dateend-input-id"  value="<?php echo date('Y-m-d')."T23:59"; ?>" style="margin-right:10px">
             <?= $this->renderSection('history-add-round-search') ?>
             <?php if($mb_level >= LEVEL_ADMIN) {  ?>
-			<label>추천인</label>
-            <input type="text" class="pbresult-text-input" id="pbhistory-empid-input-id" >
+			<!-- <label>추천인</label> -->
+            <input type="text" placeholder="     추천인" class="pbresult-text-input" id="pbhistory-empid-input-id" >
 			<?php } ?>
-			<label>아이디</label>
-            <input type="text" class="pbresult-text-input" id="pbhistory-userid-input-id" >
+			<!-- <label>아이디</label> -->
+            <input type="text" placeholder="     아이디" class="pbresult-text-input" id="pbhistory-userid-input-id" >
 
             <?= $this->renderSection('history_game_options') ?>
 
-			<select name="pbresult-number" class="pbresult-number-select" id="pbhistory-number-select-id" style="width:70px;">
+			<select name="pbresult-number" class="pbresult-number-select" id="pbhistory-number-select-id" style="width:70px; margin-left:10px;">
 				<option value="10">10개</option>
 				<option value="20">20개</option>
 				<option value="50">50개</option>

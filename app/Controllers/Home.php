@@ -38,6 +38,10 @@ class Home extends StdController
 		$this->load_view_page('home/conf_sound', 'conf_site', LEVEL_ADMIN);	
 	}
 
+	public function conf_clean(){
+		$this->load_view_page('home/conf_clean', 'conf_site', LEVEL_ADMIN);	
+	}
+
 	public function conf_powerball(){
 		$confsiteModel = new ConfSite_Model();
 		$confsiteModel->readBetConf();

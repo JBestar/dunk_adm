@@ -207,7 +207,7 @@
 								<div class="row">
 									<div class="col-md-2">회원 ID:</div>
 									<div class="col-md-4">
-										<input id="user_uid" type="text" placeholder="" class="form-control" />
+										<input id="user_uid" type="text" placeholder="" class="form-control english_s" />
 									</div>
 									<div class="col-md-2">닉네임 :</div>
 									<div class="col-md-4">
@@ -219,7 +219,7 @@
 								<div class="row">
 									<div class="col-md-2">비밀번호 :</div>
 									<div class="col-md-4">
-										<input id="user_password" type="text" placeholder="" class="form-control" />
+										<input id="user_password" type="text" placeholder="" class="form-control english_s" />
 									</div>
 									<div class="col-md-2">연락처 :</div>
 									<div class="col-md-4">

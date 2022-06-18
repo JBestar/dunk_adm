@@ -22,10 +22,10 @@
 		<p>현재 비밀번호:</p> <input type="password" id="confsite-password-input-id">
 	</div>
 	<div class="confsite-password-text-div">
-		<p>새 비밀번호:</p> <input type="password" id="confsite-password-new-input-id">
+		<p>새 비밀번호:</p> <input type="password" id="confsite-password-new-input-id" class="english_s">
 	</div>
 	<div class="confsite-password-text-div">
-		<p>새 비밀번호 확인:</p> <input type="password" id="confsite-password-newok-input-id">
+		<p>새 비밀번호 확인:</p> <input type="password" id="confsite-password-newok-input-id" class="english_s">
 	</div>
 	<div class="confsite-button-group">
 		<button class="confsite-cancel-button" id="confsite-cancel-btn-id">취소</button>

@@ -11,6 +11,7 @@
         <a href="<?php echo siteFurl().'home/conf_betsite';?>" class="sub-navbar-a">보험설정</a>
         <a href="<?php echo siteFurl().'home/conf_maintain';?>" class="sub-navbar-a">점검설정</a>
 		<a href="<?php echo siteFurl().'home/conf_sound';?>" class="sub-navbar-a" >알람설정</a>
+		<!-- <a href="<?php echo siteFurl().'home/conf_clean';?>" class="sub-navbar-a" >디비정리</a> -->
 
         <?= $this->renderSection('confsite-navbar') ?>
 

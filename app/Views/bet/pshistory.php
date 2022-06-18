@@ -2,7 +2,7 @@
 <?= $this->section('history-active') ?><?=$game_name?><?= $this->endSection() ?>
 <?= $this->section('history-title') ?><?=$game_name?> 배팅내역<?= $this->endSection() ?>
 <?= $this->section('history_game_options') ?>	
-	<select class="pbresult-game-select" id="pbhistory-game-select-id">
+	<select class="pbresult-game-select" id="pbhistory-game-select-id" style="width:120px;">
 		<option value="0">::배팅선택::</option>	
 		<option value="1">좌우</option>
 		<option value="2">줄수</option>
@@ -11,8 +11,8 @@
 	</select>
 <?= $this->endSection() ?>
 <?= $this->section('history-add-round-search') ?>
-	<label>회차</label>
-	<input type="text" class="pbresult-text-input" id="pbhistory-roundid-input-id" style="width:70px;">
+	<!-- <label>회차</label> -->
+	<input type="text" placeholder="    회차" class="pbresult-text-input" id="pbhistory-roundid-input-id" style="width:70px;">
 <?= $this->endSection() ?>
 <?= $this->section('history-bet-table-headers') ?>
 	<th>번호</th>

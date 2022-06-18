@@ -11,6 +11,15 @@ if (logged != "yes") {
     });
 }
 
+$(document).ready(function() {
+    $(".english_s").keyup(function(event) {
+        if (!(event.keyCode >= 37 && event.keyCode <= 40)) {
+            var inputVal = $(this).val();
+            $(this).val(inputVal.replace(/[^a-z0-9~!@#$%^&*_:;,.=+-]/gi, ''));
+        }
+    });
+});
+
 const APPTYPE_0 = 0;
 const APPTYPE_1 = 1;
 const APPTYPE_2 = 2;

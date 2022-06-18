@@ -22,9 +22,9 @@
 		<div class="useredit-text-div">
 			<p><?= $this->renderSection('user-edit-title') ?> 아이디:</p> 
 			<?php if(is_null($objMember)) {  ?>	
-			<input type = "text"   id="useredit-id-input-id" >
+			<input type = "text"   id="useredit-id-input-id" class="english_s">
 			<?php } else {?>
-			<input type = "text"   id="useredit-id-input-id" value="<?=$objMember->mb_uid ?>" disabled>
+			<input type = "text"   id="useredit-id-input-id" class="english_s" value="<?=$objMember->mb_uid ?>" disabled>
 			<?php } ?>
 			<label>(영문,숫자만 가능)</label>
 		</div>
@@ -48,9 +48,9 @@
 		<div class="useredit-text-div">
 			<p>비밀번호:</p> 
 			<?php if(is_null($objMember)) {  ?>	
-			<input type = "text" id="useredit-pwd-input-id">
+			<input type = "text" id="useredit-pwd-input-id" class="english_s">
 			<?php } else {?>
-			<input type = "text" id="useredit-pwd-input-id" value="<?=$objMember->mb_pwd?>" >
+			<input type = "text" id="useredit-pwd-input-id" class="english_s" value="<?=$objMember->mb_pwd?>" >
 			<?php } ?>
 		</div>
 		<?php }?>
