@@ -20,9 +20,9 @@
 	<th>업체명</th>
 	<th>게임종류</th>
 	<th>게임방</th>
-	<th>배팅금액</th>
+	<th>배팅금</th>
+	<th>적중금</th>
 	<th>배팅결과</th>
-	<th>당첨금액</th>
 	<th>포인트</th>
 <?= $this->endSection() ?>
 <?= $this->section('history_script') ?>

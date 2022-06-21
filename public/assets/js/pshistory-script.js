@@ -88,9 +88,10 @@ function ShowBetHistory(jsonBetData) {
             strResult = "<td  class = 'pb-home-table-betstate-wait'>대기중";
         } else if (jsonBetData[nRow].bet_state == "2") {
             strResult = "<td  class = 'pb-home-table-betstate-loss'>미적중";
+            strWinMoney = parseInt(jsonBetData[nRow].bet_win_money).toLocaleString() + "원";
         } else if (jsonBetData[nRow].bet_state == "3") {
             strResult = "<td  class = 'pb-home-table-betstate-earn'>적중";
-            strWinMoney = parseInt(jsonBetData[nRow].bet_win_money - jsonBetData[nRow].bet_money).toLocaleString() + "원";
+            strWinMoney = parseInt(jsonBetData[nRow].bet_win_money).toLocaleString() + "원";
         } else if (jsonBetData[nRow].bet_state == "4") {
             strResult = "<td  class = 'pb-home-table-betstate-wait'>무효";
         }

@@ -45,23 +45,20 @@ function ShowBetHistory(jsonBetData) {
             strBuf += jsonBetData[nRow].bet_table_code;
         strBuf += "</td><td>";
         strBuf += parseInt(jsonBetData[nRow].bet_money).toLocaleString() + "원";
+        strBuf += "</td><td>";
+        strBuf += parseInt(jsonBetData[nRow].bet_win_money).toLocaleString() + "원";
         strBuf += "</td>";
-
         strResult = "<td>";
-        strWinMoney = "";
+        // strWinMoney = "";
         if (parseInt(jsonBetData[nRow].bet_win_money) > parseInt(jsonBetData[nRow].bet_money)) {
             strResult = "<td  class = 'pb-home-table-betstate-earn'>적중";
-            strWinMoney = (parseInt(jsonBetData[nRow].bet_win_money) - parseInt(jsonBetData[nRow].bet_money)).toLocaleString() + "원";
-
+            // strWinMoney = (parseInt(jsonBetData[nRow].bet_win_money) - parseInt(jsonBetData[nRow].bet_money)).toLocaleString() + "원";
         } else if (jsonBetData[nRow].bet_win_money == jsonBetData[nRow].bet_money) {
             strResult = "<td  class = 'pb-home-table-betstate-wait'>타이";
         } else {
             strResult = "<td  class = 'pb-home-table-betstate-loss'>미적중"; //
         }
-
         strBuf += strResult;
-        strBuf += "</td><td>";
-        strBuf += strWinMoney;
         strBuf += "</td><td>";
         if (jsonBetData[nRow].rw_point != null)
             strBuf += jsonBetData[nRow].rw_point;

@@ -645,8 +645,7 @@ class Member_Model extends Model
         $strSQL .= ' UNION ALL SELECT '.$strTbRColum.' FROM '.$this->table.' r ';
         $strSQL .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
         //보유금액
-        $strSQL .= " SELECT SUM(CASE WHEN mb_level >= ".getEmpLevel()." THEN mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money ELSE 0 END) AS result_1, ";
-        $strSQL .= " SUM(CASE WHEN mb_level < ".getEmpLevel()." THEN mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money ELSE 0 END) AS result_2 ";
+        $strSQL .= " SELECT SUM(mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money) AS result_1, COUNT(mb_fid) AS result_2 ";
         $strSQL .= " FROM tbmember  WHERE mb_state_active != '".PERMIT_DELETE."' ";
         //충전금액
         $strSQL .= " UNION ALL ( SELECT SUM(charge_money) AS result_1, '0' AS result_2 FROM ".$this->chargeTb;
@@ -705,14 +704,14 @@ class Member_Model extends Model
         }
         $strSQL .= " ) AS bet_table ) ";
         //포인트
-        $strSQL .= " UNION ALL ( SELECT SUM(rw_point) AS result_1, '0' AS result_2 FROM ".$this->rewardTb;
+        $strSQL .= " UNION ALL ( SELECT SUM(rw_point) AS result_1, ";
+        $strSQL .= " SUM(CASE WHEN rw_mb_fid = ".$objEmp->mb_fid." THEN rw_point ELSE 0 END) AS result_2 FROM ".$this->rewardTb;
         $strSQL .= " WHERE rw_fid >= ".$arrReqData['rw_range'][0]." AND rw_fid <= ".$arrReqData['rw_range'][1];
-        $strSQL.=" AND rw_mb_fid = '".$objEmp->mb_fid."' ";
         if($arrReqData['rw_blank']){
             $strSQL.=" AND rw_state = '0' ";
         }
-        $strSQL.= " ) ";
-
+        $strSQL .= " AND rw_mb_fid IN (SELECT mb_fid from tbmember) )";
+        
         // writeLog($strSQL);
         $arrResult = $this->db->query($strSQL)->getResult();
         // writeLog("calculate END");
@@ -731,8 +730,7 @@ class Member_Model extends Model
         $strSQL .= ' UNION ALL SELECT '.$strTbRColum.' FROM '.$this->table.' r ';
         $strSQL .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
         //보유금액
-        $strSQL .= " SELECT SUM(CASE WHEN mb_level >= ".getEmpLevel()." THEN mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money ELSE 0 END) AS result_1, ";
-        $strSQL .= " SUM(CASE WHEN mb_level < ".getEmpLevel()." THEN mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money ELSE 0 END) AS result_2 ";
+        $strSQL .= " SELECT SUM(mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money) AS result_1, COUNT(mb_fid) AS result_2 ";
         $strSQL .= " FROM tbmember  WHERE mb_state_active != '".PERMIT_DELETE."' ";
         //충전금액
         $strSQL .= " UNION ALL ( SELECT SUM(charge_money) AS result_1, '0' AS result_2 FROM ".$this->chargeTb;
@@ -773,9 +771,10 @@ class Member_Model extends Model
         }
         $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) ) ";
         //포인트
-        $strSQL.= " UNION ALL ( SELECT SUM(rw_point) AS result_1, '0' AS result_2 FROM ".$this->rewardTb;
+        $strSQL .= " UNION ALL ( SELECT SUM(rw_point) AS result_1, ";
+        $strSQL .= " SUM(CASE WHEN rw_mb_fid = ".$objEmp->mb_fid." THEN rw_point ELSE 0 END) AS result_2 FROM ".$this->rewardTb;
         $strSQL .= " WHERE rw_fid >= ".$arrReqData['rw_range'][0]." AND rw_fid <= ".$arrReqData['rw_range'][1];
-        $strSQL.=" AND rw_mb_fid = '".$objEmp->mb_fid."' ";
+        $strSQL .= " AND rw_mb_fid IN (SELECT mb_fid from tbmember) ";
         if($arrReqData['type'] == GAME_SLOT_12)
             $strSQL.=" AND (rw_game = '".GAME_SLOT_1."' OR rw_game = '".GAME_SLOT_2."') ";
         else if($arrReqData['type'] > 0)
@@ -1432,6 +1431,18 @@ class Member_Model extends Model
         return $bResult;
     }
 
+    public function updateMemberByFids($arrData, &$query)
+    {
+        if (array_key_exists('mb_state_active', $arrData)) {
+            $this->builder()->set('mb_state_active', $arrData['mb_state_active']);
+        }else return false;
+
+        $this->builder()->whereIn('mb_fid', $arrData['mb_fids']);
+        $bResult = $this->builder()->update();
+        $query = $this->db->getLastQuery();
+        
+        return $bResult;
+    }
 
     public function getEmpUserCnt($objMember)
     {

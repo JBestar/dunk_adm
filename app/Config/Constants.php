@@ -94,6 +94,7 @@ defined('APP_CT')           || define('APP_CT', 'Ct');
 defined('APP_HI')           || define('APP_HI', 'Hi');
 defined('APP_PRIME')        || define('APP_PRIME', 'Prime');
 defined('APP_ACE')          || define('APP_ACE', 'Ace');
+defined('APP_PRADA')        || define('APP_PRADA', 'Prada');
 
 defined('APPTYPE_0')        || define('APPTYPE_0', 0);      //Premier
 defined('APPTYPE_1')        || define('APPTYPE_1', 1);      //Slot Combine
@@ -168,7 +169,7 @@ defined('LEVEL_ADMIN')         || define('LEVEL_ADMIN', 100);
 defined('LEVEL_COMPANY')       || define('LEVEL_COMPANY', 99);
 defined('LEVEL_AGENCY')        || define('LEVEL_AGENCY', 98);
 defined('LEVEL_EMPLOYEE')      || define('LEVEL_EMPLOYEE', 97);
-defined('LEVEL_MARKET')        || define('LEVEL_MARKET', 97);
+defined('LEVEL_MARKET')        || define('LEVEL_MARKET', 96);
 defined('LEVEL_MIN')           || define('LEVEL_MIN', 1);
 
 defined('GRADE_1')             || define('GRADE_1', 1);

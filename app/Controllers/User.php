@@ -28,9 +28,9 @@ class User extends StdController
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
 
-			$arrEmp = $this->modelMember->getMemberByEmpFid($objAdmin->mb_fid, $objAdmin->mb_level,  $objAdmin->mb_level, true, $mbFid);
-			if(count($arrEmp) > 0)
-				$objMember = reset($arrEmp);					
+			$arrMem = $this->modelMember->getMemberByEmpFid($objAdmin->mb_fid, $objAdmin->mb_level,  $objAdmin->mb_level, true, $mbFid);
+			if(count($arrMem) > 0)
+				$objMember = reset($arrMem);					
 			
 			if ($objMember != null){
 				$objEmpMember = $this->modelMember->find($objMember->mb_emp_fid);
@@ -147,9 +147,9 @@ class User extends StdController
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
 
-			$arrEmp = $this->modelMember->getMemberByEmpFid($objAdmin->mb_fid, $objAdmin->mb_level,  $objAdmin->mb_level, true, $mbFid);
-			if(count($arrEmp) > 0)
-				$objMember = reset($arrEmp);					
+			$arrMem = $this->modelMember->getMemberByEmpFid($objAdmin->mb_fid, $objAdmin->mb_level,  $objAdmin->mb_level, true, $mbFid);
+			if(count($arrMem) > 0)
+				$objMember = reset($arrMem);					
 			
 			$empUid = '';
 			$bChild = false;

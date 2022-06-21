@@ -192,19 +192,24 @@ class UserApi extends BaseController
             $bPermit = false;
             
             $strUid = $this->session->user_id;
-            $objUser = $this->modelMember->getInfo($strUid);
+            $objAdmin = $this->modelMember->getInfo($strUid);
             $objReqUser = $this->modelMember->getInfoByFid($arrData['mb_fid']);
 
             // 현재 가입한 유저가 요청한 유저보다 레벨이 높은 경우에 삭제가 가능하다.
-            if (!is_null($objUser) && !is_null($objReqUser)) {
-                if ($objUser->mb_level >= LEVEL_ADMIN) {
+            if (!is_null($objAdmin) && !is_null($objReqUser)) {
+                if ($objAdmin->mb_level >= LEVEL_ADMIN) {
                     $bPermit = true;
                 }
             }
             if ($bPermit) {
                 $arrData['mb_state_active'] = PERMIT_DELETE;
+                $arrData['mb_fids'] = [$objReqUser->mb_fid];
+                $arrMem = $this->modelMember->getMemberByEmpFid($objReqUser->mb_fid, $objReqUser->mb_level,  $objReqUser->mb_level, true);
+                foreach($arrMem as $objMem)
+                    array_push($arrData['mb_fids'], $objMem->mb_fid);
+
                 $query = '';
-                $bResult = $this->modelMember->updateMemberByFid($arrData, $query);
+                $bResult = $this->modelMember->updateMemberByFids($arrData, $query);
                 
                 if ($bResult) {
                     $this->modelModify->add($this->session->user_id, MOD_MB_STATE, $query, $this->request->getIPAddress());

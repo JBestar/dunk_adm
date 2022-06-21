@@ -88,7 +88,9 @@ function requestUpdateMember(jsData) {
 }
 
 function requestDeleteMember(jsData) {
-
+    
+    if (!confirm("하부회원까지 모두 삭제됩니다.\r\n그래도 계속하시겠습니까?"))
+        return;
     var jsonData = JSON.stringify(jsData);
 
     $.ajax({

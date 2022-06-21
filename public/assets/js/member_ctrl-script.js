@@ -315,8 +315,6 @@ function addButtonElementListener(buttonElement) {
 
         let tHtml = this.innerHTML; 
         if (tHtml.search("삭제") >= 0) {
-            if (!confirm("삭제하시겠습니까?"))
-                return;
             var jsonData = { "mb_fid": this.name };
             requestDeleteMember(jsonData);
         } else if (tHtml.search("승인") >= 0) {

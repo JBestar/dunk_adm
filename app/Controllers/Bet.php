@@ -207,7 +207,7 @@ class Bet extends StdController {
 		$param = [
 			'game_id' => 0,
 		];
-		$this->load_view_page('bet/allcalculate', 'bet_calculate', 0, $param);
+		$this->load_view_page('bet/calculate_all', 'bet_calculate', 0, $param);
 	}
 
 	public function pbcalculate(){
@@ -216,7 +216,7 @@ class Bet extends StdController {
 			'game_name' => "파워볼",
 			'game_id' => GAME_POWER_BALL,
 		];
-		$this->load_view_page('bet/pbcalculate', 'bet_calculate', LEVEL_MIN, $param);
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}
 
 
@@ -225,7 +225,7 @@ class Bet extends StdController {
 			'game_name' => "파워사다리",
 			'game_id' => GAME_POWER_LADDER,
 		];
-		$this->load_view_page('bet/pbcalculate', 'bet_calculate', LEVEL_MIN, $param);
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}
 	
 	public function cscalculate(){
@@ -233,7 +233,7 @@ class Bet extends StdController {
 			'game_name' => "카지노",
 			'game_id' => GAME_CASINO_EVOL,
 		];
-		$this->load_view_page('bet/cscalculate', 'bet_calculate', LEVEL_MIN, $param);
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}
 
 	public function xslcalculate(){
@@ -242,7 +242,7 @@ class Bet extends StdController {
 			'game_id' => GAME_SLOT_1,
 		];
 
-		$this->load_view_page('bet/slcalculate', 'bet_calculate', LEVEL_ADMIN, $param);
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_ADMIN, $param);
 	}
 	
 	public function fslcalculate(){
@@ -251,7 +251,7 @@ class Bet extends StdController {
 			'game_id' => GAME_SLOT_2,
 		];
 
-		$this->load_view_page('bet/slcalculate', 'bet_calculate', LEVEL_ADMIN, $param);
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_ADMIN, $param);
 	}
 
 	public function slcalculate(){
@@ -260,7 +260,7 @@ class Bet extends StdController {
 			'game_id' => GAME_SLOT_12,
 		];
 
-		$this->load_view_page('bet/slcalculate', 'bet_calculate', LEVEL_MIN, $param);
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}
 
 	public function bbcalculate(){
@@ -268,7 +268,7 @@ class Bet extends StdController {
 			'game_name' => "보글볼",
 			'game_id' => GAME_BOGLE_BALL,
 		];
-		$this->load_view_page('bet/pbcalculate', 'bet_calculate', LEVEL_MIN, $param);
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}
 
 	public function bscalculate(){
@@ -276,7 +276,7 @@ class Bet extends StdController {
 			'game_name' => "보글사다리",
 			'game_id' => GAME_BOGLE_LADDER,
 		];
-		$this->load_view_page('bet/pbcalculate', 'bet_calculate', LEVEL_MIN, $param);
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}
 	
 	public function e5calculate(){
@@ -284,7 +284,7 @@ class Bet extends StdController {
 			'game_name' => "EOS5분파워볼",
 			'game_id' => GAME_EOS5_BALL,
 		];
-		$this->load_view_page('bet/pbcalculate', 'bet_calculate', LEVEL_MIN, $param);
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}
 	
 	public function e3calculate(){
@@ -292,6 +292,6 @@ class Bet extends StdController {
 			'game_name' => "EOS3분파워볼",
 			'game_id' => GAME_EOS3_BALL,
 		];
-		$this->load_view_page('bet/pbcalculate', 'bet_calculate', LEVEL_MIN, $param);
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}
 }

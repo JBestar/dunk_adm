@@ -264,8 +264,6 @@ function addButtonElementListener(buttonElement) {
     buttonElement.addEventListener("click", function() {
 
         if (this.innerHTML.search("삭제") >= 0) {
-            if (!confirm("삭제하시겠습니까?"))
-                return;
             var jsonData = { "mb_fid": this.name };
             requestDeleteMember(jsonData);
         } else if (this.innerHTML.search("IP차단") >= 0) {
