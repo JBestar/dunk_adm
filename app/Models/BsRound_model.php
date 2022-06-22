@@ -42,7 +42,7 @@ class BsRound_Model extends Model {
     }
 
     public function register($arrReqData){
-        //2:이미 등록된 회차 4:회차번호, 일회차오유
+        //2:이미 등록된 회차 4:회차번호, 일회차오류
         
         $objRound = $this->getByDate($arrReqData['round_date'], $arrReqData['round_num']);
         if(!is_null($objRound))

@@ -203,7 +203,7 @@ class Member_Model extends Model
             return 2;
         }
 
-        // 이전 패스워드가 같은가 검사
+        // 이전 패스워드가 같은가 체크
         if (strlen($arrPwd['password_new']) > 0 && 0 != strcmp($arrPwd['password_new'], $arrPwd['password_newok'])) {
             return 0;
         }
@@ -1015,7 +1015,7 @@ class Member_Model extends Model
 
     private function checkGameRatio($objEmployee, $arrRegData, &$strError)
     {
-        // 배당율 검사
+        // 배당율 체크
         if(!is_null($objEmployee)){
             if ($objEmployee->mb_game_pb_ratio < $arrRegData['mb_game_pb_ratio']) {
                 $strError = "파워볼 단폴 배당율이 추천인설정값 ".$objEmployee->mb_game_pb_ratio."보다 클수 없습니다.";
@@ -1184,7 +1184,7 @@ class Member_Model extends Model
 
     public function register($arrRegData, &$strError)
     {
-        // 결과 -1: query error 0:오유 1:성공 3:추천인 오유 4:파워볼 배당율오유 5:파워사다리 배당율오유 6:키노사다리 배당율 오유
+        // 결과 -1: query error 0:오류 1:성공 3:추천인 오류 4:파워볼 배당율오류 5:파워사다리 배당율오류 6:키노사다리 배당율 오류
         $objEmployee = null;
         if (LEVEL_COMPANY == $arrRegData['mb_level']) {
             $arrRegData['mb_emp_fid'] = 0;
@@ -1193,7 +1193,7 @@ class Member_Model extends Model
             //     return 12;
             // }
         } elseif ($arrRegData['mb_emp_fid'] > 0) {
-            // 추천인 검사
+            // 추천인 체크
             $objEmployee = $this->getInfoByFid($arrRegData['mb_emp_fid']);
             if (is_null($objEmployee)) {
                 return 3;
@@ -1212,7 +1212,7 @@ class Member_Model extends Model
             return 0;
         }
         $this->setZeroGameRatio($arrRegData);
-        // 배당율 검사
+        // 배당율 체크
         $ratioResult = $this->checkGameRatio($objEmployee, $arrRegData, $strError);
         if ($ratioResult != 1) {
             return $ratioResult;
@@ -1250,9 +1250,9 @@ class Member_Model extends Model
 
     public function modifyMember($arrData, &$strError, &$query)
     {
-        // 결과 0:오유 1:성공 2:아이디중복 3:추천인 오유 4:파워볼 배당율오유 5:파워사다리 배당율오유 6:키노사다리 배당율 오유, 12 중복닉네임
+        // 결과 0:오류 1:성공 2:아이디중복 3:추천인 오류 4:파워볼 배당율오류 5:파워사다리 배당율오류 6:키노사다리 배당율 오류, 12 중복닉네임
 
-        // 아이디검사
+        // 아이디체크
         $objMember = $this->getInfoByFid($arrData['mb_fid']);
         if (is_null($objMember)) {
             return 0;
@@ -1267,13 +1267,13 @@ class Member_Model extends Model
             //     return 12;
             // }
         } elseif ($arrData['mb_emp_fid'] > 0) {
-            // 추천인 검사
+            // 추천인 체크
             $objEmployee = $this->getInfoByFid($arrData['mb_emp_fid']);
             if (is_null($objEmployee) || $objEmployee->mb_level < LEVEL_MIN) {
                 return 3;
             }
 
-            // 닉네임 검사
+            // 닉네임 체크
             // $objUser = $this->getByNickname($arrData['mb_nickname']);
             // if (!is_null($objUser) && $objUser->mb_fid != $arrData['mb_fid']) {
             //     return 12;
@@ -1314,16 +1314,16 @@ class Member_Model extends Model
 
     public function modifyMemberRatio($arrData, &$strError, &$query)
     {
-        // 결과 0:오유 1:성공 2:아이디중복 3:추천인 오유 4:파워볼 배당율오유 5:파워사다리 배당율오유 6:키노사다리 배당율 오유
+        // 결과 0:오류 1:성공 2:아이디중복 3:추천인 오류 4:파워볼 배당율오류 5:파워사다리 배당율오류 6:키노사다리 배당율 오류
 
-        // 아이디검사
+        // 아이디체크
         $objMember = $this->getInfoByFid($arrData['mb_fid']);
         if (is_null($objMember)) {
             return 0;
         }
 
         if ($objMember->mb_level < LEVEL_ADMIN) {
-            // 추천인 검사
+            // 추천인 체크
             $objEmployee = $this->getInfoByFid($objMember->mb_emp_fid);
             if (is_null($objEmployee)) {
                 return 0;

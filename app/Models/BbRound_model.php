@@ -49,7 +49,7 @@ class BbRound_Model extends Model
 
     public function register($arrReqData)
     {
-        // 2:이미 등록된 회차 4:회차번호, 일회차오유
+        // 2:이미 등록된 회차 4:회차번호, 일회차오류
         // $objRound = $this->get($arrReqData['round_fid']);
         // if(!is_null($objRound))
         //    return 2;

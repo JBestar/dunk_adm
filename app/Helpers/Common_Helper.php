@@ -51,7 +51,7 @@
 
     }
     
-    //회차유효성 검사 함수
+    //회차유효성 체크 함수
     function isEnablePbRound(&$arrRoundInfo, $roundMin){
       
       if($arrRoundInfo['round_num'] < 1 || $arrRoundInfo['round_num'] > 1440/$roundMin)

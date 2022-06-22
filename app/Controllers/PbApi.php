@@ -351,7 +351,7 @@ class PbApi extends BaseController {
 					if(isEnableRound($arrReqData, ROUND_5MIN)){
 						$iResult = $roundModel->register($arrReqData);	
 						//2: 이미 등록된 회차
-					} else $iResult = 3;				//파라메터 오유
+					} else $iResult = 3;				//파라메터 오류
 					
 				} 
 				if($iResult == 1)
