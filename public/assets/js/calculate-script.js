@@ -178,6 +178,7 @@ function addRow(nTbRow, arrCalcData, level) {
         colorLv = arrCalcData[nRow].mb_level % 10;
         elemNewRow.className = "tr-level" + colorLv + "-color";
 
+        strBuf = "";
         var elemCell0 = elemNewRow.insertCell(0);
         if (arrCalcData[nRow].mb_level > LEVEL_MIN && level >= LEVEL_ADMIN && arrCalcData[nRow].mb_user_cnt > 1)
             strBuf = "<i class='glyphicon glyphicon-triangle-right'></i>"
