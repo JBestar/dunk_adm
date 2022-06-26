@@ -368,6 +368,38 @@
 							</div>
 						<?php endif ?>
 					<?php endif ?>
+					<?php if($coin5_enable || $coin3_enable) :?>
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-2">코인 단폴 배당율 (%)</div>
+									<div class="col-md-2">
+										<input type="number" id="co_ratio" step="0.01" class="form-control" value="0.00" min="0" />
+									</div>
+									
+									<div class="col-md-2">코인 조합 배당율 (%)</div>
+									<div class="col-md-2">
+										<input type="number" id="co2_ratio" step="0.01" class="form-control" value="0.00" min="0" />
+									</div>
+
+								</div>
+							</div>
+						<?php if(!$gameper_full) :?>
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-2">코인 단폴 누름율 (%)</div>
+									<div class="col-md-2">
+										<input type="number" id="co_percent" class="form-control" value="100" min="0" />
+									</div>
+									
+									<div class="col-md-2">코인 조합 누름율 (%)</div>
+									<div class="col-md-2">
+										<input type="number" id="co2_percent" class="form-control" value="100" min="0" />
+									</div>
+																	
+								</div>
+							</div>
+						<?php endif ?>
+					<?php endif ?>
 							<div class="col-md-12">
 								<div class="row">
 								<?php if(!$cas_deny || $kgon_enable) :?>

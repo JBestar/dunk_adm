@@ -17,6 +17,7 @@
 				<option value="0" >OUR</option>
 				<option value="1" >GALAXY</option>
 				<option value="2" >WOORI</option>
+				<option value="3" >BEST</option>
 			</select>
 		</div>
 		<div class="confsite-game-text-div">

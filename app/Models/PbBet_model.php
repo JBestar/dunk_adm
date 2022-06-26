@@ -1,36 +1,50 @@
 <?php
+
 namespace App\Models;
+
 use CodeIgniter\Model;
 
-class PbBet_Model extends Model {
-	
-
+class PbBet_Model extends Model
+{
     protected $table = 'bet_powerball';
     protected $returnType = 'object'; 
     protected $allowedFields = [
-        'bet_state', 
-        'bet_emp_fid', 
-        'bet_mb_uid', 
-        'bet_round_fid', 
-        'bet_round_no', 
-        'bet_time', 
-        'bet_mode', 
-        'bet_target', 
-        'bet_ratio', 
-        'bet_money', 
-        'bet_bonnus', 
-        'bet_result', 
-        'bet_win_money', 
-        'user_before_money', 
-        'user_after_money', 
-        'user_view_state', 
-        'account_time', 
+        'bet_state',
+        'bet_emp_fid',
+        'bet_mb_uid',
+        'bet_round_fid',
+        'bet_round_no',
+        'bet_time',
+        'bet_mode',
+        'bet_target',
+        'bet_ratio',
+        'bet_money',
+        'bet_bonnus',
+        'bet_result',
+        'bet_win_money',
+        'user_before_money',
+        'user_after_money',
+        'user_view_state',
+        'account_time',
     ];
     protected $primaryKey = 'bet_fid';
     private $mMemberTable = 'member';
     private $mRewardTable = 'bet_reward';
     private $mGameId = GAME_POWER_BALL;
-    
+
+    public function setType($gameId){
+        $this->mGameId = $gameId;
+        switch($gameId){
+            case GAME_POWER_BALL:   $this->table = 'bet_powerball';   break;
+            case GAME_BOGLE_BALL:   $this->table = 'bet_bogleball';   break;
+            case GAME_EOS5_BALL:    $this->table = 'bet_eos5ball';    break;
+            case GAME_EOS3_BALL:    $this->table = 'bet_eos3ball';    break;
+            case GAME_COIN5_BALL:   $this->table = 'bet_coin5ball';   break;
+            case GAME_COIN3_BALL:   $this->table = 'bet_coin3ball';   break;
+            default: break;
+        }
+    }
+
     public function gets($nCount)
     {
         

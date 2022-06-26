@@ -40,6 +40,7 @@ function readConfigToObject() {
     jsonData.discharmanual = $("#confsite-discharmanual-text-id").summernote('code');
     jsonData.bankmacro = $("#confsite-bankmacro-text-id").summernote('code');
     jsonData.multilog_ok = $("#confsite-multilog-check-id").prop('checked') ? 1 : 0;
+    jsonData.trans_deny = $("#confsite-transdeny-check-id").prop('checked') ? 1 : 0;
 
     return jsonData;
 

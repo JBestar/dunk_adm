@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\BbBet_Model;
-use App\Models\BsBet_Model;
 use App\Models\Charge_Model;
 use App\Models\ConfGame_Model;
 use App\Models\ConfSite_Model;
@@ -14,7 +12,6 @@ use App\Models\PsBet_Model;
 use App\Models\MoneyHistory_Model;
 use App\Models\SessLog_Model;
 use App\Models\Block_Model;
-use App\Models\EosBet_Model;
 
 use App\Libraries\ApiCas_Lib;
 use App\Libraries\ApiSlot_Lib;
@@ -412,14 +409,6 @@ class UserApi extends BaseController
             
             $confsiteModel = new ConfSite_Model();
             $confgameModel = new ConfGame_Model();
-            $pbbetModel = new PbBet_Model();
-            $psbetModel = new PsBet_Model();
-            $bbbetModel = new BbBet_Model();
-            $bsbetModel = new BsBet_Model();
-            $e5betModel = new EosBet_Model();
-            $e5betModel->setType(GAME_EOS5_BALL);
-            $e3betModel = new EosBet_Model();
-            $e3betModel->setType(GAME_EOS3_BALL);
 
             $objUser = $this->modelMember->getInfo($strUid);
             $siteConfs = $this->getSiteConf($confsiteModel);
@@ -429,40 +418,74 @@ class UserApi extends BaseController
                 $strDate = date('Y-m-d');
                 $arrReqData['start'] = $strDate.' 00:00:00';
                 $arrReqData['end'] = $strDate.' 23:59:59';
-                $arrSumData = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]];
+                $arrSumData = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], 
+                    [0, 0], [0, 0], [0, 0], [0, 0] ];
                 if(!$siteConfs['npg_deny']){
+                    $betModel = new PbBet_Model();
+                    $betModel->setType(GAME_POWER_BALL);
+
                     $objConfPb = $confgameModel->getByIndex(GAME_POWER_BALL);
-                    $arrSum = $pbbetModel->getBetSumByDay($arrReqData, $objConfPb);
+                    $arrSum = $betModel->getBetSumByDay($arrReqData, $objConfPb);
                     $arrSumData[0] = $arrSum[0];
                     $arrSumData[1] = $arrSum[1];
                     
+                    $betModel = new PsBet_Model();
+                    $betModel->setType(GAME_POWER_LADDER);
                     $objConfPs = $confgameModel->getByIndex(GAME_POWER_LADDER);
-                    $sum = $psbetModel->getBetSumByDay($arrReqData, $objConfPs);
+                    $sum = $betModel->getBetSumByDay($arrReqData, $objConfPs);
                     $arrSumData[2] = $sum;
                 }
                 
                 if(!$siteConfs['bpg_deny']){
+                    $betModel = new PbBet_Model();
+                    $betModel->setType(GAME_BOGLE_BALL);
+
                     $objConfBb = $confgameModel->getByIndex(GAME_BOGLE_BALL);
-                    $arrSum = $bbbetModel->getBetSumByDay($arrReqData, $objConfBb);
+                    $arrSum = $betModel->getBetSumByDay($arrReqData, $objConfBb);
                     $arrSumData[3] = $arrSum[0];
                     $arrSumData[4] = $arrSum[1];
 
+                    $betModel = new PsBet_Model();
+                    $betModel->setType(GAME_BOGLE_LADDER);
                     $objConfBs = $confgameModel->getByIndex(GAME_BOGLE_LADDER);
-                    $arrSumData[5] = $bsbetModel->getBetSumByDay($arrReqData, $objConfBs);
+                    $arrSumData[5] = $betModel->getBetSumByDay($arrReqData, $objConfBs);
                 }
                 if($siteConfs['eos5_enable']){
+                    $betModel = new PbBet_Model();
+                    $betModel->setType(GAME_EOS5_BALL);
+
                     $objConfPb = $confgameModel->getByIndex(GAME_EOS5_BALL);
-                    $arrSum = $e5betModel->getBetSumByDay($arrReqData, $objConfPb);
+                    $arrSum = $betModel->getBetSumByDay($arrReqData, $objConfPb);
                     $arrSumData[6] = $arrSum[0];
                     $arrSumData[7] = $arrSum[1];
                 }
                 if($siteConfs['eos3_enable']){
+                    $betModel = new PbBet_Model();
+                    $betModel->setType(GAME_EOS3_BALL);
+
                     $objConfPb = $confgameModel->getByIndex(GAME_EOS3_BALL);
-                    $arrSum = $e3betModel->getBetSumByDay($arrReqData, $objConfPb);
+                    $arrSum = $betModel->getBetSumByDay($arrReqData, $objConfPb);
                     $arrSumData[8] = $arrSum[0];
                     $arrSumData[9] = $arrSum[1];
                 }
+                if($siteConfs['coin5_enable']){
+                    $betModel = new PbBet_Model();
+                    $betModel->setType(GAME_COIN5_BALL);
 
+                    $objConfPb = $confgameModel->getByIndex(GAME_COIN5_BALL);
+                    $arrSum = $betModel->getBetSumByDay($arrReqData, $objConfPb);
+                    $arrSumData[10] = $arrSum[0];
+                    $arrSumData[11] = $arrSum[1];
+                }
+                if($siteConfs['coin3_enable']){
+                    $betModel = new PbBet_Model();
+                    $betModel->setType(GAME_COIN3_BALL);
+
+                    $objConfPb = $confgameModel->getByIndex(GAME_COIN3_BALL);
+                    $arrSum = $betModel->getBetSumByDay($arrReqData, $objConfPb);
+                    $arrSumData[12] = $arrSum[0];
+                    $arrSumData[13] = $arrSum[1];
+                }
                 $objResult->data = $arrSumData;
                 $objResult->status = 'success';
             } else {

@@ -16,6 +16,16 @@ class PsRound_Model extends Model {
         'round_result_3',
     ];
     protected $primaryKey = 'round_fid';
+    private $mGameId =  GAME_POWER_LADDER;
+
+    public function setType($gameId){
+        $this->mGameId = $gameId;
+        switch($gameId){
+            case GAME_POWER_LADDER: $this->table = 'round_powerladder'; break;
+            case GAME_BOGLE_LADDER: $this->table = 'round_bogleladder'; break;
+            default: break;
+        }
+    }
 
     function gets($nCount)
     {

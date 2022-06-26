@@ -73,6 +73,14 @@ function readConfigToObject() {
         objMember.mb_game_eo2_ratio = 0;
     }
 
+    if($("#useredit-cobetrate-input-id").length > 0){
+        objMember.mb_game_co_ratio = $("#useredit-cobetrate-input-id").val();
+        objMember.mb_game_co2_ratio = $("#useredit-cobetrate2-input-id").val();
+    } else {
+        objMember.mb_game_co_ratio = 0;
+        objMember.mb_game_co2_ratio = 0;
+    }
+
     if($("#useredit-bbbetpercent-input-id").length > 0){
         objMember.mb_game_bb_percent = $("#useredit-bbbetpercent-input-id").val();
         objMember.mb_game_bb2_percent = $("#useredit-bbbetpercent2-input-id").val();
@@ -82,6 +90,11 @@ function readConfigToObject() {
     if($("#useredit-eobetpercent-input-id").length > 0){
         objMember.mb_game_eo_percent = $("#useredit-eobetpercent-input-id").val();
         objMember.mb_game_eo2_percent = $("#useredit-eobetpercent2-input-id").val();
+    } 
+
+    if($("#useredit-cobetpercent-input-id").length > 0){
+        objMember.mb_game_co_percent = $("#useredit-cobetpercent-input-id").val();
+        objMember.mb_game_co2_percent = $("#useredit-cobetpercent2-input-id").val();
     } 
 
     if($("#useredit-evbetrate-input-id").length > 0){

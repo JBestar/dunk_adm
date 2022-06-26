@@ -149,6 +149,11 @@ class ConfSite_Model extends Model
         $updateData['conf_active'] = $arrData['multilog_ok'];
         $arrBatch[] = $updateData;
 
+        $updateData = array();
+        $updateData['conf_id'] = CONF_TRANS_DENY;
+        $updateData['conf_active'] = $arrData['trans_deny'];
+        $arrBatch[] = $updateData;
+
         return  $this->builder()->updateBatch($arrBatch, 'conf_id');
 
     }
@@ -213,8 +218,8 @@ class ConfSite_Model extends Model
     }
 
     public function getSiteConf(){
-        $confIds = [CONF_SITENAME, CONF_GAMEPER_FULL, CONF_NPG_DENY, CONF_BPG_DENY, 
-            CONF_CAS_DENY, CONF_SLOT_DENY, CONF_KGON_ENABLE, CONF_EOS5_ENABLE, CONF_EOS3_ENABLE];  
+        $confIds = [CONF_SITENAME, CONF_GAMEPER_FULL, CONF_NPG_DENY, CONF_BPG_DENY,  CONF_CAS_DENY, 
+           CONF_SLOT_DENY, CONF_KGON_ENABLE, CONF_EOS5_ENABLE, CONF_EOS3_ENABLE, CONF_COIN5_ENABLE, CONF_COIN3_ENABLE];  
         return $this->find($confIds);
     }
 

@@ -63,7 +63,7 @@ class Bet extends StdController {
 	public function e5realtime(){
 		
 		$param = [
-			'game_name' => "EOS5분파워볼",
+			'game_name' => "EOS5분",
 			'game_id' => GAME_EOS5_BALL,
 		];
 
@@ -73,8 +73,28 @@ class Bet extends StdController {
 	public function e3realtime(){
 		
 		$param = [
-			'game_name' => "EOS3분파워볼",
+			'game_name' => "EOS3분",
 			'game_id' => GAME_EOS3_BALL,
+		];
+
+		$this->load_view_page('bet/pbrealtime', 'bet_realtime', LEVEL_ADMIN, $param);
+	}
+
+	public function c5realtime(){
+		
+		$param = [
+			'game_name' => "코인5분",
+			'game_id' => GAME_COIN5_BALL,
+		];
+
+		$this->load_view_page('bet/pbrealtime', 'bet_realtime', LEVEL_ADMIN, $param);
+	}
+	
+	public function c3realtime(){
+		
+		$param = [
+			'game_name' => "코인3분",
+			'game_id' => GAME_COIN3_BALL,
 		];
 
 		$this->load_view_page('bet/pbrealtime', 'bet_realtime', LEVEL_ADMIN, $param);
@@ -136,22 +156,39 @@ class Bet extends StdController {
 		$this->load_view_page('bet/pshistory', 'bet_history', LEVEL_MIN, $param);
 	}
 	
-	
 	public function e5history(){
 		
 		$param = [
-			'game_name' => "EOS5분파워볼",
+			'game_name' => "EOS5분",
 			'game_id' => GAME_EOS5_BALL,
+		];
+		$this->load_view_page('bet/pbhistory', 'bet_history', LEVEL_MIN, $param);
+	}
+	
+	public function e3history(){
+		
+		$param = [
+			'game_name' => "EOS3분",
+			'game_id' => GAME_EOS3_BALL,
+		];
+		$this->load_view_page('bet/pbhistory', 'bet_history', LEVEL_MIN, $param);
+	}
+
+	public function c5history(){
+		
+		$param = [
+			'game_name' => "코인5분",
+			'game_id' => GAME_COIN5_BALL,
 		];
 		$this->load_view_page('bet/pbhistory', 'bet_history', LEVEL_MIN, $param);
 	}
 
 	
-	public function e3history(){
+	public function c3history(){
 		
 		$param = [
-			'game_name' => "EOS3분파워볼",
-			'game_id' => GAME_EOS3_BALL,
+			'game_name' => "코인3분",
+			'game_id' => GAME_COIN3_BALL,
 		];
 		$this->load_view_page('bet/pbhistory', 'bet_history', LEVEL_MIN, $param);
 	}
@@ -281,7 +318,7 @@ class Bet extends StdController {
 	
 	public function e5calculate(){
 		$param = [
-			'game_name' => "EOS5분파워볼",
+			'game_name' => "EOS5분",
 			'game_id' => GAME_EOS5_BALL,
 		];
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
@@ -289,9 +326,26 @@ class Bet extends StdController {
 	
 	public function e3calculate(){
 		$param = [
-			'game_name' => "EOS3분파워볼",
+			'game_name' => "EOS3분",
 			'game_id' => GAME_EOS3_BALL,
 		];
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}
+	
+	public function c5calculate(){
+		$param = [
+			'game_name' => "코인5분",
+			'game_id' => GAME_COIN5_BALL,
+		];
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
+	}
+	
+	public function c3calculate(){
+		$param = [
+			'game_name' => "코인3분",
+			'game_id' => GAME_COIN3_BALL,
+		];
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
+	}
+
 }

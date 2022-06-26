@@ -123,6 +123,13 @@ function showMember(arrMember, confs) {
                     strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >EOS</button>";
                 }
             }
+            if(confs.coin5_enable || confs.coin3_enable){
+                if (arrMember[nRow].mb_game_co == 1) {
+                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>코인</button>";
+                } else {
+                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >코인</button>";
+                }
+            }
             if(!confs.cas_deny || confs.kgon_enable){
                 if (arrMember[nRow].mb_game_cs == 1) {
                     strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>카지노</button>";
@@ -311,6 +318,14 @@ function addButtonElementListener(buttonElement) {
                 requestUpdateMember(jsonData);
             } else {
                 var jsonData = { "mb_fid": this.name, "mb_game_bs": 1 };
+                requestUpdateMember(jsonData);
+            }
+        } else if (this.innerHTML.search("코인") >= 0) {
+            if (this.className.search("button-active") >= 0) {
+                var jsonData = { "mb_fid": this.name, "mb_game_co": 0 };
+                requestUpdateMember(jsonData);
+            } else {
+                var jsonData = { "mb_fid": this.name, "mb_game_co": 1 };
                 requestUpdateMember(jsonData);
             }
         } else if (this.innerHTML.search("카지노") >= 0) {

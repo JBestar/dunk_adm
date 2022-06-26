@@ -89,7 +89,7 @@
         } ?>
 	<!-- Bootstrap 3.3.7 -->
   	<link rel="stylesheet" href="<?php echo site_furl('assets/bootstrap/css/bootstrap.min.css');?>">
-	<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=5');?>">
+	<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=6');?>">
 
 	<!-- JQuery 1.12.1 -->
 	<link rel="stylesheet" href="<?php echo site_furl('assets/js/jquery-ui-1.12.1.min.css'); ?>">
@@ -99,7 +99,7 @@
 	<script>
         const FURL = "<?=$_ENV['app.furl']?>" 
         var mLevelType = 0;
-        <?php if(array_key_exists('app.level_type', $_ENV,) && $_ENV['app.level_type'] == 1) :  ?>
+        <?php if(array_key_exists('app.level_type', $_ENV) && $_ENV['app.level_type'] == 1) :  ?>
             mLevelType = 1;
         <?php endif ?>
     </script>

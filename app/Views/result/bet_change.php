@@ -12,10 +12,16 @@
 			<a href="<?php echo siteFurl().'result/bsbetchange/0/0';?>" class="sub-navbar-a" >보글사다리</a>
 		<?php endif ?>   
 		<?php if($eos5_enable) :?>
-			<a href="<?php echo siteFurl().'result/e5betchange/0/0';?>" class="sub-navbar-a" >EOS5분파워볼</a>
+			<a href="<?php echo siteFurl().'result/e5betchange/0/0';?>" class="sub-navbar-a" >EOS5분</a>
 		<?php endif ?>   
 		<?php if($eos3_enable) :?>
-			<a href="<?php echo siteFurl().'result/e3betchange/0/0';?>" class="sub-navbar-a" >EOS3분파워볼</a>
+			<a href="<?php echo siteFurl().'result/e3betchange/0/0';?>" class="sub-navbar-a" >EOS3분</a>
+		<?php endif ?>   
+		<?php if($coin5_enable) :?>
+			<a href="<?php echo siteFurl().'result/c5betchange/0/0';?>" class="sub-navbar-a" >코인5분</a>
+		<?php endif ?>   
+		<?php if($coin3_enable) :?>
+			<a href="<?php echo siteFurl().'result/c3betchange/0/0';?>" class="sub-navbar-a" >코인3분</a>
 		<?php endif ?>   
 	</div>
 

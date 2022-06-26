@@ -70,6 +70,12 @@ function ShowGameResult(arrResult) {
         } else if(mGameId == 10){
             strBuf += "<a href='"+FURL+"/result/e3result_edit/" + arrResult[nRow].round_fid + "' >수정</a>";
             strBuf += "<a href='"+FURL+"/result/e3betchange/" + arrResult[nRow].round_date + "/" + arrResult[nRow].round_num + "' >적특</a>";
+        } else if(mGameId == 11){
+            strBuf += "<a href='"+FURL+"/result/c5result_edit/" + arrResult[nRow].round_fid + "' >수정</a>";
+            strBuf += "<a href='"+FURL+"/result/c5betchange/" + arrResult[nRow].round_date + "/" + arrResult[nRow].round_num + "' >적특</a>";
+        } else if(mGameId == 12){
+            strBuf += "<a href='"+FURL+"/result/c3result_edit/" + arrResult[nRow].round_fid + "' >수정</a>";
+            strBuf += "<a href='"+FURL+"/result/c3betchange/" + arrResult[nRow].round_date + "/" + arrResult[nRow].round_num + "' >적특</a>";
         }
         strBuf += "</td></tr>";
 

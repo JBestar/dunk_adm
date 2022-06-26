@@ -7,12 +7,6 @@ use App\Models\PbBet_Model;
 use App\Models\PbRound_Model;
 use App\Models\PsBet_Model;
 use App\Models\PsRound_Model;
-use App\Models\BbBet_Model;
-use App\Models\BbRound_Model;
-use App\Models\BsBet_Model;
-use App\Models\BsRound_Model;
-use App\Models\EosBet_Model;
-use App\Models\EosRound_Model;
 
 class PbApi extends BaseController {
 
@@ -42,18 +36,22 @@ class PbApi extends BaseController {
 			$bResult = true;
 			if($arrReqData['game'] == GAME_POWER_BALL){
 				$roundModel = new PbRound_Model();
+				$roundModel->setType($arrReqData['game']);
 				$arrResult = $roundModel->search($arrReqData);
 			} else if($arrReqData['game'] == GAME_POWER_LADDER){
 				$roundModel = new PsRound_Model();
+				$roundModel->setType($arrReqData['game']);
 				$arrResult = $roundModel->search($arrReqData);
 			} else if($arrReqData['game'] == GAME_BOGLE_BALL){
-				$roundModel = new BbRound_Model();
+				$roundModel = new PbRound_Model();
+				$roundModel->setType($arrReqData['game']);
 				$arrResult = $roundModel->search($arrReqData);
 			} else if($arrReqData['game'] == GAME_BOGLE_LADDER){
-				$roundModel = new BsRound_Model();
+				$roundModel = new PsRound_Model();
+				$roundModel->setType($arrReqData['game']);
 				$arrResult = $roundModel->search($arrReqData);
-			}  else if($arrReqData['game'] == GAME_EOS5_BALL || $arrReqData['game'] == GAME_EOS3_BALL){
-				$roundModel = new EosRound_Model();
+			}  else if($arrReqData['game'] >= GAME_EOS5_BALL && $arrReqData['game'] <= GAME_COIN3_BALL){
+				$roundModel = new PbRound_Model();
 				$roundModel->setType($arrReqData['game']);
 				$arrResult = $roundModel->search($arrReqData);
 			}  else $bResult = false;
@@ -90,18 +88,22 @@ class PbApi extends BaseController {
 			$bResult = true;
 			if($arrReqData['game'] == GAME_POWER_BALL){
 				$roundModel = new PbRound_Model();
+				$roundModel->setType($arrReqData['game']);
 				$objCount = $roundModel->searchCount($arrReqData);
 			} else if($arrReqData['game'] == GAME_POWER_LADDER){
 				$roundModel = new PsRound_Model();
+				$roundModel->setType($arrReqData['game']);
 				$objCount = $roundModel->searchCount($arrReqData);
 			} else if($arrReqData['game'] == GAME_BOGLE_BALL){
-				$roundModel = new BbRound_Model();
+				$roundModel = new PbRound_Model();
+				$roundModel->setType($arrReqData['game']);
 				$objCount = $roundModel->searchCount($arrReqData);
 			} else if($arrReqData['game'] == GAME_BOGLE_LADDER){
-				$roundModel = new BsRound_Model();
+				$roundModel = new PsRound_Model();
+				$roundModel->setType($arrReqData['game']);
 				$objCount = $roundModel->searchCount($arrReqData);
-			}  else if($arrReqData['game'] == GAME_EOS5_BALL || $arrReqData['game'] == GAME_EOS3_BALL){
-				$roundModel = new EosRound_Model();
+			}  else if($arrReqData['game'] >= GAME_EOS5_BALL && $arrReqData['game'] <= GAME_COIN3_BALL){
+				$roundModel = new PbRound_Model();
 				$roundModel->setType($arrReqData['game']);
 				$objCount = $roundModel->searchCount($arrReqData);
 			} else $bResult = false;
@@ -138,21 +140,14 @@ class PbApi extends BaseController {
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
 
-			if($arrReqData['game'] == GAME_POWER_BALL){
+			if($arrReqData['game'] == GAME_POWER_BALL || $arrReqData['game'] == GAME_BOGLE_BALL ||
+				($arrReqData['game'] >= GAME_EOS5_BALL && $arrReqData['game'] <= GAME_COIN3_BALL) ){
 
 				$betModel = new PbBet_Model();
-			} else if($arrReqData['game'] == GAME_POWER_LADDER){
+				$betModel->setType($arrReqData['game']);
+			} else if($arrReqData['game'] == GAME_POWER_LADDER || $arrReqData['game'] == GAME_BOGLE_BALL){
 
 				$betModel = new PsBet_Model();
-			} else if($arrReqData['game'] == GAME_BOGLE_BALL){
-
-				$betModel = new BbBet_Model();
-			} else if($arrReqData['game'] == GAME_BOGLE_LADDER){
-
-				$betModel = new BsBet_Model();
-			}  else if($arrReqData['game'] == GAME_EOS5_BALL || $arrReqData['game'] == GAME_EOS3_BALL){
-
-				$betModel = new EosBet_Model();
 				$betModel->setType($arrReqData['game']);
 			} else $bResult = false;
 				
@@ -196,21 +191,14 @@ class PbApi extends BaseController {
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
 
-			if($arrReqData['game'] == GAME_POWER_BALL){
+			if($arrReqData['game'] == GAME_POWER_BALL || $arrReqData['game'] == GAME_BOGLE_BALL ||
+				($arrReqData['game'] >= GAME_EOS5_BALL && $arrReqData['game'] <= GAME_COIN3_BALL) ){
 
 				$betModel = new PbBet_Model();
-			} else if($arrReqData['game'] == GAME_POWER_LADDER){
+				$betModel->setType($arrReqData['game']);
+			} else if($arrReqData['game'] == GAME_POWER_LADDER || $arrReqData['game'] == GAME_BOGLE_BALL){
 
 				$betModel = new PsBet_Model();
-			} else if($arrReqData['game'] == GAME_BOGLE_BALL){
-
-				$betModel = new BbBet_Model();
-			} else if($arrReqData['game'] == GAME_BOGLE_LADDER){
-
-				$betModel = new BsBet_Model();
-			}  else if($arrReqData['game'] == GAME_EOS5_BALL || $arrReqData['game'] == GAME_EOS3_BALL){
-
-				$betModel = new EosBet_Model();
 				$betModel->setType($arrReqData['game']);
 			}  else $bResult = false;
 			
@@ -254,36 +242,36 @@ class PbApi extends BaseController {
 			$bResult = true;
 			$confgameModel = new ConfGame_Model();
 
+			$objConf = $confgameModel->getByIndex($arrReqData['game']);
 			if($arrReqData['game'] == GAME_POWER_BALL){
 
-				$objConf = $confgameModel->getByIndex($arrReqData['game']);
 				$betModel = new PbBet_Model();
+				$betModel->setType($arrReqData['game']);
 				$arrRoundInfo = getPbRoundInfo();
 				$arrBetSum = $betModel->getBetSumByMode($arrRoundInfo, $objConf);
 			} else if($arrReqData['game'] == GAME_POWER_LADDER){
 
-				$objConf = $confgameModel->getByIndex($arrReqData['game']);
 				$betModel = new PsBet_Model();
+				$betModel->setType($arrReqData['game']);
 				$arrRoundInfo = getPbRoundInfo();
 				$arrBetSum = $betModel->getBetSumByMode($arrRoundInfo, $objConf);
 			} else if($arrReqData['game'] == GAME_BOGLE_BALL){
-				$objConf = $confgameModel->getByIndex($arrReqData['game']);
 
-				$betModel = new BbBet_Model();
+				$betModel = new PbBet_Model();
+				$betModel->setType($arrReqData['game']);
 				$arrRoundInfo = getBRoundInfo(ROUND_2MIN);
 				$arrBetSum = $betModel->getBetSumByMode($arrRoundInfo, $objConf);
 			} else if($arrReqData['game'] == GAME_BOGLE_LADDER){
-				$objConf = $confgameModel->getByIndex($arrReqData['game']);
 
-				$betModel = new BsBet_Model();
+				$betModel = new PsBet_Model();
+				$betModel->setType($arrReqData['game']);
 				$arrRoundInfo = getBRoundInfo(ROUND_3MIN);
 				$arrBetSum = $betModel->getBetSumByMode($arrRoundInfo, $objConf);
-			}  else if($arrReqData['game'] == GAME_EOS5_BALL || $arrReqData['game'] == GAME_EOS3_BALL){
-				$objConf = $confgameModel->getByIndex($arrReqData['game']);
+			}  else if($arrReqData['game'] >= GAME_EOS5_BALL && $arrReqData['game'] <= GAME_COIN3_BALL){
 
-				$betModel = new EosBet_Model();
+				$betModel = new PbBet_Model();
 				$betModel->setType($arrReqData['game']);
-				if($arrReqData['game'] == GAME_EOS5_BALL)
+				if($arrReqData['game'] == GAME_EOS5_BALL || $arrReqData['game'] == GAME_COIN5_BALL)
 					$arrRoundInfo = getBRoundInfo(ROUND_5MIN);
 				else $arrRoundInfo = getBRoundInfo(ROUND_3MIN);
 				$arrBetSum = $betModel->getBetSumByMode($arrRoundInfo, $objConf);
@@ -334,24 +322,24 @@ class PbApi extends BaseController {
 				$roundModel = new PsRound_Model();
 			} else if($arrReqData['game'] == GAME_BOGLE_BALL){
 
-				$roundModel = new BbRound_Model();
+				$roundModel = new PbRound_Model();
 			} else if($arrReqData['game'] == GAME_BOGLE_LADDER){
 
-				$roundModel = new BsRound_Model();
-			}  else if($arrReqData['game'] == GAME_EOS5_BALL || $arrReqData['game'] == GAME_EOS3_BALL){
+				$roundModel = new PsRound_Model();
+			}  else if($arrReqData['game'] >= GAME_EOS5_BALL && $arrReqData['game'] <= GAME_COIN3_BALL){
 
-				$roundModel = new EosRound_Model();
-				$roundModel->setType($arrReqData['game']);
+				$roundModel = new PbRound_Model();
 			} else $bResult = false;
 				
 			if($bResult){
+				$roundModel->setType($arrReqData['game']);
 			
 				$iResult = 0;
 				if($objUser->mb_level >=  LEVEL_ADMIN){
-					if(isEnableRound($arrReqData, ROUND_5MIN)){
+					// if(isEnableRound($arrReqData, ROUND_5MIN)){
 						$iResult = $roundModel->register($arrReqData);	
 						//2: 이미 등록된 회차
-					} else $iResult = 3;				//파라메터 오류
+					// } else $iResult = 3;				//파라메터 오류
 					
 				} 
 				if($iResult == 1)
@@ -393,17 +381,17 @@ class PbApi extends BaseController {
 				$roundModel = new PsRound_Model();
 			} else if($arrReqData['game'] == GAME_BOGLE_BALL){
 
-				$roundModel = new BbRound_Model();
+				$roundModel = new PbRound_Model();
 			} else if($arrReqData['game'] == GAME_BOGLE_LADDER){
 
-				$roundModel = new BsRound_Model();
-			}  else if($arrReqData['game'] == GAME_EOS5_BALL || $arrReqData['game'] == GAME_EOS3_BALL){
+				$roundModel = new PsRound_Model();
+			}  else if($arrReqData['game'] >= GAME_EOS5_BALL && $arrReqData['game'] <= GAME_COIN3_BALL){
 
-				$roundModel = new EosRound_Model();
-				$roundModel->setType($arrReqData['game']);
+				$roundModel = new PbRound_Model();
 			} else $bResult = false;
 			
 			if($bResult){
+				$roundModel->setType($arrReqData['game']);
 
 				$bResult = false;
 				if($objUser->mb_level >=  LEVEL_ADMIN)
@@ -446,19 +434,31 @@ class PbApi extends BaseController {
 			} else if($arrReqData['game'] == GAME_BOGLE_BALL){
 				$iChangeType = MONEYCHANGE_WIN_BB;
 
-				$betModel = new BbBet_Model();
+				$betModel = new PbBet_Model();
 			} else if($arrReqData['game'] == GAME_BOGLE_LADDER){
 				$iChangeType = MONEYCHANGE_WIN_BS;
 
-				$betModel = new BsBet_Model();
-			}  else if($arrReqData['game'] == GAME_EOS5_BALL || $arrReqData['game'] == GAME_EOS3_BALL){
-				$iChangeType = $arrReqData['game'] == GAME_EOS5_BALL ? MONEYCHANGE_WIN_EO5:MONEYCHANGE_WIN_EO3;
+				$betModel = new PsBet_Model();
+			}  else if($arrReqData['game'] == GAME_EOS5_BALL){
+				$iChangeType = MONEYCHANGE_WIN_EO5;
 
-				$betModel = new EosBet_Model();
-				$betModel->setType($arrReqData['game']);
+				$betModel = new PbBet_Model();
+			} else if($arrReqData['game'] == GAME_EOS3_BALL){
+				$iChangeType = MONEYCHANGE_WIN_EO3;
+
+				$betModel = new PbBet_Model();
+			} else if($arrReqData['game'] == GAME_COIN5_BALL){
+				$iChangeType = MONEYCHANGE_WIN_CO5;
+
+				$betModel = new PbBet_Model();
+			} else if($arrReqData['game'] == GAME_COIN3_BALL){
+				$iChangeType = MONEYCHANGE_WIN_CO3;
+
+				$betModel = new PbBet_Model();
 			} else $bResult = false;
 			
 			if($bResult){
+				$betModel->setType($arrReqData['game']);
 
 				$bResult = false;
 				if($objUser->mb_level >=  LEVEL_ADMIN){
@@ -527,23 +527,28 @@ class PbApi extends BaseController {
 			} else if($arrReqData['game'] == GAME_BOGLE_BALL){
 				$iChangeType = MONEYCHANGE_WIN_BB;
 
-				$roundModel = new BbRound_Model();
-				$betModel = new BbBet_Model();
+				$roundModel = new PbRound_Model();
+				$betModel = new PbBet_Model();
 			} else if($arrReqData['game'] == GAME_BOGLE_LADDER){
 				$iChangeType = MONEYCHANGE_WIN_BS;
 
-				$roundModel = new BsRound_Model();
-				$betModel = new BsBet_Model();
+				$roundModel = new PsRound_Model();
+				$betModel = new PsBet_Model();
 			}  else if($arrReqData['game'] == GAME_EOS5_BALL || $arrReqData['game'] == GAME_EOS3_BALL){
 				$iChangeType = $arrReqData['game'] == GAME_EOS5_BALL ? MONEYCHANGE_WIN_EO5:MONEYCHANGE_WIN_EO3;
 
-				$roundModel = new EosRound_Model();
-				$roundModel->setType($arrReqData['game']);
-				$betModel = new EosBet_Model();
-				$betModel->setType($arrReqData['game']);
+				$roundModel = new PbRound_Model();
+				$betModel = new PbBet_Model();
+			}  else if($arrReqData['game'] == GAME_COIN5_BALL || $arrReqData['game'] == GAME_COIN3_BALL){
+				$iChangeType = $arrReqData['game'] == GAME_COIN5_BALL ? MONEYCHANGE_WIN_CO5:MONEYCHANGE_WIN_CO3;
+
+				$roundModel = new PbRound_Model();
+				$betModel = new PbBet_Model();
 			}  else $bResult = false;
 				
 			if($bResult){
+				$roundModel->setType($arrReqData['game']);
+				$betModel->setType($arrReqData['game']);
 
 				$bResult = false;
 				if($objUser->mb_level >=  LEVEL_ADMIN){

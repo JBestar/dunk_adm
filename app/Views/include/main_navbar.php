@@ -13,7 +13,7 @@
 				<td>보유금액<span id="main-navbar-emp_money-id">0 원 </span></td>
 				<td>충전금액<span id="main-navbar-emp_charge-id">0 원</span></td>
 
-				<?php if($mb_level < LEVEL_ADMIN) {  ?>
+				<?php if($mb_level < LEVEL_ADMIN) :  ?>
 					<?php if(!$npg_deny) :?>
 						<td>파워볼<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
 					<?php endif ?>     
@@ -24,15 +24,15 @@
 						<td>카지노<span id="main-navbar-emp_evrate-id">0 %</span></td>
 					<?php endif ?>   
 					<?php if($eos5_enable || $eos3_enable) :?>
-						<td>EOS파워볼<span id="main-navbar-emp_eorate-id">0 % | 0 %</span></td>
+						<td>EOS<span id="main-navbar-emp_eorate-id">0 % | 0 %</span></td>
 					<?php endif ?>  
-					  
-				<?php } else { ?>
+					
+				<?php else : ?>
 
 				<td>새 문의&nbsp;<a href="<?php echo site_furl('/board/message');?>" id="main-navbar-newmessage-id">0 통</a></td>
 				<td>충전&nbsp;<a href="<?php echo site_furl('/bank/deposit');?>" id="main-navbar-charge_wait-id">0 대기</a></td>
 
-				<?php } ?>
+				<?php endif ?>
 
 			</tr>
 			<tr>
@@ -40,7 +40,7 @@
 				<td>보유포인트<span id="main-navbar-emp_point-id">0 P </span></td>
 				<td>환전금액<span id="main-navbar-emp_exchange-id">0 원</span></td>
 
-				<?php if($mb_level < LEVEL_ADMIN) {  ?>
+				<?php if($mb_level < LEVEL_ADMIN) :  ?>
 					<?php if(!$npg_deny) :?>
 						<td>파워사다리<span id="main-navbar-emp_psrate-id">0 % </span></td>
 					<?php endif ?>     
@@ -49,20 +49,23 @@
 					<?php endif ?>     
 					<?php if(!$slot_deny) :?>
 						<td>슬롯<span id="main-navbar-emp_slrate-id">0 %</span></td>
-					<?php endif ?>   
-				<?php } else { ?>
-
-				<td>가입신청&nbsp;<a href="<?php echo site_furl('/user/member/0');?>" id="main-navbar-user_wait-id">0 명</span></td>
-				<td>환전&nbsp;<a href="<?php echo site_furl('/bank/withdraw');?>" id="main-navbar-exchange_wait-id">0 대기</span></td>
-
-				<?php } ?>
-
-
+					<?php endif ?>  
+					<?php if($coin5_enable || $coin3_enable) :?>
+						<td>코인<span id="main-navbar-emp_corate-id">0 % | 0 %</span></td>
+					<?php endif ?> 
+				<?php else : ?>
+					<td>가입신청&nbsp;<a href="<?php echo site_furl('/user/member/0');?>" id="main-navbar-user_wait-id">0 명</span></td>
+					<td>환전&nbsp;<a href="<?php echo site_furl('/bank/withdraw');?>" id="main-navbar-exchange_wait-id">0 대기</span></td>
+				<?php endif ?>
 			</tr>
 
 		</Table>
 
-		<?php if($mb_level >= LEVEL_ADMIN) {  ?>
+		<?php if($mb_level >= LEVEL_ADMIN) :  ?>
+		
+			<?php if(!$npg_deny && !$bpg_deny && ($eos5_enable || $eos3_enable) && ($coin5_enable || $coin3_enable) ) :?>
+			<div style="clear:both; padding-left:95px;">
+			<?php endif ?>
 			
 			<?php if(!$npg_deny) :?>
 			<Table class="main-navbar-betinfo-table">
@@ -144,8 +147,43 @@
 			</Table>
 			<?php endif ?> 
 
-			
-		<?php } ?>
+			<?php if($coin5_enable || $coin3_enable) :?>
+			<Table class="main-navbar-betinfo-table">
+				<?php if($coin5_enable) :?>
+					<tr>
+						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인5분 단폴:</td>
+						<td>배팅<span id="main-navbar-c5bet-id">0 원</span></td>
+						<td>적중<span id="main-navbar-c5betearn-id">0 원</span></td>
+
+					</tr>
+					<tr>
+						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인5분 조합:</td>
+						<td>배팅<span id="main-navbar-c52bet-id">0 원</span></td>
+						<td>적중<span id="main-navbar-c52betearn-id">0 원</span></td>
+
+					</tr>
+				<?php endif ?>
+				<?php if($coin3_enable) :?>
+					<tr>
+						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인3분 단폴:</td>
+						<td>배팅<span id="main-navbar-c3bet-id">0 원</span></td>
+						<td>적중<span id="main-navbar-c3betearn-id">0 원</span></td>
+
+					</tr>
+					<tr>
+						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인3분 조합:</td>
+						<td>배팅<span id="main-navbar-c32bet-id">0 원</span></td>
+						<td>적중<span id="main-navbar-c32betearn-id">0 원</span></td>
+
+					</tr>
+				<?php endif ?> 
+			</Table>
+			<?php endif ?> 
+			<?php if(!$npg_deny && !$bpg_deny && ($eos5_enable || $eos3_enable) && ($coin5_enable || $coin3_enable) ) :?>
+			</div>
+			<?php endif ?> 
+
+		<?php endif ?>
 
 		<div class="main-navbar-user-div">
 			<div>

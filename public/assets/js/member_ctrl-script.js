@@ -520,6 +520,8 @@ function showMemEdit(idx, mbFid){
     $("#sl_ratio").val(member.mb_game_sl_ratio);
     $("#eo_ratio").val(member.mb_game_eo_ratio);
     $("#eo2_ratio").val(member.mb_game_eo2_ratio);
+    $("#co_ratio").val(member.mb_game_co_ratio);
+    $("#co2_ratio").val(member.mb_game_co2_ratio);
 
     $("#pb_percent").val(member.mb_game_pb_percent);
     $("#pb2_percent").val(member.mb_game_pb2_percent);
@@ -529,6 +531,8 @@ function showMemEdit(idx, mbFid){
     $("#bs_percent").val(member.mb_game_bs_percent);
     $("#eo_percent").val(member.mb_game_eo_percent);
     $("#eo2_percent").val(member.mb_game_eo2_percent);
+    $("#co_percent").val(member.mb_game_co_percent);
+    $("#co2_percent").val(member.mb_game_co2_percent);
 
     $("#bank_name").val(member.mb_bank_name);
     $("#bank_owner").val(member.mb_bank_own);
@@ -582,6 +586,12 @@ function initMemEditDlg(){
     
     $("#eo_percent").val("100");
     $("#eo2_percent").val("100");
+
+    $("#co_ratio").val("0.00");
+    $("#co2_ratio").val("0.00");
+    
+    $("#co_percent").val("100");
+    $("#co2_percent").val("100");
 
     $("#cs_ratio").val("0.00");
     $("#sl_ratio").val("0.00");
@@ -659,6 +669,19 @@ function readConfigToObject() {
         objMember.mb_game_eo_percent = $("#eo_percent").val();
         objMember.mb_game_eo2_percent = $("#eo2_percent").val();
     } 
+
+    if($("#co_ratio").length > 0){
+        objMember.mb_game_co_ratio = $("#co_ratio").val();
+        objMember.mb_game_co2_ratio = $("#co2_ratio").val();
+    } else {
+        objMember.mb_game_co_ratio = 0;
+        objMember.mb_game_co2_ratio = 0;
+    }
+
+    if($("#co_percent").length > 0){
+        objMember.mb_game_co_percent = $("#co_percent").val();
+        objMember.mb_game_co2_percent = $("#co2_percent").val();
+    }
 
     if($("#cs_ratio").length > 0){
         objMember.mb_game_cs_ratio = $("#cs_ratio").val();

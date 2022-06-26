@@ -77,6 +77,12 @@ function showMoneyHistory(jsonBetData) {
             case 34: strBuf += "EOS3분파워볼 배팅"; break;
             case 35: strBuf += "EOS3분파워볼 배팅취소"; break;
             case 36: strBuf += "EOS3분파워볼 정산"; break;
+            case 37: strBuf += "코인5분파워볼 배팅"; break;
+            case 38: strBuf += "코인5분파워볼 배팅취소"; break;
+            case 39: strBuf += "코인5분파워볼 정산"; break;
+            case 40: strBuf += "코인3분파워볼 배팅"; break;
+            case 41: strBuf += "코인3분파워볼 배팅취소"; break;
+            case 42: strBuf += "코인3분파워볼 정산"; break;
             default:break;
         } 
         strBuf += "</td><td>";

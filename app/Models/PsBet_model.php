@@ -31,6 +31,14 @@ class PsBet_Model extends Model {
     private $mRewardTable = 'bet_reward';
     private $mGameId =  GAME_POWER_LADDER;
 
+    public function setType($gameId){
+        $this->mGameId = $gameId;
+        switch($gameId){
+            case GAME_POWER_LADDER: $this->table = 'bet_powerladder'; break;
+            case GAME_BOGLE_LADDER: $this->table = 'bet_bogleladder'; break;
+            default: break;
+        }
+    }
     function gets($nCount)
     {
         

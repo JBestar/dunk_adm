@@ -17,6 +17,12 @@
 		<?php if($eos3_enable) :?>
 			<a href="<?php echo site_furl('home/conf_eos3ball');?>" class="sub-navbar-a" >EOS3분</a>
    		<?php endif ?>  
+		<?php if($coin5_enable) :?>
+			<a href="<?php echo site_furl('home/conf_coin5ball');?>" class="sub-navbar-a" >코인5분</a>
+   		<?php endif ?>  
+		<?php if($coin3_enable) :?>
+			<a href="<?php echo site_furl('home/conf_coin3ball');?>" class="sub-navbar-a" >코인3분</a>
+   		<?php endif ?>  
 		<?php if(!$cas_deny ) :?>
 			<a href="<?php echo siteFurl().'home/conf_evol';?>" class="sub-navbar-a " >에볼루션</a>
 		<?php endif ?>   

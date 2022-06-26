@@ -25,14 +25,14 @@
 				<?php if(!$npg_deny) :?>
 					<option value="4">파워볼배팅</option>				
 					<option value="6">파워볼정산</option>
-					<option value="7">파워사다리배팅</option>
-					<option value="9">파워사다리정산</option>
+					<option value="7">파사달배팅</option>
+					<option value="9">파사달정산</option>
 				<?php endif ?>   
 				<?php if(!$bpg_deny) :?>
 					<option value="13">보글볼배팅</option>				
 					<option value="15">보글볼정산</option>
-					<option value="16">보글사다리배팅</option>
-					<option value="18">보글사다리정산</option>
+					<option value="16">보사달배팅</option>
+					<option value="18">보사달정산</option>
 				<?php endif ?>   
 				<option value="19">하부이송</option>
 				<option value="20">상부이송</option>
@@ -47,6 +47,14 @@
 				<?php if($eos3_enable) :?>
 					<option value="34">EOS3분배팅</option>				
 					<option value="36">EOS3분정산</option>
+				<?php endif ?> 
+				<?php if($coin5_enable) :?>
+					<option value="37">코인5분배팅</option>				
+					<option value="39">코인5분정산</option>
+				<?php endif ?> 
+				<?php if($coin3_enable) :?>
+					<option value="40">코인3분배팅</option>				
+					<option value="32">코인3분정산</option>
 				<?php endif ?> 
 			</select>
 

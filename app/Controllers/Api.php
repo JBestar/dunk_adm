@@ -966,9 +966,6 @@ public function withdrawlist(){
 			
 			if($bResult){
 				$arrReqData['rw_blank'] = $objUser->mb_level >= LEVEL_ADMIN;
-				// $chargeModel = new Charge_Model();
-				// $exchangeModel = new Exchange_Model();
-		        // $rewardModel = new Reward_Model();
 				$confsiteModel = new ConfSite_Model();
 
 				$siteConfs = $this->getSiteConf($confsiteModel);
@@ -1057,9 +1054,7 @@ public function withdrawlist(){
 			
 			if($bResult){
 				$arrReqData['rw_blank'] = $objUser->mb_level >= LEVEL_ADMIN;
-				// $chargeModel = new Charge_Model();
-				// $exchangeModel = new Exchange_Model();
-				// $rewardModel = new Reward_Model();
+
 				$this->modelMember->gameRange($arrReqData);
 
 				foreach ($arrEmp as $objEmp) {

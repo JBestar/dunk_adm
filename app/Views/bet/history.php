@@ -12,10 +12,16 @@
 			<a href="<?php echo site_furl('bet/bshistory');?>" class="sub-navbar-a" >보글사다리</a>
    		<?php endif ?>   
 		<?php if($eos5_enable) :?>
-			<a href="<?php echo site_furl('bet/e5history');?>" class="sub-navbar-a" >EOS5분파워볼</a>
+			<a href="<?php echo site_furl('bet/e5history');?>" class="sub-navbar-a" >EOS5분</a>
    		<?php endif ?>  
 		<?php if($eos3_enable) :?>
-			<a href="<?php echo site_furl('bet/e3history');?>" class="sub-navbar-a" >EOS3분파워볼</a>
+			<a href="<?php echo site_furl('bet/e3history');?>" class="sub-navbar-a" >EOS3분</a>
+   		<?php endif ?>  
+		<?php if($coin5_enable) :?>
+			<a href="<?php echo site_furl('bet/c5history');?>" class="sub-navbar-a" >코인5분</a>
+   		<?php endif ?>  
+		<?php if($coin3_enable) :?>
+			<a href="<?php echo site_furl('bet/c3history');?>" class="sub-navbar-a" >코인3분</a>
    		<?php endif ?>  
 		<?php if(!$cas_deny || $kgon_enable) :?>
 			<a href="<?php echo site_furl('bet/cshistory');?>" class="sub-navbar-a" >카지노</a>

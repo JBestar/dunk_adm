@@ -179,8 +179,10 @@ function showMemberInfo(objUser) {
         strBuf = objUser.mb_game_eo_ratio + " % | ";
         strBuf += objUser.mb_game_eo2_ratio + " %";
         $("#main-navbar-emp_eorate-id").text(strBuf);
-
-
+        
+        strBuf = objUser.mb_game_co_ratio + " % | ";
+        strBuf += objUser.mb_game_co2_ratio + " %";
+        $("#main-navbar-emp_corate-id").text(strBuf);
     }
 
     document.getElementById("main-navbar-alarm-check-id").checked = objUser.mb_state_alarm == 1 ? true : false;
@@ -316,6 +318,18 @@ function showEmpBetInfo(arrBetInfo) {
 
     $("#main-navbar-e32bet-id").text(parseInt(arrBetInfo[9][0]).toLocaleString() + " 원");
     $("#main-navbar-e32betearn-id").text(parseInt(arrBetInfo[9][1]).toLocaleString() + " 원");
+
+    $("#main-navbar-c5bet-id").text(parseInt(arrBetInfo[10][0]).toLocaleString() + " 원");
+    $("#main-navbar-c5betearn-id").text(parseInt(arrBetInfo[10][1]).toLocaleString() + " 원");
+
+    $("#main-navbar-c52bet-id").text(parseInt(arrBetInfo[11][0]).toLocaleString() + " 원");
+    $("#main-navbar-c52betearn-id").text(parseInt(arrBetInfo[11][1]).toLocaleString() + " 원");
+
+    $("#main-navbar-c3bet-id").text(parseInt(arrBetInfo[12][0]).toLocaleString() + " 원");
+    $("#main-navbar-c3betearn-id").text(parseInt(arrBetInfo[12][1]).toLocaleString() + " 원");
+
+    $("#main-navbar-c32bet-id").text(parseInt(arrBetInfo[13][0]).toLocaleString() + " 원");
+    $("#main-navbar-c32betearn-id").text(parseInt(arrBetInfo[13][1]).toLocaleString() + " 원");
 
 }
 

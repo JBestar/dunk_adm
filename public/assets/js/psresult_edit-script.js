@@ -107,20 +107,3 @@ function addBtnEvent() {
     });
 
 }
-
-
-function goResultPage(){
-    if(mGameId == 1){
-        window.location.replace( FURL +'/result/pbresult');
-    } else if(mGameId == 2){
-        window.location.replace( FURL +'/result/psresult');
-    } else if(mGameId == 5){
-        window.location.replace( FURL +'/result/bbresult');
-    } else if(mGameId == 6){
-        window.location.replace( FURL +'/result/bsresult');
-    } else if(mGameId == 9){
-        window.location.replace( FURL +'/result/e5result');
-    } else if(mGameId == 10){
-        window.location.replace( FURL +'/result/e3result');
-    }
-}

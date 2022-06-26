@@ -154,6 +154,8 @@ defined('CONF_SLOT_DENY')       || define('CONF_SLOT_DENY', 29);
 defined('CONF_KGON_ENABLE')     || define('CONF_KGON_ENABLE', 31);
 defined('CONF_EOS5_ENABLE')     || define('CONF_EOS5_ENABLE', 32);
 defined('CONF_EOS3_ENABLE')     || define('CONF_EOS3_ENABLE', 33);
+defined('CONF_COIN5_ENABLE')    || define('CONF_COIN5_ENABLE', 45);
+defined('CONF_COIN3_ENABLE')    || define('CONF_COIN3_ENABLE', 46);
 
 defined('CONF_BET_CANCEL')      || define('CONF_BET_CANCEL', 35);
 defined('CONF_BET_NL_DENY')     || define('CONF_BET_NL_DENY', 36);
@@ -218,9 +220,11 @@ defined('GAME_BOGLE_BALL')     || define('GAME_BOGLE_BALL', 5);
 defined('GAME_BOGLE_LADDER')   || define('GAME_BOGLE_LADDER', 6);
 defined('GAME_SLOT_1')         || define('GAME_SLOT_1', 7);
 defined('GAME_SLOT_2')         || define('GAME_SLOT_2', 8);
-defined('GAME_SLOT_12')        || define('GAME_SLOT_12', 12);
+defined('GAME_SLOT_12')        || define('GAME_SLOT_12', 78);
 defined('GAME_EOS5_BALL')      || define('GAME_EOS5_BALL', 9);
 defined('GAME_EOS3_BALL')      || define('GAME_EOS3_BALL', 10);
+defined('GAME_COIN5_BALL')       || define('GAME_COIN5_BALL', 11);
+defined('GAME_COIN3_BALL')       || define('GAME_COIN3_BALL', 12);
 
 
 defined('ROUND_5MIN')    || define('ROUND_5MIN', 5);
@@ -266,6 +270,12 @@ defined('MONEYCHANGE_WIN_EO5')    || define('MONEYCHANGE_WIN_EO5', 33);
 defined('MONEYCHANGE_BET_EO3')    || define('MONEYCHANGE_BET_EO3', 34);
 defined('MONEYCHANGE_DENY_EO3')   || define('MONEYCHANGE_DENY_EO3', 35);
 defined('MONEYCHANGE_WIN_EO3')    || define('MONEYCHANGE_WIN_EO3', 36);
+defined('MONEYCHANGE_BET_CO5')    || define('MONEYCHANGE_BET_CO5', 37);
+defined('MONEYCHANGE_DENY_CO5')   || define('MONEYCHANGE_DENY_CO5', 38);
+defined('MONEYCHANGE_WIN_CO5')    || define('MONEYCHANGE_WIN_CO5', 39);
+defined('MONEYCHANGE_BET_CO3')    || define('MONEYCHANGE_BET_CO3', 40);
+defined('MONEYCHANGE_DENY_CO3')   || define('MONEYCHANGE_DENY_CO3', 41);
+defined('MONEYCHANGE_WIN_CO3')    || define('MONEYCHANGE_WIN_CO3', 42);
 
 
 defined('TRANS_SITE_EVOL')      || define('TRANS_SITE_EVOL', 1); 

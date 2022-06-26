@@ -16,7 +16,7 @@ class Home extends StdController
 		}	
 	}
 	
-	public function conf_site(){		
+	public function conf_site(){
 		$confsiteModel = new ConfSite_Model();
 		$arrConfig = $confsiteModel->findAll();		
 		$this->load_view_page('home/conf_siteinfo', 'conf_site', LEVEL_ADMIN, ['arrConfig' => $arrConfig]);	
@@ -99,6 +99,28 @@ class Home extends StdController
 		$param = [
 			'game_name' => "EOS3분",
 			'game_id' => GAME_EOS3_BALL
+		];
+		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);
+	}
+
+	public function conf_coin5ball(){
+		$confsiteModel = new ConfSite_Model();
+		$confsiteModel->readBetConf();
+		
+		$param = [
+			'game_name' => "코인5분",
+			'game_id' => GAME_COIN5_BALL
+		];
+		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);
+	}
+
+	public function conf_coin3ball(){
+		$confsiteModel = new ConfSite_Model();
+		$confsiteModel->readBetConf();
+		
+		$param = [
+			'game_name' => "코인3분",
+			'game_id' => GAME_COIN3_BALL
 		];
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);
 	}

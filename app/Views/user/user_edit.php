@@ -114,7 +114,7 @@
 		<?php if(!$npg_deny) :?>
 
 			<div class="useredit-percent-div">
-				<p>파워볼단폴:</p> 
+				<p>파워볼 단폴:</p> 
 				
 				<label> 배당율(%)</label>
 				<?php if(is_null($objMember)) {  ?>
@@ -133,7 +133,7 @@
 				<?php endif?>
 			</div>
 			<div class="useredit-percent-div">
-				<p>파워볼조합:</p> 
+				<p>파워볼 조합:</p> 
 				
 				<label> 배당율(%)</label>
 				<?php if(is_null($objMember)) {  ?>
@@ -174,7 +174,7 @@
 
     	<?php if(!$bpg_deny) :?>
 			<div class="useredit-percent-div">
-				<p>보글볼단폴:</p> 
+				<p>보글볼 단폴:</p> 
 				<label> 배당율(%)</label>
 				<?php if(is_null($objMember)) {  ?>
 				<input type = "number" min="0" step="0.1" id="useredit-bbbetrate-input-id" value="0" >
@@ -192,7 +192,7 @@
 				<?php endif?>
 			</div>
 			<div class="useredit-percent-div">
-				<p>보글볼조합:</p> 
+				<p>보글볼 조합:</p> 
 				
 				<label> 배당율(%)</label>
 				<?php if(is_null($objMember)) {  ?>
@@ -231,7 +231,7 @@
 		<?php endif ?>   
 		<?php if($eos5_enable || $eos3_enable) :?>
 			<div class="useredit-percent-div">
-				<p>EOS파워볼 단폴:</p> 
+				<p>EOS 단폴:</p> 
 				<label> 배당율(%)</label>
 				<?php if(is_null($objMember)) {  ?>
 				<input type = "number" min="0" step="0.1" id="useredit-eobetrate-input-id" value="0" >
@@ -249,7 +249,7 @@
 				<?php endif?>
 			</div>
 			<div class="useredit-percent-div">
-				<p>EOS파워볼 조합:</p> 
+				<p>EOS 조합:</p> 
 				
 				<label> 배당율(%)</label>
 				<?php if(is_null($objMember)) {  ?>
@@ -264,6 +264,45 @@
 					<input type = "number" min="0" step="1" id="useredit-eobetpercent2-input-id" value="100">
 					<?php } else {?>
 					<input type = "number" min="0" step="1" id="useredit-eobetpercent2-input-id" value="<?=$objMember->mb_game_eo2_percent?>">
+					<?php } ?>
+				<?php endif?>
+			</div>
+		<?php endif ?>
+		<?php if($coin5_enable || $coin3_enable) :?>
+			<div class="useredit-percent-div">
+				<p>코인 단폴:</p> 
+				<label> 배당율(%)</label>
+				<?php if(is_null($objMember)) {  ?>
+				<input type = "number" min="0" step="0.1" id="useredit-cobetrate-input-id" value="0" >
+				<?php } else {?>
+				<input type = "number" min="0" step="0.1" id="useredit-cobetrate-input-id" value="<?=$objMember->mb_game_co_ratio?>">
+				<?php } ?>
+
+				<?php if(!$gameper_full) :?>
+					<label> 누르기율(%)</label>
+					<?php if(is_null($objMember)) {  ?>
+					<input type = "number" min="0" step="1" id="useredit-cobetpercent-input-id" value="100">
+					<?php } else {?>
+					<input type = "number" min="0" step="1" id="useredit-cobetpercent-input-id" value="<?=$objMember->mb_game_co_percent?>">
+					<?php } ?>
+				<?php endif?>
+			</div>
+			<div class="useredit-percent-div">
+				<p>코인 조합:</p> 
+				
+				<label> 배당율(%)</label>
+				<?php if(is_null($objMember)) {  ?>
+				<input type = "number" min="0" step="0.1" id="useredit-cobetrate2-input-id" value="0">
+				<?php } else {?>
+				<input type = "number" min="0" step="0.1" id="useredit-cobetrate2-input-id" value="<?=$objMember->mb_game_co2_ratio?>">
+				<?php } ?>
+
+				<?php if(!$gameper_full) :?>
+					<label> 누르기율(%)</label>
+					<?php if(is_null($objMember)) {  ?>
+					<input type = "number" min="0" step="1" id="useredit-cobetpercent2-input-id" value="100">
+					<?php } else {?>
+					<input type = "number" min="0" step="1" id="useredit-cobetpercent2-input-id" value="<?=$objMember->mb_game_co2_percent?>">
 					<?php } ?>
 				<?php endif?>
 			</div>

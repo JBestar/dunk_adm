@@ -124,7 +124,7 @@
 			<textarea id="confsite-bankmacro-text-id" name="editordata"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_CHARGEMACRO-1]->conf_content?><?php } ?></textarea>
 		</form>
 	</div>
-	<h4><i class="glyphicon glyphicon-hand-right"></i> 회원가입정책</h4>
+	<h4><i class="glyphicon glyphicon-hand-right"></i> 회원이용정책</h4>
 	<div class="confsite-site-check-div">
 		<?php if (is_null($arrConfig) || $arrConfig[CONF_MULTI_LOGIN-1]->conf_active != 1){ ?>
 			<input type="checkbox" id="confsite-multilog-check-id">
@@ -133,7 +133,14 @@
 		<?php }?>
 		<label for="confsite-multilog-check-id"> 회원가입시 중복로그인 허용</label>
 	</div>
-	
+	<div class="confsite-site-check-div">
+		<?php if (is_null($arrConfig) || $arrConfig[CONF_TRANS_DENY-1]->conf_active != 1){ ?>
+			<input type="checkbox" id="confsite-transdeny-check-id">
+		<?php } else {?>
+			<input type="checkbox" id="confsite-transdeny-check-id" checked>
+		<?php }?>
+		<label for="confsite-transdeny-check-id"> 회원간 이송/환수 금지</label>
+	</div>
 	<div class="confsite-button-group">
 		<button class="confsite-cancel-button" id="confsite-cancel-btn-id">취소</button>
 		<button class="confsite-ok-button" id="confsite-ok-btn-id">저장</button>
