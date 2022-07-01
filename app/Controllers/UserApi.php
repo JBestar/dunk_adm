@@ -1113,11 +1113,10 @@ class UserApi extends BaseController
                     $objChMember = reset($arrEmp);
 
                 $objResult->status = 'fail';
-                if(array_key_exists('mem.trans_deny', $_ENV) && $_ENV['mem.trans_deny']) {
+                
+                if(is_null($objChMember)){
                     $objResult->status = 'fail';
-                } else if(is_null($objChMember)){
-                    $objResult->status = 'fail';
-                }else if($arrData['type'] == 2){                      //이송
+                }else if($arrData['type'] == 2 && !$_ENV['mem.trans_deny']){                      //이송
                     
                     $iResult = 1;
                     if($arrData['amount'] > $objEmp->mb_money){
@@ -1137,7 +1136,7 @@ class UserApi extends BaseController
                         $objResult->status = 'fail';
                         $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
                     }
-                } else if($arrData['type'] == 3){               //환수
+                } else if($arrData['type'] == 3 && !$_ENV['mem.return_deny']){               //환수
                     $iResult = 1;
                     if($arrData['amount'] > $objMember->mb_money){
                         $iResult = $this->alltoGame($objMember);

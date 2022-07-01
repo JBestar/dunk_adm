@@ -83,6 +83,18 @@
         case APP_MIX :?>
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_mi.ico?v=2');?>">
         <?php break; 
+        case APP_NOLITER :?>
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_no.ico?v=1');?>">
+        <?php break; 
+        case APP_VIKING :?>
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_vi.ico?v=1');?>">
+        <?php break; 
+        case APP_GOLF :?>
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_go.ico?v=1');?>">
+        <?php break; 
+        case APP_AMADAS :?>
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_am.ico?v=1');?>">
+        <?php break; 
         case APP_NETFLIX :?>
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_nf.ico?v=1');?>">
         <?php break; 
@@ -94,6 +106,9 @@
         <?php break; 
         case APP_MX :?>
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_mx.ico?v=1');?>">
+        <?php break; 
+        case APP_AT :?>
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_at.ico?v=1');?>">
         <?php break; 
         default :?>
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_l.ico');?>">

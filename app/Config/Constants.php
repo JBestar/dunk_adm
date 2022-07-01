@@ -96,10 +96,15 @@ defined('APP_PRIME')        || define('APP_PRIME', 'Prime');
 defined('APP_ACE')          || define('APP_ACE', 'Ace');
 defined('APP_PRADA')        || define('APP_PRADA', 'Prada');
 defined('APP_MIX')          || define('APP_MIX', 'Mix');
+defined('APP_NOLITER')      || define('APP_NOLITER', 'Noliter');
+defined('APP_VIKING')       || define('APP_VIKING', 'Viking');
+defined('APP_GOLF')         || define('APP_GOLF', 'Golf');
+defined('APP_AMADAS')       || define('APP_AMADAS', 'Amadas');
 defined('APP_NETFLIX')      || define('APP_NETFLIX', 'Netflix');
 defined('APP_COKE')         || define('APP_COKE', 'Coke');
 defined('APP_ASURA')        || define('APP_ASURA', 'Asura');
 defined('APP_MX')           || define('APP_MX', 'Mx');
+defined('APP_AT')           || define('APP_AT', 'At');
 
 
 defined('APPTYPE_0')        || define('APPTYPE_0', 0);      //Premier
@@ -170,7 +175,7 @@ defined('CONF_BET_PN_DENY')     || define('CONF_BET_PN_DENY', 39);
 
 defined('CONF_BET_BLANK_EN')    || define('CONF_BET_BLANK_EN', 43);
 defined('CONF_TRANS_DENY')      || define('CONF_TRANS_DENY', 44);
-
+defined('CONF_RETURN_DENY')     || define('CONF_RETURN_DENY', 47);
 
 defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);
 defined('LEVEL_ADMIN')         || define('LEVEL_ADMIN', 100);
