@@ -124,10 +124,13 @@ class Bet extends StdController {
 		$confsiteModel = new ConfSite_Model();
 		$confs = $this->getSiteConf($confsiteModel);
 		if(!$confs["cas_deny"]){
-			$arrPrd =  $modelCasprd->gets(GAME_CASINO_EVOL);
+			$arrPrd +=  $modelCasprd->gets(GAME_CASINO_EVOL);
 		}
 		if($confs["kgon_enable"]){
-			$arrPrd +=  $modelCasprd->gets(GAME_CASINO_KGON);
+			$arrKgon =  $modelCasprd->gets(GAME_CASINO_KGON);
+			foreach($arrKgon as $objPrd){
+				array_push($arrPrd, $objPrd);
+			}
 		}
 
 		$param = [

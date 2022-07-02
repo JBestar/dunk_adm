@@ -18,6 +18,7 @@
 				<option value="1" >GALAXY</option>
 				<option value="2" >WOORI</option>
 				<option value="3" >BEST</option>
+				<option value="4" >TEN</option>
 			</select>
 		</div>
 		<div class="confsite-game-text-div">
