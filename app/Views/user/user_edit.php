@@ -428,10 +428,13 @@
 			<?php } ?>
 		<?php } ?>
 
-		<div class = "useredit-button-group">
-			<button class="useredit-cancel-button" id="useredit-cancel-btn-id">취소</button>
-			<button class="useredit-ok-button"  id="useredit-save-btn-id">저장</button>
-		</div>
+		<?php if(is_null($objMember) || $objMember->mb_level < LEVEL_ADMIN) :  ?>
+			<div class = "useredit-button-group">
+				<button class="useredit-cancel-button" id="useredit-cancel-btn-id">취소</button>
+				<button class="useredit-ok-button"  id="useredit-save-btn-id">저장</button>
+			</div>
+		<?php endif ?>
+
 	</div>
 
 

@@ -294,6 +294,10 @@ class BaseController extends Controller
                         $iResult = 1;
                     }
                 } 
+			} else {
+				if($objMember->mb_live_money == 0){
+					$iResult = 1;
+				}
 			}
 		} else {
             $iResult = 1;
@@ -340,6 +344,10 @@ class BaseController extends Controller
 						$iResult = 1;
 					}
 				} 
+			} else {
+				if($objMember->mb_kgon_money == 0){
+					$iResult = 1;
+				}
 			}
 		} else {
             $iResult = 1;
@@ -382,6 +390,10 @@ class BaseController extends Controller
                         $iResult = 1;
                     }
                 } 
+			} else {
+				if($objMember->mb_slot_money == 0){
+					$iResult = 1;
+				}
 			}
 		} else {
             $iResult = 1;
@@ -424,6 +436,10 @@ class BaseController extends Controller
                         $iResult = 1;
                     }
                 } 
+			} else {
+				if($objMember->mb_fslot_money == 0){
+					$iResult = 1;
+				}
 			}
 		} else {
             $iResult = 1;

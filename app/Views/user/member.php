@@ -4,6 +4,9 @@
 	<!--Sub Navbar-->
 	<div class = "sub-navbar">
 		<p><i class="glyphicon glyphicon-user"></i> 회원관리</p>
+		<?php if($mb_level >= LEVEL_MASTER && $adm_fid > 0) :  ?>
+			<a href="<?php echo siteFurl().'user/member_edit/'.$adm_fid;?>" class="user-panel-add-a" style="margin-left:5px;">관리자정보</a>
+		<?php endif ?>
 	</div>
 	<style>
 			
@@ -23,9 +26,9 @@
 	<!--Site Setting-->
 	<div class="user-panel">	
 		<div>
-			<?php if($mb_level >= LEVEL_ADMIN) {  ?>
-			<a href="<?php echo siteFurl().'user/member_edit/0';?>" class="user-panel-add-a" >회원 등록</a>
-			<?php } ?>
+			<?php if($mb_level >= LEVEL_ADMIN) :  ?>
+				<a href="<?php echo siteFurl().'user/member_edit/0';?>" class="user-panel-add-a" >회원 등록</a>
+			<?php endif ?>
 			<label>추천인</label>
             <input type="text" class="pbresult-text-input" id="userpanel-empid-input-id" value= "<?=$emp_uid ?>">
 			<label>아이디</label>

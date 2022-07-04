@@ -2,7 +2,7 @@
 <?= $this->section('confsite-active') ?>본사설정<?= $this->endSection() ?>
 
 <?= $this->section('confsite-navbar') ?>
-	<?php if($mb_level > LEVEL_ADMIN) {  ?>
+	<?php if($mb_level > LEVEL_MASTER) {  ?>
         <button class="sub-navbar-but" style="display: block;" id="cleanDb-but" onclick="cleanDb(1);">디비초기화</button>
         <button class="sub-navbar-but" style="display: none;" id="deleteDb-but" onclick="cleanDb(0);">디비정리</button>
 	<?php } ?>

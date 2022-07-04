@@ -97,6 +97,17 @@ class User extends StdController
 		if (is_login() === false){
 			return $this->response->redirect($_ENV['app.furl'].'/pages/login');
 		}
+		$strUid = $this->session->user_id;
+		$objAdmin = $this->modelMember->getInfo($strUid);
+		$admFid = 0;
+		if($objAdmin->mb_level >= LEVEL_MASTER){
+			$arrMem = $this->modelMember->getMemberByLevel(LEVEL_ADMIN);
+			 if(count($arrMem) > 0){
+				$objMember = reset($arrMem);	
+				$admFid = $objMember->mb_fid;
+			 }
+				 
+		}
 		$objEmp = $this->modelMember->find($empFid);
 		$empUid = "";
 		if ($objEmp != null){
@@ -106,7 +117,7 @@ class User extends StdController
 			'user/member', 
 			'user_member', 
 			LEVEL_MIN, 
-			['emp_uid' => $empUid]);
+			['emp_uid' => $empUid, 'adm_fid' => $admFid]);
 	}
 
 	public function member_edit($mbFid){

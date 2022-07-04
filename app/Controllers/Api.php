@@ -1553,7 +1553,7 @@ public function withdrawlist(){
 
 			$iResult = 0;
 
-			if($objAdmin->mb_level>LEVEL_ADMIN){
+			if($objAdmin->mb_level>LEVEL_MASTER){
 				if($arrReqData['clean'] == 0){
 					$iResult = $cleanModel->cleanDb();
 					$this->modelModify->add($this->session->user_id, MOD_DB_DELETE, "Delete DB", $this->request->getIPAddress());

@@ -1396,7 +1396,7 @@ class Member_Model extends Model
         }
 
         $objEmployee = null;
-        if (LEVEL_COMPANY == $objMember->mb_level) {
+        if ($objMember->mb_level == LEVEL_COMPANY) {
             $arrData['mb_emp_fid'] = 0;
 
             // $objUser = $this->getByNickname($arrData['mb_nickname']);
@@ -1445,7 +1445,7 @@ class Member_Model extends Model
             return 1;
         }
         $strError = $this->errors();
-
+        writeLog($strError);
         return -1;
     }
 

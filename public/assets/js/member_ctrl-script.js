@@ -110,7 +110,7 @@ function showMember(arrMember, confs) {
         } else {
             strBuf += ">차단</button>";
         }
-        if (confs.emp_level > LEVEL_ADMIN) {
+        if (confs.emp_level > LEVEL_ADMIN+1) {
             strBuf += "</td> <td>";
             strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >알회수</button>   ";
         }

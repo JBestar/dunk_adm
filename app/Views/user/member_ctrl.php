@@ -132,7 +132,7 @@
 						<th >수정</th>
 						<th >삭제</th>
 						<th>상태</th>
-						<?php if ($mb_level > LEVEL_ADMIN) {?>	
+						<?php if ($mb_level > LEVEL_MASTER) {?>	
 						<th>알반환</th>
 						<?php } ?>
 						<th>로그아웃</th>

@@ -178,6 +178,7 @@ defined('CONF_TRANS_DENY')      || define('CONF_TRANS_DENY', 44);
 defined('CONF_RETURN_DENY')     || define('CONF_RETURN_DENY', 47);
 
 defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);
+defined('LEVEL_MASTER')        || define('LEVEL_MASTER', 101);
 defined('LEVEL_ADMIN')         || define('LEVEL_ADMIN', 100);
 defined('LEVEL_COMPANY')       || define('LEVEL_COMPANY', 99);
 defined('LEVEL_AGENCY')        || define('LEVEL_AGENCY', 98);
