@@ -23,9 +23,9 @@
 
 		<?php foreach (range(1, 10) as $useLevel) { ?>
 		<?php if (is_null($objMember) || ($objMember->mb_grade != $useLevel)) {  ?>
-		<option value="<?php echo $useLevel; ?>"><?php echo $useLevel; ?> Lv</option>
+		<option value="<?php echo $useLevel; ?>">Lv <?php echo $useLevel; ?></option>
 		<?php } else {?>
-		<option value="<?php echo $useLevel; ?>" selected><?php echo $useLevel; ?> Lv</option>
+		<option value="<?php echo $useLevel; ?>" selected>Lv <?php echo $useLevel; ?></option>
 		<?php } ?>
 		<?php }?>
 	</select>
