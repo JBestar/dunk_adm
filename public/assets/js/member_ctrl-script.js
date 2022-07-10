@@ -53,7 +53,7 @@ function showMember(arrMember, confs) {
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_fid;
         strBuf += "</td> <td>";
-        strBuf += parseInt(arrMember[nRow].mb_grade).toLocaleString() + " Lv";
+        strBuf += "Lv " + parseInt(arrMember[nRow].mb_grade).toLocaleString() ;
         strBuf += "</td> <td>";
         strBuf += "<button name='" + nRow + "' data-fid='" + arrMember[nRow].mb_fid + "' >충전</button>";
         strBuf += "</td> <td>";

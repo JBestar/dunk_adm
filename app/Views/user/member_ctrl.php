@@ -85,16 +85,16 @@
 
 			<select name="pbresult-level" class="pbresult-number-select" id="userpanel-level-select-id">
 				<option value="0">::Lv::</option>
-				<option value="1"> 1 Lv </option>
-				<option value="2"> 2 Lv </option>
-				<option value="3"> 3 Lv </option>
-				<option value="4"> 4 Lv </option>
-				<option value="5"> 5 Lv </option>
-				<option value="6"> 6 Lv </option>
-				<option value="7"> 7 Lv </option>
-				<option value="8"> 8 Lv </option>
-				<option value="9"> 9 Lv </option>
-				<option value="10"> 10 Lv </option>
+				<option value="1"> Lv 1 </option>
+				<option value="2"> Lv 2 </option>
+				<option value="3"> Lv 3 </option>
+				<option value="4"> Lv 4 </option>
+				<option value="5"> Lv 5 </option>
+				<option value="6"> Lv 6 </option>
+				<option value="7"> Lv 7 </option>
+				<option value="8"> Lv 8 </option>
+				<option value="9"> Lv 9 </option>
+				<option value="10"> Lv 10 </option>
 			</select>
 			<select name="pbresult-number" class="pbresult-number-select" id="userpanel-number-select-id">
 				<option value="10">10개</option>
@@ -242,7 +242,7 @@
 									<div class="col-md-2">
 										<select id="user_level">
 											<?php for ($lv = 1; $lv <= 10 ; $lv ++) { ?>
-												<option value="<?=$lv?>"><?=$lv?>Lv </option>
+												<option value="<?=$lv?>">Lv <?=$lv?></option>
 											<?php }?>
 										</select>
 									</div>
