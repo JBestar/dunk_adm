@@ -767,7 +767,7 @@ class UserApi extends BaseController
             if($objUser->mb_level  >= LEVEL_ADMIN) {
                 $modelSesslog = new SessLog_Model();
 
-                $arrData = $modelSesslog->search($arrReqData);
+                $arrData = $modelSesslog->search($arrReqData, $objUser->mb_level);
                     
                 $arrResult['data'] = $arrData;
                 $arrResult['status'] = "success";
@@ -794,7 +794,7 @@ class UserApi extends BaseController
 
             if($objUser->mb_level  >= LEVEL_ADMIN) {
                 $modelSesslog = new SessLog_Model();
-                $objCount = $modelSesslog->searchCount($arrReqData);
+                $objCount = $modelSesslog->searchCount($arrReqData, $objUser->mb_level);
 
                 $arrResult['data'] = $objCount;
                 $arrResult['status'] = "success";
@@ -813,14 +813,13 @@ class UserApi extends BaseController
 		$arrReqData = json_decode($jsonData, true);
 		if(is_login())
 		{
-            
 
             $strUid = $this->session->user_id;
             $objUser = $this->modelMember->getInfo($strUid);
 
             if($objUser->mb_level  >= LEVEL_ADMIN) {
 
-                $arrData = $this->modelSess->search($arrReqData);
+                $arrData = $this->modelSess->search($arrReqData, $objUser->mb_level);
                     
                 $arrResult['data'] = $arrData;
                 $arrResult['status'] = "success";
@@ -840,13 +839,12 @@ class UserApi extends BaseController
 		$arrReqData = json_decode($jsonData, true);
 		if(is_login())
 		{
-            
          
             $strUid = $this->session->user_id;
             $objUser = $this->modelMember->getInfo($strUid);
 
             if($objUser->mb_level  >= LEVEL_ADMIN) {
-                $objCount = $this->modelSess->searchCount($arrReqData);
+                $objCount = $this->modelSess->searchCount($arrReqData, $objUser->mb_level);
 
                 $arrResult['data'] = $objCount;
                 $arrResult['status'] = "success";

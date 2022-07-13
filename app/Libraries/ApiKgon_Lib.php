@@ -247,9 +247,10 @@ class ApiKgon_Lib  {
 		if(!is_null($arrResult) && array_key_exists("code", $arrResult)) {
 			if($arrResult['code'] == 0){
                 $arrResult['status'] = 1;
+                $arrResult['balance'] = $arrResult['balance'] - $arrResult['amount'];
                 // "code": 0,
-                // "balance": 40000,       //현재 보유 알수
-                // "amount": 10000         //출금금액
+                // "balance": 40000,       //처리하기 전의 잔액
+                // "amount": 10000         //처리된 금액
             } else { //
                 $arrResult['status'] = 0;
                 writeLog($arrResult['msg']);

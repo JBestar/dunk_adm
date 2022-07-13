@@ -280,6 +280,8 @@ class BaseController extends Controller
 					$amount = $arrResult['balance'];
 					$arrResp = $this->libApicas->subBalance($objMember->mb_live_uid, $amount);
 				} else {
+					$objMember->mb_live_money = $arrResult['balance'];
+					$this->modelMember->updateLiveMoney($objMember); 
 					$iResult = 1;   //success
                     return $iResult;
 				}
@@ -329,6 +331,8 @@ class BaseController extends Controller
 					$arrResp = $this->libApikgon->subBalance($objMember->mb_kgon_uid, $amount, true);
 					
 				} else {
+					$objMember->mb_kgon_money = $amount;
+					$this->modelMember->updateKgonMoney($objMember); 
 					$iResult = 1;   //success
                     return $iResult;
 				}
@@ -376,6 +380,8 @@ class BaseController extends Controller
 					$arrResp =  $this->libApislot->subBalance($objMember->mb_slot_uid, $amount);
 					writeLog($logHead." ".$objMember->mb_uid."-Withdraw resultCode=".$arrResult['resultCode']);
 				} else {
+                    $objMember->mb_slot_money = $arrResult['balance'];
+					$this->modelMember->updateSlotMoney($objMember);
                     $iResult = 1;   //success
                     return $iResult;
                 }
@@ -422,6 +428,8 @@ class BaseController extends Controller
 					$amount = $arrResult['balance'];
 					$arrResp = $this->libApifslot->subBalance($objMember->mb_fslot_uid, $amount);
 				} else {
+					$objMember->mb_fslot_money = $arrResult['balance'];
+					$this->modelMember->updateFslotMoney($objMember);   
 					$iResult = 1;   //success
                     return $iResult;
 				}

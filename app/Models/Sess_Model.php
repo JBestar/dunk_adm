@@ -81,11 +81,11 @@ class Sess_Model extends Model {
     }
 
     
-    function search($arrReqData)
+    function search($arrReqData, $mbLv=LEVEL_ADMIN)
     {
         $strSql = "SELECT ".$this->table.".*, member.mb_nickname, member.mb_level FROM ".$this->table;
         $strSql .= " JOIN member ON ".$this->table.".sess_mb_fid = member.mb_fid ";
-        $strSql .= " WHERE mb_level <= '".LEVEL_ADMIN."' ";
+        $strSql .= " WHERE mb_level < '".$mbLv."' ";
         
         if(strlen($arrReqData['mb_uid']) > 0){
             $strSql.=" AND sess_mb_uid = '".$arrReqData['mb_uid']."' ";
@@ -102,11 +102,11 @@ class Sess_Model extends Model {
     }
 
 
-    function searchCount($arrReqData)
+    function searchCount($arrReqData, $mbLv=LEVEL_ADMIN)
     {
         $strSql = "SELECT count(*) as count FROM ".$this->table;
         $strSql .= " JOIN member ON ".$this->table.".sess_mb_fid = member.mb_fid ";
-        $strSql .= " WHERE mb_level <= '".LEVEL_ADMIN."' ";
+        $strSql .= " WHERE mb_level < '".$mbLv."' ";
         if(strlen($arrReqData['mb_uid']) > 0){
             $strSql.=" AND sess_mb_uid = '".$arrReqData['mb_uid']."' ";
         }
