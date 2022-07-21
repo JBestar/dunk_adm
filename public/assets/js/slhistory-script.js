@@ -32,8 +32,11 @@ function ShowBetHistory(jsonBetData) {
         strBuf += "</td><td>";
         strBuf += jsonBetData[nRow].bet_time;
         strBuf += "</td><td>";
-        if (jsonBetData[nRow].prd_name != null)
+        if (jsonBetData[nRow].prd_name != null){
             strBuf += jsonBetData[nRow].prd_name;
+            if(parseInt(jsonBetData[nRow].bet_game_type) == 215 && mGameId == 8)
+                strBuf += "(NEW)"; 
+        }
         else strBuf += jsonBetData[nRow].bet_game_type;
         strBuf += "</td><td>";
         if (jsonBetData[nRow].game_name != null)
@@ -197,7 +200,7 @@ function requestTotalPage(bReqPage = true) {
         },
         error: function(request, status, error) {
             $(".loading").hide();
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });

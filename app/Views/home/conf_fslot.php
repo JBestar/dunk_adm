@@ -1,12 +1,22 @@
 <?= $this->extend('/home/conf_game') ?>
 <?= $this->section('confgame-active') ?><?=$game_name?><?= $this->endSection() ?>
 <?= $this->section('confgame-content') ?>
-	 
+	 <style>
+		tbody .act{
+			width:100px;
+		}
+	</style>
 	<?php if($_ENV['app.type'] == APPTYPE_1) :?>
 		<!---->
 		<h4 style="font-size:16px; font-weight:bold;"><i class="glyphicon glyphicon-hand-right"></i> 게임별 설정</h4>	
 		<div>
-			<label>게임명</label>
+			<label>게임업체</label>
+			<select class="pbresult-game-select" id="confsite-prd-select-id">
+				<?php foreach ($game_prds as $prd):?>
+					<option value="<?=$prd->ref_code?>"><?=$prd->name_kr?></option>
+				<?php endforeach;?>
+			</select>
+			<label style="margin-left:20px;">게임명</label>
 			<input type="text" class="pbresult-text-input" id="confsite-game-input-id" style="width:150px; margin-right:0;">
 			<select name="pbresult-number" class="pbresult-number-select" id="confsite-number-select-id">
 				<option value="10">10개</option>
@@ -25,7 +35,6 @@
 					<th>게임업체</th>
 					<th>게임명(ko)</th>
 					<th>게임명(en)</th>
-					<th>게임코드</th>
 					<th>로출상태</th>
 					<th>운영상태</th>
 					<th>API타입</th>

@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\ConfSite_Model;
+use App\Models\SlotPrd_Model;
 
 class Home extends StdController
 {
@@ -150,9 +151,12 @@ class Home extends StdController
 	}
 
 	public function conf_slot_2(){
+		$slprdModel = new SlotPrd_Model();
+
 		$param = [
 			'game_name' => "네츄럴슬롯",
 			'game_id' => GAME_SLOT_2,
+			'game_prds' => $slprdModel->getByCode(GAME_SLOT_2), 
 		];
 		$this->load_view_page('home/conf_fslot', 'conf_game', LEVEL_ADMIN, $param);	
 	}

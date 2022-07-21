@@ -14,9 +14,14 @@ function addEventListner() {
         requestTotalPage();
     });
 
+    $("#confsite-prd-select-id").change(function() {
+        requestTotalPage();
+    });
+
     $("#confsite-number-select-id").change(function() {
         requestTotalPage();
     });
+
 }
 
 function showGame(list) {
@@ -34,33 +39,39 @@ function showGame(list) {
             html += "</td><td>";
             html += game.provider;
             html += "</td><td>";
-            html += game.rname_ko;
+            html += game.name_ko;
             html += "</td><td>";
-            html += game.rname;
+            html += game.name;
             html += "</td><td>";
-            html += game.game_code;
-            html += "</td><td>";
-            html += "<select class='' onchange='onChangeHidden(this)' data-name='" + game.rname + "' ";
-            if (game.rhidden == 0) {
+            html += "<select class='' onchange='onChangeHidden(this)' data-fid='" + game.fid + "' ";
+            if (game.hidden == 0) {
                 html += " style='color:black'> <option selected='' value='0'>보이기</option><option value='1'>감추기</option></select>";
             } else {
                 html += " style='color:red'> <option value='0'>보이기</option><option selected='' value='1'>감추기</option></select>";
             }
             html += "</td><td>";
-            html += "<select class='' onchange='onChangeMaintain(this)' data-name='" + game.rname + "' ";
-            if (game.rmaintain == 0) {
+            html += "<select class='' onchange='onChangeMaintain(this)' data-fid='" + game.fid + "' ";
+            if (game.maintain == 0) {
                 html += " style='color:black'> <option selected='' value='0'>운영</option><option value='1'>점검</option></select>";
             } else {
                 html += " style='color:red'> <option value='0'>운영</option><option selected='' value='1'>점검</option></select>";
             }
             html += "</td><td>";
 
-            html += "<select class='' onchange='onChangeAct(this)' data-fid='" + game.fid + "' ";
-            if (game.act == 1) {
-                html += " style='color:black'> <option selected='' value='0'>OUR</option><option value='1'>KPLAY</option></select>";
-            } else {
-                html += " style='color:red'> <option value='0'>OUR</option><option selected='' value='1'>KPLAY</option></select>";
+            html += "<select class='act' onchange='onChangeAct(this)' data-fid='" + game.fid + "' ";
+            html += (game.act >= 1 ?" style='color:black'> ":" style='color:red'> ");
+
+            if(game.fslot_cnt > 1){
+                html += "<option "+(game.act==1?"selected":"")+" value='1'>OUR</option>";
+                html += "<option "+(game.act==2?"selected":"")+" value='2'>OUR_NEW</option>";
+            } else{
+                if(parseInt(game.fslot_prd) != 215)
+                    html += "<option "+(game.act==1?"selected":"")+" value='1'>OUR</option>";
+                else 
+                    html += "<option "+(game.act==2?"selected":"")+" value='2'>OUR_NEW</option>";
             }
+            html += "<option "+(game.act==0?"selected":"")+" value='0'>KPLAY</option></select>";
+
             html += "</td><tr>";
             nRow++;
         });
@@ -82,7 +93,7 @@ function onChangeHidden(objSelect) {
 
     var jsonData = {
         "hidden": iType == 1 ? 1 : 0,
-        "name": $(objSelect).data("name"),
+        "fid": $(objSelect).data("fid"),
     };
     requestGameSet(jsonData);
 }
@@ -97,7 +108,7 @@ function onChangeMaintain(objSelect) {
 
     var jsonData = {
         "maintain": iType == 1 ? 1 : 0,
-        "name": $(objSelect).data("name"),
+        "fid": $(objSelect).data("fid"),
     };
     requestGameSet(jsonData);
 }
@@ -106,13 +117,13 @@ function onChangeAct(objSelect) {
 
     let iType = $(objSelect).val();
     // console.log(iType);
-    if (iType == 1)
+    if (iType == 0)
         $(objSelect).css("color", "red");
     else
         $(objSelect).css("color", "black");
 
     var jsonData = {
-        "act": iType == 1 ? 0 : 1,
+        "act": iType,
         "fid": $(objSelect).data("fid"),
     };
     requestGameSet(jsonData);
@@ -123,12 +134,13 @@ function requestGame() {
 
     var nPage = getActivePage();
     var sGame = $("#confsite-game-input-id").val();
+    var sPrd = $("#confsite-prd-select-id").val();
 
     var jsonData = {
         "count": CountPerPage,
         "page": nPage,
         "name": sGame,
-
+        "prd":sPrd,
     };
 
     jsonData = JSON.stringify(jsonData);
@@ -162,10 +174,12 @@ function requestGame() {
 function requestTotalPage() {
     CountPerPage = $("#confsite-number-select-id").val();
     var sGame = $("#confsite-game-input-id").val();
+    var sPrd = $("#confsite-prd-select-id").val();
 
     var jsonData = {
         "count": CountPerPage,
         "name": sGame,
+        "prd":sPrd,
     };
 
     jsonData = JSON.stringify(jsonData);
@@ -186,12 +200,8 @@ function requestTotalPage() {
         error: function(request, status, error) {
             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
-
     });
-
-
 }
-
 
 
 function requestGameSet(data){

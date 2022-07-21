@@ -341,7 +341,7 @@ class Member_Model extends Model
      // 배팅금액 (하부포함)
      public function allGameRange(&$arrReqData, $confs)
      {
-        //  writeLog("allGameRange");
+         writeLog("allGameRange");
         if(!$confs['npg_deny']){
             $arrReqData['npb_range'] = $this->getBetRangeId($arrReqData, "bet_powerball");
             $arrReqData['nps_range'] = $this->getBetRangeId($arrReqData, "bet_powerladder");
@@ -370,7 +370,7 @@ class Member_Model extends Model
         }
 
         $arrReqData['rw_range'] = $this->getRwRangeId($arrReqData, "bet_reward");
-        // writeLog("allGameRange END");
+        writeLog("allGameRange END");
         
      }
 
@@ -617,6 +617,9 @@ class Member_Model extends Model
     public function calculate($objEmp, $arrReqData, $confs){
         $strTbColum = ' mb_fid, mb_uid, mb_level, mb_emp_fid, mb_state_active, mb_money, mb_live_money, mb_slot_money, mb_fslot_money, mb_kgon_money ';
         $strTbRColum = ' r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_state_active, r.mb_money, r.mb_live_money, r.mb_slot_money, r.mb_fslot_money, r.mb_kgon_money ';
+        
+        // $strWhereMem = " AND (bet_emp_fid IN (SELECT mb_emp_fid FROM tbmember WHERE mb_fid != ".$objEmp->mb_fid." GROUP BY mb_emp_fid ) OR bet_mb_uid = '".$objEmp->mb_uid."')";
+        $strWhereMem = " AND bet_mb_uid IN (SELECT mb_uid from tbmember) ";
 
         $strSQL = 'WITH RECURSIVE tbmember ('.$strTbColum.') AS';
         $strSQL .= ' ( SELECT '.$strTbColum.' FROM '.$this->table." WHERE "; 
@@ -642,56 +645,57 @@ class Member_Model extends Model
         $strSQL .= ' UNION ALL ( SELECT SUM(bet_money) AS result_1, SUM(bet_win_money) AS result_2 ';
         $strSQL .= '  FROM ( SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_slot';
         $strSQL .= " WHERE bet_fid >= ".$arrReqData['slot_range'][0]." AND bet_fid <= ".$arrReqData['slot_range'][1];
-        $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) ";
+        $strSQL .= $strWhereMem;
+        // $strSQL .= " AND bet_mb_fid IN (SELECT mb_fid from tbmember) ";
 
         if(!$confs['npg_deny']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerball ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['npb_range'][0]." AND bet_fid <= ".$arrReqData['npb_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+            $strSQL .= $strWhereMem." )";
 
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerladder ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['nps_range'][0]." AND bet_fid <= ".$arrReqData['nps_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+            $strSQL .= $strWhereMem." )";
         }
 
         if(!$confs['bpg_deny']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleball ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['bpb_range'][0]." AND bet_fid <= ".$arrReqData['bpb_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+            $strSQL .= $strWhereMem." )";
 
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleladder ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['bps_range'][0]." AND bet_fid <= ".$arrReqData['bps_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+            $strSQL .= $strWhereMem." )";
         }
 
         if($confs['eos5_enable']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_eos5ball ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['eos5_range'][0]." AND bet_fid <= ".$arrReqData['eos5_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+            $strSQL .= $strWhereMem." )";
         }
 
         if($confs['eos3_enable']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_eos3ball ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['eos3_range'][0]." AND bet_fid <= ".$arrReqData['eos3_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+            $strSQL .= $strWhereMem." )";
         }
 
         if($confs['coin5_enable']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_coin5ball ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['coin5_range'][0]." AND bet_fid <= ".$arrReqData['coin5_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+            $strSQL .= $strWhereMem." )";
         }
 
         if($confs['coin3_enable']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_coin3ball ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['coin3_range'][0]." AND bet_fid <= ".$arrReqData['coin3_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+            $strSQL .= $strWhereMem." )";
         }
 
         if(!$confs['cas_deny'] || $confs['kgon_enable']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_casino ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['cas_range'][0]." AND bet_fid <= ".$arrReqData['cas_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) )";
+            $strSQL .= $strWhereMem." )";
         }
         $strSQL .= " ) AS bet_table ) ";
         //포인트
@@ -703,9 +707,11 @@ class Member_Model extends Model
         }
         $strSQL .= " AND rw_mb_fid IN (SELECT mb_fid from tbmember) )";
         
-        // writeLog($strSQL);
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog($strSQL);
         $arrResult = $this->db->query($strSQL)->getResult();
-        // writeLog("calculate END");
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog("calculate END");
 
         return $arrResult;
 
@@ -1026,7 +1032,7 @@ class Member_Model extends Model
         $strSQL.= "  MAX(mb_game_cs_ratio) AS mb_game_cs_ratio, MAX(mb_game_sl_ratio) AS mb_game_sl_ratio, ";
         $strSQL.= "  MAX(mb_game_eo_ratio) AS mb_game_eo_ratio, MAX(mb_game_eo2_ratio) AS mb_game_eo2_ratio, ";
         $strSQL.= "  MAX(mb_game_co_ratio) AS mb_game_co_ratio, MAX(mb_game_co2_ratio) AS mb_game_co2_ratio ";
-        $strSQL.= " FROM ".$this->table." WHERE mb_emp_fid = '".$mbFid."' ";
+        $strSQL.= " FROM ".$this->table." WHERE mb_emp_fid = '".$mbFid."' AND mb_state_active != '".PERMIT_DELETE."' ";
         
         // writeLog($strSQL);
         $objResult = $this->db->query($strSQL)->getRow();

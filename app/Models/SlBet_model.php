@@ -34,28 +34,33 @@ class SlBet_Model extends Model
     
     function getBetAccount($arrReqData){
 
-        $strCondition = "";
+        $strWhere = "";
         if($arrReqData['game'] == GAME_SLOT_12){
-            $strCondition=" WHERE bet_game_id < '".$arrReqData['game']."' ";
-        } else $strCondition=" WHERE bet_game_id = '".$arrReqData['game']."' ";
+            $strWhere=" WHERE bet_game_id < '".$arrReqData['game']."' ";
+        } else $strWhere=" WHERE bet_game_id = '".$arrReqData['game']."' ";
 
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strCondition.=" AND ".getBetTimeRange($arrReqData);
+            $strWhere.=" AND ".getBetTimeRange($arrReqData);
         }
         if(strlen($arrReqData['user']) > 0){
-            $strCondition.=" AND bet_mb_uid = '".$arrReqData['user']."' ";            
+            $strWhere.=" AND bet_mb_uid = '".$arrReqData['user']."' ";            
         }
         if(intval($arrReqData['mode']) > 0){
-            $strCondition.=" AND bet_game_type = '".$arrReqData['mode']."' ";
-
+            if($arrReqData['game'] == GAME_SLOT_12){
+                $strWhere.="  AND bet_game_type IN ( SELECT code FROM ".$this->mPrdTable." WHERE code = ".$arrReqData['mode']." OR ref_code = ".$arrReqData['mode']." ) ";
+            } else {
+                $strWhere.="  AND bet_game_type = '".$arrReqData['mode']."' ";
+            }
         }
+        
+
         //총배팅금, 적중금
         $arrSum = array();
         $strSql = " SELECT SUM(bet_money) AS bet_money_sum, SUM(bet_win_money) AS win_money_sum, SUM(company_amount) AS company_amount, ";
         $strSql .= " SUM(CASE WHEN bet_win_money= 0 THEN bet_money ELSE 0 END) AS loss_money_sum, ";
         $strSql .= " SUM(CASE WHEN bet_win_money > 0 THEN bet_win_money-bet_money ELSE 0 END) AS benefit_money_sum ";
         $strSql .= " FROM ".$this->table;
-        $strSql .= $strCondition;
+        $strSql .= $strWhere;
         // writeLog($strSql);
         $objResult = $this -> db -> query($strSql)->getRow();
         // writeLog("getBetAccount End");
@@ -109,7 +114,11 @@ class SlBet_Model extends Model
             $strWhere.=" AND bet_mb_uid = '".$arrReqData['user']."' ";
         }
         if(intval($arrReqData['mode']) > 0){
-            $strWhere.="  AND bet_game_type = '".$arrReqData['mode']."' ";
+            if($arrReqData['game'] == GAME_SLOT_12){
+                $strWhere.="  AND bet_game_type IN ( SELECT code FROM ".$this->mPrdTable." WHERE code = ".$arrReqData['mode']." OR ref_code = ".$arrReqData['mode']." ) ";
+            } else {
+                $strWhere.="  AND bet_game_type = '".$arrReqData['mode']."' ";
+            }
         }
         if($objEmp->mb_level < LEVEL_ADMIN){
             if(array_key_exists('bet.blank_en', $_ENV) && $_ENV['bet.blank_en']){
@@ -210,7 +219,11 @@ class SlBet_Model extends Model
             $strSql.=" AND bet_mb_uid = '".$arrReqData['user']."' ";
         }
         if(intval($arrReqData['mode']) > 0){
-            $strSql.=" AND bet_game_type = '".$arrReqData['mode']."' ";
+            if($arrReqData['game'] == GAME_SLOT_12){
+                $strSql.="  AND bet_game_type IN ( SELECT code FROM ".$this->mPrdTable." WHERE code = ".$arrReqData['mode']." OR ref_code = ".$arrReqData['mode']." ) ";
+            } else {
+                $strSql.="  AND bet_game_type = '".$arrReqData['mode']."' ";
+            }
         }
         if($objEmp->mb_level < LEVEL_ADMIN){
             if(array_key_exists('bet.blank_en', $_ENV) && $_ENV['bet.blank_en']){

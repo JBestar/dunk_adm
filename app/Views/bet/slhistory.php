@@ -5,7 +5,7 @@
 	<select class="pbresult-game-select" id="pbhistory-game-select-id">
 		<option value="0">::업체선택::</option>	
 		<?php foreach ($prds as $prd):?>
-			<option value="<?=$prd->code?>"><?=$prd->name_kr?></option>
+			<option value="<?=$prd->code?>"><?=$prd->name_kr.($prd->code==215?"(NEW)":"")?></option>
 		<?php endforeach;?>
 	</select>
 <?= $this->endSection() ?>

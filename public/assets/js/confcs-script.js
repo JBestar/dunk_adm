@@ -35,7 +35,7 @@ function requestConfPowerball() {
             $("#refresh_egg").removeClass("refresh");
             $("#refresh_useregg").removeClass("refresh");
 
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 showConfPowerball(jResult.data, jResult.agent);
             } else if (jResult.status == "fail") {
