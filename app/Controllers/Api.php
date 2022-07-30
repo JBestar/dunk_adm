@@ -929,10 +929,9 @@ public function withdrawlist(){
 	public function calculate(){ 
 		$jsonData = $_REQUEST['json_'];
 		$arrReqData = json_decode($jsonData, true);
-		//var_dump($arrBetData);
+
 		if(is_login()) {
 			//model
-			
 			$strUid = $this->session->user_id;
 			$objUser = $this->modelMember->getInfo($strUid);
 			$arrResult = array();
@@ -966,29 +965,37 @@ public function withdrawlist(){
 			
 			if($bResult){
 				$arrReqData['rw_blank'] = $objUser->mb_level >= LEVEL_ADMIN;
-				$confsiteModel = new ConfSite_Model();
+				if($arrReqData['type'] == 0){
+					$confsiteModel = new ConfSite_Model();
+					$siteConfs = $this->getSiteConf($confsiteModel);
+					$this->modelMember->allGameRange($arrReqData, $siteConfs);
+				} else 
+					$this->modelMember->gameRange($arrReqData);
 
-				$siteConfs = $this->getSiteConf($confsiteModel);
-				$this->modelMember->allGameRange($arrReqData, $siteConfs);
 				foreach ($arrEmp as $objEmp) {
             		$objCalc['mb_fid'] = $objEmp->mb_fid;
 		            $objCalc['mb_uid'] = $objEmp->mb_uid;
 		            $objCalc['mb_nickname'] = $objEmp->mb_nickname;
 		            $objCalc['mb_emp_fid'] = $objEmp->mb_emp_fid;
 		            $objCalc['mb_level'] = $objEmp->mb_level;
-					$arrResult = $this->modelMember->calculate($objEmp, $arrReqData, $siteConfs);
-					if(is_null($arrResult) || count($arrResult) != 5)
+					if($arrReqData['type'] == 0)
+						$arrResult = $this->modelMember->calculate($objEmp, $arrReqData, $siteConfs);
+					else $arrResult = $this->modelMember->calculateByGame($objEmp, $arrReqData);
+					if(is_null($arrResult) || count($arrResult) != 7)
 						continue;
-					$objCalc['mb_user_money'] = $arrResult[0]->result_1 != null ? $arrResult[0]->result_1 : 0 ;		//관리자보유금;
-					$objCalc['mb_user_cnt'] = $arrResult[0]->result_2 != null ? $arrResult[0]->result_2 : 0 ;		//관리자보유금;
-		            $objCalc['mb_charge'] = $arrResult[1]->result_1 != null ? $arrResult[1]->result_1 : 0 ;         //충전금액합산
-		            $objCalc['mb_exchange'] = $arrResult[2]->result_1 != null ? $arrResult[2]->result_1 : 0;     	//환전금액합산
+					$objCalc['mb_money_all'] = $arrResult[0]->result_1 != null ? $arrResult[0]->result_1 : 0 ;		//관리자보유금;
+					$objCalc['mb_money_single'] = $arrResult[0]->result_2 != null ? $arrResult[0]->result_2 : 0 ;	//관리자보유금;
+					$objCalc['mb_point_all'] = $arrResult[1]->result_1 != null ? $arrResult[1]->result_1 : 0 ;		//관리자보유금;
+					$objCalc['mb_point_single'] = $arrResult[1]->result_2 != null ? $arrResult[1]->result_2 : 0 ;	//관리자보유금;
+					$objCalc['mb_user_cnt'] = $arrResult[2]->result_1 != null ? $arrResult[2]->result_1 : 0 ;		//관리자보유금;
+		            $objCalc['mb_charge'] = $arrResult[3]->result_1 != null ? $arrResult[3]->result_1 : 0 ;         //충전금액합산
+		            $objCalc['mb_exchange'] = $arrResult[4]->result_1 != null ? $arrResult[4]->result_1 : 0;     	//환전금액합산
 		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  				//충환손익
-			        $objCalc['mb_bet_money'] = $arrResult[3]->result_1 != null ? $arrResult[3]->result_1 : 0;		//베팅머니
-					$objCalc['mb_bet_win_money'] = $arrResult[3]->result_2 != null ? $arrResult[3]->result_2 : 0;	//적중머니
+			        $objCalc['mb_bet_money'] = $arrResult[5]->result_1 != null ? $arrResult[5]->result_1 : 0;		//베팅머니
+					$objCalc['mb_bet_win_money'] = $arrResult[5]->result_2 != null ? $arrResult[5]->result_2 : 0;	//적중머니
          			$objCalc['mb_bet_benefit_money'] = $objCalc['mb_bet_money'] - $objCalc['mb_bet_win_money'];  	//베팅손익
-         			$objCalc['mb_rate_all'] =   $arrResult[4]->result_1 != null ? $arrResult[4]->result_1 : 0;		//수수료 합산
-         			$objCalc['mb_rate_single'] =   $arrResult[4]->result_2 != null ? $arrResult[4]->result_2 : 0;	//수수료 개별
+         			$objCalc['mb_rate_all'] =   $arrResult[6]->result_1 != null ? $arrResult[6]->result_1 : 0;		//수수료 합산
+         			$objCalc['mb_rate_single'] =   $arrResult[6]->result_2 != null ? $arrResult[6]->result_2 : 0;	//수수료 개별
          			$objCalc['mb_last_money'] = $objCalc['mb_bet_benefit_money'] - $objCalc['mb_rate_single'] ; 	//최종손익
 
 		            $arrData[] = $objCalc;
@@ -1015,7 +1022,7 @@ public function withdrawlist(){
 	}
 
 
-		//하부회워 정산리력 Ajax로 전송
+	//하부회워 정산리력 Ajax로 전송
 	public function calculategame(){ 
 		$jsonData = $_REQUEST['json_'];
 		$arrReqData = json_decode($jsonData, true);
@@ -1055,7 +1062,6 @@ public function withdrawlist(){
 			if($bResult){
 				$arrReqData['rw_blank'] = $objUser->mb_level >= LEVEL_ADMIN;
 
-				$this->modelMember->gameRange($arrReqData);
 
 				foreach ($arrEmp as $objEmp) {
             		$objCalc['mb_fid'] = $objEmp->mb_fid;
@@ -1064,20 +1070,23 @@ public function withdrawlist(){
 		            $objCalc['mb_emp_fid'] = $objEmp->mb_emp_fid;
 		            $objCalc['mb_level'] = $objEmp->mb_level;
 					$arrResult = $this->modelMember->calculateByGame($objEmp, $arrReqData);
-					if(is_null($arrResult) || count($arrResult) != 5)
+					if(is_null($arrResult) || count($arrResult) != 7)
 						continue;
-					$objCalc['mb_user_money'] = $arrResult[0]->result_1 != null ? $arrResult[0]->result_1 : 0 ;		//유저보유금;
-					$objCalc['mb_user_cnt'] = $arrResult[0]->result_2 != null ? $arrResult[0]->result_2 : 0 ;		//관리자보유금;
-		            $objCalc['mb_charge'] = $arrResult[1]->result_1 != null ? $arrResult[1]->result_1 : 0 ;         //충전금액합산
-		            $objCalc['mb_exchange'] = $arrResult[2]->result_1 != null ? $arrResult[2]->result_1 : 0;     	//환전금액합산
-		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  				//충환손익
-			        $objCalc['mb_bet_money'] = $arrResult[3]->result_1 != null ? $arrResult[3]->result_1 : 0;		//베팅머니
-					$objCalc['mb_bet_win_money'] = $arrResult[3]->result_2 != null ? $arrResult[3]->result_2 : 0;	//적중머니
-         			$objCalc['mb_bet_benefit_money'] = $objCalc['mb_bet_money'] - $objCalc['mb_bet_win_money'];  	//베팅손익
-         			$objCalc['mb_rate_all'] =   $arrResult[4]->result_1 != null ? $arrResult[4]->result_1 : 0;		//수수료
-         			$objCalc['mb_rate_single'] =   $arrResult[4]->result_2 != null ? $arrResult[4]->result_2 : 0;	//수수료 개별
-         			$objCalc['mb_last_money'] = $objCalc['mb_bet_benefit_money'] - $objCalc['mb_rate_single'] ; 	//최종손익
-
+					$objCalc['mb_money_all'] = $arrResult[0]->result_1 != null ? $arrResult[0]->result_1 : 0 ;		//관리자보유금;
+					$objCalc['mb_money_single'] = $arrResult[0]->result_2 != null ? $arrResult[0]->result_2 : 0 ;	//관리자보유금;
+					$objCalc['mb_point_all'] = $arrResult[1]->result_1 != null ? $arrResult[1]->result_1 : 0 ;		//관리자보유금;
+					$objCalc['mb_point_single'] = $arrResult[1]->result_2 != null ? $arrResult[1]->result_2 : 0 ;	//관리자보유금;
+					$objCalc['mb_user_cnt'] = $arrResult[2]->result_1 != null ? $arrResult[2]->result_1 : 0 ;		//관리자보유금;
+					$objCalc['mb_charge'] = $arrResult[3]->result_1 != null ? $arrResult[3]->result_1 : 0 ;         //충전금액합산
+					$objCalc['mb_exchange'] = $arrResult[4]->result_1 != null ? $arrResult[4]->result_1 : 0;     	//환전금액합산
+					$objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  				//충환손익
+					$objCalc['mb_bet_money'] = $arrResult[5]->result_1 != null ? $arrResult[5]->result_1 : 0;		//베팅머니
+					$objCalc['mb_bet_win_money'] = $arrResult[5]->result_2 != null ? $arrResult[5]->result_2 : 0;	//적중머니
+					$objCalc['mb_bet_benefit_money'] = $objCalc['mb_bet_money'] - $objCalc['mb_bet_win_money'];  	//베팅손익
+					$objCalc['mb_rate_all'] =   $arrResult[6]->result_1 != null ? $arrResult[6]->result_1 : 0;		//수수료 합산
+					$objCalc['mb_rate_single'] =   $arrResult[6]->result_2 != null ? $arrResult[6]->result_2 : 0;	//수수료 개별
+					$objCalc['mb_last_money'] = $objCalc['mb_bet_benefit_money'] - $objCalc['mb_rate_single'] ; 	//최종손익
+	
 		            $arrData[] = $objCalc;
         		}
 			}

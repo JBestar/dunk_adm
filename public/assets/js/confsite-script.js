@@ -17,7 +17,7 @@ $(document).ready(function() {
     });
     setNavBarElement();
     addBtnEvent();
-
+    onChangeElement();
 });
 
 function readConfigToObject() {
@@ -43,8 +43,10 @@ function readConfigToObject() {
     }
     jsonData.bankmacro = $("#confsite-bankmacro-text-id").summernote('code');
     jsonData.multilog_ok = $("#confsite-multilog-check-id").prop('checked') ? 1 : 0;
-    jsonData.trans_deny = $("#confsite-transdeny-check-id").prop('checked') ? 1 : 0;
-    jsonData.return_deny = $("#confsite-returndeny-check-id").prop('checked') ? 1 : 0;
+    jsonData.trans_deny = $("#confsite-transdeny-check-id").prop('checked') ? 0 : 1;
+    jsonData.return_deny = $("#confsite-returndeny-check-id").prop('checked') ? 0 : 1;
+    jsonData.trans_lv1 = $("#confsite-translv1-check-id").prop('checked') ? 1 : 0;
+    jsonData.return_lv1 = $("#confsite-returnlv1-check-id").prop('checked') ? 1 : 0;
 
     return jsonData;
 
@@ -87,8 +89,25 @@ function addBtnEvent() {
         window.location.reload();
     });
 
+    $("#confsite-transdeny-check-id").change(function() {
+        onChangeElement();
+    });
+
+    $("#confsite-returndeny-check-id").change(function() {
+        onChangeElement();
+    });
+
 }
 
+function onChangeElement(){
+    let checked = $("#confsite-transdeny-check-id").prop('checked');
+    $("#confsite-translv1-check-id").prop('disabled', !checked);
+
+    checked = $("#confsite-returndeny-check-id").prop('checked');
+    $("#confsite-returnlv1-check-id").prop('disabled', !checked);
+
+
+}
 
 function cleanDb(iType) {
 

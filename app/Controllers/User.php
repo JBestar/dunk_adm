@@ -16,7 +16,9 @@ class User extends StdController
 		}
 
 		$empUid = '';
-		$bChild = false;
+		$bTrans = false;
+		$bReturn = false;
+
 		$objMember = null;
 		$bPermit = false;
 		
@@ -37,6 +39,21 @@ class User extends StdController
 				if ($objEmpMember != null)
 					$empUid = $objEmpMember->mb_uid;
 				$bChild = $objMember->mb_emp_fid == $objAdmin->mb_fid;
+				if($_ENV['mem.trans_deny'])				//이송 검사
+					$bTrans = false;
+				else if($_ENV['mem.trans_lv1'] && !$bChild)
+					$bTrans = false;
+				else
+					$bTrans = true;;
+
+				if($_ENV['mem.return_deny'])				//환수 검사
+					$bReturn = false;
+				else if($_ENV['mem.return_lv1'] && !$bChild)
+					$bReturn = false;
+				else
+					$bReturn = true;;
+
+
 				$bPermit = true;
 			}
 		}
@@ -51,7 +68,8 @@ class User extends StdController
 				$userLevel, 
 				[ 'objMember' => $objMember,
 				'emp_uid' => $empUid,
-				'isChild' => $bChild, ]
+				'trnas_en' => $bTrans, 
+				'return_en' => $bReturn,]
 			);  
 		}
 		

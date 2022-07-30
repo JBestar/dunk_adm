@@ -402,7 +402,7 @@
 					<label>P</label>
 				</div>
 
-				<?php if(!$_ENV['mem.trans_deny'] || !$_ENV['mem.return_deny']) :  ?>
+				<?php if($trnas_en || $return_en) :  ?>
 
 				<div class="useredit-text-div">
 					<p>이동금액:</p> 
@@ -415,11 +415,11 @@
 					<button class="pbresult-money-but" id="money_5">50만원</button>  
 					<button class="pbresult-money-but" id="money_6">100만원</button>  
 				
-					<?php if(!$_ENV['mem.trans_deny']) :  ?>
+					<?php if($trnas_en) :  ?>
 						<button class="pbresult-list-view-but" id="useredit-transfer-but-id" style="margin-right:0px;">이송</button>  
 					<?php endif ?>
 
-					<?php if(!$_ENV['mem.return_deny']) :  ?>
+					<?php if($return_en) :  ?>
 						<button class="pbresult-list-view-but" id="useredit-return-but-id" style="margin-left:5px;">환수</button>  
 					<?php endif ?>
 				</div>

@@ -341,7 +341,7 @@ class Member_Model extends Model
      // 배팅금액 (하부포함)
      public function allGameRange(&$arrReqData, $confs)
      {
-         writeLog("allGameRange");
+        //  writeLog("allGameRange");
         if(!$confs['npg_deny']){
             $arrReqData['npb_range'] = $this->getBetRangeId($arrReqData, "bet_powerball");
             $arrReqData['nps_range'] = $this->getBetRangeId($arrReqData, "bet_powerladder");
@@ -370,7 +370,7 @@ class Member_Model extends Model
         }
 
         $arrReqData['rw_range'] = $this->getRwRangeId($arrReqData, "bet_reward");
-        writeLog("allGameRange END");
+        // writeLog("allGameRange END");
         
      }
 
@@ -614,12 +614,9 @@ class Member_Model extends Model
         }
     }
 
-    public function calculate($objEmp, $arrReqData, $confs){
-        $strTbColum = ' mb_fid, mb_uid, mb_level, mb_emp_fid, mb_state_active, mb_money, mb_live_money, mb_slot_money, mb_fslot_money, mb_kgon_money ';
-        $strTbRColum = ' r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_state_active, r.mb_money, r.mb_live_money, r.mb_slot_money, r.mb_fslot_money, r.mb_kgon_money ';
-        
-        // $strWhereMem = " AND (bet_emp_fid IN (SELECT mb_emp_fid FROM tbmember WHERE mb_fid != ".$objEmp->mb_fid." GROUP BY mb_emp_fid ) OR bet_mb_uid = '".$objEmp->mb_uid."')";
-        $strWhereMem = " AND bet_mb_uid IN (SELECT mb_uid from tbmember) ";
+    private function calcCommonSql($objEmp, $arrReqData){
+        $strTbColum = ' mb_fid, mb_uid, mb_level, mb_emp_fid, mb_state_active, mb_money, mb_point, mb_live_money, mb_slot_money, mb_fslot_money, mb_kgon_money ';
+        $strTbRColum = ' r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_state_active, r.mb_money, r.mb_point, r.mb_live_money, r.mb_slot_money, r.mb_fslot_money, r.mb_kgon_money ';
 
         $strSQL = 'WITH RECURSIVE tbmember ('.$strTbColum.') AS';
         $strSQL .= ' ( SELECT '.$strTbColum.' FROM '.$this->table." WHERE "; 
@@ -627,8 +624,16 @@ class Member_Model extends Model
         $strSQL .= ' UNION ALL SELECT '.$strTbRColum.' FROM '.$this->table.' r ';
         $strSQL .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
         //보유금액
-        $strSQL .= " SELECT SUM(mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money) AS result_1, COUNT(mb_fid) AS result_2 ";
+        $strSQL .= " SELECT SUM(mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money) AS result_1, ";
+        $strSQL .= " SUM(CASE WHEN mb_fid = ".$objEmp->mb_fid." THEN mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money ELSE 0 END) AS result_2 "; 
         $strSQL .= " FROM tbmember  WHERE mb_state_active != '".PERMIT_DELETE."' ";
+        //포인트
+        $strSQL .= " UNION ALL ( SELECT SUM(mb_point) AS result_1, ";
+        $strSQL .= " SUM(CASE WHEN mb_fid = ".$objEmp->mb_fid." THEN mb_point ELSE 0 END) AS result_2 ";
+        $strSQL .= " FROM tbmember  WHERE mb_state_active != '".PERMIT_DELETE."' )";
+        //회원수
+        $strSQL .= " UNION ALL ( SELECT COUNT(mb_fid) AS result_1, 0 AS result_2 ";
+        $strSQL .= " FROM tbmember  WHERE mb_state_active != '".PERMIT_DELETE."' )";
         //충전금액
         $strSQL .= " UNION ALL ( SELECT SUM(charge_money) AS result_1, '0' AS result_2 FROM ".$this->chargeTb;
         $strSQL.=" WHERE (charge_action_state = '2'  OR charge_action_state = '5') ";
@@ -641,6 +646,15 @@ class Member_Model extends Model
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
             $strSQL.=" AND ".getTimeRange("exchange_time_require", $arrReqData);
         $strSQL .= " AND exchange_mb_uid IN (SELECT mb_uid from tbmember ) )";
+
+        return $strSQL;
+    }
+
+    public function calculate($objEmp, $arrReqData, $confs){
+
+        $strSQL = $this->calcCommonSql($objEmp, $arrReqData);
+        // $strWhereMem = " AND (bet_emp_fid IN (SELECT mb_emp_fid FROM tbmember WHERE mb_fid != ".$objEmp->mb_fid." GROUP BY mb_emp_fid ) OR bet_mb_uid = '".$objEmp->mb_uid."')";
+        $strWhereMem = " AND bet_mb_uid IN (SELECT mb_uid from tbmember) ";
         //베팅금액
         $strSQL .= ' UNION ALL ( SELECT SUM(bet_money) AS result_1, SUM(bet_win_money) AS result_2 ';
         $strSQL .= '  FROM ( SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_slot';
@@ -698,7 +712,7 @@ class Member_Model extends Model
             $strSQL .= $strWhereMem." )";
         }
         $strSQL .= " ) AS bet_table ) ";
-        //포인트
+        //적립포인트
         $strSQL .= " UNION ALL ( SELECT SUM(rw_point) AS result_1, ";
         $strSQL .= " SUM(CASE WHEN rw_mb_fid = ".$objEmp->mb_fid." THEN rw_point ELSE 0 END) AS result_2 FROM ".$this->rewardTb;
         $strSQL .= " WHERE rw_fid >= ".$arrReqData['rw_range'][0]." AND rw_fid <= ".$arrReqData['rw_range'][1];
@@ -718,29 +732,8 @@ class Member_Model extends Model
     }
 
     public function calculateByGame($objEmp, $arrReqData){
-        $strTbColum = ' mb_fid, mb_uid, mb_level, mb_emp_fid, mb_state_active, mb_money, mb_live_money, mb_slot_money, mb_fslot_money, mb_kgon_money ';
-        $strTbRColum = ' r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_state_active, r.mb_money, r.mb_live_money, r.mb_slot_money, r.mb_fslot_money, r.mb_kgon_money ';
 
-        $strSQL = 'WITH RECURSIVE tbmember ('.$strTbColum.') AS';
-        $strSQL .= ' ( SELECT '.$strTbColum.' FROM '.$this->table." WHERE "; 
-        $strSQL .= " mb_fid = '".$objEmp->mb_fid."'";
-        $strSQL .= ' UNION ALL SELECT '.$strTbRColum.' FROM '.$this->table.' r ';
-        $strSQL .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
-        //보유금액
-        $strSQL .= " SELECT SUM(mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money) AS result_1, COUNT(mb_fid) AS result_2 ";
-        $strSQL .= " FROM tbmember  WHERE mb_state_active != '".PERMIT_DELETE."' ";
-        //충전금액
-        $strSQL .= " UNION ALL ( SELECT SUM(charge_money) AS result_1, '0' AS result_2 FROM ".$this->chargeTb;
-        $strSQL.=" WHERE (charge_action_state = '2'  OR charge_action_state = '5') ";
-        if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
-            $strSQL.=" AND ".getTimeRange("charge_time_require", $arrReqData);
-        $strSQL .= " AND charge_mb_uid IN (SELECT mb_uid from tbmember ) )";
-        //환전금액
-        $strSQL .= " UNION ALL ( SELECT SUM(exchange_money) AS result_1, '0' AS result_2 FROM ".$this->exchangeTb;
-        $strSQL.=" WHERE (exchange_action_state = '2'  OR exchange_action_state = '5') ";
-        if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
-            $strSQL.=" AND ".getTimeRange("exchange_time_require", $arrReqData);
-        $strSQL .= " AND exchange_mb_uid IN (SELECT mb_uid from tbmember ) )";
+        $strSQL = $this->calcCommonSql($objEmp, $arrReqData);
         //베팅금액
         $strSQL .= ' UNION ALL ( SELECT SUM(bet_money) AS result_1, SUM(bet_win_money) AS result_2 FROM';
         if ($arrReqData['type'] == GAME_POWER_BALL ) {
@@ -1399,7 +1392,7 @@ class Member_Model extends Model
             return 1;
         }
         $strError = $this->errors();
-        writeLog($strError);
+        // writeLog($strError);
         return -1;
     }
 

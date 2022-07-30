@@ -8,10 +8,11 @@
 	<th>ID</th>
 	<th>닉네임</th>
 	<th>구분</th>
+	<th>보유금</th>
+	<th>포인트</th>
 	<th>충전</th>
 	<th>환전</th>
 	<th>충환손익</th>
-	<th>보유금</th>
 	<th>배팅</th>
 	<th>적중</th>
 	<th>배팅손익</th>
@@ -19,9 +20,5 @@
 	<th>최종손익</th>				
 <?= $this->endSection() ?>
 <?= $this->section('calculate-script') ?>
-	<?php if(array_key_exists("app.produce", $_ENV)) :?>
-		<script src="<?php echo site_furl('/assets/js/allcalculate-script.js?t='.time());?>"></script>
-	<?php else : ?>
-		<script src="<?php echo site_furl('/assets/js/allcalculate-script.js?v=1');?>"></script>
-	<?php endif ?>
+	
 <?= $this->endSection() ?>

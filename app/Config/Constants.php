@@ -172,10 +172,15 @@ defined('CONF_BET_NL_DENY')     || define('CONF_BET_NL_DENY', 36);
 defined('CONF_BET_NP_DENY')     || define('CONF_BET_NP_DENY', 37);
 defined('CONF_BET_N2P_DENY')    || define('CONF_BET_N2P_DENY', 38);
 defined('CONF_BET_PN_DENY')     || define('CONF_BET_PN_DENY', 39);
-
+defined('CONF_BET_N2P_4EN')     || define('CONF_BET_N2P_4EN', 40);
+defined('CONF_BET_PAN_TYPE')    || define('CONF_BET_PAN_TYPE', 41);
+defined('CONF_BET_CONFIRM_DENY')|| define('CONF_BET_CONFIRM_DENY', 42);
 defined('CONF_BET_BLANK_EN')    || define('CONF_BET_BLANK_EN', 43);
 defined('CONF_TRANS_DENY')      || define('CONF_TRANS_DENY', 44);
 defined('CONF_RETURN_DENY')     || define('CONF_RETURN_DENY', 47);
+defined('CONF_TRANS_LV1')       || define('CONF_TRANS_LV1', 48);
+defined('CONF_RETURN_LV1')      || define('CONF_RETURN_LV1', 49);
+defined('CONF_NOTICE_DT')       || define('CONF_NOTICE_DT', 50);
 
 defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);
 defined('LEVEL_MASTER')        || define('LEVEL_MASTER', 101);

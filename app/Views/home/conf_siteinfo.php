@@ -137,20 +137,36 @@
 		<label for="confsite-multilog-check-id"> 회원가입시 중복로그인 허용</label>
 	</div>
 	<div class="confsite-site-check-div">
-		<?php if (is_null($arrConfig) || $arrConfig[CONF_TRANS_DENY-1]->conf_active != 1){ ?>
+		<?php if (is_null($arrConfig) || $arrConfig[CONF_TRANS_DENY-1]->conf_active == 1){ ?>
 			<input type="checkbox" id="confsite-transdeny-check-id">
 		<?php } else {?>
 			<input type="checkbox" id="confsite-transdeny-check-id" checked>
 		<?php }?>
-		<label for="confsite-transdeny-check-id"> 하부회원 머니이송 금지</label>
+		<label for="confsite-transdeny-check-id"> 하부회원 머니이송 허용</label>
+	</div>
+	<div class="confsite-site-check-div" style="padding-left:50px;">
+		<?php if (is_null($arrConfig) || $arrConfig[CONF_TRANS_LV1-1]->conf_active != 1){ ?>
+			<input type="checkbox" id="confsite-translv1-check-id">
+		<?php } else {?>
+			<input type="checkbox" id="confsite-translv1-check-id" checked>
+		<?php }?>
+		<label for="confsite-translv1-check-id"> 1단계만 허용</label>
 	</div>
 	<div class="confsite-site-check-div">
-		<?php if (is_null($arrConfig) || $arrConfig[CONF_RETURN_DENY-1]->conf_active != 1){ ?>
-			<input type="checkbox" id="confsite-returndeny-check-id">
+		<?php if (is_null($arrConfig) || $arrConfig[CONF_RETURN_DENY-1]->conf_active == 1){ ?>
+			<input type="checkbox" id="confsite-returndeny-check-id" >
 		<?php } else {?>
 			<input type="checkbox" id="confsite-returndeny-check-id" checked>
 		<?php }?>
-		<label for="confsite-returndeny-check-id"> 하부회원 머니환수 금지</label>
+		<label for="confsite-returndeny-check-id"> 하부회원 머니환수 허용</label>
+	</div>
+	<div class="confsite-site-check-div" style="padding-left:50px;">
+		<?php if (is_null($arrConfig) || $arrConfig[CONF_RETURN_LV1-1]->conf_active != 1){ ?>
+			<input type="checkbox" id="confsite-returnlv1-check-id">
+		<?php } else {?>
+			<input type="checkbox" id="confsite-returnlv1-check-id" checked>
+		<?php }?>
+		<label for="confsite-returnlv1-check-id"> 1단계만 허용</label>
 	</div>
 	<div class="confsite-button-group">
 		<button class="confsite-cancel-button" id="confsite-cancel-btn-id">취소</button>

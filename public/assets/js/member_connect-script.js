@@ -36,6 +36,10 @@ function showMember(arrMember) {
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_nickname;
         strBuf += "</td> <td>";
+        strBuf += parseInt(arrMember[nRow].mb_money).toLocaleString();
+        strBuf += "</td> <td>";
+        strBuf += parseInt(arrMember[nRow].mb_point).toLocaleString();
+        strBuf += "</td> <td>";
         strBuf += arrMember[nRow].sess_ip;
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].sess_join;

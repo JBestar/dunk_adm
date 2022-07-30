@@ -163,6 +163,16 @@ class ConfSite_Model extends Model
         $updateData['conf_active'] = $arrData['return_deny'];
         $arrBatch[] = $updateData;
 
+        $updateData = array();
+        $updateData['conf_id'] = CONF_TRANS_LV1;
+        $updateData['conf_active'] = $arrData['trans_lv1'];
+        $arrBatch[] = $updateData;
+
+        $updateData = array();
+        $updateData['conf_id'] = CONF_RETURN_LV1;
+        $updateData['conf_active'] = $arrData['return_lv1'];
+        $arrBatch[] = $updateData;
+
         return  $this->builder()->updateBatch($arrBatch, 'conf_id');
 
     }
@@ -286,16 +296,22 @@ class ConfSite_Model extends Model
     }
     
     public function readMemConf(){
-        $confIds = [CONF_TRANS_DENY, CONF_RETURN_DENY];  
+        $confIds = [CONF_TRANS_DENY, CONF_RETURN_DENY, CONF_TRANS_LV1, CONF_RETURN_LV1];  
         $arrConf = $this->find($confIds);
         $_ENV['mem.trans_deny'] = false;
         $_ENV['mem.return_deny'] = false;
+        $_ENV['mem.trans_lv1'] = false;
+        $_ENV['mem.return_lv1'] = false;
 
         foreach($arrConf as $objConf){
 			switch($objConf->conf_id){
 				case CONF_TRANS_DENY:	$_ENV['mem.trans_deny'] = $objConf->conf_active == STATE_ACTIVE?true:false;
 					break;
                 case CONF_RETURN_DENY:	$_ENV['mem.return_deny'] = $objConf->conf_active == STATE_ACTIVE?true:false;
+					break;
+                case CONF_TRANS_LV1:	$_ENV['mem.trans_lv1'] = $objConf->conf_active == STATE_ACTIVE?true:false;
+					break;
+                case CONF_RETURN_LV1:	$_ENV['mem.return_lv1'] = $objConf->conf_active == STATE_ACTIVE?true:false;
 					break;
 				default:break;
 			}

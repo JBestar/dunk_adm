@@ -1114,46 +1114,60 @@ class UserApi extends BaseController
                 
                 if(is_null($objChMember)){
                     $objResult->status = 'fail';
-                }else if($arrData['type'] == 2 && !$_ENV['mem.trans_deny']){                      //이송
+                }else if($arrData['type'] == 2){                      //이송
                     
-                    $iResult = 1;
-                    if($arrData['amount'] > $objEmp->mb_money){
-                        $iResult = $this->alltoGame($objEmp);
-                    } 
-
-                    if($iResult == 1){
+                    if($_ENV['mem.trans_deny']){
+                        $objResult->msg = '거절되었습니다.';
+                    } else if($_ENV['mem.trans_lv1'] && $objChMember->mb_emp_fid !== $objEmp->mb_fid){
+                        $objResult->msg = '거절되었습니다.';
+                    } else {
+                        $iResult = 1;
                         if($arrData['amount'] > $objEmp->mb_money){
-                            $objResult->msg = '이송금액이 보유금액을 초과하셧습니다.';
-                        } else if($this->modelMember->trasferMoney($objEmp, $objMember, $arrData['amount'])){
-
-                            $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, 0-$arrData['amount'], MONEYCHANGE_TRANS_DEC);
-                            $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, $arrData['amount'], MONEYCHANGE_TRANS_INC);
-                            $objResult->status = 'success';
+                            $iResult = $this->alltoGame($objEmp);
                         } 
-                    } else {
-                        $objResult->status = 'fail';
-                        $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
-                    }
-                } else if($arrData['type'] == 3 && !$_ENV['mem.return_deny']){               //환수
-                    $iResult = 1;
-                    if($arrData['amount'] > $objMember->mb_money){
-                        $iResult = $this->alltoGame($objMember);
-                    } 
-
-                    if($iResult == 1){
-                        if($arrData['amount'] > $objMember->mb_money){
-                            $arrData['amount'] = $objMember->mb_money;
+    
+                        if($iResult == 1){
+                            if($arrData['amount'] > $objEmp->mb_money){
+                                $objResult->msg = '이송금액이 보유금액을 초과하셧습니다.';
+                            } else if($this->modelMember->trasferMoney($objEmp, $objMember, $arrData['amount'])){
+    
+                                $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, 0-$arrData['amount'], MONEYCHANGE_TRANS_DEC);
+                                $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, $arrData['amount'], MONEYCHANGE_TRANS_INC);
+                                $objResult->status = 'success';
+                            } 
+                        } else {
+                            $objResult->status = 'fail';
+                            $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
                         }
-                        if($arrData['amount'] > 0 && $this->modelMember->trasferMoney($objMember, $objEmp, $arrData['amount'])){
+                    }
+                    
+                } else if($arrData['type'] == 3){               //환수
 
-                            $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, $arrData['amount'], MONEYCHANGE_EXCHANGE_INC);
-                            $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], MONEYCHANGE_EXCHANGE_DEC);
-                            $objResult->status = 'success';
-                        } 
+                    if($_ENV['mem.return_deny']){
+                        $objResult->msg = '거절되었습니다.';
+                    } else if($_ENV['mem.return_lv1'] && $objChMember->mb_emp_fid !== $objEmp->mb_fid){
+                        $objResult->msg = '거절되었습니다.';
                     } else {
-                        $objResult->status = 'fail';
-                        $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
+                        $iResult = 1;
+                        if($arrData['amount'] > $objMember->mb_money){
+                            $iResult = $this->alltoGame($objMember);
+                        } 
 
+                        if($iResult == 1){
+                            if($arrData['amount'] > $objMember->mb_money){
+                                $arrData['amount'] = $objMember->mb_money;
+                            }
+                            if($arrData['amount'] > 0 && $this->modelMember->trasferMoney($objMember, $objEmp, $arrData['amount'])){
+
+                                $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, $arrData['amount'], MONEYCHANGE_EXCHANGE_INC);
+                                $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], MONEYCHANGE_EXCHANGE_DEC);
+                                $objResult->status = 'success';
+                            } 
+                        } else {
+                            $objResult->status = 'fail';
+                            $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
+
+                        }
                     }
                 }
                 
