@@ -51,7 +51,7 @@
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_bg.ico?v=1');?>">
         <?php break; 
         case APP_DREAM :?>
-            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_d.ico');?>">
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_d.ico?v=1');?>">
         <?php break; 
         case APP_EMPEROR :?>
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_e.ico?v=1');?>">
