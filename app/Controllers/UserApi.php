@@ -1060,7 +1060,10 @@ class UserApi extends BaseController
                 } else if($arrData['type'] == 1){
                     $iResult = 1;
                     if(intval($objMember->mb_money) < $arrData['amount']){
-                        $iResult = $this->alltoGame($objMember);
+                        if(diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < DELAY_PLAYING){
+                            $iResult = 2;
+                        } 
+                        else $iResult = $this->alltoGame($objMember); 
                     } 
                     
                     if($iResult == 1){
@@ -1093,6 +1096,9 @@ class UserApi extends BaseController
                             $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], MONEYCHANGE_DEC);
                             $objResult->status = 'success';
                         }
+                    } else if($iResult == 2) {
+                        $objResult->status = 'fail';
+                        $objResult->msg = '회원이 게임플레이중이므로 환전 할수 없습니다.';
                     } else {
                         $objResult->status = 'fail';
                         $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
@@ -1198,7 +1204,7 @@ class UserApi extends BaseController
 
             $strUid = $this->session->user_id;
             $objEmp = $this->modelMember->getInfo($strUid);
-            $objMember = $this->modelMember->getInfoByFid($arrData['mb_fid']);
+            $objMember = $this->modelMember->getInfoByFid($arrData['mb_fid'], true);
 
             $objResult = new \stdClass();
 
@@ -1207,23 +1213,36 @@ class UserApi extends BaseController
             } else if($objEmp->mb_level < LEVEL_ADMIN) {
                 $objResult->status = 'fail';
             } else {
-                if($arrData['type'] == 0){
+                if($arrData['type'] == 0){              //머니회수
+                    // if(diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < DELAY_PLAYING){
+                    //     $iResult = 2;
+                    // } 
+                    // else 
                     $iResult = $this->alltoGame($objMember);
+
                     if($iResult == 1){
                         $nAmount = 0-$objMember->mb_money;
-                        if($this->modelMember->moneyProc($objMember, $nAmount)){
+                        if($nAmount == 0){
+                            $objResult->status = 'success';
+                        } else if( $this->modelMember->moneyProc($objMember, $nAmount)){
                             $moneyhistoryModel->registerWithdraw($objMember, $objEmp->mb_uid, $nAmount, MONEYCHANGE_WITHDRAW);
                             $objResult->status = 'success';
                         }
+                    } else if($iResult == 2) {
+                        $objResult->status = 'fail';
+                        $objResult->msg = '회원이 게임플레이중이므로 환전 할수 없습니다.';
                     } else {
                         $objResult->status = 'fail';
                         $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
                     }
                     
                 }
-                else if($arrData['type'] == 1 && $objMember->mb_point > 0){
+                else if($arrData['type'] == 1){ //포인트회수
                     $nAmount = 0-$objMember->mb_point;
-                    if($this->modelMember->moneyProc($objMember, 0, $nAmount)){
+                    if($nAmount == 0){
+                        $objResult->status = 'success';
+                    } 
+                    else if($this->modelMember->moneyProc($objMember, 0, $nAmount)){
                         $moneyhistoryModel->registerWithdraw($objMember, $objEmp->mb_uid, $nAmount, POINTHANGE_WITHDRAW);
                         $objResult->status = 'success';
                     }
