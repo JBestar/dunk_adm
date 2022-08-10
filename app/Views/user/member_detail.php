@@ -190,7 +190,7 @@
                                             <?php endif ?>
                                         </label></td>
                                         <td>Lv </td>
-                                        <td><label id="money"><?=$objMember->mb_grade?> Lv</label></td>
+                                        <td><label id="money"><?=$objMember->mb_grade?></label></td>
                                     </tr>
                                     <tr>
                                         <td>보유머니 </td>

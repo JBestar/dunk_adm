@@ -253,7 +253,7 @@ defined('ROUND_2MIN')    || define('ROUND_2MIN', 2);
 
 defined('DELAY_GAME')            || define('DELAY_GAME', 10);
 defined('DELAY_TRANSFER')        || define('DELAY_TRANSFER', 5);
-defined('DELAY_PLAYING')         || define('DELAY_PLAYING', 600); //게임 플레이 만료시간 (초)
+defined('DELAY_PLAYING')         || define('DELAY_PLAYING', 120); //게임 플레이 만료시간 (초)
 
 //money change type
 defined('MONEYCHANGE_CHARGE')    || define('MONEYCHANGE_CHARGE', 1);   
