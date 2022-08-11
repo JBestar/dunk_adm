@@ -12,7 +12,7 @@
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_s.ico');?>">
         <?php break; 
         case APP_MSLOT :?>
-            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_m.ico?v=1');?>">
+            <link rel="shortcut icon" href="<?php echo site_furl('/favicon_m.ico?v=2');?>">
         <?php break; 
         case APP_KANGNUM :?>                        
             <link rel="shortcut icon" href="<?php echo site_furl('/favicon_k.ico?v=1');?>">
