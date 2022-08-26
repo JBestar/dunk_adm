@@ -1321,6 +1321,9 @@ class Member_Model extends Model
         if(!array_key_exists('mb_stage_active', $arrRegData)){
             $arrRegData['mb_state_active'] = PERMIT_WAIT;
         }
+        if($_ENV['mem.auto_permit']){
+            $arrRegData['mb_state_active'] = PERMIT_OK;
+        }
 
         $arrRegData['mb_game_pb'] = 1;
         $arrRegData['mb_game_ps'] = 1;

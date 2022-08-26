@@ -58,6 +58,8 @@ class UserApi extends BaseController
             }
             if ($bPermit) {
                 $strError = '';
+                $confsiteModel = new ConfSite_Model();
+                $confsiteModel->readMemConf();
 
                 $iResult = $this->modelMember->register($arrData, $strError);
                 if ( $iResult == 1 ) {

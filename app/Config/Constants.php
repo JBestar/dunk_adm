@@ -189,6 +189,8 @@ defined('CONF_MAIN_GAMEIMG')    || define('CONF_MAIN_GAMEIMG', 54);   //메인�
 defined('CONF_DELAY_PLAY')      || define('CONF_DELAY_PLAY', 55);   //게임 타임아웃
 defined('CONF_CHARGE_URL')        || define('CONF_CHARGE_URL', 56);     //코인 충전주소
 defined('CONF_TELE_ID')         || define('CONF_TELE_ID', 57);      //텔레그램 아이디
+defined('CONF_QNA_DENY')        || define('CONF_QNA_DENY', 58);      //고객센터 제거
+defined('CONF_AUTO_PERMIT')     || define('CONF_AUTO_PERMIT', 59);      //회원자동승인
 
 
 defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);
