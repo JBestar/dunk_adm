@@ -145,7 +145,7 @@ class PbApi extends BaseController {
 
 				$betModel = new PbBet_Model();
 				$betModel->setType($arrReqData['game']);
-			} else if($arrReqData['game'] == GAME_POWER_LADDER || $arrReqData['game'] == GAME_BOGLE_BALL){
+			} else if($arrReqData['game'] == GAME_POWER_LADDER || $arrReqData['game'] == GAME_BOGLE_LADDER){
 
 				$betModel = new PsBet_Model();
 				$betModel->setType($arrReqData['game']);
@@ -196,7 +196,7 @@ class PbApi extends BaseController {
 
 				$betModel = new PbBet_Model();
 				$betModel->setType($arrReqData['game']);
-			} else if($arrReqData['game'] == GAME_POWER_LADDER || $arrReqData['game'] == GAME_BOGLE_BALL){
+			} else if($arrReqData['game'] == GAME_POWER_LADDER || $arrReqData['game'] == GAME_BOGLE_LADDER){
 
 				$betModel = new PsBet_Model();
 				$betModel->setType($arrReqData['game']);
