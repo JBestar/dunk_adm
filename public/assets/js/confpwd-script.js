@@ -67,11 +67,50 @@ function addBtnEvent() {
         location.reload();
     });
 
+    $("#recovery_useregg").click(function() {
+        $("#recovery_useregg").addClass("refresh");
+
+        var jsonData = { "self":1 };
+        jsonData = JSON.stringify(jsonData);
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: FURL + "/userapi/eggcollect",
+            data: { json_: jsonData },
+            success: function(jResult) {
+                $("#recovery_useregg").removeClass("refresh");
+                //console.log(jResult);
+                if (jResult.status == "success") {
+                    $("#confsite-egg-input-id").val(jResult.money);
+                    if(ipInfo.egg > 0)
+                        $("#recovery_useregg").hide();
+                    else 
+                        $("#recovery_useregg").show();
+                } else if (jResult.status == "fail") {
+                    alert("회수가 실패되었습니다.");
+                }
+            },
+            error: function(request, status, error) {
+                $("#recovery_useregg").removeClass("refresh");
+                console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            }
+
+        });
+
+    });
+
 }
 
 function setJoinIp(ipInfo) {
     $("#confsite-ip-input-id").val(ipInfo.ip_addr);
     $("#confsite-ip-check-id").prop('checked', ipInfo.ip_check > 0 ? true : false);
+    $("#confsite-egg-input-id").val(ipInfo.money);
+    if(ipInfo.egg > 0)
+        $("#recovery_useregg").show();
+    else 
+        $("#recovery_useregg").hide();
+
 }
 
 function requestJoinIp() {

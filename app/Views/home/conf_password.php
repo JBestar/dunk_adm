@@ -17,6 +17,10 @@
 		<p>접속 아이피:</p> <input type="text" id="confsite-ip-input-id" placeholder="X.X.X.X" pattern="^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$">
 		<p style="width:200px;" ></p>
 	</div>
+	<div class="confsite-password-text-div">
+		<p>보유금액:</p> <input type="text" id="confsite-egg-input-id" disabled>
+		<button class="recovery_btn" title="회수" id="recovery_useregg" style="margin-left:10px; margin-top:2px; display:none;"></button>
+	</div>
 	<?php } ?>
 	<div class="confsite-password-text-div" style="margin-top:20px">
 		<p>현재 비밀번호:</p> <input type="password" id="confsite-password-input-id">

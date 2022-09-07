@@ -1310,7 +1310,6 @@ class UserApi extends BaseController
     {
         if (is_login()) {
             // model
-            
             $strUid = $this->session->user_id;
             $objEmp = $this->modelMember->getInfo($strUid);
 
@@ -1319,7 +1318,10 @@ class UserApi extends BaseController
             } else{
                 $arrInfo = [
                     'ip_addr'  => $objEmp->mb_ip_join,
-                    'ip_check' => $objEmp->mb_state_view > 0 ? 1:0
+                    'ip_check' => $objEmp->mb_state_view > 0 ? 1:0,
+                    'fid' => $objEmp->mb_fid,
+                    'money' => allMoney($objEmp),
+                    'egg' => $objEmp->mb_live_money + $objEmp->mb_slot_money + $objEmp->mb_fslot_money + $objEmp->mb_kgon_money,
                 ];
                 $arrResult['data'] = $arrInfo;
                 $arrResult['status'] = 'success';
@@ -1375,12 +1377,19 @@ class UserApi extends BaseController
             
             $strUid = $this->session->user_id;
             $objEmp = $this->modelMember->getInfo($strUid);
-            $objMember = $this->modelMember->getInfoByFid($arrReqData['mb_fid']);
-			
-            if(!is_null($objMember) && $objEmp->mb_level >= LEVEL_ADMIN){
+			$bSelf = false;
+            if(array_key_exists('self', $arrReqData) && $arrReqData['self'] == 1)
+    			$bSelf = true;
+            if($bSelf)
+                $objMember = $objEmp;
+            else
+                $objMember = $this->modelMember->getInfoByFid($arrReqData['mb_fid']);
+
+
+            if(!is_null($objMember) && ($objEmp->mb_level >= LEVEL_ADMIN || $bSelf)){
                 $confsiteModel->readMemConf();
 
-                if(diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
+                if(!$bSelf && diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
                     $iResult = 2;
                 } else $iResult = $this->alltoGame($objMember);
 

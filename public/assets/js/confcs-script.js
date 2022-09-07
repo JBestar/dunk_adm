@@ -146,7 +146,7 @@ function addBtnEvent() {
     });
 
     $('#recovery_useregg').on('click', function() {
-        if(confirm("알회수 시간이 오래 걸릴 수 있습니다. 그래도 계속하시겠습니까?"))
+        if(confirm("알회수 진행시 몇분정도 소요될수 있습니다. 계속하시겠습니까?"))
             requestRecoveryEgg();
     });
 
