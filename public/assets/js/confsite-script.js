@@ -36,8 +36,10 @@ function readConfigToObject() {
     if($("#confsite-deposite-check-id").length > 0){
         jsonData.depositenotice = $("#confsite-deposite-text-id").summernote('code');
         jsonData.depositenotice_ok = $("#confsite-deposite-check-id").prop('checked') ? 1 : 0;
+        jsonData.depositenotice_color = $("#confsite-deposite-color-id").val();
         jsonData.urgentnotice = $("#confsite-urgentnotice-text-id").summernote('code');
         jsonData.urgentnotice_ok = $("#confsite-urgentnotice-check-id").prop('checked') ? 1 : 0;
+        jsonData.urgentnotice_color = $("#confsite-urgentnotice-color-id").val();
         jsonData.chargemanual = $("#confsite-chargemanual-text-id").summernote('code');
         jsonData.discharmanual = $("#confsite-discharmanual-text-id").summernote('code');
     }
@@ -86,7 +88,7 @@ function addBtnEvent() {
                 }
             },
             error: function(request, status, error) {
-                // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             }
 
         });
@@ -104,7 +106,18 @@ function addBtnEvent() {
     $("#confsite-returndeny-check-id").change(function() {
         onChangeElement();
     });
+    
+    // $("#confsite-deposite-color-id").change(function() {
+    //     $("#confsite-deposite-id").css("background-color", $(this).val());
+    // });
+    
+    $('#confsite-deposite-color-id').on('input', function() {
+        $("#confsite-deposite-id").css("background-color", $(this).val());
+    });
 
+    $("#confsite-urgentnotice-color-id").on('input', function() {
+        $("#confsite-urgentnotice-id").css("background-color", $(this).val());
+    });
 }
 
 function onChangeElement(){

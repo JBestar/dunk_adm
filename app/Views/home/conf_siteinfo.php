@@ -77,10 +77,27 @@
 		<input type="checkbox" id="confsite-deposite-check-id" checked>
 		<?php }?>
 		<label for="confsite-deposite-check-id"> 회원로그인시 충환전공지사항 현시</label>
+		
+		<span style="float:right; margin-right:19%; ">
+			<label> 배경색</label>
+			<?php if (strlen($arrConfig[CONF_NOTICE_BANK-1]->conf_idx) > 3){ ?>
+				<input type="color" value="<?php echo $arrConfig[CONF_NOTICE_BANK-1]->conf_idx; ?>" id="confsite-deposite-color-id" style="padding:0; width:80px;">
+			<?php } else {?>
+				<input type="color" value="#2A2A2A" id="confsite-deposite-color-id" style="padding:0; width:80px;">
+			<?php }?>
+		</span>
 	</div>
-
+	<style>
+		#confsite-deposite-id .note-editing-area, #confsite-urgentnotice-id .note-editing-area{
+			color:white;
+		}
+	</style>
 	<div class="width:100%; clear:both; ">
-		<form method="post" style="width:80%; margin-left:20px; background-color:white;">
+		<?php if (strlen($arrConfig[CONF_NOTICE_BANK-1]->conf_idx) > 3){ ?>
+			<form method="post" id="confsite-deposite-id" style="width:80%; margin-left:20px; background-color:<?php echo $arrConfig[CONF_NOTICE_BANK-1]->conf_idx; ?>;">
+		<?php } else {?>
+			<form method="post" id="confsite-deposite-id" style="width:80%; margin-left:20px; background-color:#2A2A2A;">
+		<?php }?>
 			<textarea id="confsite-deposite-text-id" name="editordata"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_NOTICE_BANK-1]->conf_content?><?php } ?></textarea>
 		</form>
 	</div>
@@ -92,9 +109,21 @@
 			<input type="checkbox" id="confsite-urgentnotice-check-id" checked>
 		<?php }?>
 		<label for="confsite-urgentnotice-check-id"> 회원로그인시 긴급공지사항 현시</label>
+		<span style="float:right; margin-right:19%; ">
+			<label> 배경색</label>
+		<?php if (strlen($arrConfig[CONF_NOTICE_URGENT-1]->conf_idx) > 3){ ?>
+			<input type="color" value="<?php echo $arrConfig[CONF_NOTICE_URGENT-1]->conf_idx; ?>" id="confsite-urgentnotice-color-id" style="padding:0; width:80px;">
+		<?php } else {?>
+			<input type="color" value="#2A2A2A" id="confsite-urgentnotice-color-id" style="padding:0; width:80px;">
+		<?php }?>
+		</span>
 	</div>
 	<div class="width:100%; clear:both; ">
-		<form method="post" style="width:80%; margin-left:20px; background-color:white;">
+		<?php if (strlen($arrConfig[CONF_NOTICE_URGENT-1]->conf_idx) > 3){ ?>
+			<form method="post"  id="confsite-urgentnotice-id" style="width:80%; margin-left:20px; background-color:<?php echo $arrConfig[CONF_NOTICE_URGENT-1]->conf_idx; ?>;">
+		<?php } else {?>
+			<form method="post"  id="confsite-urgentnotice-id" style="width:80%; margin-left:20px; background-color:#2A2A2A;">
+		<?php }?>
 			<textarea id="confsite-urgentnotice-text-id" name="editordata"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_NOTICE_URGENT-1]->conf_content?><?php } ?></textarea>
 		</form>
 	</div>

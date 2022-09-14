@@ -119,12 +119,14 @@ class ConfSite_Model extends Model
             $updateData['conf_id'] = CONF_NOTICE_BANK;
             $updateData['conf_content'] = $arrData['depositenotice'];
             $updateData['conf_active'] = $arrData['depositenotice_ok'];
+            $updateData['conf_idx'] = $arrData['depositenotice_color'];
             $arrBatch[] = $updateData;
 
             $updateData = array();
             $updateData['conf_id'] = CONF_NOTICE_URGENT;
             $updateData['conf_content'] = $arrData['urgentnotice'];
             $updateData['conf_active'] = $arrData['urgentnotice_ok'];
+            $updateData['conf_idx'] = $arrData['urgentnotice_color'];
             $arrBatch[] = $updateData;
     
             $updateData = array();
