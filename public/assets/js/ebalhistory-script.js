@@ -2,7 +2,9 @@ $(document).ready(function() {
     setNavBarElement();
     addEventListner();
     requestTotalPage();
-    
+    setTimeout(function() {
+        pbhitoryLoop();
+    }, 60000);
 });
 
 function requestPageInfo() {
@@ -31,6 +33,10 @@ function ShowBetHistory(jsonBetData) {
         strBuf += jsonBetData[nRow].bet_table_name;
         strBuf += "</td><td>";
         strBuf += parseInt(jsonBetData[nRow].bet_amount).toLocaleString() + "원";
+        strBuf += "</td><td>";
+        strBuf += getEvolSide(jsonBetData[nRow].bet_choice);
+        strBuf += "</td><td>";
+        strBuf += getEvolSide(jsonBetData[nRow].bet_result);
         strBuf += "</td><td>";
         strBuf += parseInt(jsonBetData[nRow].bet_win_amount).toLocaleString() + "원";
         strBuf += "</td>";
@@ -72,6 +78,7 @@ function requestBetHistory() {
     var dtEnd = $("#pbhistory-dateend-input-id").val();
     CountPerPage = $("#pbhistory-number-select-id").val();
     var strUser = $("#pbhistory-userid-input-id").val();
+    var strRoom = $("#pbhistory-room-input-id").val();
     var nPage = getActivePage();
 
     var jsonData = {
@@ -80,6 +87,7 @@ function requestBetHistory() {
         "start": dtStart,
         "end": dtEnd,
         "user": strUser,
+        "room": strRoom,
     };
     jsonData = JSON.stringify(jsonData);
     $(".loading").show();
@@ -110,12 +118,14 @@ function requestTotalPage() {
     var dtEnd = $("#pbhistory-dateend-input-id").val();
     CountPerPage = $("#pbhistory-number-select-id").val();
     var strUser = $("#pbhistory-userid-input-id").val();
+    var strRoom = $("#pbhistory-room-input-id").val();
     
     var jsonData = {
         "count": CountPerPage,
         "start": dtStart,
         "end": dtEnd,
         "user": strUser,
+        "room": strRoom,
     };
     jsonData = JSON.stringify(jsonData);
 
@@ -139,3 +149,13 @@ function requestTotalPage() {
     });
 }
 
+
+function pbhitoryLoop() {
+
+    requestBetHistory();
+
+    // 1초뒤에 다시 실행
+    setTimeout(function() {
+        pbhitoryLoop();
+    }, 60000);
+}

@@ -39,6 +39,11 @@ class EbalBet_Model extends Model
             $where.=" bet_site_uid = '".$reqData['user']."' ";
             $bWhere = true;
         }
+        if(strlen(trim($reqData['room'])) > 0){
+            if($bWhere) $where.= " AND ";
+            else $where.= " WHERE ";    
+            $where.=" (bet_table_id = '".$reqData['room']."' OR bet_table_name LIKE '%".trim($reqData['room'])."%' ) ";
+        }
 
         $strSql = "SELECT count('bet_id') as count FROM ".$this->table;
         $strSql .= $where;
@@ -63,7 +68,12 @@ class EbalBet_Model extends Model
             $where.=" bet_site_uid = '".$reqData['user']."' ";
             $bWhere = true;
         }
-        
+        if(strlen(trim($reqData['room'])) > 0){
+            if($bWhere) $where.= " AND ";
+            else $where.= " WHERE ";    
+            $where.=" (bet_table_id = '".$reqData['room']."' OR bet_table_name LIKE '%".trim($reqData['room'])."%' ) ";
+        }
+
         $strTbColum = " ".implode(", ", $this->allowedFields);
 
         $strSql = " SELECT ".$strTbColum." FROM ".$this->table;

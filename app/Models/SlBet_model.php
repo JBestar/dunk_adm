@@ -22,8 +22,6 @@ class SlBet_Model extends Model
         'bet_choice', 
         'bet_result',
         'point_amount', 
-        'employee_amount', 
-        'agency_amount', 
         'company_amount',        
     ];
     protected $primaryKey = 'bet_fid';

@@ -16,6 +16,8 @@ use App\Models\SessLog_Model;
 use App\Models\Block_Model;
 use App\Models\Reward_Model;
 use App\Models\CasPrd_Model;
+use App\Models\CasGame_Model;
+use App\Models\CasRoom_Model;
 use App\Models\SessTry_Model;
 use App\Models\EbalBet_Model;
 use App\Models\Eorder_Model;
@@ -1273,7 +1275,7 @@ public function withdrawlist(){
 			
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
-			
+
 			$arrBetAccount = null;
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 				if(strlen(trim($arrGetData['emp'])) > 0){
@@ -1343,6 +1345,7 @@ public function withdrawlist(){
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
 			
+			$objCount = null;
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 				$objCount = $ebetModel->searchCount($arrGetData);
 			}			
@@ -1362,8 +1365,6 @@ public function withdrawlist(){
 
 	//베팅리력결과를 Ajax로 전송
 	public function eorderlist(){ 
-		$jsonData = $_REQUEST['json_'];
-		$arrGetData = json_decode($jsonData, true);
 
 		if(is_login()) {
 			//model
@@ -1372,13 +1373,12 @@ public function withdrawlist(){
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
 
-			$arrBetResults = null;
-			if($objAdmin->mb_level >= LEVEL_ADMIN){
-				$arrBetResults = $eorderModel->searchList($arrGetData);
-			} 
-			
+			$stats = null;
+			if($objAdmin->mb_level >= LEVEL_ADMIN)
+				$stats = $eorderModel->getStatsByRound();	
+
 			$objResult = new \StdClass;
-			$objResult->data = $arrBetResults;	
+			$objResult->data = $stats;	
 			$objResult->status = "success";
 		
 			echo json_encode($objResult);
@@ -1391,34 +1391,6 @@ public function withdrawlist(){
 		} 		
 	}
 
-	//베팅리력결과 개수를 Ajax로 전송
-	public function eordercnt(){ 
-		$jsonData = $_REQUEST['json_'];
-		$arrGetData = json_decode($jsonData, true);
-
-		if(is_login()) {
-			//model
-			$eorderModel = new Eorder_Model();
-			
-			$strUid = $this->session->user_id;
-			$objAdmin = $this->modelMember->getInfo($strUid);
-			
-			if($objAdmin->mb_level >= LEVEL_ADMIN){
-				$objCount = $eorderModel->searchCount($arrGetData);
-			}			
-
-			$arrResult['data'] = $objCount;
-			$arrResult['status'] = "success";
-		
-			echo json_encode($arrResult);
-		}
-		else{
-		
-			$arrResult['status'] = "logout";
-
-			echo json_encode($arrResult);	
-		} 		
-	}
 
 	//베팅리력결과를 Ajax로 전송
 	public function slbetlist(){ 

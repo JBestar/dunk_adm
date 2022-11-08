@@ -20,9 +20,8 @@ class CsBet_Model extends Model
         'bet_game_type', 
         'bet_table_code', 
         'bet_choice', 
+        'bet_result', 
         'point_amount', 
-        'employee_amount', 
-        'agency_amount', 
         'company_amount', 
     ];
     protected $primaryKey = 'bet_fid';
@@ -44,6 +43,8 @@ class CsBet_Model extends Model
             $strCondition.=" AND bet_game_id = '".$arrReqData['mode']."' ";
         } else if(intval($arrReqData['mode']) == -10){
             $strCondition.=" AND bet_game_id = '0' AND bet_player_id = '0' ";
+            if(strlen($arrReqData['room']) > 0)
+                $strCondition.=" AND bet_table_code in ( SELECT tid FROM  casino_game WHERE tid = '".$arrReqData['room']."' OR name LIKE '%".$arrReqData['room']."%' ) ";
         }
 
         //총배팅금, 적중금
@@ -105,20 +106,26 @@ class CsBet_Model extends Model
             if($bWhere) $strWhere.= " AND ";
             else $strWhere.= " WHERE ";
             $strWhere.=" bet_game_id = '".$arrReqData['mode']."' ";
+            $bWhere = true;
         } else if(intval($arrReqData['mode']) == -10){
             if($bWhere) $strWhere.= " AND ";
             else $strWhere.= " WHERE ";
             $strWhere.=" bet_game_id = '0' AND bet_player_id = '0' ";
+            if(strlen($arrReqData['room']) > 0)
+                $strWhere.=" AND bet_table_code in ( SELECT tid FROM  casino_game WHERE tid = '".$arrReqData['room']."' OR name LIKE '%".$arrReqData['room']."%' ) ";
+            $bWhere = true;
         }
         if($objEmp->mb_level < LEVEL_ADMIN){
-            $strWhere.=" AND bet_mb_uid in ( SELECT mb_uid FROM  tbmember UNION ALL SELECT '".$objEmp->mb_uid."' AS mb_uid ) ";
+            if($bWhere) $strWhere.= " AND ";
+            else $strWhere.= " WHERE ";  
+            $strWhere.=" bet_mb_uid in ( SELECT mb_uid FROM  tbmember UNION ALL SELECT '".$objEmp->mb_uid."' AS mb_uid ) ";
         }
         $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
         $strWhere.=" ORDER BY bet_time DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
         
         $strSql = "";
         $strSql .= "SELECT bet_fid, bet_idx, bet_mb_uid, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_id, bet_game_type, bet_table_code, ";
-        $strSql .= " bet_choice, ".$this->mGameTable.".name as game_name, rw_mb_uid, rw_point, ".$this->mPrdTable.".name as prd_name";
+        $strSql .= " bet_choice, bet_result, ".$this->mGameTable.".name as game_name, rw_mb_uid, rw_point, ".$this->mPrdTable.".name as prd_name";
         $strSql .= " FROM ( ";
 
         $tbBetSearch = "bet_search";
@@ -161,7 +168,7 @@ class CsBet_Model extends Model
         // writeLog($strSql);
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();
-        // writeLog("searchCount End");
+        // writeLog("search End");
         
         return $result; 
 
@@ -212,6 +219,8 @@ class CsBet_Model extends Model
             if($bWhere) $strSql.= " AND ";
             else $strSql.= " WHERE ";    
             $strSql.=" bet_game_id = '0' AND bet_player_id = '0' ";
+            if(strlen($arrReqData['room']) > 0)
+                $strSql.=" AND bet_table_code in ( SELECT tid FROM  casino_game WHERE tid = '".$arrReqData['room']."' OR name LIKE '%".$arrReqData['room']."%' ) ";
             $bWhere = true;
         }
         if($objEmp->mb_level < LEVEL_ADMIN){

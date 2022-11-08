@@ -8,6 +8,7 @@
             <label> ~ </label>
             <input type="datetime-local" id="pbhistory-dateend-input-id"  value="<?php echo date('Y-m-d')."T23:59"; ?>" style="margin-right:10px">
             <input type="text" placeholder="     아이디" class="pbresult-text-input" id="pbhistory-userid-input-id" >
+			<input type="text" placeholder="            게임방" class="pbresult-text-input" id="pbhistory-room-input-id"  style="width:150px;">
 
             <select name="pbresult-number" class="pbresult-number-select" id="pbhistory-number-select-id" style="width:70px; margin-left:10px;">
 				<option value="10">10개</option>
@@ -26,6 +27,8 @@
 					<th>게임종류</th>
 					<th>게임방</th>
 					<th>배팅금</th>
+					<th>배팅선택</th>
+					<th>경기결과</th>
 					<th>적중금</th>
 					<th>배팅결과</th>
 				</tr>

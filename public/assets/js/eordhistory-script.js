@@ -1,51 +1,87 @@
 $(document).ready(function() {
     setNavBarElement();
     addEventListner();
-    requestTotalPage();
     requestConfBetSite();
+    ordhitoryLoop();
 });
 
-function requestPageInfo() {
-    requestBetHistory();
-}
-
-
 //Function to Show Betting History
-function ShowBetHistory(jsonBetData) {
+function ShowOrdHistory(jsonBetData) {
     var elemBetDataTb = document.getElementById("pbbet-table-id");
     var strBuf = "";
-    var curPage = getActivePage();
-    var firstIdx = (curPage - 1) * CountPerPage;
+    var strBuf = "";
 
-    for (nRow in jsonBetData) {
+    if(jsonBetData != null && jsonBetData.length > 0 ){
 
-        strBuf += "<tr><td>";
-        strBuf += (parseInt(nRow) + firstIdx + 1);
-        strBuf += "</td><td>";
-        strBuf += jsonBetData[nRow].mb_uid;
-        strBuf += "</td><td>";
-        strBuf += jsonBetData[nRow].ord_tm_req;
-        strBuf += "</td><td>";
-        strBuf += jsonBetData[nRow].ord_game_type;
-        strBuf += "</td><td>";
-        strBuf += jsonBetData[nRow].ord_table_name;
-        strBuf += "</td><td>";
-        strBuf += parseInt(jsonBetData[nRow].ord_amount).toLocaleString() + "원";
-        strBuf += "</td><td>";
-        strBuf += jsonBetData[nRow].ord_choice;
-        strBuf += "</td>";
-        strResult = "<td>";
-        if (jsonBetData[nRow].ord_state == 1) {
-            strResult = "<td  class = 'pb-home-table-betstate-earn'>베팅";
-        } else if (jsonBetData[nRow].ord_state == 5) {
-            strResult = "<td  class = 'pb-home-table-betstate-wait'>거절";
-        } else {
-            strResult = "<td  class = 'pb-home-table-betstate-loss'>대기"; //
+        var nRow = 0;
+        var cntRow = jsonBetData.length;
+        var idx = 1; 
+        var balPlayer = "", balBanker = "";
+        while(nRow < cntRow) {
+            strBuf += "<tr><td>";
+            strBuf += idx;
+            strBuf += "</td><td>";
+            strBuf += jsonBetData[nRow].name;
+            strBuf += "</td><td>";
+
+            if(jsonBetData[nRow].ord_choice == null ){
+                
+                strBuf += getEvolSide("Player");
+                strBuf += "</td><td></td><td></td></tr>";
+            
+                strBuf += "<tr><td></td><td></td><td>";
+                strBuf += getEvolSide("Banker");
+                strBuf += "</td><td></td><td>";
+                nRow ++;
+            } else if(jsonBetData[nRow].ord_choice == "Player") {
+                if(nRow+1 < cntRow && jsonBetData[nRow].tid === jsonBetData[nRow+1].tid && jsonBetData[nRow+1].ord_choice == "Banker"){
+                    if(jsonBetData[nRow].ord_amount == jsonBetData[nRow+1].ord_amount){
+                        balPlayer = "";
+                        balBanker = "";
+                    } else if(jsonBetData[nRow].ord_amount > jsonBetData[nRow+1].ord_amount){
+                        balPlayer = (jsonBetData[nRow].ord_amount - jsonBetData[nRow+1].ord_amount).toLocaleString();
+                        balBanker = "";
+                    } else if(jsonBetData[nRow].ord_amount < jsonBetData[nRow+1].ord_amount){
+                        balPlayer = "";
+                        balBanker = (jsonBetData[nRow+1].ord_amount - jsonBetData[nRow].ord_amount).toLocaleString();
+                    } 
+                    
+                    strBuf += getEvolSide("Player");
+                    strBuf += "</td><td>"+parseInt(jsonBetData[nRow].ord_amount).toLocaleString();
+                    strBuf += "</td><td>"+balPlayer+"</td></tr>";
+
+                    strBuf += "<tr><td></td><td></td><td>";
+                    strBuf += getEvolSide("Banker");
+                    strBuf += "</td><td>"+parseInt(jsonBetData[nRow+1].ord_amount).toLocaleString();
+                    strBuf += "</td><td>"+balBanker;
+                    nRow +=2;
+                } else {
+                    strBuf += getEvolSide("Player");
+                    strBuf += "</td><td>"+parseInt(jsonBetData[nRow].ord_amount).toLocaleString();
+                    strBuf += "</td><td>"+parseInt(jsonBetData[nRow].ord_amount).toLocaleString();
+                    strBuf += "</td></tr>";
+
+                    strBuf += "<tr><td></td><td></td><td>";
+                    strBuf += getEvolSide("Banker");
+                    strBuf += "</td><td></td><td>";
+                    nRow ++;
+                }
+            } else if(jsonBetData[nRow].ord_choice == "Banker") {
+                strBuf += getEvolSide("Player");
+                strBuf += "</td><td></td><td></td></tr>";
+            
+                strBuf += "<tr><td></td><td></td><td>";
+                strBuf += getEvolSide("Banker");
+                strBuf += "</td><td>"+parseInt(jsonBetData[nRow].ord_amount).toLocaleString();
+                strBuf += "</td><td>"+parseInt(jsonBetData[nRow].ord_amount).toLocaleString();
+                nRow ++;
+            }
+            strBuf += "</td></tr>";
+
+            idx ++;
         }
-        strBuf += strResult;
-        strBuf += "</td></tr>";
-
     }
+
     if (strBuf.length < 1) {
         strBuf = "<tr><td colspan='8'>자료가 없습니다.</td></tr>";
     }
@@ -53,17 +89,8 @@ function ShowBetHistory(jsonBetData) {
 
 }
 
-
 function addEventListner() {
 
-    $("#pbhistory-list-view-but-id").click(function() {
-        requestTotalPage();
-    });
-
-    $("#pbhistory-number-select-id").change(function() {
-        requestTotalPage();
-    });
-    
     $("#ebal-start-but-id").click(function() {
         setEbalState(1);
     });
@@ -74,27 +101,18 @@ function addEventListner() {
 }
 
 //Function to Request Betting History to WebServer
-function requestBetHistory() {
+function requestOrdHistory() {
 
-    CountPerPage = $("#pbhistory-number-select-id").val();
-    var nPage = getActivePage();
-
-    var jsonData = {
-        "count": CountPerPage,
-        "page": nPage,
-    };
-    jsonData = JSON.stringify(jsonData);
-    $(".loading").show();
+    // $(".loading").show();
     $.ajax({
         url: FURL + '/api/eorderlist',
-        data: { json_: jsonData },
         type: 'post',
         dataType: "json",
         success: function(jResult) {
-            $(".loading").hide();
+            // $(".loading").hide();
             // console.log(jResult);
             if (jResult.status == "success") {
-                ShowBetHistory(jResult.data);
+                ShowOrdHistory(jResult.data);
             }
         },
         error: function(request, status, error) {
@@ -106,33 +124,15 @@ function requestBetHistory() {
 }
 
 
-function requestTotalPage() {
 
-    CountPerPage = $("#pbhistory-number-select-id").val();
-    
-    var jsonData = {
-        "count": CountPerPage,
-    };
-    jsonData = JSON.stringify(jsonData);
+function ordhitoryLoop() {
 
-    $.ajax({
-        url: FURL + '/api/eordercnt',
-        data: { json_: jsonData },
-        dataType: 'json',
-        type: 'post',
-        success: function(jResult) {
-            // console.log(jResult);
-            if (jResult.status == "success") {
-                TotalCount = jResult.data.count;
-                setFirstPage();
-                requestBetHistory();
-            }
-        },
-        error: function(request, status, error) {
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-        }
+    requestOrdHistory();
 
-    });
+    // 1초뒤에 다시 실행
+    setTimeout(function() {
+        ordhitoryLoop();
+    }, 10000);
 }
 
 function requestConfBetSite() {
