@@ -21,28 +21,74 @@ class EbalBet_Model extends Model
         'bet_win_amount',
         'bet_choice',
         'bet_result',
-        
+        'bet_player',
+        'bet_banker',
+        'bet_type',
+
     ];
     protected $primaryKey = 'bet_id';
 
-    public function searchCount($reqData){
-
-        $bWhere = false;
-        $where = "";
+    
+    function getBetAccount($reqData){
+        
+        $where = " WHERE bet_type <> ".BET_TYPE_FORCE ;
         if(strlen($reqData['start']) > 0 && strlen($reqData['end']) > 0 ){
-            $where.=" WHERE ".getTimeRange('bet_tm_req', $reqData);
-            $bWhere = true;
+            $where.=" AND ".getTimeRange('bet_tm_req', $reqData);
         }
         if(strlen($reqData['user']) > 0){
-            if($bWhere) $where.= " AND ";
-            else $where.= " WHERE ";    
-            $where.=" bet_site_uid = '".$reqData['user']."' ";
-            $bWhere = true;
+            $where.=" AND bet_site_uid = '".$reqData['user']."' ";
         }
         if(strlen(trim($reqData['room'])) > 0){
-            if($bWhere) $where.= " AND ";
-            else $where.= " WHERE ";    
-            $where.=" (bet_table_id = '".$reqData['room']."' OR bet_table_name LIKE '%".trim($reqData['room'])."%' ) ";
+            $where.=" AND (bet_table_id = '".$reqData['room']."' OR bet_table_name LIKE '%".trim($reqData['room'])."%' ) ";
+        }
+
+        //총배팅금, 적중금
+        $arrSum = array();
+        $strSql = " SELECT SUM(bet_amount) AS bet_amount_sum, SUM(bet_win_amount) AS win_amount_sum, ";
+        $strSql .= " SUM(CASE WHEN bet_type= 0 AND bet_choice = 'Banker' AND bet_result = 'Banker' THEN FLOOR(bet_player DIV 1000)*50 ELSE 0 END) AS profit_sum1, ";
+        $strSql .= " SUM(CASE WHEN bet_type= 1 AND bet_result = 'Banker' THEN bet_player % 1000 + FLOOR(bet_player DIV 1000)*50 ELSE 0 END) AS profit_sum2, ";
+        $strSql .= " SUM(CASE WHEN bet_type= 1 AND bet_result = 'Player' THEN bet_banker % 1000 ELSE 0 END) AS profit_sum3 ";
+        $strSql .= " FROM ".$this->table;
+        $strSql .= $where;
+        $objResult = $this -> db -> query($strSql)->getRow();
+
+        $nSum = 0;
+        if(!is_null($objResult->bet_amount_sum)) {
+            $nSum = $objResult->bet_amount_sum;
+        }
+        $arrSum[0] = $nSum;
+        $nSum = 0;
+        if(!is_null($objResult->win_amount_sum)) {
+            $nSum = $objResult->win_amount_sum;
+        }
+        $arrSum[1] = $nSum;
+        //totabl profit
+        $nSum = 0;
+        if(!is_null($objResult->profit_sum1)) {
+            $nSum += intval($objResult->profit_sum1);
+        }
+        if(!is_null($objResult->profit_sum2)) {
+            $nSum += intval($objResult->profit_sum2);
+        }
+        if(!is_null($objResult->profit_sum3)) {
+            $nSum += intval($objResult->profit_sum3);
+        }
+        $arrSum[2] = $nSum;
+        
+        return $arrSum;
+    }
+
+    public function searchCount($reqData){
+
+        $where = " WHERE bet_type <> ".BET_TYPE_FORCE ;
+        if(strlen($reqData['start']) > 0 && strlen($reqData['end']) > 0 ){
+            $where.=" AND ".getTimeRange('bet_tm_req', $reqData);
+        }
+        if(strlen($reqData['user']) > 0){
+            $where.=" AND bet_site_uid = '".$reqData['user']."' ";
+        }
+        if(strlen(trim($reqData['room'])) > 0){
+            $where.=" AND (bet_table_id = '".$reqData['room']."' OR bet_table_name LIKE '%".trim($reqData['room'])."%' ) ";
         }
 
         $strSql = "SELECT count('bet_id') as count FROM ".$this->table;
@@ -56,22 +102,15 @@ class EbalBet_Model extends Model
 
     public function searchList($reqData){
         
-        $bWhere = false;
-        $where = "";
+        $where = " WHERE bet_type <> ".BET_TYPE_FORCE;
         if(strlen($reqData['start']) > 0 && strlen($reqData['end']) > 0 ){
-            $where.=" WHERE ".getTimeRange('bet_tm_req', $reqData);
-            $bWhere = true;
+            $where.=" AND ".getTimeRange('bet_tm_req', $reqData);
         }
         if(strlen($reqData['user']) > 0){
-            if($bWhere) $where.= " AND ";
-            else $where.= " WHERE ";    
-            $where.=" bet_site_uid = '".$reqData['user']."' ";
-            $bWhere = true;
+            $where.=" AND  bet_site_uid = '".$reqData['user']."' ";
         }
         if(strlen(trim($reqData['room'])) > 0){
-            if($bWhere) $where.= " AND ";
-            else $where.= " WHERE ";    
-            $where.=" (bet_table_id = '".$reqData['room']."' OR bet_table_name LIKE '%".trim($reqData['room'])."%' ) ";
+            $where.=" AND (bet_table_id = '".$reqData['room']."' OR bet_table_name LIKE '%".trim($reqData['room'])."%' ) ";
         }
 
         $strTbColum = " ".implode(", ", $this->allowedFields);

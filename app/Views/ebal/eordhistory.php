@@ -10,7 +10,7 @@
 			</label>
 
 			<div style="float:right">
-				<!-- <label style="background:#00ff00; color:black; font-size:16px; padding:5px 20px;">기동중</label> -->
+				<label id="ebal-balance-id" style="color:#ea564b; font-size:16px; padding:5px 20px; display:none;">보유알</label>
 				<button class="pbresult-list-view-but" id="ebal-start-but-id" style="margin-right:0px; " disabled>시작</button>
 				<button class="pbresult-list-view-but" id="ebal-stop-but-id" style="margin-right:3px; " disabled>정지</button>
 

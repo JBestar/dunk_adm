@@ -1313,12 +1313,15 @@ public function withdrawlist(){
 			$objAdmin = $this->modelMember->getInfo($strUid);
 
 			$arrBetResults = null;
+			$arrBetAccount = null;
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 				$arrBetResults = $ebetModel->searchList($arrGetData);
+				$arrBetAccount = $ebetModel->getBetAccount($arrGetData);
 			} 
 			
 			$objResult = new \StdClass;
 			$objResult->data = $arrBetResults;	
+			$objResult->account = $arrBetAccount;
 			$objResult->status = "success";
 		
 			echo json_encode($objResult);
@@ -1369,13 +1372,20 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$eorderModel = new Eorder_Model();
+			$confsiteModel = new ConfSite_Model();
 			
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
 
 			$stats = null;
-			if($objAdmin->mb_level >= LEVEL_ADMIN)
-				$stats = $eorderModel->getStatsByRound();	
+			$agBalance = -1;
+			if($objAdmin->mb_level >= LEVEL_ADMIN){
+				$data = $confsiteModel->getEvolSite();
+				
+				if($data[3] == STATE_ACTIVE){
+					$stats = $eorderModel->getStatsByRound();	
+				}
+			}
 
 			$objResult = new \StdClass;
 			$objResult->data = $stats;	

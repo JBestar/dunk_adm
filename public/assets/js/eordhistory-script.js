@@ -36,16 +36,22 @@ function ShowOrdHistory(jsonBetData) {
             } else if(jsonBetData[nRow].ord_choice == "Player") {
                 if(nRow+1 < cntRow && jsonBetData[nRow].tid === jsonBetData[nRow+1].tid && jsonBetData[nRow+1].ord_choice == "Banker"){
                     if(jsonBetData[nRow].ord_amount == jsonBetData[nRow+1].ord_amount){
-                        balPlayer = "";
-                        balBanker = "";
+                        balPlayer = "0";
+                        balBanker = "0";
                     } else if(jsonBetData[nRow].ord_amount > jsonBetData[nRow+1].ord_amount){
                         balPlayer = (jsonBetData[nRow].ord_amount - jsonBetData[nRow+1].ord_amount).toLocaleString();
-                        balBanker = "";
+                        balBanker = "0";
                     } else if(jsonBetData[nRow].ord_amount < jsonBetData[nRow+1].ord_amount){
-                        balPlayer = "";
+                        balPlayer = "0";
                         balBanker = (jsonBetData[nRow+1].ord_amount - jsonBetData[nRow].ord_amount).toLocaleString();
                     } 
                     
+                    if(balPlayer < 1000)
+                        balPlayer = 0;
+
+                    if(balBanker < 1000)
+                        balBanker = 0;
+
                     strBuf += getEvolSide("Player");
                     strBuf += "</td><td>"+parseInt(jsonBetData[nRow].ord_amount).toLocaleString();
                     strBuf += "</td><td>"+balPlayer+"</td></tr>";
@@ -56,24 +62,32 @@ function ShowOrdHistory(jsonBetData) {
                     strBuf += "</td><td>"+balBanker;
                     nRow +=2;
                 } else {
+                    
+                    balPlayer = jsonBetData[nRow].ord_amount;
+                    if(balPlayer < 1000)
+                        balPlayer = 0;
+
                     strBuf += getEvolSide("Player");
                     strBuf += "</td><td>"+parseInt(jsonBetData[nRow].ord_amount).toLocaleString();
-                    strBuf += "</td><td>"+parseInt(jsonBetData[nRow].ord_amount).toLocaleString();
+                    strBuf += "</td><td>"+parseInt(balPlayer).toLocaleString();
                     strBuf += "</td></tr>";
 
-                    strBuf += "<tr><td></td><td></td><td>";
+                    strBuf += "<tr><td>0</td><td>0</td><td>";
                     strBuf += getEvolSide("Banker");
-                    strBuf += "</td><td></td><td>";
+                    strBuf += "</td><td>0</td><td>0";
                     nRow ++;
                 }
             } else if(jsonBetData[nRow].ord_choice == "Banker") {
                 strBuf += getEvolSide("Player");
-                strBuf += "</td><td></td><td></td></tr>";
+                strBuf += "</td><td>0</td><td>0</td></tr>";
             
+                balBanker = jsonBetData[nRow].ord_amount;
+                if(balBanker < 1000)
+                    balBanker = 0;
                 strBuf += "<tr><td></td><td></td><td>";
                 strBuf += getEvolSide("Banker");
                 strBuf += "</td><td>"+parseInt(jsonBetData[nRow].ord_amount).toLocaleString();
-                strBuf += "</td><td>"+parseInt(jsonBetData[nRow].ord_amount).toLocaleString();
+                strBuf += "</td><td>"+parseInt(balBanker).toLocaleString();
                 nRow ++;
             }
             strBuf += "</td></tr>";
@@ -113,6 +127,7 @@ function requestOrdHistory() {
             // console.log(jResult);
             if (jResult.status == "success") {
                 ShowOrdHistory(jResult.data);
+                
             }
         },
         error: function(request, status, error) {
@@ -129,9 +144,10 @@ function ordhitoryLoop() {
 
     requestOrdHistory();
 
-    // 1초뒤에 다시 실행
+    // 10초뒤에 다시 실행
     setTimeout(function() {
         ordhitoryLoop();
+        requestConfBetSite();
     }, 10000);
 }
 
@@ -168,12 +184,17 @@ function showConfSite(arrData) {
         $("#ebal-start-but-id").css("background", '#85ff8e');
         $("#ebal-stop-but-id").css("background", 'white');
 
+        $('#ebal-balance-id').show();
+        $('#ebal-balance-id').text(`보유알: ${arrData[7].toLocaleString()}`);
     } else {
         $("#ebal-start-but-id").attr("disabled", false);
         $("#ebal-stop-but-id").attr("disabled", true);
 
         $("#ebal-start-but-id").css("background", 'white');
         $("#ebal-stop-but-id").css("background", '#ff3a5a');
+
+        $('#ebal-balance-id').hide();
+
     }
 
 }

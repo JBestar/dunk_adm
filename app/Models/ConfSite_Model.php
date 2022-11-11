@@ -81,7 +81,7 @@ class ConfSite_Model extends Model
 
     public function getEvolSite(){
 
-        $data = ["", "", "", 0, 0, 0, 0 ];
+        $data = ["", "", "", 0, 0, 0, 0, 0 ];
 
         $objConfig = $this->where('conf_id', CONF_EVOLSITE)->first();
         if(!is_null($objConfig)){
@@ -90,7 +90,7 @@ class ConfSite_Model extends Model
                 $data[0] = $info[0];   
                 $data[1] = $info[1];   
                 $data[2] = $info[2];   
-                // $data[3] = $objConfig->conf_active;
+                $data[7] = $objConfig->conf_active;
                 $info = explode('#', $objConfig->conf_idx);
                 if(count($info) >= 3){
                     $data[4] = intval($info[0]);
@@ -313,8 +313,8 @@ class ConfSite_Model extends Model
     }
 
     public function getSiteConf(){
-        $confIds = [CONF_SITENAME, CONF_GAMEPER_FULL, CONF_NPG_DENY, CONF_BPG_DENY,  CONF_CAS_DENY, 
-           CONF_SLOT_DENY, CONF_KGON_ENABLE, CONF_EOS5_ENABLE, CONF_EOS3_ENABLE, CONF_COIN5_ENABLE, CONF_COIN3_ENABLE];  
+        $confIds = [CONF_SITENAME, CONF_GAMEPER_FULL, CONF_NPG_DENY, CONF_BPG_DENY,  CONF_CAS_DENY, CONF_SLOT_DENY, 
+           CONF_KGON_ENABLE, CONF_EOS5_ENABLE, CONF_EOS3_ENABLE, CONF_COIN5_ENABLE, CONF_COIN3_ENABLE, CONF_EVOLSITE];  
         return $this->find($confIds);
     }
 
