@@ -13,6 +13,7 @@
 				<option value="1" >NINE</option>
 				<option value="2" >AMAZON</option>
 				<option value="11" >LUCKY</option>
+				<option value="12" >VEDA</option>
 			</select>
 		</div>
 		<div class="confsite-game-text-div">
