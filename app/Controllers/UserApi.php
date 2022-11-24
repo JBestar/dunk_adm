@@ -44,7 +44,13 @@ class UserApi extends BaseController
             $arrData['mb_emp_fid'] = 0;
             if (strlen($arrData['mb_emp_uid']) > 0){
                 $objEmp = $this->modelMember->getInfo($arrData['mb_emp_uid']);
-                if ($objEmp == null || $objEmp->mb_level <= LEVEL_MIN){
+                $minLevel = LEVEL_MIN;
+                writeLog("Level" . intval($_ENV['app.level_limit']));
+                if(array_key_exists('app.level_limit', $_ENV) && intval($_ENV['app.level_limit']) > 0 ){
+                    $minLevel = LEVEL_MAX - intval($_ENV['app.level_limit']);
+                }
+
+                if ($objEmp == null || $objEmp->mb_level <= $minLevel){
                     $arrResult['status'] = 'employee_error';
                     echo json_encode($arrResult);
                     return;

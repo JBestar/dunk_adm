@@ -101,7 +101,7 @@ class BaseController extends Controller
 					break;
 				case CONF_COIN3_ENABLE:	$confs['coin3_enable'] = $objConf->conf_active == STATE_ACTIVE?true:false;
 					break;
-				case CONF_EVOLSITE:	$confs['ebal_enable'] = $objConf->conf_active >= 0? true:false;
+				case CONF_EVOLSITE:	$confs['ebal_enable'] = $objConf->conf_active >= -2? true:false;
 					break;
 				default:break;
 			}
