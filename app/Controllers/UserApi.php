@@ -45,7 +45,7 @@ class UserApi extends BaseController
             if (strlen($arrData['mb_emp_uid']) > 0){
                 $objEmp = $this->modelMember->getInfo($arrData['mb_emp_uid']);
                 $minLevel = LEVEL_MIN;
-                writeLog("Level" . intval($_ENV['app.level_limit']));
+                // writeLog("Level" . intval($_ENV['app.level_limit']));
                 if(array_key_exists('app.level_limit', $_ENV) && intval($_ENV['app.level_limit']) > 0 ){
                     $minLevel = LEVEL_MAX - intval($_ENV['app.level_limit']);
                 }

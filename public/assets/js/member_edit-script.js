@@ -94,6 +94,10 @@ function readConfigToObject() {
         objMember.mb_state_delete = $("#useredit-offline-check-id").prop('checked') ? 1 : 0;
     } 
 
+    if ($("#useredit-balance-check-id").length > 0){
+        objMember.mb_state_view = $("#useredit-balance-check-id").prop('checked') ? 1 : 0;
+    } 
+
     return objMember;
 
 }

@@ -145,13 +145,15 @@ class Exchange_Model extends Model {
     {
         $strSql = "SELECT ".$this->table.".*, member.mb_nickname, (member.mb_money+member.mb_live_money+member.mb_slot_money+member.mb_fslot_money+member.mb_kgon_money) AS mb_money FROM ".$this->table;
         $strSql .= " JOIN member ON ".$this->table.".exchange_mb_uid = member.mb_uid ";
-        $strSql .= " WHERE exchange_state_delete = '0' ";
+        $strSql .= " WHERE ( exchange_state_delete = '0' ";
         if(array_key_exists('start', $arrReqData) && strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
             $strSql.=" AND exchange_time_require >= '".$arrReqData['start']." 0:0:0' AND exchange_time_require <= '".$arrReqData['end']." 23:59:59'" ; 
         }
         if(strlen($arrReqData['mb_uid']) > 0){
             $strSql.=" AND exchange_mb_uid = '".$arrReqData['mb_uid']."' ";
         }
+        $strSql .= " ) OR exchange_action_state IN (1, 4) ";
+
         $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
 
         $strSql.=" ORDER BY exchange_fid DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
@@ -167,13 +169,15 @@ class Exchange_Model extends Model {
     function searchCount($arrReqData)
     {
         $strSql = "SELECT count(*) as count FROM ".$this->table;
-        $strSql .= " WHERE exchange_state_delete = '0' ";
+        $strSql .= " WHERE ( exchange_state_delete = '0' ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
             $strSql.=" AND exchange_time_require >= '".$arrReqData['start']." 0:0:0' AND exchange_time_require <= '".$arrReqData['end']." 23:59:59'" ; 
         }
         if(strlen($arrReqData['mb_uid']) > 0){
             $strSql.=" AND exchange_mb_uid = '".$arrReqData['mb_uid']."' ";
         }
+        $strSql .= " ) OR exchange_action_state IN (1, 4) ";
+
         $query = $this -> db -> query($strSql);
         $result = $query -> getRow();
         

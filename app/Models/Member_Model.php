@@ -1444,6 +1444,9 @@ class Member_Model extends Model
         if(array_key_exists('mb_state_delete', $arrData)){
             $this->builder()->set('mb_state_delete', $arrData['mb_state_delete']);
         }
+        // if(array_key_exists('mb_state_view', $arrData)){
+        //     $this->builder()->set('mb_state_view', $arrData['mb_state_view']);
+        // }
         $this->builderSetGameRatioAndPercent($arrData);
 
         $this->builder()->where('mb_fid', $arrData['mb_fid']);

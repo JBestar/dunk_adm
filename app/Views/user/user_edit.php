@@ -340,6 +340,13 @@
 					<input type="checkbox" id="useredit-offline-check-id" style="zoom:140%; margin-top:4px; width:20px;" >
 				<?php endif ?>
 				<p>오플라인 유저</p> 
+
+				<?php if(!is_null($objMember) && $objMember->mb_state_view == 1) :  ?>
+					<input type="checkbox" id="useredit-balance-check-id" style="zoom:140%; margin-top:4px; width:20px;" checked>
+				<?php else :  ?>
+					<input type="checkbox" id="useredit-balance-check-id" style="zoom:140%; margin-top:4px; width:20px;" >
+				<?php endif ?>
+				<p>밸런스 받지않기</p> 
 			</div>
 
 			<!---->
