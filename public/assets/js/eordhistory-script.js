@@ -72,7 +72,7 @@ function ShowOrdHistory(jsonBetData) {
                     strBuf += "</td><td>"+parseInt(balPlayer).toLocaleString();
                     strBuf += "</td></tr>";
 
-                    strBuf += "<tr><td>0</td><td>0</td><td>";
+                    strBuf += "<tr><td></td><td></td><td>";
                     strBuf += getEvolSide("Banker");
                     strBuf += "</td><td>0</td><td>0";
                     nRow ++;

@@ -31,7 +31,7 @@ class EbalBet_Model extends Model
     
     function getBetAccount($reqData){
         
-        $where = " WHERE bet_type <> ".BET_TYPE_FORCE." AND bet_state > ".BET_STATE_REQ ;
+        $where = " WHERE bet_type <> ".BET_TYPE_FORCE." AND bet_state > ".BET_STATE_REQ." AND bet_state < ".BET_STATE_DENY  ;
         if(strlen($reqData['start']) > 0 && strlen($reqData['end']) > 0 ){
             $where.=" AND ".getTimeRange('bet_tm_req', $reqData);
         }
@@ -87,7 +87,7 @@ class EbalBet_Model extends Model
 
     public function searchCount($reqData){
 
-        $where = " WHERE bet_type <> ".BET_TYPE_FORCE ;
+        $where = " WHERE bet_type <> ".BET_TYPE_FORCE." AND bet_state > ".BET_STATE_REQ." AND bet_state < ".BET_STATE_DENY  ;
         if(strlen($reqData['start']) > 0 && strlen($reqData['end']) > 0 ){
             $where.=" AND ".getTimeRange('bet_tm_req', $reqData);
         }
@@ -109,7 +109,7 @@ class EbalBet_Model extends Model
 
     public function searchList($reqData){
         
-        $where = " WHERE bet_type <> ".BET_TYPE_FORCE;
+        $where = " WHERE bet_type <> ".BET_TYPE_FORCE." AND bet_state > ".BET_STATE_REQ." AND bet_state < ".BET_STATE_DENY  ;
         if(strlen($reqData['start']) > 0 && strlen($reqData['end']) > 0 ){
             $where.=" AND ".getTimeRange('bet_tm_req', $reqData);
         }
