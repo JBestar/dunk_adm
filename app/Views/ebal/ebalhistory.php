@@ -45,7 +45,7 @@
 		</Table>
 		<div class="pbresult-list-page-div">
 			<p>밸런스 배팅금: <span id="total-betmoney-id">0</span></p>
-			<p>접속유지 배팅금: <span id="total-conmoney-id">0</span></p>
+			<p>팅김방지 배팅금: <span id="total-conmoney-id">0</span></p>
 			<p>수익금: <span id="total-profit-id">0</span></p>
 			<div class="pagination"  id="list-page"  style="display:none">
 				<button class="list-page-button" id="page-first"  onclick="firstPage()"><<</button>
