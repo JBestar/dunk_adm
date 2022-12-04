@@ -14,7 +14,7 @@
             <input type="text" placeholder="     아이디" class="pbresult-text-input" id="pbhistory-userid-input-id" >
 
 			<input type="text" placeholder="            게임방" class="pbresult-text-input" id="pbhistory-room-input-id"  style="width:150px;">
-
+			
             <select name="pbresult-number" class="pbresult-number-select" id="pbhistory-number-select-id" style="width:70px; margin-left:10px;">
 				<option value="10">10개</option>
 				<option value="20">20개</option>

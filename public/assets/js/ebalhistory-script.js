@@ -34,7 +34,11 @@ function ShowBetHistory(jsonBetData) {
         strBuf += "</td><td>";
         strBuf += jsonBetData[nRow].bet_table_name;
         strBuf += "</td><td>";
-        
+        if (parseInt(jsonBetData[nRow].bet_type) <= 1)
+            strBuf += "밸런스";
+        else if(parseInt(jsonBetData[nRow].bet_type) == 2)
+            strBuf += "팅김방지";
+        strBuf += "</td><td>";
         playerAmount = parseInt(jsonBetData[nRow].bet_player);
         bankerAmount = parseInt(jsonBetData[nRow].bet_banker);
         betAmount = parseInt(jsonBetData[nRow].bet_amount);
@@ -51,7 +55,6 @@ function ShowBetHistory(jsonBetData) {
         strBuf += winAmount.toLocaleString() + "원";
         strBuf += "</td><td>";
         strResult = "";
-        
 
         if (parseInt(jsonBetData[nRow].bet_type) == 0){
             if(jsonBetData[nRow].bet_result == "Player")
@@ -65,7 +68,8 @@ function ShowBetHistory(jsonBetData) {
             else if(jsonBetData[nRow].bet_result == "Banker")
                 strResult = (playerAmount%1000 + Math.floor(playerAmount/1000) * 50 ).toLocaleString();
             else strResult = 0;
-        }
+        } 
+        
         strBuf += strResult;
         strBuf += "</td></tr>";
 
@@ -82,16 +86,18 @@ function ShowBetAccount(arrBetAccount) {
 
     $("#total-betmoney-id").text("0");
     $("#total-profit-id").text("0");
+    $("#total-conmoney-id").text("0");
 
     if (arrBetAccount == null) {
         $(".pbresult-list-page-div p").css('display', 'none');
         return;
     }
-    if (arrBetAccount.length != 3) return;
+    if (arrBetAccount.length != 4) return;
     $(".pbresult-list-page-div p").css('display', 'block');
 
     $("#total-betmoney-id").text(parseInt(arrBetAccount[0]).toLocaleString() + " 원");
     $("#total-profit-id").text(parseInt(arrBetAccount[2]).toLocaleString() + " 원");
+    $("#total-conmoney-id").text(parseInt(arrBetAccount[3]).toLocaleString() + " 원");
 
 }
 
@@ -114,6 +120,7 @@ function requestBetHistory() {
     CountPerPage = $("#pbhistory-number-select-id").val();
     var strUser = $("#pbhistory-userid-input-id").val();
     var strRoom = $("#pbhistory-room-input-id").val();
+    var strbet = $("#pbhistory-bet-select-id").val();
     var nPage = getActivePage();
 
     var jsonData = {
@@ -123,6 +130,7 @@ function requestBetHistory() {
         "end": dtEnd,
         "user": strUser,
         "room": strRoom,
+        "bet": strbet,
     };
     jsonData = JSON.stringify(jsonData);
     $(".loading").show();
@@ -133,7 +141,7 @@ function requestBetHistory() {
         dataType: "json",
         success: function(jResult) {
             $(".loading").hide();
-            // console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 ShowBetHistory(jResult.data);
                 ShowBetAccount(jResult.account)
@@ -155,6 +163,7 @@ function requestTotalPage() {
     CountPerPage = $("#pbhistory-number-select-id").val();
     var strUser = $("#pbhistory-userid-input-id").val();
     var strRoom = $("#pbhistory-room-input-id").val();
+    var strbet = $("#pbhistory-bet-select-id").val();
     
     var jsonData = {
         "count": CountPerPage,
@@ -162,6 +171,7 @@ function requestTotalPage() {
         "end": dtEnd,
         "user": strUser,
         "room": strRoom,
+        "bet": strbet,
     };
     jsonData = JSON.stringify(jsonData);
 

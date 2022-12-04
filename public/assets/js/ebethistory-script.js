@@ -145,7 +145,6 @@ function requestBetHistory() {
     CountPerPage = $("#pbhistory-number-select-id").val();
     var strUser = $("#pbhistory-userid-input-id").val();
     var strRoom = $("#pbhistory-room-input-id").val();
-    
     var nPage = getActivePage();
     var strEmp = "";
     if ($("#pbhistory-empid-input-id").length > 0) {

@@ -9,7 +9,11 @@
             <input type="datetime-local" id="pbhistory-dateend-input-id"  value="<?php echo date('Y-m-d')."T23:59"; ?>" style="margin-right:10px">
             <input type="text" placeholder="     아이디" class="pbresult-text-input" id="pbhistory-userid-input-id" >
 			<input type="text" placeholder="            게임방" class="pbresult-text-input" id="pbhistory-room-input-id"  style="width:150px;">
-
+			<select class="pbresult-game-select" id="pbhistory-bet-select-id" style="width:100px;">
+				<option value="0">::배팅선택::</option>	
+				<option value="1">밸런스</option>
+				<option value="2">팅김방지</option>
+			</select>
             <select name="pbresult-number" class="pbresult-number-select" id="pbhistory-number-select-id" style="width:70px; margin-left:10px;">
 				<option value="10">10개</option>
 				<option value="20">20개</option>
@@ -26,6 +30,7 @@
 					<th>배팅시간</th>
 					<th>게임종류</th>
 					<th>게임방</th>
+					<th>베팅종류</th>
 					<th>유저배팅금합<br>플 / 뱅</th>
 					<th>밸런스금</th>
 					<th>배팅선택</th>
@@ -39,7 +44,8 @@
 			</tbody>
 		</Table>
 		<div class="pbresult-list-page-div">
-			<p>배팅금: <span id="total-betmoney-id">0</span></p>
+			<p>밸런스 배팅금: <span id="total-betmoney-id">0</span></p>
+			<p>접속유지 배팅금: <span id="total-conmoney-id">0</span></p>
 			<p>수익금: <span id="total-profit-id">0</span></p>
 			<div class="pagination"  id="list-page"  style="display:none">
 				<button class="list-page-button" id="page-first"  onclick="firstPage()"><<</button>
