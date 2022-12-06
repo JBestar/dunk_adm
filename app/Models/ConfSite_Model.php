@@ -81,7 +81,7 @@ class ConfSite_Model extends Model
 
     public function getEvolSite(){
 
-        $data = ["", "", "", 0, 0, 0, 0, 0 ];
+        $data = ["", "", "", 0, 0, 0, 0, 0, 0, 0 ];
 
         $objConfig = $this->where('conf_id', CONF_EVOLSITE)->first();
         if(!is_null($objConfig)){
@@ -102,6 +102,10 @@ class ConfSite_Model extends Model
                     $data[4] = intval($info[0]);
                     $data[5] = intval($info[1]);
                     $data[6] = intval($info[2]);
+                    if(count($info) >= 5){
+                        $data[8] = intval($info[3]);
+                        $data[9] = intval($info[4]);
+                    }
                 }
             }
         }
@@ -134,7 +138,7 @@ class ConfSite_Model extends Model
             $updateData['conf_id'] = CONF_EVOLSITE;
             $updateData['conf_content'] = $strContent;
             // $updateData['conf_active'] = $data['active_ev'];
-            $strContent = $data['type_ev']."#".$data['bet_ev']."#".$data['con_ev'];
+            $strContent = $data['type_ev']."#".$data['bet_ev']."#".$data['con_ev']."#".$data['bet_min']."#".$data['bet_max'];
             $updateData['conf_idx'] = $strContent;
             $arrBatch[] = $updateData;
         }
