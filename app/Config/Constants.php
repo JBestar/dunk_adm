@@ -165,6 +165,7 @@ defined('CONF_SLOT_DENY')       || define('CONF_SLOT_DENY', 29);
 defined('CONF_KGON_ENABLE')     || define('CONF_KGON_ENABLE', 31);
 defined('CONF_EOS5_ENABLE')     || define('CONF_EOS5_ENABLE', 32);
 defined('CONF_EOS3_ENABLE')     || define('CONF_EOS3_ENABLE', 33);
+defined('CONF_HPG_ENABLE')      || define('CONF_HPG_ENABLE', 34);
 defined('CONF_COIN5_ENABLE')    || define('CONF_COIN5_ENABLE', 45);
 defined('CONF_COIN3_ENABLE')    || define('CONF_COIN3_ENABLE', 46);
 
@@ -255,7 +256,7 @@ defined('GAME_EOS3_BALL')      || define('GAME_EOS3_BALL', 10);
 defined('GAME_COIN5_BALL')     || define('GAME_COIN5_BALL', 11);
 defined('GAME_COIN3_BALL')     || define('GAME_COIN3_BALL', 12);
 defined('GAME_SLOT_3')         || define('GAME_SLOT_3', 13);
-
+defined('GAME_HAPPY_BALL')       || define('GAME_HAPPY_BALL', 14);
 
 defined('ROUND_5MIN')    || define('ROUND_5MIN', 5);
 defined('ROUND_3MIN')    || define('ROUND_3MIN', 3);

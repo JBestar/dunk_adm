@@ -25,8 +25,8 @@ class Bet extends StdController {
 	public function pbrealtime(){
 		
 		$param = [
-			'game_name' => "파워볼",
-			'game_id' => GAME_POWER_BALL,
+			'game_name' => "해피볼",
+			'game_id' => GAME_HAPPY_BALL,
 		];
 
 		$this->load_view_page('bet/pbrealtime', 'bet_realtime', LEVEL_ADMIN, $param);
@@ -102,8 +102,8 @@ class Bet extends StdController {
 
 	public function pbhistory(){
 		$param = [
-			'game_name' => "파워볼",
-			'game_id' => GAME_POWER_BALL,
+			'game_name' => "해피볼",
+			'game_id' => GAME_HAPPY_BALL,
 		];
 		$this->load_view_page('bet/pbhistory', 'bet_history', LEVEL_MIN, $param);
 	}
@@ -279,8 +279,8 @@ class Bet extends StdController {
 	public function pbcalculate(){
 		
 		$param = [
-			'game_name' => "파워볼",
-			'game_id' => GAME_POWER_BALL,
+			'game_name' => "해피볼",
+			'game_id' => GAME_HAPPY_BALL,
 		];
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}

@@ -3,10 +3,13 @@
 	<!--Sub Navbar-->
 	<div class = "sub-navbar" value="<?= $this->renderSection('realtime-title')?>">
 		<p><i class="glyphicon glyphicon-dashboard"></i> 실시간배팅</p>
-		<?php if(!$npg_deny) :?>
+		<!-- <?php if(!$npg_deny) :?>
 			<a href="<?php echo site_furl('bet/pbrealtime');?>" class="sub-navbar-a" >파워볼</a>
 			<a href="<?php echo site_furl('bet/psrealtime');?>" class="sub-navbar-a" >파워사다리</a>
-		<?php endif ?>   
+		<?php endif ?>    -->
+		<?php if($hpg_enable) :?>
+			<a href="<?php echo site_furl('bet/pbrealtime');?>" class="sub-navbar-a" >해피볼</a>
+		<?php endif ?>  
 		<?php if(!$bpg_deny) :?>
 			<a href="<?php echo site_furl('bet/bbrealtime');?>" class="sub-navbar-a" >보글볼</a>
 			<a href="<?php echo site_furl('bet/bsrealtime');?>" class="sub-navbar-a" >보글사다리</a>

@@ -58,7 +58,7 @@ function ShowGameResult(arrResult) {
         else if (arrResult[nRow].round_result_5 == "L")
             strBuf += "<span class='pbresult-rule-even-span'>대</span>";
         strBuf += "</td><td>";
-        if(mGameId == 1){
+        if(mGameId == 1 || mGameId == 14){
             strBuf += "<a href='"+FURL+"/result/pbresult_edit/" + arrResult[nRow].round_fid + "' >수정</a>";
             strBuf += "<a href='"+FURL+"/result/pbbetchange/" + arrResult[nRow].round_date + "/" + arrResult[nRow].round_num + "' >적특</a>";
         } else if(mGameId == 5){

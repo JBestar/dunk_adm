@@ -31,7 +31,7 @@ function showConfSite(arrData, all) {
         }, 10000);
     }
     else if(parseInt(arrData[7]) == -1){
-        $('#confev-balance-label-id').text('(시작중)');
+        $('#confev-balance-label-id').text('(대기중)');
         setTimeout(() =>{
             this.requestConfBetSite();
         }, 2000);

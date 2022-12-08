@@ -111,10 +111,10 @@
 		<?php }?>
         <?= $this->renderSection('user-edit-form-section2') ?>
 		
-		<?php if(!$npg_deny) :?>
+		<?php if($hpg_enable) :?>
 
 			<div class="useredit-percent-div">
-				<p>파워볼 단폴:</p> 
+				<p>해피볼 단폴:</p> 
 				
 				<label> 배당율(%)</label>
 				<?php if(is_null($objMember)) {  ?>
@@ -133,7 +133,7 @@
 				<?php endif?>
 			</div>
 			<div class="useredit-percent-div">
-				<p>파워볼 조합:</p> 
+				<p>해피볼 조합:</p> 
 				
 				<label> 배당율(%)</label>
 				<?php if(is_null($objMember)) {  ?>
@@ -151,7 +151,7 @@
 					<?php } ?>
 				<?php endif?>
 			</div>
-			<div class="useredit-percent-div">
+			<!-- <div class="useredit-percent-div">
 				<p>파워사다리:</p> 
 				
 				<label> 배당율(%)</label>
@@ -169,7 +169,7 @@
 					<input type = "number" step="1" id="useredit-psbetpercent-input-id" value="<?=$objMember->mb_game_ps_percent?>">
 					<?php } ?>
 				<?php endif?>
-			</div>
+			</div> -->
 		<?php endif ?>   
 
     	<?php if(!$bpg_deny) :?>

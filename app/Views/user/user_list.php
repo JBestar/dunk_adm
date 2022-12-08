@@ -27,7 +27,7 @@
 			<th rowspan='2'>게임별설정</th>
 		</tr>
 		<tr>
-			<th>파워볼</th>
+			<th>해피볼</th>
 			<th>파워사</th>
 			<th>에볼</th>
 			<th>슬롯</th>
@@ -76,9 +76,9 @@
 
 			<td style="width:30%;">
 				<?php if($objMember->mb_game_pb == 1) {  ?>
-				<button name="<?=$objMember->mb_fid?>" class="button-active">파워볼</button>
+				<button name="<?=$objMember->mb_fid?>" class="button-active">해피볼</button>
 				<?php } else {?>
-				<button name="<?=$objMember->mb_fid?>">파워볼</button>
+				<button name="<?=$objMember->mb_fid?>">해피볼</button>
 				<?php } ?>
 
 				<?php if($objMember->mb_game_ps == 1) {  ?>

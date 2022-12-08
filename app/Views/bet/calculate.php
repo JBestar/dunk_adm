@@ -4,10 +4,13 @@
 	<div class = "sub-navbar" value="<?= $this->renderSection('calculate-active') ?>">
 		<p><i class="glyphicon glyphicon-tag"></i> 정산</p>
 		<a href="<?php echo site_furl('bet/allcalculate');?>" class="sub-navbar-a" >전체</a>
-		<?php if(!$npg_deny) :?>
+		<!-- <?php if(!$npg_deny) :?>
 			<a href="<?php echo site_furl('bet/pbcalculate');?>" class="sub-navbar-a" >파워볼</a>
 			<a href="<?php echo site_furl('bet/pscalculate');?>" class="sub-navbar-a" >파워사다리</a>
-		<?php endif ?>   
+		<?php endif ?>   -->
+		<?php if($hpg_enable) :?>
+			<a href="<?php echo site_furl('bet/pbcalculate');?>" class="sub-navbar-a" >해피볼</a>
+		<?php endif ?>  
     	<?php if(!$bpg_deny) :?>
 			<a href="<?php echo site_furl('bet/bbcalculate');?>" class="sub-navbar-a" >보글볼</a>
 			<a href="<?php echo site_furl('bet/bscalculate');?>" class="sub-navbar-a" >보글사다리</a>

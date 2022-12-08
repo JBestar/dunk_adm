@@ -3,9 +3,9 @@
 	<!--Sub Navbar-->
 	<div class = "sub-navbar" value="<?= $this->renderSection('bet-result-title')?>">
 		<p><i class="glyphicon glyphicon-book"></i> 게임결과</p>
-		<?php if(!$npg_deny) :?>
-			<a href="<?php echo siteFurl().'result/pbresult';?>" class="sub-navbar-a" >파워볼</a>
-			<a href="<?php echo siteFurl().'result/psresult';?>" class="sub-navbar-a" >파워사다리</a>
+		<?php if($hpg_enable) :?>
+			<a href="<?php echo siteFurl().'result/pbresult';?>" class="sub-navbar-a" >해피볼</a>
+			<!-- <a href="<?php echo siteFurl().'result/psresult';?>" class="sub-navbar-a" >파워사다리</a> -->
 		<?php endif ?>   
 		<?php if(!$bpg_deny) :?>
 			<a href="<?php echo siteFurl().'result/bbresult';?>" class="sub-navbar-a" >보글볼</a>

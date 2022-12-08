@@ -14,9 +14,6 @@
 				<td>충전금액<span id="main-navbar-emp_charge-id">0 원</span></td>
 
 				<?php if($mb_level < LEVEL_ADMIN) :  ?>
-					<?php if(!$npg_deny) :?>
-						<td>파워볼<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
-					<?php endif ?>     
 					<?php if(!$bpg_deny) :?>
 						<td>보글볼<span id="main-navbar-emp_bbrate-id">0 % | 0 %</span></td>
 					<?php endif ?>  
@@ -26,7 +23,9 @@
 					<?php if($eos5_enable || $eos3_enable) :?>
 						<td>EOS<span id="main-navbar-emp_eorate-id">0 % | 0 %</span></td>
 					<?php endif ?>  
-					
+					<?php if($hpg_enable) :?>
+						<td>해피볼<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
+					<?php endif ?>   
 				<?php else : ?>
 
 				<td>새 문의&nbsp;<a href="<?php echo site_furl('/board/message');?>" id="main-navbar-newmessage-id">0 통</a></td>
@@ -41,9 +40,9 @@
 				<td>환전금액<span id="main-navbar-emp_exchange-id">0 원</span></td>
 
 				<?php if($mb_level < LEVEL_ADMIN) :  ?>
-					<?php if(!$npg_deny) :?>
+					<!-- <?php if(!$npg_deny) :?>
 						<td>파워사다리<span id="main-navbar-emp_psrate-id">0 % </span></td>
-					<?php endif ?>     
+					<?php endif ?>      -->
 					<?php if(!$bpg_deny) :?>
 						<td>보글사다리<span id="main-navbar-emp_bsrate-id">0 % </span></td>
 					<?php endif ?>     
@@ -67,50 +66,62 @@
 			<div style="clear:both; padding-left:95px;">
 			<?php endif ?>
 			
-			<?php if(!$npg_deny) :?>
+			<!-- <?php if(!$npg_deny) :?>
 			<Table class="main-navbar-betinfo-table">
 				<tr>
 					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">파워볼단폴:</td>
 					<td>배팅<span id="main-navbar-pbbet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-pbbetearn-id">0 원</span></td>
-					<!--<td>누름<span id="main-navbar-pbbetpress-id">0 원</span></td>-->
+					<td>누름<span id="main-navbar-pbbetpress-id">0 원</span></td>
 				</tr>
 				<tr>
 					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">파워볼조합:</td>
 					<td>배팅<span id="main-navbar-pb2bet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-pb2betearn-id">0 원</span></td>
-					<!--<td>누름<span id="main-navbar-pb2betpress-id">0 원</span></td>-->
+					<td>누름<span id="main-navbar-pb2betpress-id">0 원</span></td>
 				</tr>
 				<tr>
 					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">파워사다리:</td>
 					<td>배팅<span id="main-navbar-psbet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-psbetearn-id">0 원</span></td>
-					<!--<td>누름<span id="main-navbar-psbetpress-id">0 원</span></td>-->
-				</tr>
-
+					<td>누름<span id="main-navbar-psbetpress-id">0 원</span></td>
+				</tr> -
 			</Table>
-			<?php endif ?>   
+			<?php endif ?>    -->
 			
-			<?php if(!$bpg_deny) :?>
+			<?php if(!$bpg_deny || $hpg_enable) :?>
 			<Table class="main-navbar-betinfo-table">
+				<?php if($hpg_enable) :?>
+				<tr>
+					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">해피볼단폴:</td>
+					<td>배팅<span id="main-navbar-pbbet-id">0 원</span></td>
+					<td>적중<span id="main-navbar-pbbetearn-id">0 원</span></td>
+					<!--<td>누름<span id="main-navbar-pbbetpress-id">0 원</span></td>-->
+				</tr>
+				<tr>
+					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">해피볼조합:</td>
+					<td>배팅<span id="main-navbar-pb2bet-id">0 원</span></td>
+					<td>적중<span id="main-navbar-pb2betearn-id">0 원</span></td>
+					<!--<td>누름<span id="main-navbar-pb2betpress-id">0 원</span></td>-->
+				</tr>
+				<?php endif ?>   
+				<?php if(!$bpg_deny) :?>
 				<tr>
 					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보글볼단폴:</td>
 					<td>배팅<span id="main-navbar-bbbet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-bbbetearn-id">0 원</span></td>
-
 				</tr>
 				<tr>
 					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보글볼조합:</td>
 					<td>배팅<span id="main-navbar-bb2bet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-bb2betearn-id">0 원</span></td>
-
 				</tr>
 				<tr>
 					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보글사다리:</td>
 					<td>배팅<span id="main-navbar-bsbet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-bsbetearn-id">0 원</span></td>
-
 				</tr>
+				<?php endif ?>     
 			</Table>
 			<?php endif ?>     
 

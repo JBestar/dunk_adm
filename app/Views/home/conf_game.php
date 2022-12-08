@@ -3,12 +3,15 @@
 	  <!--Sub Navbar-->
 	<div class = "sub-navbar" value="<?= $this->renderSection('confgame-active') ?>">
 		<p><i class="glyphicon glyphicon-play-circle"></i> 게임설정</p>
-		<?php if(!$npg_deny) :?>
+		<!-- <?php if(!$npg_deny) :?>
 			<a href="<?php echo siteFurl().'home/conf_powerball';?>" class="sub-navbar-a" >파워볼</a>
 			<a href="<?php echo siteFurl().'home/conf_powerladder';?>" class="sub-navbar-a " >파워사다리</a>
+		<?php endif ?>    -->
+		<?php if($hpg_enable) :?>
+			<a href="<?php echo siteFurl().'home/conf_powerball';?>" class="sub-navbar-a" >해피볼</a>
 		<?php endif ?>   
     	<?php if(!$bpg_deny) :?>
-			<a href="<?php echo siteFurl().'home/conf_bogleball';?>" class="sub-navbar-a" >보글파워볼</a>
+			<a href="<?php echo siteFurl().'home/conf_bogleball';?>" class="sub-navbar-a" >보글볼</a>
 			<a href="<?php echo siteFurl().'home/conf_bogleladder';?>" class="sub-navbar-a " >보글사다리</a>
 		<?php endif ?>   
 		<?php if($eos5_enable) :?>

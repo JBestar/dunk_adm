@@ -430,22 +430,30 @@ class UserApi extends BaseController
                 $arrReqData['end'] = $strDate.' 23:59:59';
                 $arrSumData = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], 
                     [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0] ];
-                if(!$siteConfs['npg_deny']){
-                    $betModel = new PbBet_Model();
-                    $betModel->setType(GAME_POWER_BALL);
+                // if(!$siteConfs['npg_deny']){
+                //     $betModel = new PbBet_Model();
+                //     $betModel->setType(GAME_POWER_BALL);
 
-                    $objConfPb = $confgameModel->getByIndex(GAME_POWER_BALL);
+                //     $objConfPb = $confgameModel->getByIndex(GAME_POWER_BALL);
+                //     $arrSum = $betModel->getBetSumByDay($arrReqData, $objConfPb);
+                //     $arrSumData[0] = $arrSum[0];
+                //     $arrSumData[1] = $arrSum[1];
+                    
+                //     $betModel = new PsBet_Model();
+                //     $betModel->setType(GAME_POWER_LADDER);
+                //     $objConfPs = $confgameModel->getByIndex(GAME_POWER_LADDER);
+                //     $sum = $betModel->getBetSumByDay($arrReqData, $objConfPs);
+                //     $arrSumData[2] = $sum;
+                // }
+                if($siteConfs['hpg_enable']){
+                    $betModel = new PbBet_Model();
+                    $betModel->setType(GAME_HAPPY_BALL);
+
+                    $objConfPb = $confgameModel->getByIndex(GAME_HAPPY_BALL);
                     $arrSum = $betModel->getBetSumByDay($arrReqData, $objConfPb);
                     $arrSumData[0] = $arrSum[0];
                     $arrSumData[1] = $arrSum[1];
-                    
-                    $betModel = new PsBet_Model();
-                    $betModel->setType(GAME_POWER_LADDER);
-                    $objConfPs = $confgameModel->getByIndex(GAME_POWER_LADDER);
-                    $sum = $betModel->getBetSumByDay($arrReqData, $objConfPs);
-                    $arrSumData[2] = $sum;
                 }
-                
                 if(!$siteConfs['bpg_deny']){
                     $betModel = new PbBet_Model();
                     $betModel->setType(GAME_BOGLE_BALL);

@@ -350,9 +350,12 @@ class Member_Model extends Model
      public function allGameRange(&$arrReqData, $confs)
      {
         //  writeLog("allGameRange");
-        if(!$confs['npg_deny']){
-            $arrReqData['npb_range'] = $this->getBetRangeId($arrReqData, "bet_powerball");
-            $arrReqData['nps_range'] = $this->getBetRangeId($arrReqData, "bet_powerladder");
+        // if(!$confs['npg_deny']){
+        //     $arrReqData['npb_range'] = $this->getBetRangeId($arrReqData, "bet_powerball");
+        //     $arrReqData['nps_range'] = $this->getBetRangeId($arrReqData, "bet_powerladder");
+        // }
+        if($confs['hpg_enable']){
+            $arrReqData['hpb_range'] = $this->getBetRangeId($arrReqData, "bet_happyball");
         }
         if(!$confs['bpg_deny']){
             $arrReqData['bpb_range'] = $this->getBetRangeId($arrReqData, "bet_bogleball");
@@ -404,6 +407,8 @@ class Member_Model extends Model
             $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_coin5ball");
         } elseif ($arrReqData['type'] == GAME_COIN3_BALL ) {
             $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_coin3ball");
+        } elseif ($arrReqData['type'] == GAME_HAPPY_BALL ) {
+            $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_happyball");
         }
         $arrReqData['rw_range'] = $this->getRwRangeId($arrReqData, "bet_reward");
         
@@ -471,13 +476,18 @@ class Member_Model extends Model
         $strSQL .= " WHERE bet_fid >= ".$arrReqData['slot_range'][0]." AND bet_fid <= ".$arrReqData['slot_range'][1];
         $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) ";
 
-        if(!$confs['npg_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerball ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['npb_range'][0]." AND bet_fid <= ".$arrReqData['npb_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
+        // if(!$confs['npg_deny']){
+        //     $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerball ';
+        //     $strSQL .= " WHERE bet_fid >= ".$arrReqData['npb_range'][0]." AND bet_fid <= ".$arrReqData['npb_range'][1];
+        //     $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
 
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerladder ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['nps_range'][0]." AND bet_fid <= ".$arrReqData['nps_range'][1];
+        //     $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerladder ';
+        //     $strSQL .= " WHERE bet_fid >= ".$arrReqData['nps_range'][0]." AND bet_fid <= ".$arrReqData['nps_range'][1];
+        //     $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
+        // }
+        if($confs['hpg_enable']){
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_happyball ';
+            $strSQL .= " WHERE bet_fid >= ".$arrReqData['hpb_range'][0]." AND bet_fid <= ".$arrReqData['hpb_range'][1];
             $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
         }
 
@@ -575,6 +585,8 @@ class Member_Model extends Model
             $strSQL .= ' bet_coin5ball ';
         } elseif ($arrReqData['type'] == GAME_COIN3_BALL ) {
             $strSQL .= ' bet_coin3ball ';
+        } elseif ($arrReqData['type'] == GAME_HAPPY_BALL ) {
+            $strSQL .= ' bet_happyball ';
         } else {
             return null;
         }
@@ -670,16 +682,20 @@ class Member_Model extends Model
         $strSQL .= $strWhereMem;
         // $strSQL .= " AND bet_mb_fid IN (SELECT mb_fid from tbmember) ";
 
-        if(!$confs['npg_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerball ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['npb_range'][0]." AND bet_fid <= ".$arrReqData['npb_range'][1];
-            $strSQL .= $strWhereMem." )";
+        // if(!$confs['npg_deny']){
+        //     $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerball ';
+        //     $strSQL .= " WHERE bet_fid >= ".$arrReqData['npb_range'][0]." AND bet_fid <= ".$arrReqData['npb_range'][1];
+        //     $strSQL .= $strWhereMem." )";
 
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerladder ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['nps_range'][0]." AND bet_fid <= ".$arrReqData['nps_range'][1];
+        //     $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerladder ';
+        //     $strSQL .= " WHERE bet_fid >= ".$arrReqData['nps_range'][0]." AND bet_fid <= ".$arrReqData['nps_range'][1];
+        //     $strSQL .= $strWhereMem." )";
+        // }
+        if($confs['hpg_enable']){
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_happyball ';
+            $strSQL .= " WHERE bet_fid >= ".$arrReqData['hpb_range'][0]." AND bet_fid <= ".$arrReqData['hpb_range'][1];
             $strSQL .= $strWhereMem." )";
         }
-
         if(!$confs['bpg_deny']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleball ';
             $strSQL .= " WHERE bet_fid >= ".$arrReqData['bpb_range'][0]." AND bet_fid <= ".$arrReqData['bpb_range'][1];
@@ -765,6 +781,8 @@ class Member_Model extends Model
             $strSQL .= ' bet_coin5ball ';
         } elseif ($arrReqData['type'] == GAME_COIN3_BALL ) {
             $strSQL .= ' bet_coin3ball ';
+        } else if ($arrReqData['type'] == GAME_HAPPY_BALL ) {
+            $strSQL .= ' bet_happyball ';
         } else {
             return null;
         }
@@ -808,14 +826,17 @@ class Member_Model extends Model
         $strSQL .= '  FROM  (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_slot';
         $strSQL .= $strCond;
 
-        if(!$confs['npg_deny']){
-            $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerball ';
-            $strSQL .= $strCond;
+        // if(!$confs['npg_deny']){
+        //     $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerball ';
+        //     $strSQL .= $strCond;
 
-            $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerladder ';
+        //     $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_powerladder ';
+        //     $strSQL .= $strCond;
+        // }
+        if($confs['hpg_enable']){
+            $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_happyball ';
             $strSQL .= $strCond;
         }
-
         if(!$confs['bpg_deny']){
             $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleball ';
             $strSQL .= $strCond;
@@ -876,16 +897,21 @@ class Member_Model extends Model
          $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count, bet_game_type  FROM bet_slot ";
 		 $strSQL.= $strCond." group by bet_game_type) AS bet_slot_g JOIN slot_prd on slot_prd.code = bet_slot_g.bet_game_type ";
          
-         if(!$confs['npg_deny']){
-            $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '파워볼' AS bet_name, '".GAME_POWER_BALL."' As bet_kind  From ";
-            $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_powerball  ";
-            $strSQL.= $strCond." ) AS bet_pb_g ";
+        //  if(!$confs['npg_deny']){
+        //     $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '파워볼' AS bet_name, '".GAME_POWER_BALL."' As bet_kind  From ";
+        //     $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_powerball  ";
+        //     $strSQL.= $strCond." ) AS bet_pb_g ";
 	
-            $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '파워사다리' AS bet_name, '".GAME_POWER_LADDER."' As bet_kind  From ";
-            $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_powerladder  ";
-            $strSQL.= $strCond." ) AS bet_ps_g ";
-         }
-        
+        //     $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '파워사다리' AS bet_name, '".GAME_POWER_LADDER."' As bet_kind  From ";
+        //     $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_powerladder  ";
+        //     $strSQL.= $strCond." ) AS bet_ps_g ";
+        //  }
+        if($confs['hpg_enable']){
+            $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '해피볼' AS bet_name, '".GAME_HAPPY_BALL."' As bet_kind  From ";
+            $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_happyball  ";
+            $strSQL.= $strCond." ) AS bet_pb_g ";
+        }
+            
          if(!$confs['bpg_deny']){
             $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '보글파워볼' AS bet_name, '".GAME_BOGLE_BALL."' As bet_kind  From ";
             $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_bogleball  ";
@@ -1048,10 +1074,10 @@ class Member_Model extends Model
         // 배당율 체크
         if(!is_null($objEmployee)){
             if (array_key_exists('mb_game_pb_ratio', $arrRegData) && $objEmployee->mb_game_pb_ratio < $arrRegData['mb_game_pb_ratio']) {
-                $strError = "파워볼 단폴 배당율이 추천인설정값 ".$objEmployee->mb_game_pb_ratio."보다 클수 없습니다.";
+                $strError = "해피볼 단폴 배당율이 추천인설정값 ".$objEmployee->mb_game_pb_ratio."보다 클수 없습니다.";
                 return 4;
             } elseif (array_key_exists('mb_game_pb2_ratio', $arrRegData) && $objEmployee->mb_game_pb2_ratio < $arrRegData['mb_game_pb2_ratio']) {
-                $strError = "파워볼 조합 배당율이 추천인설정값 ".$objEmployee->mb_game_pb2_ratio."보다 클수 없습니다.";
+                $strError = "해피볼 조합 배당율이 추천인설정값 ".$objEmployee->mb_game_pb2_ratio."보다 클수 없습니다.";
                 return 4;
             } elseif (array_key_exists('mb_game_ps_ratio', $arrRegData) && $objEmployee->mb_game_ps_ratio < $arrRegData['mb_game_ps_ratio']) {
                 $strError = "파워사다리 배당율이 추천인설정값 ".$objEmployee->mb_game_ps_ratio."보다 클수 없습니다.";
@@ -1089,10 +1115,10 @@ class Member_Model extends Model
             $chRatio = $this->getChildsRatio($arrRegData['mb_fid']);
 
             if (array_key_exists('mb_game_pb_ratio', $arrRegData) && $chRatio->mb_game_pb_ratio != null && $chRatio->mb_game_pb_ratio > $arrRegData['mb_game_pb_ratio']) {
-                $strError = "파워볼 단폴 배당율이 하위설정값 ".$chRatio->mb_game_pb_ratio."보다 작을수 없습니다.";
+                $strError = "해피볼 단폴 배당율이 하위설정값 ".$chRatio->mb_game_pb_ratio."보다 작을수 없습니다.";
                 return 5;
             } elseif (array_key_exists('mb_game_pb2_ratio', $arrRegData) && $chRatio->mb_game_pb2_ratio != null && $chRatio->mb_game_pb2_ratio > $arrRegData['mb_game_pb2_ratio']) {
-                $strError = "파워볼 조합 배당율이 하위설정값 ".$chRatio->mb_game_pb2_ratio."보다 작을수 없습니다.";
+                $strError = "해피볼 조합 배당율이 하위설정값 ".$chRatio->mb_game_pb2_ratio."보다 작을수 없습니다.";
                 return 5;
             } elseif (array_key_exists('mb_game_ps_ratio', $arrRegData) && $chRatio->mb_game_ps_ratio != null && $chRatio->mb_game_ps_ratio > $arrRegData['mb_game_ps_ratio']) {
                 $strError = "파워사다리 배당율이 하위설정값 ".$chRatio->mb_game_ps_ratio."보다 작을수 없습니다.";
@@ -1814,9 +1840,13 @@ class Member_Model extends Model
         $strTbColum .= ' mb_game_co_percent, mb_game_co2_percent, mb_blank_count, ';
         $strBetM = " ( bet_sl.bet_m ";
         $strBetW = " ( bet_sl.bet_w ";
-        if(!$confs['npg_deny']){
-            $strBetM.= " + bet_pb.bet_m + bet_pl.bet_m "; 
-            $strBetW.= " + bet_pb.bet_w + bet_pl.bet_w "; 
+        // if(!$confs['npg_deny']){
+        //     $strBetM.= " + bet_pb.bet_m + bet_pl.bet_m "; 
+        //     $strBetW.= " + bet_pb.bet_w + bet_pl.bet_w "; 
+        // }
+        if($confs['hpg_enable']){
+            $strBetM.= " + bet_pb.bet_m ";
+            $strBetW.= " + bet_pb.bet_w "; 
         }
         if(!$confs['bpg_deny']){
             $strBetM.= " + bet_bb.bet_m + bet_bl.bet_m "; 
@@ -1866,9 +1896,12 @@ class Member_Model extends Model
         $strSQL = "SELECT ".$strTbColum." FROM ".$this->table;
         $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_slot group by bet_mb_uid ) bet_sl ON bet_sl.bet_mb_uid = member.mb_uid";
 
-        if(!$confs['npg_deny']){
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_powerball group by bet_mb_uid ) bet_pb ON bet_pb.bet_mb_uid = member.mb_uid";
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_powerladder group by bet_mb_uid ) bet_pl ON bet_pl.bet_mb_uid = member.mb_uid";
+        // if(!$confs['npg_deny']){
+        //     $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_powerball group by bet_mb_uid ) bet_pb ON bet_pb.bet_mb_uid = member.mb_uid";
+        //     $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_powerladder group by bet_mb_uid ) bet_pl ON bet_pl.bet_mb_uid = member.mb_uid";
+        // }
+        if($confs['hpg_enable']){
+            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_happyball group by bet_mb_uid ) bet_pb ON bet_pb.bet_mb_uid = member.mb_uid";
         }
         if(!$confs['bpg_deny']){
             $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_bogleball group by bet_mb_uid ) bet_bb ON bet_bb.bet_mb_uid = member.mb_uid";

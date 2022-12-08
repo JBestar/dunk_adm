@@ -41,6 +41,7 @@ class PbBet_Model extends Model
             case GAME_EOS3_BALL:    $this->table = 'bet_eos3ball';    break;
             case GAME_COIN5_BALL:   $this->table = 'bet_coin5ball';   break;
             case GAME_COIN3_BALL:   $this->table = 'bet_coin3ball';   break;
+            case GAME_HAPPY_BALL:   $this->table = 'bet_happyball';   break;
             default: break;
         }
     }
@@ -354,6 +355,7 @@ class PbBet_Model extends Model
         
         $query = $this->db->query($strSql);
         $result = $query->getResult();
+        // writeLog($strSql);
 
         return $result;
 

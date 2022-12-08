@@ -3,9 +3,9 @@
 	<!--Sub Navbar-->
 	<div class = "sub-navbar" value="<?= $this->renderSection('bet-change-title')?>">
 		<p><i class="glyphicon glyphicon-tag"></i> 적중특례</p>
-		<?php if(!$npg_deny) :?>
-			<a href="<?php echo siteFurl().'result/pbbetchange/0/0';?>" class="sub-navbar-a" >파워볼</a>
-			<a href="<?php echo siteFurl().'result/psbetchange/0/0';?>" class="sub-navbar-a" >파워사다리</a>
+		<?php if($hpg_enable) :?>
+			<a href="<?php echo siteFurl().'result/pbbetchange/0/0';?>" class="sub-navbar-a" >해피볼</a>
+			<!-- <a href="<?php echo siteFurl().'result/psbetchange/0/0';?>" class="sub-navbar-a" >파워사다리</a> -->
 		<?php endif ?>   
 		<?php if(!$bpg_deny) :?>
 			<a href="<?php echo siteFurl().'result/bbbetchange/0/0';?>" class="sub-navbar-a" >보글볼</a>

@@ -47,8 +47,8 @@ class Home extends StdController
 		$confsiteModel = new ConfSite_Model();
 		$confsiteModel->readBetConf();
 		$param = [
-			'game_name' => "파워볼",
-			'game_id' => GAME_POWER_BALL
+			'game_name' => "해피볼",
+			'game_id' => GAME_HAPPY_BALL
 		];
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);		
 	}
@@ -67,7 +67,7 @@ class Home extends StdController
 		$confsiteModel->readBetConf();
 		
 		$param = [
-			'game_name' => "보글파워볼",
+			'game_name' => "보글볼",
 			'game_id' => GAME_BOGLE_BALL
 		];
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);

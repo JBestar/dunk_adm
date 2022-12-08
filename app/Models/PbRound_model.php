@@ -33,6 +33,7 @@ class PbRound_Model extends Model
             case GAME_EOS3_BALL:    $this->table = 'round_eos3ball';    break;
             case GAME_COIN5_BALL:   $this->table = 'round_coin5ball';   break;
             case GAME_COIN3_BALL:   $this->table = 'round_coin3ball';   break;
+            case GAME_HAPPY_BALL:   $this->table = 'round_happyball';   break;
             default: break;
         }
     }

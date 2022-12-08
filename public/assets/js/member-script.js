@@ -91,19 +91,25 @@ function showMember(arrMember, confs) {
 
         if (confs.emp_level >= LEVEL_ADMIN) {
             strBuf += "</td> <td>";
-            if(!confs.npg_deny){
+            // if(!confs.npg_deny){
+            //     if (arrMember[nRow].mb_game_pb == 1) {
+            //         strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>파워볼</button>";
+            //     } else {
+            //         strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >파워볼</button>";
+            //     }
+            //     if (arrMember[nRow].mb_game_ps == 1) {
+            //         strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>파사달</button>";
+            //     } else {
+            //         strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >파사달</button>";
+            //     }
+            // }
+            if(confs.hpg_enable){
                 if (arrMember[nRow].mb_game_pb == 1) {
-                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>파워볼</button>";
+                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>해피볼</button>";
                 } else {
-                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >파워볼</button>";
-                }
-                if (arrMember[nRow].mb_game_ps == 1) {
-                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>파사달</button>";
-                } else {
-                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >파사달</button>";
+                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >해피볼</button>";
                 }
             }
-
             if(!confs.bpg_deny){
                 if (arrMember[nRow].mb_game_bb == 1) {
                     strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>보글볼</button>";
@@ -288,7 +294,7 @@ function addButtonElementListener(buttonElement) {
         } else if (this.innerHTML.search("대기") >= 0) {
             var jsonData = { "mb_fid": this.name, "mb_state_active": 1 };
             requestWaitToPermit(this, jsonData);
-        } else if (this.innerHTML == "파워볼") {
+        } else if (this.innerHTML == "해피볼") {
             if (this.className.search("button-active") >= 0) {
                 var jsonData = { "mb_fid": this.name, "mb_game_pb": 0 };
                 requestUpdateMember(jsonData);

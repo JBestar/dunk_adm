@@ -252,44 +252,38 @@
 									</div>
 								</div>
 							</div>
-					<?php if(!$npg_deny) :?>
+					<?php if($hpg_enable) :?>
 							<div class="col-md-12">
 								<div class="row">
-									<div class="col-md-2">파워볼 단폴 배당율 (%)</div>
+									<div class="col-md-2">해피볼 단폴 배당율 (%)</div>
 									<div class="col-md-2">
 										<input type="number" id="pb_ratio" step="0.01" class="form-control" value="0.00" min="0" />
 									</div>
-									
-									<div class="col-md-2">파워볼 조합 배당율 (%)</div>
+									<div class="col-md-2">해피볼 조합 배당율 (%)</div>
 									<div class="col-md-2">
 										<input type="number" id="pb2_ratio" step="0.01" class="form-control" value="0.00" min="0" />
 									</div>
-								
-									<div class="col-md-2">파워사다리 배당율 (%)</div>
+									<!-- <div class="col-md-2">파워사다리 배당율 (%)</div>
 									<div class="col-md-2">
 										<input type="number" id="ps_ratio" step="0.01" class="form-control" value="0.00" min="0" />
-									</div>
-									
+									</div> -->
 								</div>
 							</div>
 						<?php if(!$gameper_full) :?>
 							<div class="col-md-12">
 								<div class="row">
-									<div class="col-md-2">파워볼 단폴 누름율 (%)</div>
+									<div class="col-md-2">해피볼 단폴 누름율 (%)</div>
 									<div class="col-md-2">
 										<input type="number" id="pb_percent" class="form-control" value="100" min="0" />
 									</div>
-									
-									<div class="col-md-2">파워볼 조합 누름율 (%)</div>
+									<div class="col-md-2">해피볼 조합 누름율 (%)</div>
 									<div class="col-md-2">
 										<input type="number" id="pb2_percent" class="form-control" value="100" min="0" />
 									</div>
-								
-									<div class="col-md-2">파워사다리 누름율 (%)</div>
+									<!-- <div class="col-md-2">파워사다리 누름율 (%)</div>
 									<div class="col-md-2">
 										<input type="number" id="ps_percent" class="form-control" value="100" min="0" />
-									</div>
-									
+									</div> -->
 								</div>
 							</div>
 						<?php endif ?>

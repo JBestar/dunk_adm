@@ -54,17 +54,17 @@ class Result extends StdController {
 	public function pbresult()
 	{	
 		$param = [
-			'game_name' => "파워볼",
-			'game_id' => GAME_POWER_BALL,
+			'game_name' => "해피볼",
+			'game_id' => GAME_HAPPY_BALL,
 		];	
-		$this->load_view_page('result/pbresult', 'gameresult', LEVEL_ADMIN, $param);			
+		$this->load_view_page('result/bbresult', 'gameresult', LEVEL_ADMIN, $param);			
 	}
 
 	public function pbresult_edit($strRoundFid)
 	{
 		$param = [
-			'game_name' => "파워볼",
-			'game_id' => GAME_POWER_BALL,
+			'game_name' => "해피볼",
+			'game_id' => GAME_HAPPY_BALL,
 		];	
 		$roundModel = new PbRound_Model();
 		$roundModel->setType($param['game_id']);
@@ -72,7 +72,7 @@ class Result extends StdController {
 		$this->result_edit_page(
 			$roundModel, 
 			$strRoundFid, 
-			'result/pbresult_edit', 
+			'result/bbresult_edit', //pbresult_edit 
 			'gameresult',
 			LEVEL_ADMIN,
 			$param);
@@ -270,8 +270,8 @@ class Result extends StdController {
 	public function pbbetchange($strDate, $strRoundNo)
 	{
 		$param = [
-			'game_name' => "파워볼",
-			'game_id' => GAME_POWER_BALL,
+			'game_name' => "해피볼",
+			'game_id' => GAME_HAPPY_BALL,
 		];
 		$this->result_change_page('result/pbbet_change', $strDate, $strRoundNo, $param);				
 	}

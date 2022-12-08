@@ -41,13 +41,13 @@ function readConfigToObject() {
     if($("#useredit-pbbetrate-input-id").length > 0){
         objMember.mb_game_pb_ratio = $("#useredit-pbbetrate-input-id").val();
         objMember.mb_game_pb2_ratio = $("#useredit-pbbetrate2-input-id").val();
-        objMember.mb_game_ps_ratio = $("#useredit-psbetrate-input-id").val();
+        // objMember.mb_game_ps_ratio = $("#useredit-psbetrate-input-id").val();
     }  
 
     if($("#useredit-pbbetpercent-input-id").length > 0){
         objMember.mb_game_pb_percent = $("#useredit-pbbetpercent-input-id").val();
         objMember.mb_game_pb2_percent = $("#useredit-pbbetpercent2-input-id").val();
-        objMember.mb_game_ps_percent = $("#useredit-psbetpercent-input-id").val();
+        // objMember.mb_game_ps_percent = $("#useredit-psbetpercent-input-id").val();
     } 
     
     if($("#useredit-bbbetrate-input-id").length > 0){
