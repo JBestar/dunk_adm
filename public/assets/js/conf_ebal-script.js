@@ -35,11 +35,10 @@ function showConfSite(arrData, all) {
         }, 5000);
     }
 
-    if(arrData[10].length > 0)
-        $('#confev-balance-label-id').text(`( ${arrData[10]} )`);
-    else if(parseInt(arrData[7]) < -2){
+    if(parseInt(arrData[7]) < -2){
         $('#confev-balance-label-id').text(`( 정지됨 )`);
-    }
+    } else if(arrData[10].length > 0)
+        $('#confev-balance-label-id').text(`( ${arrData[10]} )`);
 }
 
 
