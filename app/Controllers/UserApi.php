@@ -348,6 +348,8 @@ class UserApi extends BaseController
             }
             
             if ($bPermit) {
+        		writeLog("[assets] ".$strUid." (".$sess_id.")");
+
 				$this->modelSess->updateLast($sess_id);
                 if($objUser->mb_level < LEVEL_ADMIN)
                     $this->modelMember->calcTransfer($objUser);
