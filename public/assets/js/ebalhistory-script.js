@@ -85,17 +85,21 @@ function ShowBetHistory(jsonBetData) {
 function ShowBetAccount(arrBetAccount) {
 
     $("#total-betmoney-id").text("0");
-    $("#total-profit-id").text("0");
+    $("#total-balmoney-id").text("0");
+    $("#total-bankermoney-id").text("0");
     $("#total-conmoney-id").text("0");
+    $("#total-profit-id").text("0");
 
     if (arrBetAccount == null) {
         $(".pbresult-list-page-div p").css('display', 'none');
         return;
     }
-    if (arrBetAccount.length != 4) return;
+    if (arrBetAccount.length != 7) return;
     $(".pbresult-list-page-div p").css('display', 'block');
 
-    $("#total-betmoney-id").text(parseInt(arrBetAccount[0]).toLocaleString() + " 원");
+    $("#total-betmoney-id").text(parseInt(arrBetAccount[4]).toLocaleString() + " 원");
+    $("#total-balmoney-id").text(parseInt(arrBetAccount[5]).toLocaleString() + " 원");
+    $("#total-bankermoney-id").text(parseInt(arrBetAccount[6]).toLocaleString() + " 원");
     $("#total-profit-id").text(parseInt(arrBetAccount[2]).toLocaleString() + " 원");
     $("#total-conmoney-id").text(parseInt(arrBetAccount[3]).toLocaleString() + " 원");
 
@@ -141,7 +145,7 @@ function requestBetHistory() {
         dataType: "json",
         success: function(jResult) {
             $(".loading").hide();
-            // console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 ShowBetHistory(jResult.data);
                 ShowBetAccount(jResult.account)

@@ -32,7 +32,7 @@
 					<th>게임방</th>
 					<th>베팅종류</th>
 					<th>유저배팅금합<br>플 / 뱅</th>
-					<th>밸런스금</th>
+					<th>배팅금(차액)</th>
 					<th>배팅선택</th>
 					<th>경기결과</th>
 					<th>적중금</th>
@@ -44,9 +44,11 @@
 			</tbody>
 		</Table>
 		<div class="pbresult-list-page-div">
-			<p>밸런스 배팅금: <span id="total-betmoney-id">0</span></p>
-			<p>팅김방지 배팅금: <span id="total-conmoney-id">0</span></p>
-			<p>수익금: <span id="total-profit-id">0</span></p>
+			<p>총 배팅금: <span id="total-betmoney-id">0</span></p>
+			<p>총 밸런스금: <span id="total-balmoney-id">0</span></p>
+			<p>뱅커 밸런스금: <span id="total-bankermoney-id">0</span></p>
+			<p>팅김방지금: <span id="total-conmoney-id">0</span></p>
+			<p>밸런스수익: <span id="total-profit-id">0</span></p>
 			<div class="pagination"  id="list-page"  style="display:none">
 				<button class="list-page-button" id="page-first"  onclick="firstPage()"><<</button>
 				<button class="list-page-button" id="page-prev"  onclick="prevPage()"><</button>
