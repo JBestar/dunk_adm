@@ -44,8 +44,9 @@ class EbalBet_Model extends Model
 
         //총배팅금, 적중금
         $arrSum = array();
-        $strSql = " SELECT SUM(CASE WHEN bet_type=0 THEN bet_amount ELSE 0 END ) AS bet_amount_sum, ";
-        $strSql .= " SUM(CASE WHEN bet_type=0 THEN bet_win_amount ELSE 0 END ) AS win_amount_sum, ";
+        $strSql = " SELECT ";
+        // $strSql .= " SUM(CASE WHEN bet_type=0 THEN bet_amount ELSE 0 END ) AS bet_amount_sum, ";
+        // $strSql .= " SUM(CASE WHEN bet_type=0 THEN bet_win_amount ELSE 0 END ) AS win_amount_sum, ";
         $strSql .= " SUM(CASE WHEN bet_type=2 THEN bet_amount ELSE 0 END ) AS bet_con_sum, ";
         $strSql .= " SUM(CASE WHEN bet_type=2 THEN bet_win_amount ELSE 0 END ) AS win_con_sum, ";
         $strSql .= " SUM(CASE WHEN bet_type=2 THEN 0 ELSE bet_player + bet_banker END ) AS bet_user_sum, ";
@@ -61,17 +62,7 @@ class EbalBet_Model extends Model
         $strSql .= $where;
         $objResult = $this -> db -> query($strSql)->getRow();
         
-        writeLog($strSql);
-        // $nSum = 0;
-        // if(!is_null($objResult->bet_amount_sum)) {
-        //     $nSum = $objResult->bet_amount_sum;
-        // }
-        // $arrSum[0] = $nSum;
-        // $nSum = 0;
-        // if(!is_null($objResult->win_amount_sum)) {
-        //     $nSum = $objResult->win_amount_sum;
-        // }
-        // $arrSum[1] = $nSum;
+        // writeLog($strSql);
         //Total user's Betting money
         $nSum = 0;
         if(!is_null($objResult->bet_user_sum)) {
@@ -92,19 +83,18 @@ class EbalBet_Model extends Model
         $arrSum[2] = $nSum;
         //totabl profit
         $arrSum[3] = $nSum * 0.05;
-        
+        //connect bet sum
         $nSum = 0;
         if(!is_null($objResult->bet_con_sum)) {
             $nSum = intval($objResult->bet_con_sum);
         }
         $arrSum[4] = $nSum;
-        
+        //connect bet win
         $nSum = 0;
         if(!is_null($objResult->win_con_sum)) {
             $nSum = intval($objResult->win_con_sum);
         }
         $arrSum[5] = $nSum;
-        
         
         return $arrSum;
     }
