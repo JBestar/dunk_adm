@@ -36,6 +36,7 @@
 					<option value="3" >AIRLINE</option>
 					<option value="4" >NINEBAR</option>
 					<option value="5" >CHROMA</option>
+					<option value="6" >CITY</option>
 				</select>
 			</div>
 			<div>

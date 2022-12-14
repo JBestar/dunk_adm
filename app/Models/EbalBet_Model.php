@@ -32,15 +32,20 @@ class EbalBet_Model extends Model
     function getBetAccount($reqData){
         
         $where = " WHERE bet_state > ".BET_STATE_RES." AND bet_state < ".BET_STATE_DENY  ;
+        $strCondition = " WHERE bet_money != bet_win_money ";
         if(strlen($reqData['start']) > 0 && strlen($reqData['end']) > 0 ){
             $where.=" AND ".getTimeRange('bet_tm_req', $reqData);
+            $strCondition.=" AND ".getBetTimeRange($reqData);
         }
         if(strlen($reqData['user']) > 0){
             $where.=" AND bet_site_uid = '".$reqData['user']."' ";
+            $strCondition.=" AND bet_mb_uid = '".$reqData['user']."' ";   
         }
         if(strlen(trim($reqData['room'])) > 0){
             $where.=" AND (bet_table_id = '".$reqData['room']."' OR bet_table_name LIKE '%".trim($reqData['room'])."%' ) ";
+            $strCondition.=" AND bet_table_code in ( SELECT tid FROM  casino_game WHERE tid = '".$reqData['room']."' OR name LIKE '%".$reqData['room']."%' ) ";
         }
+        $strCondition.=" AND bet_game_id = '0' AND bet_player_id = '0' ";
 
         //총배팅금, 적중금
         $arrSum = array();
@@ -59,6 +64,7 @@ class EbalBet_Model extends Model
         // $strSql .= " SUM(CASE WHEN bet_type= 1 AND bet_result = 'Player' THEN bet_banker % 1000 ELSE 0 END) AS profit_sum3, ";
         // $strSql .= " SUM(CASE WHEN bet_type= 1 AND bet_result = 'Banker' THEN bet_player % 1000 + FLOOR(bet_player DIV 1000)*50 ELSE 0 END) AS profit_sum4 ";
         $strSql .= " FROM ".$this->table;
+
         $strSql .= $where;
         $objResult = $this -> db -> query($strSql)->getRow();
         
@@ -96,6 +102,17 @@ class EbalBet_Model extends Model
         }
         $arrSum[5] = $nSum;
         
+        //Total user's Betting money
+
+        // $strSql = "SELECT SUM(bet_money) AS bet_money_sum";
+        // $strSql .= " FROM bet_casino ";
+        // $strSql .= $strCondition;
+        // $objResult = $this -> db -> query($strSql)->getRow();
+        // $nSum = 0;
+        // if(!is_null($objResult->bet_money_sum)) {
+        //     $nSum = intval($objResult->bet_money_sum);
+        // }
+        // $arrSum[0] = $nSum;
         return $arrSum;
     }
 

@@ -34,6 +34,7 @@ class CsBet_Model extends Model
     function getBetAccount($arrReqData){
         
         $strCondition = " WHERE bet_money != bet_win_money ";
+        // $strCondition = " WHERE bet_result != 'Tie' ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
             $strCondition.=" AND ".getBetTimeRange($arrReqData);
         }
