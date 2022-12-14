@@ -101,7 +101,7 @@ class EbalBet_Model extends Model
 
     public function searchCount($reqData){
 
-        $where = " WHERE bet_state > ".BET_STATE_RES." AND bet_state < ".BET_STATE_DENY  ;
+        $where = " WHERE bet_state > ".BET_STATE_REQ." AND bet_state < ".BET_STATE_DENY  ;
         if(strlen($reqData['start']) > 0 && strlen($reqData['end']) > 0 ){
             $where.=" AND ".getTimeRange('bet_tm_req', $reqData);
         }
@@ -129,7 +129,7 @@ class EbalBet_Model extends Model
 
     public function searchList($reqData){
         
-        $where = " WHERE bet_state > ".BET_STATE_RES." AND bet_state < ".BET_STATE_DENY  ;
+        $where = " WHERE bet_state > ".BET_STATE_REQ." AND bet_state < ".BET_STATE_DENY  ;
         if(strlen($reqData['start']) > 0 && strlen($reqData['end']) > 0 ){
             $where.=" AND ".getTimeRange('bet_tm_req', $reqData);
         }
