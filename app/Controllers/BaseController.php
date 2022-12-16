@@ -533,7 +533,7 @@ class BaseController extends Controller
 
 				if($arrResp['status'] == 1)
 				{
-					writeLog($logHead.$objMember->mb_uid."-Withdraw status=".$arrResp['balance']);
+					writeLog($logHead.$objMember->mb_uid."-Withdraw balance=".$arrResp['balance']);
                     if($this->modelMember->updateAssets($objMember, $amount)){
                         $objMember->mb_gslot_money = $arrResp['balance'];
                         $this->modelMember->updateGslotMoney($objMember);

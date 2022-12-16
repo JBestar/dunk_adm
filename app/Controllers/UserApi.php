@@ -1519,7 +1519,7 @@ class UserApi extends BaseController
     
                 } else if($gameId == GAME_SLOT_3){
                     foreach($arrMember as $objMember){
-                        if($objMember->mb_slot_uid != "" && $objMember->mb_gslot_money > 0 ) {
+                        if($objMember->mb_gslot_uid != "" && $objMember->mb_gslot_money > 0 ) {
                             writeLog("<GSLOT> Recovery Uid=".$objMember->mb_uid." Balance=".$objMember->mb_gslot_money);
                             if(diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
                                 $iResult = 2;

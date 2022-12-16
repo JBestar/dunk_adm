@@ -59,7 +59,7 @@ function showGame(list, appType) {
             html += "</td><td>";
 
             html += "<select class='act' onchange='onChangeAct(this)' data-fid='" + game.fid + "' ";
-            if(appType == 2){
+            if(appType == 2 || appType == 5){
                 if(game.fslot_cnt > 1){
                     html += " style='color:red'> ";
                     html += "<option "+(game.act==0?"selected":"")+" value='0'>OUR</option>";
@@ -220,6 +220,7 @@ function requestTotalPage() {
 
 function requestGameSet(data){
     let jsonData = JSON.stringify(data);
+    // console.log(jsonData);
     $.ajax({
         type: "POST",
         dataType: "json",

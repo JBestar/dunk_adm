@@ -34,7 +34,7 @@ function requestConfGame() {
         success: function(jResult) {
             $("#refresh_egg").removeClass("refresh");
             $("#refresh_useregg").removeClass("refresh");
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 showConfGame(jResult.data, jResult.agent);
                 if(jResult.msg ){

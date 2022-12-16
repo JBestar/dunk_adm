@@ -1554,7 +1554,6 @@ public function withdrawlist(){
 			//model
 			$slgameModel = new SlotGame_Model();
 			
-			
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level < LEVEL_ADMIN){
