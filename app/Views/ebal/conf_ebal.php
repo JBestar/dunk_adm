@@ -32,9 +32,9 @@
 			</div>
 		</div> -->
 		<!-- 보험계정 1 -->
-		<div class="confsite-game-text-div">
+		<!-- <div class="confsite-game-text-div">
   			<p style="font-size: 16px; font-weight: bold;">보험계정 1</p>
-  		</div>
+  		</div> -->
 		<div class="confsite-game-text-div">
 			<div>
 				<p>보험배팅승인:</p> 

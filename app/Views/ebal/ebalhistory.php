@@ -36,6 +36,7 @@
 					<th>배팅선택</th>
 					<th>경기결과</th>
 					<th>적중금</th>
+					<th>보유금</th>
 					<th>수익</th>
 				</tr>
 			</thead>
@@ -45,6 +46,7 @@
 		</Table>
 		<div class="pbresult-list-page-div">
 			<p>총 배팅금: <span id="total-betmoney-id">0</span></p>
+			<p>총 적중금: <span id="total-winmoney-id">0</span></p>
 			<p>총 밸런스금: <span id="total-balmoney-id">0</span></p>
 			<p>뱅커 밸런스금: <span id="total-bankermoney-id">0</span></p>
 			<p>밸런스수익: <span id="total-profit-id">0</span></p>

@@ -1328,15 +1328,12 @@ public function withdrawlist(){
 			$objAdmin = $this->modelMember->getInfo($strUid);
 
 			$arrBetResults = null;
-			$arrBetAccount = null;
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 				$arrBetResults = $ebetModel->searchList($arrGetData);
-				$arrBetAccount = $ebetModel->getBetAccount($arrGetData);
 			} 
 			
 			$objResult = new \StdClass;
 			$objResult->data = $arrBetResults;	
-			$objResult->account = $arrBetAccount;
 			$objResult->status = "success";
 		
 			echo json_encode($objResult);
@@ -1364,11 +1361,14 @@ public function withdrawlist(){
 			$objAdmin = $this->modelMember->getInfo($strUid);
 			
 			$objCount = null;
+			$arrBetAccount = null;
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 				$objCount = $ebetModel->searchCount($arrGetData);
+				$arrBetAccount = $ebetModel->getBetAccount($arrGetData);
 			}			
 
 			$arrResult['data'] = $objCount;
+			$arrResult['account'] = $arrBetAccount;
 			$arrResult['status'] = "success";
 		
 			echo json_encode($arrResult);

@@ -23,6 +23,7 @@ class EbalBet_Model extends Model
         'bet_result',
         'bet_player',
         'bet_banker',
+        'bet_balance',
         'bet_type',
 
     ];
@@ -32,29 +33,29 @@ class EbalBet_Model extends Model
     function getBetAccount($reqData){
         
         $where = " WHERE bet_state > ".BET_STATE_RES." AND bet_state < ".BET_STATE_DENY  ;
-        $strCondition = " WHERE bet_money != bet_win_money ";
+        // $strCondition = " WHERE bet_money != bet_win_money ";
         if(strlen($reqData['start']) > 0 && strlen($reqData['end']) > 0 ){
             $where.=" AND ".getTimeRange('bet_tm_req', $reqData);
-            $strCondition.=" AND ".getBetTimeRange($reqData);
+            // $strCondition.=" AND ".getBetTimeRange($reqData);
         }
         if(strlen($reqData['user']) > 0){
             $where.=" AND bet_site_uid = '".$reqData['user']."' ";
-            $strCondition.=" AND bet_mb_uid = '".$reqData['user']."' ";   
+            // $strCondition.=" AND bet_mb_uid = '".$reqData['user']."' ";   
         }
         if(strlen(trim($reqData['room'])) > 0){
             $where.=" AND (bet_table_id = '".$reqData['room']."' OR bet_table_name LIKE '%".trim($reqData['room'])."%' ) ";
-            $strCondition.=" AND bet_table_code in ( SELECT tid FROM  casino_game WHERE tid = '".$reqData['room']."' OR name LIKE '%".$reqData['room']."%' ) ";
+            // $strCondition.=" AND bet_table_code in ( SELECT tid FROM  casino_game WHERE tid = '".$reqData['room']."' OR name LIKE '%".$reqData['room']."%' ) ";
         }
-        $strCondition.=" AND bet_game_id = '0' AND bet_player_id = '0' ";
+        // $strCondition.=" AND bet_game_id = '0' AND bet_player_id = '0' ";
 
         //총배팅금, 적중금
         $arrSum = array();
         $strSql = " SELECT ";
-        // $strSql .= " SUM(CASE WHEN bet_type=0 THEN bet_amount ELSE 0 END ) AS bet_amount_sum, ";
-        // $strSql .= " SUM(CASE WHEN bet_type=0 THEN bet_win_amount ELSE 0 END ) AS win_amount_sum, ";
+        $strSql .= " SUM(CASE WHEN bet_type=0 THEN bet_amount ELSE 0 END ) AS bet_amount_sum, ";
+        $strSql .= " SUM(CASE WHEN bet_type=0 THEN bet_win_amount ELSE 0 END ) AS win_amount_sum, ";
         $strSql .= " SUM(CASE WHEN bet_type=2 THEN bet_amount ELSE 0 END ) AS bet_con_sum, ";
         $strSql .= " SUM(CASE WHEN bet_type=2 THEN bet_win_amount ELSE 0 END ) AS win_con_sum, ";
-        $strSql .= " SUM(CASE WHEN bet_type!=2 AND bet_result != 'Tie' THEN bet_player + bet_banker ELSE 0 END ) AS bet_user_sum, ";
+        // $strSql .= " SUM(CASE WHEN bet_type!=2 AND bet_result != 'Tie' THEN bet_player + bet_banker ELSE 0 END ) AS bet_user_sum, ";
         $strSql .= " SUM(CASE WHEN bet_type!=2 THEN (bet_player + bet_banker - ABS(bet_player - bet_banker))/2 ELSE 0 END ) AS bet_bal_sum, ";
         $strSql .= " SUM(CASE WHEN bet_type!=2 AND bet_result = 'Banker' THEN (bet_player + bet_banker - ABS(bet_player - bet_banker))/2 ELSE 0 END ) AS bet_bal_banker ";
         // $strSql .= " SUM(CASE WHEN bet_type=0 AND bet_choice = 'Banker' AND bet_result = 'Banker' THEN FLOOR(bet_player DIV 1000)*50 ELSE 0 END) AS profit_sum1 ";
@@ -69,38 +70,43 @@ class EbalBet_Model extends Model
         $objResult = $this -> db -> query($strSql)->getRow();
         
         // writeLog($strSql);
-        //Total user's Betting money
+        //Total Betting money
         $nSum = 0;
-        if(!is_null($objResult->bet_user_sum)) {
-            $nSum = intval($objResult->bet_user_sum);
+        if(!is_null($objResult->bet_amount_sum)) {
+            $nSum = intval($objResult->bet_amount_sum);
         }
         $arrSum[0] = $nSum;
+        $nSum = 0;
+        if(!is_null($objResult->win_amount_sum)) {
+            $nSum = intval($objResult->win_amount_sum);
+        }
+        $arrSum[1] = $nSum;
         //Total user's Betting balane money
         $nSum = 0;
         if(!is_null($objResult->bet_bal_sum)) {
             $nSum = intval($objResult->bet_bal_sum);
         }
-        $arrSum[1] = $nSum;
+        $arrSum[2] = $nSum;
         //if result is banker, Total user's Betting balane money
         $nSum = 0;
         if(!is_null($objResult->bet_bal_banker)) {
             $nSum = intval($objResult->bet_bal_banker);
         }
-        $arrSum[2] = $nSum;
+        $arrSum[3] = $nSum;
         //totabl profit
-        $arrSum[3] = $nSum * 0.05;
+        $arrSum[4] = $nSum * 0.05;
         //connect bet sum
         $nSum = 0;
         if(!is_null($objResult->bet_con_sum)) {
             $nSum = intval($objResult->bet_con_sum);
         }
-        $arrSum[4] = $nSum;
+        $arrSum[5] = $nSum;
         //connect bet win
         $nSum = 0;
         if(!is_null($objResult->win_con_sum)) {
             $nSum = intval($objResult->win_con_sum);
         }
-        $arrSum[5] = $nSum;
+        $arrSum[6] = $nSum;
         
         //Total user's Betting money
 
