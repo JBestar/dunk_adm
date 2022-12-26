@@ -40,7 +40,7 @@ function showMember(arrMember, confs) {
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_nickname;
         if(arrMember[nRow].mb_state_delete > 0){
-            strBuf += "<br>(오플라인)";    
+            strBuf += "<br>(오프라인)";    
         }
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_fid;

@@ -334,19 +334,25 @@
 		<?php if ($mb_level >= LEVEL_ADMIN) { ?>
         
 			<div class="useredit-text-div">
-				<?php if(!is_null($objMember) && $objMember->mb_state_delete == 1) :  ?>
-					<input type="checkbox" id="useredit-offline-check-id" style="zoom:140%; margin-top:4px; width:20px;" checked>
-				<?php else :  ?>
-					<input type="checkbox" id="useredit-offline-check-id" style="zoom:140%; margin-top:4px; width:20px;" >
-				<?php endif ?>
-				<p>오플라인 유저</p> 
+				
+				<?php if(array_key_exists('app.ebal', $_ENV) && $_ENV['app.ebal'] > 0 ) :?>
 
-				<?php if(!is_null($objMember) && $objMember->mb_state_view == 1) :  ?>
-					<input type="checkbox" id="useredit-balance-check-id" style="zoom:140%; margin-top:4px; width:20px;" checked>
-				<?php else :  ?>
-					<input type="checkbox" id="useredit-balance-check-id" style="zoom:140%; margin-top:4px; width:20px;" >
+					<?php if(!is_null($objMember) && $objMember->mb_state_view == 1) :  ?>
+						<input type="checkbox" id="useredit-balance-check-id" style="zoom:140%; margin-top:4px; width:20px;" checked>
+					<?php else :  ?>
+						<input type="checkbox" id="useredit-balance-check-id" style="zoom:140%; margin-top:4px; width:20px;" >
+					<?php endif ?>
+					<p>에볼 누르기</p> 
+
+				<?php else :?>
+					<?php if(!is_null($objMember) && $objMember->mb_state_delete == 1) :  ?>
+						<input type="checkbox" id="useredit-offline-check-id" style="zoom:140%; margin-top:4px; width:20px;" checked>
+					<?php else :  ?>
+						<input type="checkbox" id="useredit-offline-check-id" style="zoom:140%; margin-top:4px; width:20px;" >
+					<?php endif ?>
+					<p>오프라인 유저</p> 
 				<?php endif ?>
-				<p>에볼 누르기</p> 
+
 			</div>
 
 			<!---->

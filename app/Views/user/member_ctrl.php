@@ -197,10 +197,13 @@
 										<input id="partner_id" type="text" value="" class="form-control" />
 										<input id="user_fid" type="hidden" class="form-control" disabled="" value="" />
 									</div>
+									<?php if(!array_key_exists('app.ebal', $_ENV) || $_ENV['app.ebal'] < 1 ) :?>
 									<div class="col-md-2">
 										<input type="checkbox" id="offline_user" style="zoom:110%; width 20px; margin-top:10px;"/>
-										오플라인유저
+										오프라인유저
 									</div>
+									<?php endif ?>
+
 								</div>
 							</div>
 							<div class="col-md-12">
