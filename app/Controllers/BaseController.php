@@ -523,7 +523,7 @@ class BaseController extends Controller
 					usleep(500000);
 					$amount = $arrResult['balance'];
 					$arrResp =  $this->libApigslot->subBalance($objMember->mb_gslot_uid, $amount);
-					writeLog($logHead." ".$objMember->mb_uid."-Withdraw status=".$arrResult['status']);
+					writeLog($logHead." ".$objMember->mb_uid."-Withdraw status=".$arrResp['status']);
 				} else {
 					$objMember->mb_gslot_money = $arrResult['balance'];
 					$this->modelMember->updateGslotMoney($objMember);
@@ -534,7 +534,7 @@ class BaseController extends Controller
 				if($arrResp['status'] == 1)
 				{
 					writeLog($logHead.$objMember->mb_uid."-Withdraw balance=".$arrResp['balance']);
-                    if($this->modelMember->updateAssets($objMember, $amount)){
+                    if($this->modelMember->moneyProc($objMember, $amount)){
                         $objMember->mb_gslot_money = $arrResp['balance'];
                         $this->modelMember->updateGslotMoney($objMember);
 						$objMember->mb_money += $amount;   
@@ -680,7 +680,7 @@ class BaseController extends Controller
 				$arrResult['amount'] = $objMember->mb_money;
 
 				writeLog($logHead.$objMember->mb_uid."-Deposit Balance=".$arrResult['balance']);
-				if($this->modelMember->updateAssets($objMember, 0-$arrResult['amount'])){
+				if($this->modelMember->moneyProc($objMember, 0-$arrResult['amount'])){
 					$objMember->mb_gslot_money = $arrResult['balance'];
 					$this->modelMember->updateGslotMoney($objMember);
 					$objMember->mb_money -= $arrResult['amount'];   
