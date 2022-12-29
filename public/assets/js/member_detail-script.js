@@ -248,7 +248,7 @@ function showChargeLog(arrData){
         tHtml += "</td></tr>";
     }
     if(tHtml.length < 1){
-        tHtml = '<tr><td colspan="50" class="empty_table"> 현시할 내역이 없습니다</td></tr>';
+        tHtml = '<tr><td colspan="50" class="empty_table"> 내역이 없습니다</td></tr>';
     }
 
     $("#charge_table").html(tHtml);
@@ -273,7 +273,7 @@ function showDischargeLog(arrData){
         tHtml += "</td></tr>";
     }
     if(tHtml.length < 1){
-        tHtml = '<tr><td colspan="50" class="empty_table"> 현시할 내역이 없습니다</td></tr>';
+        tHtml = '<tr><td colspan="50" class="empty_table"> 내역이 없습니다</td></tr>';
     }
 
     $("#discharge_table").html(tHtml);
@@ -291,7 +291,7 @@ function showIpLog(arrData){
         tHtml += "</td></tr>";
     }
     if(tHtml.length < 1){
-        tHtml = '<tr><td colspan="50" class="empty_table"> 현시할 내역이 없습니다</td></tr>';
+        tHtml = '<tr><td colspan="50" class="empty_table"> 내역이 없습니다</td></tr>';
     }
 
     $("#login_history_table").html(tHtml);
@@ -322,7 +322,7 @@ function showBetLog(arrData, date){
         tHtml += "</td></tr>";
     }
     if(tHtml.length < 1){
-        tHtml = '<tr><td colspan="50" class="empty_table"> 현시할 내역이 없습니다</td></tr>';
+        tHtml = '<tr><td colspan="50" class="empty_table"> 내역이 없습니다</td></tr>';
     }
 
     $("#game_hist_table").html(tHtml);

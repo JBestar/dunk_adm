@@ -1,7 +1,7 @@
 $(document).ready(function() {
     setNavBarElement();
-    // addEventListner();
-    // requestConfBetSite();
+    addEventListner();
+    requestConfBetSite();
     ordhitoryLoop();
 });
 
@@ -34,6 +34,9 @@ function ShowOrdHistory(jsonBetData) {
                 strBuf += "</td><td></td><td>";
                 nRow ++;
             } else if(jsonBetData[nRow].ord_choice == "Player") {
+                
+                jsonBetData[nRow].ord_amount = parseInt(jsonBetData[nRow].ord_amount);
+                jsonBetData[nRow+1].ord_amount = parseInt(jsonBetData[nRow+1].ord_amount);
                 if(nRow+1 < cntRow && jsonBetData[nRow].tid === jsonBetData[nRow+1].tid && jsonBetData[nRow+1].ord_choice == "Banker"){
                     if(jsonBetData[nRow].ord_amount == jsonBetData[nRow+1].ord_amount){
                         balPlayer = "0";
@@ -147,7 +150,7 @@ function ordhitoryLoop() {
     // 10초뒤에 다시 실행
     setTimeout(function() {
         ordhitoryLoop();
-        // requestConfBetSite();
+        requestConfBetSite();
     }, 10000);
 }
 
@@ -155,7 +158,7 @@ function requestConfBetSite() {
     $.ajax({
         type: "POST",
         dataType: "json",
-        url: FURL + "/api/getEvolSite",
+        url: FURL + "/api/getEvolState",
         success: function(jResult) {
             // console.log(jResult);
             if (jResult.status == "success") {
@@ -167,27 +170,21 @@ function requestConfBetSite() {
             }
         },
         error: function(request, status, error) {
-            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 
     });
 }
 
-function showConfSite(arrData) {
-    if (arrData.length < 6)
-        return;
+function showConfSite(state) {
 
-    if(arrData[3] == 1){
+
+    if(state == 1){
         $("#ebal-start-but-id").attr("disabled", true);
         $("#ebal-stop-but-id").attr("disabled", false);
 
         $("#ebal-start-but-id").css("background", '#85ff8e');
         $("#ebal-stop-but-id").css("background", 'white');
-
-        $('#ebal-balance-id').show();
-        if(parseInt(arrData[7]) >= 0)
-            $('#ebal-balance-id').text(`보유알: ${arrData[7].toLocaleString()}`);
-        else $('#ebal-balance-id').hide();
         
     } else {
         $("#ebal-start-but-id").attr("disabled", false);
@@ -195,8 +192,6 @@ function showConfSite(arrData) {
 
         $("#ebal-start-but-id").css("background", 'white');
         $("#ebal-stop-but-id").css("background", '#ff3a5a');
-
-        $('#ebal-balance-id').hide();
 
     }
 
@@ -219,7 +214,7 @@ function setEbalState(state){
     $.ajax({
         type: "POST",
         dataType: "json",
-        url: FURL + "/api/setEvolSite",
+        url: FURL + "/api/setEvolState",
         data: { json_: jsonData },
         success: function(jResult) {
             // console.log(jResult);

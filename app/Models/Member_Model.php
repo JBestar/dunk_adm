@@ -1862,44 +1862,35 @@ class Member_Model extends Model
         $strTbColum .= ' mb_game_bb_ratio, mb_game_bb2_ratio, mb_game_bs_ratio, mb_game_cs_ratio, mb_game_sl_ratio, mb_game_eo_ratio, mb_game_eo2_ratio, mb_game_co_ratio, mb_game_co2_ratio, ';
         $strTbColum .= ' mb_game_pb_percent, mb_game_pb2_percent, mb_game_ps_percent, mb_game_bb_percent, mb_game_bb2_percent, mb_game_bs_percent, mb_game_eo_percent, mb_game_eo2_percent, ';
         $strTbColum .= ' mb_game_co_percent, mb_game_co2_percent, mb_blank_count, ';
-        $strBetM = " ( bet_sl.bet_m ";
-        $strBetW = " ( bet_sl.bet_w ";
+        $strTbColum .= " bet_sl.bet_sl_m, bet_sl.bet_sl_w, ";
+        $strTbColum .= "  ";
         // if(!$confs['npg_deny']){
         //     $strBetM.= " + bet_pb.bet_m + bet_pl.bet_m "; 
         //     $strBetW.= " + bet_pb.bet_w + bet_pl.bet_w "; 
         // }
         if($confs['hpg_enable']){
-            $strBetM.= " + bet_pb.bet_m ";
-            $strBetW.= " + bet_pb.bet_w "; 
+            $strTbColum.= " bet_pb.bet_pb_m, bet_pb.bet_pb_w, ";
+            $strTbColum.= "  "; 
         }
         if(!$confs['bpg_deny']){
-            $strBetM.= " + bet_bb.bet_m + bet_bl.bet_m "; 
-            $strBetW.= " + bet_bb.bet_w + bet_bl.bet_w "; 
+            $strTbColum.= " bet_bb.bet_bb_m, bet_bb.bet_bb_w, "; 
+            $strTbColum.= " bet_bl.bet_bl_m, bet_bl.bet_bl_w, "; 
         }
         if($confs['eos5_enable']){
-            $strBetM.= " + bet_e5.bet_m "; 
-            $strBetW.= " + bet_e5.bet_w "; 
+            $strTbColum.= " bet_e5.bet_e5_m, bet_e5.bet_e5_w, "; 
         }
         if($confs['eos3_enable']){
-            $strBetM.= " + bet_e3.bet_m "; 
-            $strBetW.= " + bet_e3.bet_w "; 
+            $strTbColum.= " bet_e3.bet_e3_m, bet_e3.bet_e3_w, "; 
         }
         if($confs['coin5_enable']){
-            $strBetM.= " + bet_c5.bet_m "; 
-            $strBetW.= " + bet_c5.bet_w "; 
+            $strTbColum.= " bet_c5.bet_c5_m, bet_c5.bet_c5_w, "; 
         }
         if($confs['coin3_enable']){
-            $strBetM.= " + bet_c3.bet_m "; 
-            $strBetW.= " + bet_c3.bet_w "; 
+            $strTbColum.= " bet_c3.bet_c3_m, bet_c3.bet_c3_w, "; 
         }
         if(!$confs['cas_deny'] || $confs['kgon_enable']){
-            $strBetM.= " + bet_cs.bet_m "; 
-            $strBetW.= " + bet_cs.bet_w "; 
+            $strTbColum.= " bet_cs.bet_cs_m, bet_cs.bet_cs_w, "; 
         }
-        $strBetM.= " ) bet_sum, ";
-        $strBetW.= " ) win_sum, ";
-
-        $strTbColum.=$strBetM.$strBetW; 
         $strTbColum.= " rw_point, chg_point ";
 
         $where = "";
@@ -1918,33 +1909,33 @@ class Member_Model extends Model
 
 
         $strSQL = "SELECT ".$strTbColum." FROM ".$this->table;
-        $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_slot group by bet_mb_uid ) bet_sl ON bet_sl.bet_mb_uid = member.mb_uid";
+        $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_sl_m, sum(bet_win_money) AS bet_sl_w from bet_slot group by bet_mb_uid ) bet_sl ON bet_sl.bet_mb_uid = member.mb_uid";
 
         // if(!$confs['npg_deny']){
         //     $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_powerball group by bet_mb_uid ) bet_pb ON bet_pb.bet_mb_uid = member.mb_uid";
         //     $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_powerladder group by bet_mb_uid ) bet_pl ON bet_pl.bet_mb_uid = member.mb_uid";
         // }
         if($confs['hpg_enable']){
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_happyball group by bet_mb_uid ) bet_pb ON bet_pb.bet_mb_uid = member.mb_uid";
+            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_pb_m, sum(bet_win_money) AS bet_pb_w from bet_happyball group by bet_mb_uid ) bet_pb ON bet_pb.bet_mb_uid = member.mb_uid";
         }
         if(!$confs['bpg_deny']){
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_bogleball group by bet_mb_uid ) bet_bb ON bet_bb.bet_mb_uid = member.mb_uid";
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_bogleladder group by bet_mb_uid ) bet_bl ON bet_bl.bet_mb_uid = member.mb_uid";
+            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_bb_m, sum(bet_win_money) AS bet_bb_w from bet_bogleball group by bet_mb_uid ) bet_bb ON bet_bb.bet_mb_uid = member.mb_uid";
+            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_bl_m, sum(bet_win_money) AS bet_bl_w from bet_bogleladder group by bet_mb_uid ) bet_bl ON bet_bl.bet_mb_uid = member.mb_uid";
         }
         if($confs['eos5_enable']){
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_eos5ball group by bet_mb_uid ) bet_e5 ON bet_e5.bet_mb_uid = member.mb_uid";
+            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_e5_m, sum(bet_win_money) AS bet_e5_w from bet_eos5ball group by bet_mb_uid ) bet_e5 ON bet_e5.bet_mb_uid = member.mb_uid";
         }
         if($confs['eos3_enable']){
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_eos3ball group by bet_mb_uid ) bet_e3 ON bet_e3.bet_mb_uid = member.mb_uid";
+            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_e3_m, sum(bet_win_money) AS bet_e3_w from bet_eos3ball group by bet_mb_uid ) bet_e3 ON bet_e3.bet_mb_uid = member.mb_uid";
         }
         if($confs['coin5_enable']){
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_coin5ball group by bet_mb_uid ) bet_c5 ON bet_c5.bet_mb_uid = member.mb_uid";
+            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_c5_m, sum(bet_win_money) AS bet_c5_w from bet_coin5ball group by bet_mb_uid ) bet_c5 ON bet_c5.bet_mb_uid = member.mb_uid";
         }
         if($confs['coin3_enable']){
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_coin3ball group by bet_mb_uid ) bet_c3 ON bet_c3.bet_mb_uid = member.mb_uid";
+            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_c3_m, sum(bet_win_money) AS bet_c3_w from bet_coin3ball group by bet_mb_uid ) bet_c3 ON bet_c3.bet_mb_uid = member.mb_uid";
         }
         if(!$confs['cas_deny'] || $confs['kgon_enable']){
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_m, sum(bet_win_money) AS bet_w from bet_casino group by bet_mb_uid ) bet_cs ON bet_cs.bet_mb_uid = member.mb_uid";
+            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_cs_m, sum(bet_win_money) AS bet_cs_w from bet_casino group by bet_mb_uid ) bet_cs ON bet_cs.bet_mb_uid = member.mb_uid";
         }
 	    $strSQL.= " LEFT JOIN ( select rw_mb_fid, sum(rw_point) AS rw_point from bet_reward group by rw_mb_fid ) sum_reward ON sum_reward.rw_mb_fid = member.mb_fid";
 	    $strSQL.= " LEFT JOIN ( select money_mb_fid, sum(money_amount) AS chg_point from money_history where money_change_type = ".POINTCHANGE_EXCHANGE." group by money_mb_fid ) chg_point ON chg_point.money_mb_fid = member.mb_fid";
@@ -1961,6 +1952,7 @@ class Member_Model extends Model
         
         $nStartRow = ($arrReqData['page'] - 1) * $arrReqData['count'];
         $strSQL .= ' LIMIT '.$nStartRow.', '.$arrReqData['count'];
+        // writeLog($strSQL);
 
         return $this->db->query($strSQL)->getResult();
     }

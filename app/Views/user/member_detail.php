@@ -243,7 +243,7 @@
                                         </tr>
                                     </thead>
 
-                                    <tbody id="game_hist_table"><tr><td colspan="50" class="empty_table"> 현시할 내역이 없습니다</td></tr></tbody>
+                                    <tbody id="game_hist_table"><tr><td colspan="50" class="empty_table"> 내역이 없습니다</td></tr></tbody>
                                 </table>
                             </div>
                         </div>
@@ -275,7 +275,7 @@
                                             </tr>
                                         </thead>
 
-                                        <tbody id="charge_table"><tr><td colspan="50" class="empty_table"> 현시할 내역이 없습니다</td></tr></tbody>
+                                        <tbody id="charge_table"><tr><td colspan="50" class="empty_table"> 내역이 없습니다</td></tr></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -306,7 +306,7 @@
                                             </tr>
                                         </thead>
 
-                                        <tbody id="discharge_table"><tr><td colspan="50" class="empty_table"> 현시할 내역이 없습니다</td></tr></tbody>
+                                        <tbody id="discharge_table"><tr><td colspan="50" class="empty_table"> 내역이 없습니다</td></tr></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -336,7 +336,7 @@
                                             </tr>
                                         </thead>
 
-                                        <tbody id="login_history_table"><tr><td colspan="50" class="empty_table"> 현시할 내역이 없습니다</td></tr></tbody>
+                                        <tbody id="login_history_table"><tr><td colspan="50" class="empty_table"> 내역이 없습니다</td></tr></tbody>
                                     </table>
                                 </div>
                             </div>

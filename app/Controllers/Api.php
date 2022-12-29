@@ -433,6 +433,57 @@ class Api extends BaseController{
 
 	}
 
+	public function getEvolState(){
+		if(is_login())
+		{
+			
+			$confsiteModel = new ConfSite_Model();
+			$strUid = $this->session->user_id;
+			$objAdmin = $this->modelMember->getInfo($strUid);
+			if($objAdmin->mb_level >= LEVEL_ADMIN){
+				$state = false;
+				if(array_key_exists('app.ebal', $_ENV) && $_ENV['app.ebal'] > 2 )
+					$objConfig = $confsiteModel->getConf(CONF_AUTOAPPS);
+				else $objConfig = $confsiteModel->getConf(CONF_EVOLRUN_1);
+				if(!is_null($objConfig)){
+					$state = $objConfig->conf_active;
+				}
+				$arrResult['data'] = $state;
+				$arrResult['status'] = "success";
+			} else $arrResult['status'] = "nopermit";
+
+		} else {
+			$arrResult['status'] = "logout";			
+		}
+		echo json_encode($arrResult);	
+
+	}
+
+	public function setEvolState(){
+		$jsonData = $_REQUEST['json_'];
+		$arrData = json_decode($jsonData, true);		
+		if(is_login())
+		{
+			
+			$confsiteModel = new ConfSite_Model();
+			$strUid = $this->session->user_id;
+			$objAdmin = $this->modelMember->getInfo($strUid);
+			if($objAdmin->mb_level >= LEVEL_ADMIN){
+				$confId = CONF_EVOLRUN_1;
+				if(array_key_exists('app.ebal', $_ENV) && $_ENV['app.ebal'] > 2 )
+					$confId = CONF_AUTOAPPS;
+
+				$confsiteModel->setConfActive($confId, $arrData['active_ev']);
+				$arrResult['status'] = "success";
+			} else $arrResult['status'] = "nopermit";
+
+		} else {
+			$arrResult['status'] = "logout";			
+		}
+		echo json_encode($arrResult);	
+
+	}
+
 	public function getsoundconf(){
 		if(is_login())
 		{
@@ -1397,11 +1448,8 @@ public function withdrawlist(){
 			$stats = null;
 			$agBalance = -1;
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
-				$data = $confsiteModel->getEvolSite();
 				
-				if($data[3] == STATE_ACTIVE){
-					$stats = $eorderModel->getStatsByRound();	
-				}
+				$stats = $eorderModel->getStatsByRound();	
 			}
 
 			$objResult = new \StdClass;
