@@ -1,7 +1,7 @@
 $(document).ready(function() {
     setNavBarElement();
     addEventListner();
-    requestConfBetSite();
+    requestConfBetState();
     ordhitoryLoop();
 });
 
@@ -150,11 +150,11 @@ function ordhitoryLoop() {
     // 10초뒤에 다시 실행
     setTimeout(function() {
         ordhitoryLoop();
-        requestConfBetSite();
+        requestConfBetState();
     }, 10000);
 }
 
-function requestConfBetSite() {
+function requestConfBetState() {
     $.ajax({
         type: "POST",
         dataType: "json",

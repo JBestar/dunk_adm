@@ -2,7 +2,8 @@ $(document).ready(function() {
     setNavBarElement();
     requestConfBetSite(true);
     addBtnEvent();
-
+    if($("#confev-bet-allcheck-id").length > 0)
+        requestConfBetState();
 });
 
 
@@ -153,6 +154,8 @@ function addBtnEvent() {
 
         if (!confirm("저장하시겠습니까?"))
             return;
+        if($("#confev-bet-allcheck-id").length > 0)
+            setEbalState($("#confev-bet-allcheck-id").prop('checked') ? 1 : 0);
 
         $.ajax({
             type: "POST",
@@ -202,6 +205,63 @@ function requestConfBetSite(all=false) {
         },
         error: function(request, status, error) {
             // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+
+    });
+}
+
+
+function requestConfBetState() {
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: FURL + "/api/getEvolState",
+        success: function(jResult) {
+            // console.log(jResult);
+            if (jResult.status == "success") {
+                $("#confev-bet-allcheck-id").prop('checked', jResult.data > 0 ? true : false);
+                showConfSite(jResult.data);
+            } else if (jResult.status == "logout") {
+                window.location.replace( FURL +'/');
+            } else if (jResult.status == "nopermit") {
+                alert("권한이 없습니다.");
+            }
+        },
+        error: function(request, status, error) {
+            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+
+    });
+}
+
+
+function setEbalState(state){
+    
+    var objData = new Object();
+
+    objData.active_ev = state;
+    
+    var jsonData = JSON.stringify(objData);
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: FURL + "/api/setEvolState",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+            if (jResult.status == "success") {
+                // window.location.reload();
+            } else if (jResult.status == "logout") {
+                window.location.replace( FURL +'/');
+            } else if (jResult.status == "fail") {
+                alert("조작이 실패되었습니다.");
+            } else if (jResult.status == "nopermit") {
+                alert("권한이 없습니다.");
+            }
+        },
+        error: function(request, status, error) {
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });

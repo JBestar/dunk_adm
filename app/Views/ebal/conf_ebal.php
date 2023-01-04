@@ -78,7 +78,12 @@
 			</div>
 		</div>
 		<?php else :?>
-
+		<div class="confsite-game-text-div">
+			<div>
+				<p>전체 보험배팅:</p> 
+				<input type="checkbox" id="confev-bet-allcheck-id" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 배팅승인</label>
+			</div>
+		</div>
 		<div class="confsite-game-text-div">
 			<div>
 				<p id="conf-pw-label">최소베팅금액:</p> 
