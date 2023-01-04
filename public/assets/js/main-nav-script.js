@@ -132,7 +132,7 @@ function showMemberInfo(objUser) {
     if (getMemberLevelString(objUser.mb_level) != null)
         strBuf = getMemberLevelString(objUser.mb_level);
     else
-        strBuf = "회원";
+        strBuf = "";
 
     $("#main-navbar-level-id").text(strBuf);
     $("#main-navbar-emp-div-id").text(objUser.mb_nickname);

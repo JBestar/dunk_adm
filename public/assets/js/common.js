@@ -55,6 +55,10 @@ function getMemberLevelString(nLevel) {
         else if (nLevel == LEVEL_MARKET)
             return "4레벨";
         else return "5레벨";
+    }  else if(mLevelType !== undefined && mLevelType == 3){
+        if (nLevel >= LEVEL_ADMIN)
+             return "관리자";
+        else return null;
     } else {
         if (nLevel >= LEVEL_ADMIN)
             return "관리자";
