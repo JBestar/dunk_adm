@@ -7,7 +7,6 @@
 	<th></th>
 	<th>ID</th>
 	<th>닉네임</th>
-	<th>구분</th>
 	<th>보유금</th>
 	<th>포인트</th>
 	<th>충전</th>

@@ -30,8 +30,8 @@ function showMember(arrMember, confs) {
         strBuf += "<td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td> <td>";
-        if (getMemberLevelString(arrMember[nRow].mb_level) != null)
-            strBuf += getMemberLevelString(arrMember[nRow].mb_level);
+        if (getMemberLevelString(arrMember[nRow].mb_level, true) != null)
+            strBuf += getMemberLevelString(arrMember[nRow].mb_level, true);
         strBuf += "</td> <td>";
         strBuf += "<a href='"+FURL+"/user/member_ctrl/";
         strBuf += arrMember[nRow].mb_emp_fid;

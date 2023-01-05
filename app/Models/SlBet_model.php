@@ -34,7 +34,7 @@ class SlBet_Model extends Model
 
         $strWhere = "";
         if($arrReqData['game'] == GAME_SLOT_12){
-            $strWhere=" WHERE bet_game_id < '".$arrReqData['game']."' ";
+            $strWhere=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_2."', '".GAME_SLOT_3."') ";
         } else $strWhere=" WHERE bet_game_id = '".$arrReqData['game']."' ";
 
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
@@ -102,8 +102,8 @@ class SlBet_Model extends Model
         
         $strWhere= "";
         if($arrReqData['game'] == GAME_SLOT_12){
-            $strWhere=" WHERE bet_game_id < '".$arrReqData['game']."' ";
-        } else $strWhere=" WHERE bet_game_id = '".$arrReqData['game']."' ";
+            $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_2."', '".GAME_SLOT_3."') ";
+        } else $strWhere.=" WHERE bet_game_id = '".$arrReqData['game']."' ";
         
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
             $strWhere.=" AND ".getBetTimeRange($arrReqData);
@@ -171,11 +171,11 @@ class SlBet_Model extends Model
 
         $strSql .= " LEFT JOIN ".$this->mPrdTable." ON ".$tbBetSearch.".bet_game_type = ".$this->mPrdTable.".code ";
         $strSql .= " ORDER BY bet_time  DESC";
-        // writeLog($strSql);
+        writeLog($strSql);
 
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();
-        // writeLog("search End");
+        writeLog("search End");
         
         return $result; 
 
@@ -207,7 +207,8 @@ class SlBet_Model extends Model
         }
 
         if($arrReqData['game'] == GAME_SLOT_12){
-            $strSql.=" WHERE bet_game_id < '".$arrReqData['game']."' ";
+            $strSql.=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_2."', '".GAME_SLOT_3."') ";
+            // $strSql.=" bet_game_id < '".$arrReqData['game']."' ";
         } else $strSql.=" WHERE bet_game_id = '".$arrReqData['game']."' ";
         
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){

@@ -31,7 +31,7 @@ const LEVEL_EMPLOYEE = 97;
 const LEVEL_MARKET = 96;
 const LEVEL_MIN = 1;
 
-function getMemberLevelString(nLevel) {
+function getMemberLevelString(nLevel, bNeed=false) {
     if(mLevelType !== undefined && mLevelType == 1){
         if (nLevel >= LEVEL_ADMIN)
         return "관리자";
@@ -56,9 +56,21 @@ function getMemberLevelString(nLevel) {
             return "4레벨";
         else return "5레벨";
     }  else if(mLevelType !== undefined && mLevelType == 3){
-        if (nLevel >= LEVEL_ADMIN)
-             return "관리자";
-        else return null;
+        if(bNeed){
+            if (nLevel >= LEVEL_ADMIN)
+                return "관리자";
+            else if (nLevel == LEVEL_COMPANY)
+                return "부본";
+            else if (nLevel == LEVEL_AGENCY)
+                return "총판";
+            else if (nLevel == LEVEL_EMPLOYEE)
+                return "매장";
+        } else {
+            if (nLevel >= LEVEL_ADMIN)
+                return "관리자";
+            else return null;
+        }
+        
     } else {
         if (nLevel >= LEVEL_ADMIN)
             return "관리자";

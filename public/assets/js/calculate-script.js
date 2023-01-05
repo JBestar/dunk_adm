@@ -27,11 +27,10 @@ function showCalcualte(arrCalcData, empLv) {
         strBuf += "<p hidden>" + arrCalcData[nRow].mb_level + "</p>";
         strBuf += "</td><td>";
         strBuf += arrCalcData[nRow].mb_uid; //
+        if (getMemberLevelString(arrCalcData[nRow].mb_level) != null)
+            strBuf += " | " + getMemberLevelString(arrCalcData[nRow].mb_level);
         strBuf += "</td><td>";
         strBuf += arrCalcData[nRow].mb_nickname; //
-        strBuf += "</td><td>";
-        if (getMemberLevelString(arrCalcData[nRow].mb_level) != null)
-            strBuf += getMemberLevelString(arrCalcData[nRow].mb_level);
         strBuf += "</td><td>";
             sumMon += parseInt(arrCalcData[nRow].mb_money_all);
         strBuf += parseInt(arrCalcData[nRow].mb_money_single).toLocaleString() + " / " + parseInt(arrCalcData[nRow].mb_money_all).toLocaleString();
@@ -64,7 +63,7 @@ function showCalcualte(arrCalcData, empLv) {
     }
 
     if(empLv >= LEVEL_ADMIN){
-        strBuf += "<tr><td colspan='4'><b>합계</b></td>";
+        strBuf += "<tr><td colspan='3'><b>합계</b></td>";
         strBuf += "<td>"+ sumMon.toLocaleString() +"</td>";
         strBuf += "<td>"+ sumPot.toLocaleString() +"</td>";
         strBuf += "<td>"+ sumChg.toLocaleString() +"</td>";
@@ -191,42 +190,44 @@ function addRow(nTbRow, arrCalcData, level) {
 
         var elemCell1 = elemNewRow.insertCell(1);
         elemCell1.innerHTML = arrCalcData[nRow].mb_uid; //
+        if (getMemberLevelString(arrCalcData[nRow].mb_level) != null)
+            elemCell1.innerHTML += getMemberLevelString(arrCalcData[nRow].mb_level);
 
         var elemCell2 = elemNewRow.insertCell(2);
         elemCell2.innerHTML = arrCalcData[nRow].mb_nickname; //
 
-        var elemCell3 = elemNewRow.insertCell(3);
-        if (getMemberLevelString(arrCalcData[nRow].mb_level) != null)
-            elemCell3.innerHTML = getMemberLevelString(arrCalcData[nRow].mb_level);
+        // var elemCell3 = elemNewRow.insertCell(3);
+        // if (getMemberLevelString(arrCalcData[nRow].mb_level) != null)
+        //     elemCell3.innerHTML = getMemberLevelString(arrCalcData[nRow].mb_level);
         
-        var elemCell4 = elemNewRow.insertCell(4);
+        var elemCell4 = elemNewRow.insertCell(3);
         elemCell4.innerHTML = parseInt(arrCalcData[nRow].mb_money_single).toLocaleString() + " / " + parseInt(arrCalcData[nRow].mb_money_all).toLocaleString();
 
-        var elemCell5 = elemNewRow.insertCell(5);
+        var elemCell5 = elemNewRow.insertCell(4);
         elemCell5.innerHTML = parseInt(arrCalcData[nRow].mb_point_single).toLocaleString() + " / " + parseInt(arrCalcData[nRow].mb_point_all).toLocaleString();
         
-        var elemCell6 = elemNewRow.insertCell(6);
+        var elemCell6 = elemNewRow.insertCell(5);
         elemCell6.innerHTML = parseInt(arrCalcData[nRow].mb_charge).toLocaleString(); //
 
-        var elemCell7 = elemNewRow.insertCell(7);
+        var elemCell7 = elemNewRow.insertCell(6);
         elemCell7.innerHTML = parseInt(arrCalcData[nRow].mb_exchange).toLocaleString();
 
-        var elemCell8 = elemNewRow.insertCell(8);
+        var elemCell8 = elemNewRow.insertCell(7);
         elemCell8.innerHTML = parseInt(arrCalcData[nRow].mb_charge_benefit).toLocaleString();
         
-        var elemCell9 = elemNewRow.insertCell(9);
+        var elemCell9 = elemNewRow.insertCell(8);
         elemCell9.innerHTML = parseInt(arrCalcData[nRow].mb_bet_money).toLocaleString();
 
-        var elemCell10 = elemNewRow.insertCell(10);
+        var elemCell10 = elemNewRow.insertCell(9);
         elemCell10.innerHTML = parseInt(arrCalcData[nRow].mb_bet_win_money).toLocaleString();
 
-        var elemCell11 = elemNewRow.insertCell(11);
+        var elemCell11 = elemNewRow.insertCell(10);
         elemCell11.innerHTML = parseInt(arrCalcData[nRow].mb_bet_benefit_money).toLocaleString();
 
-        var elemCell12 = elemNewRow.insertCell(12);
+        var elemCell12 = elemNewRow.insertCell(11);
         elemCell12.innerHTML = parseInt(arrCalcData[nRow].mb_rate_single).toLocaleString() + " / " + parseInt(arrCalcData[nRow].mb_rate_all).toLocaleString();
 
-        var elemCell13 = elemNewRow.insertCell(13);
+        var elemCell13 = elemNewRow.insertCell(12);
         elemCell13.innerHTML = parseInt(arrCalcData[nRow].mb_last_money).toLocaleString();
 
         elemNewRow.addEventListener("click", rowEventHander);
