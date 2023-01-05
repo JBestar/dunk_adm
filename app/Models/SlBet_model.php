@@ -171,11 +171,11 @@ class SlBet_Model extends Model
 
         $strSql .= " LEFT JOIN ".$this->mPrdTable." ON ".$tbBetSearch.".bet_game_type = ".$this->mPrdTable.".code ";
         $strSql .= " ORDER BY bet_time  DESC";
-        writeLog($strSql);
+        // writeLog($strSql);
 
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();
-        writeLog("search End");
+        // writeLog("search End");
         
         return $result; 
 
