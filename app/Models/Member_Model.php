@@ -399,7 +399,7 @@ class Member_Model extends Model
         
      }
 
-     public function gameRange(&$arrReqData)
+     public function gameRange(&$arrReqData, $bRw = true)
      {
         if ($arrReqData['type'] == GAME_POWER_BALL ) {
             $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_powerball");
@@ -424,7 +424,8 @@ class Member_Model extends Model
         } elseif ($arrReqData['type'] == GAME_HAPPY_BALL ) {
             $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_happyball");
         }
-        $arrReqData['rw_range'] = $this->getRwRangeId($arrReqData, "bet_reward");
+        if($bRw)
+            $arrReqData['rw_range'] = $this->getRwRangeId($arrReqData, "bet_reward");
         
      }
 
@@ -446,6 +447,27 @@ class Member_Model extends Model
             $range[0] = $objResult->min_fid;
             $range[1] = $objResult->max_fid;
          }
+         return $range;
+     }
+
+     public function getBetMinId($arrReqData, $tbName){
+        $range = [-1, -1];
+        
+        $strCond = ""; 
+        if (strlen($arrReqData['start']) > 0) {
+            $strCond = " WHERE bet_time >= '".$arrReqData['start']."' " ;
+        }
+        $strSQL = " SELECT MIN(bet_fid) AS min_fid FROM ".$tbName;
+        $strSQL.= $strCond; 
+
+        // writeLog($strSQL);
+        $objResult = $this->db->query($strSQL)->getRow();
+        // writeLog("getBetRangeId END");
+
+        if (!is_null($objResult->min_fid)) {
+            $range[0] = $objResult->min_fid;
+         }
+         
          return $range;
      }
 
