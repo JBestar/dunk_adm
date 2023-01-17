@@ -105,7 +105,7 @@ class EbalBet_Model extends Model
         if(strlen($arrReqData['user']) > 0){
             $strWhere.=" AND bet_mb_fid = '".$arrReqData['user']."' ";
         }
-        $strWhere.=" AND employee_amount = 0 ";  
+        // $strWhere.=" AND employee_amount = 0 ";  
         if(array_key_exists("state", $arrReqData) && $arrReqData['state'] > 0){
             $strWhere.=" AND company_amount <> 0 ";
         } else {
@@ -120,7 +120,7 @@ class EbalBet_Model extends Model
         
         $strSql = "";
         $strSql .= "SELECT bet_fid, bet_idx, bet_mb_uid, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_id, bet_game_type, bet_table_code, ";
-        $strSql .= " bet_choice, bet_result, point_amount, company_amount, obj_id, ".$this->mGameTable.".name as game_name, rw_mb_uid, rw_point, ".$this->mPrdTable.".name as prd_name";
+        $strSql .= " bet_choice, bet_result, point_amount, company_amount, obj_id, bet_table_name as game_name, rw_mb_uid, rw_point, '에볼루션' as prd_name";
         $strSql .= " FROM ( ";
 
         $tbBetSearch = "bet_search";
@@ -138,7 +138,7 @@ class EbalBet_Model extends Model
             //Join bet_reward
             $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->mRewardTable.".rw_game = '".$gameId."' ";
                 $strSql .= ' AND '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
-                $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = '".$objEmp->mb_uid."' ";
+                $strSql .= ' AND '.$this->mRewardTable.".rw_mb_fid = '".$objEmp->mb_fid."' ";
             
         } else{
             
@@ -148,18 +148,18 @@ class EbalBet_Model extends Model
             //Join bet_reward
             $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->mRewardTable.".rw_game = '".$gameId."' ";
                 $strSql .= ' AND '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
-                $strSql .= ' AND '.$this->mRewardTable.".rw_mb_uid = ".$tbBetSearch.".bet_mb_uid ";
+                $strSql .= ' AND '.$this->mRewardTable.".rw_mb_fid = ".$tbBetSearch.".bet_mb_fid ";
             
         }
-        $strSql .= " LEFT JOIN ".$this->mPrdTable." ON ".$tbBetSearch.".bet_game_id = ".$this->mPrdTable.".vendor_id ";
+        // $strSql .= " LEFT JOIN ".$this->mPrdTable." ON ".$tbBetSearch.".bet_game_id = ".$this->mPrdTable.".vendor_id ";
 
-        $strSql .= " LEFT JOIN ".$this->mGameTable." ON ".$tbBetSearch.".bet_table_code = ".$this->mGameTable.".tid ";
+        // $strSql .= " LEFT JOIN ".$this->mGameTable." ON ".$tbBetSearch.".bet_table_code = ".$this->mGameTable.".tid ";
         $strSql .= " ORDER BY bet_time DESC";
 
-        // writeLog($strSql);
+        writeLog($strSql);
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();
-        // writeLog("search End");
+        writeLog("search End");
         
         return $result; 
 
@@ -194,7 +194,7 @@ class EbalBet_Model extends Model
             $strSql.=" AND bet_mb_fid = '".$arrReqData['user']."' ";
         }
         
-        $strSql.=" AND employee_amount = 0 ";
+        // $strSql.=" AND employee_amount = 0 ";
         if(array_key_exists("state", $arrReqData) && $arrReqData['state'] > 0){
             $strSql.=" AND company_amount > 0 ";
         } else {
