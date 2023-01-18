@@ -1003,7 +1003,7 @@ public function withdrawlist(){
 					$arrGetData['user'] = $objUser->mb_fid;
 				else $arrGetData['user'] = 0;
 			}
-			
+
 			$objCount = $moneyhistoryModel->searchCount($objAdmin, $arrGetData);
 			
 			$arrResult['data'] = $objCount;
@@ -1321,7 +1321,10 @@ public function withdrawlist(){
 
 		if(is_login()) {
 			//model
+			$arrGetData['start'] = $arrGetData['start'].":00"; 
+			$arrGetData['end'] = $arrGetData['end'].":00"; 
 			if(isEBalMode()){
+				
 				$csbetModel = new EbalBet_Model();
 				if(strlen($arrGetData['user']) > 0){
 					$objUser = $this->modelMember->getInfo(trim($arrGetData['user']));
@@ -1329,6 +1332,7 @@ public function withdrawlist(){
 						$arrGetData['user'] = $objUser->mb_fid;
 					else $arrGetData['user'] = 0;
 				}
+				// $arrGetData['rw_range'] = $this->modelMember->getRwMinId($arrGetData); 
 			} else 
 				$csbetModel = new CsBet_Model();
 			
@@ -1336,7 +1340,8 @@ public function withdrawlist(){
 			$objAdmin = $this->modelMember->getInfo($strUid);
 
 			$arrGetData['type'] = GAME_CASINO_EVOL;
-			$this->modelMember->gameRange($arrGetData, false);
+			// $arrGetData['gm_range'] = $this->modelMember->getBetMinId($arrGetData, $csbetModel->table);
+			$this->modelMember->gameRange($arrGetData);
 
 			if($objAdmin->mb_level >= LEVEL_ADMIN && strlen(trim($arrGetData['emp'])) > 0){
 				$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
@@ -1365,6 +1370,8 @@ public function withdrawlist(){
 		$arrGetData = json_decode($jsonData, true);
 
 		if(is_login()) {
+			$arrGetData['start'] = $arrGetData['start'].":00"; 
+			$arrGetData['end'] = $arrGetData['end'].":00"; 
 			//model
 			if(isEBalMode()){
 				$csbetModel = new EbalBet_Model();

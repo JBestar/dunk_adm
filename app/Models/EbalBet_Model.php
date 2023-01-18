@@ -43,12 +43,12 @@ class EbalBet_Model extends Model
         // $strCondition = " WHERE bet_result != 'Tie' ";
         // if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
             // $strCondition.=" AND ".getBetTimeRange($arrReqData);
+        $strCondition .= " employee_amount = 0 AND company_amount = 0 AND point_amount <> ".BET_STATE_TIE." AND ";
         $strCondition .= " bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
         // }
         if(strlen($arrReqData['user']) > 0){
             $strCondition.=" AND bet_mb_fid = '".$arrReqData['user']."' ";            
         }
-        $strCondition .= " AND point_amount != ".BET_STATE_TIE." AND employee_amount = 0 AND company_amount = 0 ";
         
         if(array_key_exists('room', $arrReqData) && strlen($arrReqData['room']) > 0) {
             $strCondition.=" AND bet_table_name = '".$arrReqData['room']."' ";
@@ -101,23 +101,23 @@ class EbalBet_Model extends Model
         $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_nickname, r.mb_live_id ";
 
         $strWhere=" WHERE ";
+        if(array_key_exists("state", $arrReqData) && $arrReqData['state'] > 0){
+            $strWhere.=" company_amount <> 0 AND ";
+        } else {
+            $strWhere.=" company_amount = 0 AND ";
+        }
         $strWhere .= " bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
-
         if(strlen($arrReqData['user']) > 0){
             $strWhere.=" AND bet_mb_fid = '".$arrReqData['user']."' ";
         }
         // $strWhere.=" AND employee_amount = 0 ";  
-        if(array_key_exists("state", $arrReqData) && $arrReqData['state'] > 0){
-            $strWhere.=" AND company_amount <> 0 ";
-        } else {
-            $strWhere.=" AND company_amount = 0 ";
-        }
+        
         if(array_key_exists('room', $arrReqData) && strlen($arrReqData['room']) > 0)
             $strWhere.=" AND bet_table_name = '".$arrReqData['room']."' ";
         
 
         $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
-        $strWhere.=" ORDER BY bet_time DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
+        $strWhere.=" ORDER BY bet_fid DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
         
         $strSql = "";
         $strSql .= "SELECT bet_fid, bet_idx, bet_mb_uid, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_id, bet_game_type, bet_table_code, ";
@@ -137,7 +137,8 @@ class EbalBet_Model extends Model
             $strSql .=$strWhere.") ".$tbBetSearch;
 
             //Join bet_reward
-            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->mRewardTable.".rw_game = '".$gameId."' ";
+            // $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->mRewardTable.".rw_game = '".$gameId."' ";
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON rw_fid >= '.$arrReqData['rw_range'][0].' AND rw_fid <= '.$arrReqData['rw_range'][1].' AND ';
                 $strSql .= ' AND '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
                 $strSql .= ' AND '.$this->mRewardTable.".rw_mb_fid = '".$objEmp->mb_fid."' ";
             
@@ -147,7 +148,9 @@ class EbalBet_Model extends Model
         	$strSql .=$strWhere.") ".$tbBetSearch;
 
             //Join bet_reward
-            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->mRewardTable.".rw_game = '".$gameId."' ";
+            // $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->mRewardTable.".rw_game = '".$gameId."' ";
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON rw_fid >= '.$arrReqData['rw_range'][0].' AND '; // rw_fid <= '.$arrReqData['rw_range'][1].' AND 
+            $strSql .= $this->mRewardTable.".rw_game = '".$gameId."' ";
                 $strSql .= ' AND '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
                 $strSql .= ' AND '.$this->mRewardTable.".rw_mb_fid = ".$tbBetSearch.".bet_mb_fid ";
             
@@ -189,18 +192,17 @@ class EbalBet_Model extends Model
         
         $bWhere = true;
         $strSql .= " WHERE ";
+        if(array_key_exists("state", $arrReqData) && $arrReqData['state'] > 0){
+            $strSql.=" company_amount <> 0 AND ";
+        } else {
+            $strSql.=" company_amount = 0 AND ";
+        }
         $strSql .= " bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
 
         if(strlen($arrReqData['user']) > 0){
             $strSql.=" AND bet_mb_fid = '".$arrReqData['user']."' ";
         }
-        
         // $strSql.=" AND employee_amount = 0 ";
-        if(array_key_exists("state", $arrReqData) && $arrReqData['state'] > 0){
-            $strSql.=" AND company_amount > 0 ";
-        } else {
-            $strSql.=" AND company_amount = 0 ";
-        }
         
         if(array_key_exists('room', $arrReqData) && strlen($arrReqData['room']) > 0) {
             $strSql.=" AND bet_table_name = '".$arrReqData['room']."' ";
@@ -221,10 +223,10 @@ class EbalBet_Model extends Model
 
         if($arrReqInfo['gm_range'][0] >= 0){
             $strSql = " SELECT SUM(bet_money) AS bet_money_sum, SUM(bet_win_money) AS win_money_sum  FROM ".$this->table;
-            $strSql .= " WHERE bet_fid >= ".$arrReqInfo['gm_range'][0]; //." AND bet_fid <= ".$arrReqInfo['gm_range'][1]
-            // $strSql .= " WHERE bet_time >= '".$arrReqInfo['start']."' AND bet_time <= '".$arrReqInfo['end']."' ";
-            $strSql .= " AND point_amount <> ".BET_STATE_TIE." AND company_amount = 0 ";  //exclude tie and success bet 
-            $strSql .= " AND employee_amount = 0 ";  //member level < admin level;
+            // $strSql .= " WHERE bet_fid >= ".$arrReqInfo['gm_range'][0]; //." AND bet_fid <= ".$arrReqInfo['gm_range'][1]
+            $strSql .= " WHERE employee_amount = 0 AND company_amount = 0 ";  //exclude tie and success bet 
+            $strSql .= " AND point_amount <> ".BET_STATE_TIE ;  //member level < admin level;
+            $strSql .= " AND bet_fid >= ".$arrReqInfo['gm_range'][0]; //." AND bet_fid <= ".$arrReqInfo['gm_range'][1]
     
             // writeLog($strSql);
             $objResult = $this -> db -> query($strSql)->getRow();

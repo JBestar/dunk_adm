@@ -210,5 +210,5 @@ function pbhitoryLoop() {
     // 1초뒤에 다시 실행
     setTimeout(function() {
         pbhitoryLoop();
-    }, 60000);
+    }, 120000);
 }

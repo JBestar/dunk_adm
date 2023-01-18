@@ -253,7 +253,7 @@ function requestBetHistory() {
         },
         error: function(request, status, error) {
             $(".loading").hide();
-            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });
@@ -342,5 +342,5 @@ function pbhitoryLoop() {
     // 1초뒤에 다시 실행
     setTimeout(function() {
         pbhitoryLoop();
-    }, 60000);
+    }, 120000);
 }

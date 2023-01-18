@@ -479,6 +479,27 @@ class Member_Model extends Model
          return $range;
      }
 
+     public function getRwMinId($arrReqData){
+        $range = [-1, -1];
+        
+        $strCond = ""; 
+        if (strlen($arrReqData['start']) > 0) {
+            $strCond = " WHERE rw_time >= '".$arrReqData['start']."' " ;
+        }
+        $strSQL = " SELECT MIN(rw_fid) AS min_fid FROM bet_reward";
+        $strSQL.= $strCond; 
+
+        writeLog($strSQL);
+        $objResult = $this->db->query($strSQL)->getRow();
+        writeLog("getRwRangeId END");
+
+        if (!is_null($objResult->min_fid)) {
+            $range[0] = $objResult->min_fid;
+         }
+         
+         return $range;
+     }
+
      public function getRwRangeId($arrReqData, $tbName){
         $range = [-1, -1];
         
