@@ -1321,8 +1321,8 @@ public function withdrawlist(){
 
 		if(is_login()) {
 			//model
-			$arrGetData['start'] = $arrGetData['start'].":00"; 
-			$arrGetData['end'] = $arrGetData['end'].":00"; 
+			// $arrGetData['start'] = $arrGetData['start'].":00"; 
+			// $arrGetData['end'] = $arrGetData['end'].":00"; 
 			if(isEBalMode()){
 				
 				$csbetModel = new EbalBet_Model();
@@ -1370,8 +1370,8 @@ public function withdrawlist(){
 		$arrGetData = json_decode($jsonData, true);
 
 		if(is_login()) {
-			$arrGetData['start'] = $arrGetData['start'].":00"; 
-			$arrGetData['end'] = $arrGetData['end'].":00"; 
+			// $arrGetData['start'] = $arrGetData['start'].":00"; 
+			// $arrGetData['end'] = $arrGetData['end'].":00"; 
 			//model
 			if(isEBalMode()){
 				$csbetModel = new EbalBet_Model();
