@@ -2,10 +2,16 @@
 <?= $this->section('confsite-active') ?>본사설정<?= $this->endSection() ?>
 
 <?= $this->section('confsite-navbar') ?>
-	<?php if($mb_level > LEVEL_MASTER) {  ?>
+	<?php if($mb_level > LEVEL_MASTER) :  ?>
         <button class="sub-navbar-but" style="display: block;" id="cleanDb-but" onclick="cleanDb(1);">디비초기화</button>
-        <button class="sub-navbar-but" style="display: none;" id="deleteDb-but" onclick="cleanDb(0);">디비정리</button>
-	<?php } ?>
+	<?php endif ?>
+	<?php if($mb_level >= LEVEL_ADMIN) :  ?>
+		<div style="float:right;">
+			<input type="date" id="conf-dbclean-input-id" style="margin-right:5px; padding:2px;" value="<?php echo calcDate(-7);?>">
+			<button class="sub-navbar-but" style="display: block; margin-right:10px;" id="deleteDb-but" onclick="cleanDb(2);">이전 내역정리</button>
+		</div>
+	<?php endif ?>
+	
 <?= $this->endSection() ?>
 
 <?= $this->section('confsite-content') ?>

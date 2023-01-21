@@ -121,7 +121,7 @@ class ConfSite_Model extends Model
         $confIds = [CONF_EVOLSITE_1, CONF_EVOLRUN_1, CONF_EVOLSITE_2, CONF_EVOLRUN_2, CONF_EVOLSITE_3, CONF_EVOLRUN_3];  
         $arrConf = $this->find($confIds);
         
-        $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 20, 50 ];
+        $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 20, 50, 0 ];
         $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "" ];
         $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "" ];
 

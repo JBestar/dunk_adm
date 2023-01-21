@@ -9,8 +9,10 @@ class EbalBet_Model extends Model
     protected $allowedFields = [
         'bet_idx', 
         'bet_emp_fid', 
+        'bet_state', 
         'bet_mb_fid', 
         'bet_mb_uid', 
+        'bet_mb_level', 
         'bet_round_no', 
         'bet_time', 
         'bet_money', 
@@ -24,7 +26,6 @@ class EbalBet_Model extends Model
         'bet_choice', 
         'bet_result', 
         'point_amount', 
-        'employee_amount', 
         'company_amount', 
         'org_id', 
     ];
@@ -42,9 +43,9 @@ class EbalBet_Model extends Model
         $strCondition = " WHERE ";
         // $strCondition = " WHERE bet_result != 'Tie' ";
         // if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            // $strCondition.=" AND ".getBetTimeRange($arrReqData);
-        $strCondition .= " employee_amount = 0 AND company_amount = 0 AND point_amount <> ".BET_STATE_TIE." AND ";
-        $strCondition .= " bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
+        $strCondition.= getBetTimeRange($arrReqData);
+        // $strCondition .= " bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
+        $strCondition .= " AND bet_mb_level = 0 AND company_amount = 0 AND point_amount <> ".BET_STATE_TIE;
         // }
         if(strlen($arrReqData['user']) > 0){
             $strCondition.=" AND bet_mb_fid = '".$arrReqData['user']."' ";            
@@ -61,9 +62,11 @@ class EbalBet_Model extends Model
         $strSql .= " SUM(CASE WHEN bet_win_money > 0 THEN bet_win_money-bet_money ELSE 0 END) AS benefit_money_sum ";
         $strSql .= " FROM ".$this->table;
         $strSql .= $strCondition;
-        // writeLog($strSql);
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog($strSql);
         $objResult = $this -> db -> query($strSql)->getRow();
-        // writeLog("account End");
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog("EbalBet>> account End");
 
         $nSum = 0;
         if(!is_null($objResult->bet_money_sum)) {
@@ -101,17 +104,17 @@ class EbalBet_Model extends Model
         $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_nickname, r.mb_live_id ";
 
         $strWhere=" WHERE ";
+        // $strWhere .= " bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
+        $strWhere .= getBetTimeRange($arrReqData);
         if(array_key_exists("state", $arrReqData) && $arrReqData['state'] > 0){
-            $strWhere.=" company_amount <> 0 AND ";
+            $strWhere.=" AND company_amount <> 0 ";
         } else {
-            $strWhere.=" company_amount = 0 AND ";
+            $strWhere.=" AND company_amount = 0 ";
         }
-        $strWhere .= " bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
         if(strlen($arrReqData['user']) > 0){
             $strWhere.=" AND bet_mb_fid = '".$arrReqData['user']."' ";
         }
-        // $strWhere.=" AND employee_amount = 0 ";  
-        
+        // $strWhere.=" AND bet_mb_level = 0 ";  
         if(array_key_exists('room', $arrReqData) && strlen($arrReqData['room']) > 0)
             $strWhere.=" AND bet_table_name = '".$arrReqData['room']."' ";
         
@@ -138,8 +141,10 @@ class EbalBet_Model extends Model
 
             //Join bet_reward
             // $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->mRewardTable.".rw_game = '".$gameId."' ";
-            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON rw_fid >= '.$arrReqData['rw_range'][0].' AND rw_fid <= '.$arrReqData['rw_range'][1].' AND ';
-                $strSql .= ' AND '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
+            // $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON rw_fid >= '.$arrReqData['rw_range'][0].' AND rw_fid <= '.$arrReqData['rw_range'][1];
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.getTimeRange("rw_time", $arrReqData);
+            $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".$gameId."' ";
+            $strSql .= ' AND '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
                 $strSql .= ' AND '.$this->mRewardTable.".rw_mb_fid = '".$objEmp->mb_fid."' ";
             
         } else{
@@ -149,8 +154,9 @@ class EbalBet_Model extends Model
 
             //Join bet_reward
             // $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.$this->mRewardTable.".rw_game = '".$gameId."' ";
-            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON rw_fid >= '.$arrReqData['rw_range'][0].' AND '; // rw_fid <= '.$arrReqData['rw_range'][1].' AND 
-            $strSql .= $this->mRewardTable.".rw_game = '".$gameId."' ";
+            // $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON rw_fid >= '.$arrReqData['rw_range'][0].' AND rw_fid <= '.$arrReqData['rw_range'][1]; 
+            $strSql .= '  LEFT JOIN '.$this->mRewardTable.' ON '.getTimeRange("rw_time", $arrReqData);
+            $strSql .= ' AND '.$this->mRewardTable.".rw_game = '".$gameId."' ";
                 $strSql .= ' AND '.$tbBetSearch.'.bet_fid = '.$this->mRewardTable.'.rw_bet_id ';
                 $strSql .= ' AND '.$this->mRewardTable.".rw_mb_fid = ".$tbBetSearch.".bet_mb_fid ";
             
@@ -160,10 +166,12 @@ class EbalBet_Model extends Model
         // $strSql .= " LEFT JOIN ".$this->mGameTable." ON ".$tbBetSearch.".bet_table_code = ".$this->mGameTable.".tid ";
         $strSql .= " ORDER BY bet_time DESC";
 
-        // writeLog($strSql);
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog($strSql);
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();
-        // writeLog("search End");
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog("EbalBet>> search End");
         
         return $result; 
 
@@ -192,24 +200,26 @@ class EbalBet_Model extends Model
         
         $bWhere = true;
         $strSql .= " WHERE ";
+        // $strSql .= " bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
+        $strSql .= getBetTimeRange($arrReqData);
         if(array_key_exists("state", $arrReqData) && $arrReqData['state'] > 0){
-            $strSql.=" company_amount <> 0 AND ";
+            $strSql.=" AND company_amount <> 0 ";
         } else {
-            $strSql.=" company_amount = 0 AND ";
+            $strSql.=" AND company_amount = 0 ";
         }
-        $strSql .= " bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
 
         if(strlen($arrReqData['user']) > 0){
             $strSql.=" AND bet_mb_fid = '".$arrReqData['user']."' ";
         }
-        // $strSql.=" AND employee_amount = 0 ";
-        
+        // $strSql.=" AND bet_mb_level = 0 ";
         if(array_key_exists('room', $arrReqData) && strlen($arrReqData['room']) > 0) {
             $strSql.=" AND bet_table_name = '".$arrReqData['room']."' ";
         }
-        // writeLog($strSql);
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog($strSql);
         $query = $this -> db -> query($strSql);
-        // writeLog("searchCount End");
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog("EbalBet>> searchCount End");
 
         $result = $query -> getRow();
         
@@ -221,21 +231,21 @@ class EbalBet_Model extends Model
 
         $arrSum = array();
 
-        if($arrReqInfo['gm_range'][0] >= 0){
+        // if($arrReqInfo['gm_range'][0] >= 0){
             $strSql = " SELECT SUM(bet_money) AS bet_money_sum, SUM(bet_win_money) AS win_money_sum  FROM ".$this->table;
             // $strSql .= " WHERE bet_fid >= ".$arrReqInfo['gm_range'][0]; //." AND bet_fid <= ".$arrReqInfo['gm_range'][1]
-            $strSql .= " WHERE employee_amount = 0 AND company_amount = 0 ";  //exclude tie and success bet 
+            $strSql .= " WHERE bet_time >= '".$arrReqInfo['start']."' " ;//AND bet_time <= '".$arrReqInfo['end']."' ";
+            $strSql .= " AND bet_mb_level = 0 AND company_amount = 0 ";  //exclude tie and success bet 
             $strSql .= " AND point_amount <> ".BET_STATE_TIE ;  //member level < admin level;
-            $strSql .= " AND bet_fid >= ".$arrReqInfo['gm_range'][0]; //." AND bet_fid <= ".$arrReqInfo['gm_range'][1]
     
             // writeLog($strSql);
             $objResult = $this -> db -> query($strSql)->getRow();
             // writeLog("BetSumByDay End");
-        } else {
-            $objResult= new \StdClass;
-            $objResult->bet_money_sum = 0;
-            $objResult->win_money_sum = 0;
-        }
+        // } else {
+        //     $objResult= new \StdClass;
+        //     $objResult->bet_money_sum = 0;
+        //     $objResult->win_money_sum = 0;
+        // }
         
         $nSum = 0;
         if(!is_null($objResult->bet_money_sum)) {

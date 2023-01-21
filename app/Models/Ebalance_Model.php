@@ -121,7 +121,7 @@ class Ebalance_Model extends Model
         // }
         if(strlen($reqData['bet']) > 0){
             if(intval($reqData['bet']) == 1)
-                $where.=" AND bet_type <= '".BET_TYPE_ZERO."' ";
+                $where.=" AND bet_type IN (".BET_TYPE_ZERO.", ".BET_TYPE_NORMAL.") ";
             else if(intval($reqData['bet']) == 2)
                 $where.=" AND bet_type = '".BET_TYPE_FORCE."' ";
         }
@@ -143,14 +143,14 @@ class Ebalance_Model extends Model
 
     public function searchList($reqData){
         
-        $where = " WHERE bet_state > ".BET_STATE_REQ." AND bet_state < ".BET_STATE_DENY  ;
+        // $where = " WHERE bet_state > ".BET_STATE_REQ." AND bet_state < ".BET_STATE_DENY  ;
         $where = " "  ;
         // if(strlen($reqData['start']) > 0 && strlen($reqData['end']) > 0 ){
             $where.=" WHERE ".getTimeRange('bet_tm_req', $reqData);
         // }
         if(strlen($reqData['bet']) > 0){
             if(intval($reqData['bet']) == 1)
-                $where.=" AND bet_type <= '".BET_TYPE_ZERO."' ";
+                $where.=" AND bet_type IN (".BET_TYPE_ZERO.", ".BET_TYPE_NORMAL.") ";
             else if(intval($reqData['bet']) == 2)
                 $where.=" AND bet_type = '".BET_TYPE_FORCE."' ";
         }

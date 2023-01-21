@@ -29,6 +29,7 @@ function showConfSite(arrData, all) {
     $('#confev-balance-input-id').val('');
     $('#confev-balance-label-id').text('');
 
+    $('#confev-conuser-input-id').text('(접속자수: '+data[13]+")");
     if(parseInt(data[7]) >= 0){
         $('#confev-balance-input-id').val(data[7].toLocaleString());
         setTimeout(() =>{
@@ -198,7 +199,7 @@ function requestConfBetSite(all=false) {
         dataType: "json",
         url: FURL + "/api/getEvolSite",
         success: function(jResult) {
-            // console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 showConfSite(jResult.data, all);
             } else if (jResult.status == "logout") {
@@ -208,7 +209,7 @@ function requestConfBetSite(all=false) {
             }
         },
         error: function(request, status, error) {
-            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
 
     });
@@ -224,7 +225,6 @@ function requestConfBetState() {
             // console.log(jResult);
             if (jResult.status == "success") {
                 $("#confev-bet-allcheck-id").prop('checked', jResult.data > 0 ? true : false);
-                showConfSite(jResult.data);
             } else if (jResult.status == "logout") {
                 window.location.replace( FURL +'/');
             } else if (jResult.status == "nopermit") {

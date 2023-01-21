@@ -79,7 +79,8 @@
 		<div class="confsite-game-text-div">
 			<div>
 				<p>최대 접속자수:</p> 
-				<input type = "number" class="conf-text-input" min="0" step="1" id="confev-maxuser-input-id"> 명 (1~50)
+				<input type = "number" class="conf-text-input" min="0" step="1" id="confev-maxuser-input-id"> 명 
+				<span id="confev-conuser-input-id"> </span>
 			</div>
 			<div>
 				<p>보험알:</p> 
@@ -125,7 +126,8 @@
 		<div class="confsite-game-text-div">
 			<div>
 				<p>최대 접속자수:</p> 
-				<input type = "number" class="conf-text-input" min="0" step="1" id="confev-maxuser-input-id"> 명 (1~50)
+				<input type = "number" class="conf-text-input" min="0" step="1" id="confev-maxuser-input-id"> 명 
+				<span id="confev-conuser-input-id"> </span>
 			</div>
 		</div>
 

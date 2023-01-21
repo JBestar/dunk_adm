@@ -218,11 +218,11 @@ class MoneyHistory_Model extends Model
             // $strSql .=" ON ".$this->table.".money_mb_fid = member.mb_fid ";
         }
 
-        $rangeIds = $this->getRangeId($arrReqData);
+        // $rangeIds = $this->getRangeId($arrReqData);
 
         // if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            // $strSql.=" WHERE money_update_time >= '".$arrReqData['start']." 0:0:0' AND money_update_time <= '".$arrReqData['end']." 23:59:59'" ;
-            $strSql.=" WHERE money_fid >= ".$rangeIds[0]." AND money_fid <= ".$rangeIds[1]." " ;
+            $strSql.=" WHERE money_update_time >= '".$arrReqData['start']." 00:00:00' AND money_update_time <= '".$arrReqData['end']." 23:59:59'" ;
+            // $strSql.=" WHERE money_fid >= ".$rangeIds[0]." AND money_fid <= ".$rangeIds[1]." " ;
         // }
         if(strlen($arrReqData['user']) > 0){
             $strSql.=" AND money_mb_fid = '".$arrReqData['user']."' ";
@@ -261,12 +261,12 @@ class MoneyHistory_Model extends Model
             $strSql .=" ) AS mb_table ";
             $strSql .=" ON ".$this->table.".money_mb_fid = mb_table.mb_fid ";
         }
-        $rangeIds = $this->getRangeId($arrReqData);
+        // $rangeIds = $this->getRangeId($arrReqData);
 
         // if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            // $strSql.=" WHERE money_update_time >= '".$arrReqData['start']." 0:0:0' AND money_update_time <= '".$arrReqData['end']." 23:59:59'" ;
+            $strSql.=" WHERE money_update_time >= '".$arrReqData['start']." 00:00:00' AND money_update_time <= '".$arrReqData['end']." 23:59:59'" ;
         // }
-        $strSql.=" WHERE money_fid >= ".$rangeIds[0]." AND money_fid <= ".$rangeIds[1] ;
+        // $strSql.=" WHERE money_fid >= ".$rangeIds[0]." AND money_fid <= ".$rangeIds[1] ;
         if(strlen($arrReqData['user']) > 0){
             $strSql.=" AND money_mb_fid = '".$arrReqData['user']."' ";
         }

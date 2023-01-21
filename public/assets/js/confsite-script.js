@@ -132,9 +132,15 @@ function onChangeElement(){
 
 function cleanDb(iType) {
 
-    if (!confirm("디비정리를 하시겠습니까?"))
-        return;
-    var objData = { "clean": iType };
+    var objData = { "type": iType };
+    if (iType == 2){
+        objData.date = $("#conf-dbclean-input-id").val();
+        if(!confirm(objData.date + " 이전내역을 정리하시겠습니까?"))
+            return;
+    } else if (iType == 0){
+        if(!confirm("디비초기화를 하시겠습니까?"))
+           return;
+    }
 
     requestCleanDb(objData);
 
@@ -157,7 +163,7 @@ function requestCleanDb(objData) {
         success: function(jResult) {
             $(".loading").hide();
             $("#cleanDb-but").attr("disabled", false);
-            // console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 alert("디비정리가 완료되었습니다.!");
                 location.reload();
@@ -172,7 +178,7 @@ function requestCleanDb(objData) {
         error: function(request, status, error) {
             $(".loading").hide();
             $("#cleanDb-but").attr("disabled", false);
-            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
     });
 

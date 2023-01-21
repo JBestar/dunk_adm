@@ -402,6 +402,11 @@ class Api extends BaseController{
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 
 				$arrResult['data'] = $confsiteModel->getEvolSite();
+				$arrReqData['type'] = 1;
+				$arrReqData['mb_uid'] = "";
+				$sessUser =  $this->modelSess->searchCount($arrReqData, $objAdmin->mb_level);
+				if(!is_null($sessUser->count)) 
+					$arrResult['data'][0][13] = $sessUser->count;  
 				$arrResult['status'] = "success";
 			} else $arrResult['status'] = "nopermit";
 
@@ -1320,9 +1325,10 @@ public function withdrawlist(){
 		$arrGetData = json_decode($jsonData, true);
 
 		if(is_login()) {
+			writeLog("csbetlist");
+			$tmNow = microtime(true) * 1000;
+
 			//model
-			// $arrGetData['start'] = $arrGetData['start'].":00"; 
-			// $arrGetData['end'] = $arrGetData['end'].":00"; 
 			if(isEBalMode()){
 				
 				$csbetModel = new EbalBet_Model();
@@ -1333,20 +1339,21 @@ public function withdrawlist(){
 					else $arrGetData['user'] = 0;
 				}
 				// $arrGetData['rw_range'] = $this->modelMember->getRwMinId($arrGetData); 
-			} else 
+			} else {
 				$csbetModel = new CsBet_Model();
+				$arrGetData['type'] = GAME_CASINO_EVOL;
+				$this->modelMember->gameRange($arrGetData);
+			}
 			
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
 
-			$arrGetData['type'] = GAME_CASINO_EVOL;
-			// $arrGetData['gm_range'] = $this->modelMember->getBetMinId($arrGetData, $csbetModel->table);
-			$this->modelMember->gameRange($arrGetData);
 
 			if($objAdmin->mb_level >= LEVEL_ADMIN && strlen(trim($arrGetData['emp'])) > 0){
 				$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
 			} 
 			$arrBetResults = $csbetModel->search($objAdmin, $arrGetData);
+			writeLog("csbetlist end duration = ".(microtime(true) * 1000 - $tmNow));
 			
 			$objResult = new \StdClass;
 			$objResult->data = $arrBetResults;	
@@ -1370,8 +1377,8 @@ public function withdrawlist(){
 		$arrGetData = json_decode($jsonData, true);
 
 		if(is_login()) {
-			// $arrGetData['start'] = $arrGetData['start'].":00"; 
-			// $arrGetData['end'] = $arrGetData['end'].":00"; 
+			writeLog("csbetlistcnt");
+			$tmNow = microtime(true) * 1000;
 			//model
 			if(isEBalMode()){
 				$csbetModel = new EbalBet_Model();
@@ -1381,14 +1388,14 @@ public function withdrawlist(){
 						$arrGetData['user'] = $objUser->mb_fid;
 					else $arrGetData['user'] = 0;
 				}
-			} else 
+			} else {
 				$csbetModel = new CsBet_Model();
+				$arrGetData['type'] = GAME_CASINO_EVOL;
+				$this->modelMember->gameRange($arrGetData, false);
+			}
 			
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
-
-			$arrGetData['type'] = GAME_CASINO_EVOL;
-			$this->modelMember->gameRange($arrGetData, false);
 			
 			$arrBetAccount = null;
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
@@ -1399,6 +1406,7 @@ public function withdrawlist(){
 					$arrBetAccount = $csbetModel->getBetAccount($arrGetData);
 			}
 			$objCount = $csbetModel->searchCount($objAdmin, $arrGetData);
+			writeLog("csbetlistcnt end duration = ".(microtime(true) * 1000 - $tmNow));
 			
 			$arrResult['data'] = $objCount;
 			$arrResult['account'] = $arrBetAccount;
@@ -1847,20 +1855,17 @@ public function withdrawlist(){
 
 			$iResult = 0;
 
-			if($objAdmin->mb_level>LEVEL_MASTER){
-				if($arrReqData['clean'] == 0){
-					$iResult = $cleanModel->cleanDb();
-					$this->modelModify->add($this->session->user_id, MOD_DB_DELETE, "Delete DB", $this->request->getIPAddress());
-
-				} else if($arrReqData['clean'] == 1){
-					$iResult = $cleanModel->initDb();
-					$this->modelModify->add($this->session->user_id, MOD_DB_DELETE, "Clear DB", $this->request->getIPAddress());
-
-				}
-			} else {
-				 $iResult = 2;
-			}
-
+			if($arrReqData['type'] == 0 && $objAdmin->mb_level>LEVEL_MASTER){
+				$iResult = $cleanModel->cleanDb();
+				$this->modelModify->add($this->session->user_id, MOD_DB_DELETE, "Delete DB", $this->request->getIPAddress());
+			} else if($arrReqData['type'] == 1  && $objAdmin->mb_level>LEVEL_MASTER){
+				$iResult = $cleanModel->initDb();
+				$this->modelModify->add($this->session->user_id, MOD_DB_DELETE, "Clear DB", $this->request->getIPAddress());
+			} else if($arrReqData['type'] == 2 && $objAdmin->mb_level>=LEVEL_ADMIN){
+				$iResult = $cleanModel->cleanPartition($arrReqData['date']);
+				$this->modelModify->add($this->session->user_id, MOD_DB_DELETE, "drop partition", $this->request->getIPAddress());
+			} 
+			
 			$arrResult['status'] = $iResult==1?"success":"fail";
 			$arrResult['data'] = $iResult;
 

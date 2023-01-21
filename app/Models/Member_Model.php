@@ -447,9 +447,11 @@ class Member_Model extends Model
         $strSQL = " SELECT MIN(bet_fid) AS min_fid, MAX(bet_fid) AS max_fid FROM ".$tbName;
         $strSQL.= $strCond; 
 
-        // writeLog($strSQL);
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog($strSQL);
         $objResult = $this->db->query($strSQL)->getRow();
-        // writeLog("getBetRangeId END");
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog("getBetRangeId END");
 
         if (!is_null($objResult->min_fid) && !is_null($objResult->max_fid)) {
             $range[0] = $objResult->min_fid;
@@ -489,9 +491,11 @@ class Member_Model extends Model
         $strSQL = " SELECT MIN(rw_fid) AS min_fid FROM bet_reward";
         $strSQL.= $strCond; 
 
-        // writeLog($strSQL);
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog($strSQL);
         $objResult = $this->db->query($strSQL)->getRow();
-        // writeLog("getRwRangeId END");
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog("getRwRangeId END");
 
         if (!is_null($objResult->min_fid)) {
             $range[0] = $objResult->min_fid;
@@ -510,9 +514,11 @@ class Member_Model extends Model
         $strSQL = " SELECT MIN(rw_fid) AS min_fid, MAX(rw_fid) AS max_fid FROM ".$tbName;
         $strSQL.= $strCond; 
 
-        // writeLog($strSQL);
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog($strSQL);
         $objResult = $this->db->query($strSQL)->getRow();
-        // writeLog("getRwRangeId END");
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog("getRwRangeId END");
 
         if (!is_null($objResult->min_fid) && !is_null($objResult->max_fid)) {
             $range[0] = $objResult->min_fid;

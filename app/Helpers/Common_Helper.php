@@ -80,7 +80,7 @@
         return false;
 
       //회차 마감시간            
-      $arrRoundInfo['round_time'] = date("Y-m-d H:i:s", $tmRoundEnd);;        
+      $arrRoundInfo['round_time'] = date("Y-m-d H:i:s", $tmRoundEnd);        
       
       return true;
     }
@@ -259,6 +259,19 @@
       if(array_key_exists('app.ebal', $_ENV) && $_ENV['app.ebal'] > 0 )
         return true;
       return false;
+    }
+
+    function calcDate($days=0){
+      $tmNow = time();
+
+      if($days > 0){
+        $tmDate = strtotime("+".$days." days", $tmNow);
+      } else if($days < 0){
+        $days = 0 - $days;
+        $tmDate = strtotime("-".$days." days", $tmNow);
+      } else $tmDate =  $tmNow;
+
+      return date("Y-m-d", $tmDate);;    
     }
 
 ?>

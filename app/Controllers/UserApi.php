@@ -517,16 +517,12 @@ class UserApi extends BaseController
                     $arrReqData['type'] = GAME_CASINO_EVOL;
                     if(isEBalMode()){
                         $betModel = new EbalBet_Model();
-                        // writeLog("cas_deny 1");
-                        $arrReqData['gm_range'] = $this->modelMember->getBetMinId($arrReqData, $betModel->table);
-                        // writeLog("cas_deny 2");
+                        // $arrReqData['gm_range'] = $this->modelMember->getBetMinId($arrReqData, $betModel->table);
                         $arrSumData[14] = $betModel->getBetSumByDay($arrReqData);
-                        // writeLog("cas_deny 3");
 
                     } else {
                         $betModel = new CsBet_Model();
                         $arrReqData['gm_range'] = $this->modelMember->getBetMinId($arrReqData, $betModel->table);
-                        
                         $objConfPb = $confgameModel->getByIndex($arrReqData['type']);
                         $arrSumData[14] = $betModel->getBetSumByDay($arrReqData, $objConfPb);
                     }

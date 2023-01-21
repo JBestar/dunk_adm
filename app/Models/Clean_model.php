@@ -143,4 +143,87 @@ class Clean_Model extends Model {
         return 1;
     }
 
+    public function cleanPartition($date){
+
+        if(calcDate() < $date){
+            writeLog("Truncate Partition");
+            $this->db->query("TRUNCATE bet_ebal");
+            $this->db->query("TRUNCATE bet_balance");
+            $this->db->query("TRUNCATE bet_reward");
+            $this->db->query("TRUNCATE money_history");
+        } else if(strlen($date) > 0) {
+
+            $partName = "P_".str_replace("-", "", $date)."_000000";
+            writeLog("clean Partition:".$partName);
+
+            $table = "bet_ebal";
+            $parts = $this->getPartition($table);
+            for ($i=0; $i<count($parts)-2; $i++) {
+                if($parts[$i]->PARTITION_NAME < $partName){
+                    $this->dropPartition($parts[$i]->TABLE_NAME, $parts[$i]->PARTITION_NAME);
+                }
+            }
+
+            $table = "bet_balance";
+            $parts = $this->getPartition($table);
+            for ($i=0; $i<count($parts)-2; $i++) {
+                if($parts[$i]->PARTITION_NAME < $partName){
+                    $this->dropPartition($parts[$i]->TABLE_NAME, $parts[$i]->PARTITION_NAME);
+                }
+            }
+
+            $table = "bet_reward";
+            $parts = $this->getPartition($table);
+            for ($i=0; $i<count($parts)-2; $i++) {
+                if($parts[$i]->PARTITION_NAME < $partName){
+                    $this->dropPartition($parts[$i]->TABLE_NAME, $parts[$i]->PARTITION_NAME);
+                }
+            }
+
+            $table = "money_history";
+            $parts = $this->getPartition($table);
+            for ($i=0; $i<count($parts)-2; $i++) {
+                if($parts[$i]->PARTITION_NAME < $partName){
+                    $this->dropPartition($parts[$i]->TABLE_NAME, $parts[$i]->PARTITION_NAME);
+                }
+            }
+
+            writeLog("clean Partition END");
+
+        }
+
+
+        return 1;
+    }
+
+
+    public function getPartition($table){
+        $sql = "SELECT TABLE_SCHEMA, TABLE_NAME, PARTITION_NAME, PARTITION_ORDINAL_POSITION, TABLE_ROWS FROM INFORMATION_SCHEMA.PARTITIONS";
+        $sql.= " WHERE TABLE_NAME ='".$table."'";
+
+        $query = $this -> db -> query($sql);
+        $parts = $query -> getResult();
+
+        $arrPart = [];
+        foreach ($parts as $part) {
+            if($part->TABLE_SCHEMA == $_ENV['database.default.database']){
+                writeLog("DB:".$part->TABLE_SCHEMA." Table:".$part->TABLE_NAME." PART:".$part->PARTITION_NAME." ROWS:".$part->TABLE_ROWS);
+                if(is_null($part->PARTITION_NAME))
+                    continue;
+                $arrPart[] = $part;
+            }
+        }
+        return $arrPart;
+    }
+    
+    public function dropPartition($table, $part){
+        writeLog("Table:".$table." Drop Partition:".$part);
+
+        $sql = "ALTER TABLE ".$_ENV['database.default.database'].".".$table." DROP PARTITION ".$part;
+
+        $query = $this -> db -> query($sql);
+        return $query -> getResult();
+    }
+
+
 }
