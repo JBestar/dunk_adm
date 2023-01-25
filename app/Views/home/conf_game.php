@@ -3,10 +3,6 @@
 	  <!--Sub Navbar-->
 	<div class = "sub-navbar" value="<?= $this->renderSection('confgame-active') ?>">
 		<p><i class="glyphicon glyphicon-play-circle"></i> 게임설정</p>
-		<!-- <?php if(!$npg_deny) :?>
-			<a href="<?php echo siteFurl().'home/conf_powerball';?>" class="sub-navbar-a" >파워볼</a>
-			<a href="<?php echo siteFurl().'home/conf_powerladder';?>" class="sub-navbar-a " >파워사다리</a>
-		<?php endif ?>    -->
 		<?php if($hpg_enable) :?>
 			<a href="<?php echo siteFurl().'home/conf_powerball';?>" class="sub-navbar-a" >해피볼</a>
 		<?php endif ?>   
@@ -33,7 +29,7 @@
 			<a href="<?php echo siteFurl().'home/conf_casino';?>" class="sub-navbar-a" >호텔카지노</a>
 		<?php endif ?>
 		<?php if(!$slot_deny) :?>
-			<?php if($_ENV['app.type'] == APPTYPE_1 || $_ENV['app.type'] == APPTYPE_3 || $_ENV['app.type'] == APPTYPE_4) :?>
+			<?php if($_ENV['app.type'] == APPTYPE_1 || $_ENV['app.type'] == APPTYPE_3 || $_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_8) :?>
 				<a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="sub-navbar-a">정품슬롯</a>
 			<?php endif ?>
 			<?php if($_ENV['app.type'] != APPTYPE_3) :?>

@@ -22,12 +22,6 @@
 				<option value="2">환전</option>
 				<option value="26">직환전</option>
 				<option value="3">포인트전환</option>
-				<!-- <?php if(!$npg_deny) :?>
-					<option value="4">파워볼배팅</option>				
-					<option value="6">파워볼정산</option>
-					<option value="7">파사달배팅</option>
-					<option value="9">파사달정산</option> -->
-				<!-- <?php endif ?>  -->
 				<?php if($hpg_enable) :?>
 					<option value="4">해피볼배팅</option>				
 					<option value="6">해피볼정산</option>

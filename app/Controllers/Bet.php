@@ -243,6 +243,10 @@ class Bet extends StdController {
 		$gameId = GAME_SLOT_2;
 		if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
 			$gameId = GAME_SLOT_3;
+		else if($_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_7)
+			$gameId = GAME_SLOT_4;
+		else if($_ENV['app.type'] == APPTYPE_8 || $_ENV['app.type'] == APPTYPE_9)
+			$gameId = GAME_SLOT_5;
 
 		$arrPrd = $modelSlotprd->gets($gameId);
 
@@ -263,6 +267,10 @@ class Bet extends StdController {
 			$arrPrd = $modelSlotprd->gets(GAME_SLOT_2);
 		else if($_ENV['app.type'] == APPTYPE_5)
 			$arrPrd = $modelSlotprd->gets(GAME_SLOT_3);
+		else if($_ENV['app.type'] == APPTYPE_7)
+			$arrPrd = $modelSlotprd->gets(GAME_SLOT_4);
+		else if($_ENV['app.type'] == APPTYPE_9)
+			$arrPrd = $modelSlotprd->gets(GAME_SLOT_5);
 		else
 			$arrPrd = $modelSlotprd->gets(GAME_SLOT_1);
 		
@@ -321,6 +329,10 @@ class Bet extends StdController {
 		$gameId = GAME_SLOT_2;
 		if($_ENV['app.type'] == APPTYPE_4)
 			$gameId = GAME_SLOT_3;
+		else if($_ENV['app.type'] == APPTYPE_6)
+			$gameId = GAME_SLOT_4;
+		else if($_ENV['app.type'] == APPTYPE_8)
+			$gameId = GAME_SLOT_5;
 
 		$param = [
 			'game_name' => "네츄럴슬롯",

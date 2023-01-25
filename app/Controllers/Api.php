@@ -159,7 +159,7 @@ class Api extends BaseController{
 			$errMsg = "";
 			$agConf = null;
 			if($gameId == GAME_CASINO_EVOL){
-				$arrResult = $this->libApicas->getAgentInfo();
+				$arrResult = $this->libApiCas->getAgentInfo();
 				if($arrResult['status'] == 1){
 					$confsiteModel->setConfActive(CONF_CASINO_EVOL, $arrResult['balance']);
 					writeLog("<CASINO> Agent Egg = ".$arrResult['balance']);
@@ -172,7 +172,7 @@ class Api extends BaseController{
 				}
 				$agConf = $confsiteModel->getConf(CONF_CASINO_EVOL);
 			} else if($gameId == GAME_SLOT_1){
-				$arrResult = $this->libApislot->getAgentInfo();
+				$arrResult = $this->libApiSlot->getAgentInfo();
 				if($arrResult['status'] == 1){
 					$confsiteModel->setConfActive(CONF_SLOT_1, $arrResult['balance']);
 					writeLog("<SLOT> Agent Egg = ".$arrResult['balance']);
@@ -185,7 +185,7 @@ class Api extends BaseController{
 				}
 				$agConf = $confsiteModel->getConf(CONF_SLOT_1);
 			} else if($gameId == GAME_SLOT_2){
-				$arrResult = $this->libApifslot->getAgentInfo();
+				$arrResult = $this->libApiFslot->getAgentInfo();
 				if($arrResult['status'] == 1){
 					$confsiteModel->setConfActive(CONF_SLOT_2, $arrResult['balance']);
 					writeLog("<FSLOT> AGENT Egg = ".$arrResult['balance']);
@@ -198,7 +198,7 @@ class Api extends BaseController{
 				}
 				$agConf = $confsiteModel->getConf(CONF_SLOT_2);
 			} else if($gameId == GAME_SLOT_3){
-				$arrResult = $this->libApigslot->getUserInfo();
+				$arrResult = $this->libApiGslot->getUserInfo();
 				if($arrResult['status'] == 1){
 					$confsiteModel->setConfActive(CONF_SLOT_3, $arrResult['balance']);
 					writeLog("<GSLOT> AGENT Egg = ".$arrResult['balance']);
@@ -212,8 +212,8 @@ class Api extends BaseController{
 
 				}
 				$agConf = $confsiteModel->getConf(CONF_SLOT_3);
-			} else if($gameId == GAME_CASINO_KGON){
-				$arrResult = $this->libApikgon->getAgentInfo();
+			} else if($gameId == GAME_CASINO_KGON || $gameId == GAME_SLOT_4){
+				$arrResult = $this->libApiKgon->getAgentInfo();
 				if($arrResult['status'] == 1){
 					$confsiteModel->setConfActive(CONF_CASINO_KGON, $arrResult['balance']);
 					writeLog("<KGON> AGENT Egg = ".$arrResult['balance']);
@@ -223,6 +223,17 @@ class Api extends BaseController{
 					} else $errMsg = "접속불가";
 				}
 				$agConf = $confsiteModel->getConf(CONF_CASINO_KGON);
+			} else if($gameId == GAME_SLOT_5){
+				$arrResult = $this->libApiHslot->getAgentInfo();
+				if($arrResult['status'] == 1){
+					$confsiteModel->setConfActive(CONF_SLOT_HI, $arrResult['balance']);
+					writeLog("<HSLOT> AGENT Egg = ".$arrResult['balance']);
+				} else {
+					$errMsg = "접속불가";
+					writeLog("<HSLOT> AGENT Egg Msg = ".$arrResult['msg']);
+
+				}
+				$agConf = $confsiteModel->getConf(CONF_SLOT_HI);
 			}
 			
 			$agInfo = null;

@@ -25,6 +25,7 @@ use App\Libraries\ApiKgon_Lib;
 use App\Libraries\ApiSlot_Lib;
 use App\Libraries\ApiFslot_Lib;
 use App\Libraries\ApiGslot_Lib;
+use App\Libraries\ApiHslot_Lib;
 
 class BaseController extends Controller
 {
@@ -41,11 +42,13 @@ class BaseController extends Controller
 	protected $modelMember;
 	protected $modelModify;
 
-	protected $libApicas;
-	protected $libApikgon;
-	protected $libApislot;
-	protected $libApifslot;
-	protected $libApigslot;
+	protected $libApiCas;
+	protected $libApiKgon;
+	protected $libApiSlot;
+	protected $libApiFslot;
+	protected $libApiGslot;
+	protected $libApiHslot;
+
 	/**
 	 * Constructor.
 	 */
@@ -66,16 +69,17 @@ class BaseController extends Controller
 		$this->modelMember = new Member_Model();
 		$this->modelModify = new Modify_Model();
 
-		$this->libApicas = new ApiCas_Lib();
-		$this->libApikgon = new ApiKgon_Lib();
-		$this->libApislot = new ApiSlot_Lib();
-        $this->libApifslot = new ApiFslot_Lib();
-        $this->libApigslot = new ApiGslot_Lib();
+		$this->libApiCas = new ApiCas_Lib();
+		$this->libApiKgon = new ApiKgon_Lib();
+		$this->libApiSlot = new ApiSlot_Lib();
+        $this->libApiFslot = new ApiFslot_Lib();
+        $this->libApiGslot = new ApiGslot_Lib();
+        $this->libApiHslot = new ApiHslot_Lib();
 	}
 
 	protected function getSiteConf($confsiteModel){
 		
-		$confs = ['site_name'=>"", "gameper_full"=>false, "npg_deny"=>false, "bpg_deny"=>false, "cas_deny"=>false, "slot_deny"=>false, 
+		$confs = ['site_name'=>"", "gameper_full"=>false, "bpg_deny"=>false, "cas_deny"=>false, "slot_deny"=>false, 
 			"kgon_enable"=>false, "eos5_enable"=>false, "eos3_enable"=>false, "coin5_enable"=>false, "coin3_enable"=>false, 
 			"hpg_enable"=>false, "ebal_enable"=>false];
 		$arrConf = $confsiteModel->getSiteConf();  
@@ -83,8 +87,6 @@ class BaseController extends Controller
 		foreach($arrConf as $objConf){
 			switch($objConf->conf_id){
 				case CONF_SITENAME:	$confs['site_name'] = $objConf->conf_content;
-					break;
-				case CONF_NPG_DENY:	$confs['npg_deny'] = $objConf->conf_active == STATE_ACTIVE?true:false;
 					break;
 				case CONF_BPG_DENY:	$confs['bpg_deny'] = $objConf->conf_active == STATE_ACTIVE?true:false;
 					break;
@@ -128,7 +130,7 @@ class BaseController extends Controller
 			$this->evEgg($objMember);
 			usleep(100000);
 		}
-		if($confs["kgon_enable"]){
+		if($confs["kgon_enable"] || $_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_7){
 			$this->kgonEgg($objMember);
 			usleep(100000);
 		}
@@ -138,16 +140,18 @@ class BaseController extends Controller
 			$this->fslEgg($objMember);
 		else if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
 			$this->gslEgg($objMember);
+		else if($_ENV['app.type'] == APPTYPE_8 || $_ENV['app.type'] == APPTYPE_9)
+			$this->hslEgg($objMember);
 	}
 	
 	protected function evEgg(&$objMember){
 		$iResult = 0;
 
 		$logHead = "<EvEgg>";
-		//슬롯 머니조회
+		//Request Slot Money
 		if($objMember->mb_live_id > 0){
-			//슬롯머니 요청
-			$arrResult = $this->libApicas->getUserInfo($objMember->mb_live_uid);
+			
+			$arrResult = $this->libApiCas->getUserInfo($objMember->mb_live_uid);
 			writeLog($logHead." ".$objMember->mb_uid."-UserInfo Status=".$arrResult['status']);
 			if($arrResult['status'] == 1)
 			{
@@ -166,10 +170,10 @@ class BaseController extends Controller
 		$iResult = 0;
 
 		$logHead = "<KgonEgg>";
-		//슬롯 머니조회
+		//Request Slot Money
 		if($objMember->mb_kgon_id > 0){
-			//슬롯머니 요청
-			$arrResult = $this->libApikgon->getUserInfo($objMember->mb_kgon_uid);
+			
+			$arrResult = $this->libApiKgon->getUserInfo($objMember->mb_kgon_uid);
 			writeLog($logHead." ".$objMember->mb_uid."-UserInfo Status=".$arrResult['status']);
 			if($arrResult['status'] == 1)
 			{
@@ -188,10 +192,10 @@ class BaseController extends Controller
 		$iResult = 0;
 
 		$logHead = "<SlEgg> ";
-		//슬롯 머니조회
+		//Request Slot Money
 		if($objMember->mb_slot_uid !== ""){
-			//슬롯머니 요청
-			$arrResult = $this->libApislot->getUserInfo($objMember->mb_slot_uid);
+			
+			$arrResult = $this->libApiSlot->getUserInfo($objMember->mb_slot_uid);
 			writeLog($logHead.$objMember->mb_uid."-UserInfo resultCode=".$arrResult['resultCode']);
 			if($arrResult['status'] == 1)
 			{
@@ -214,7 +218,7 @@ class BaseController extends Controller
 		//네츄럴 => 슬롯 머니넘기기
 		if($objMember->mb_fslot_id > 0){
 			//네츄럴 머니 요청
-			$arrResult = $this->libApifslot->getUserInfo($objMember->mb_fslot_uid);
+			$arrResult = $this->libApiFslot->getUserInfo($objMember->mb_fslot_uid);
 			writeLog($logHead.$objMember->mb_uid."-UserInfo Status=".$arrResult['status']);
 
 			if($arrResult['status'] == 1)
@@ -237,10 +241,10 @@ class BaseController extends Controller
 		$iResult = 0;
 
 		$logHead = "<GslEgg> ";
-		//슬롯 머니조회
+		//Request Slot Money
 		if($objMember->mb_gslot_uid !== ""){
-			//슬롯머니 요청
-			$arrResult = $this->libApigslot->getUserInfo($objMember->mb_gslot_uid);
+			
+			$arrResult = $this->libApiGslot->getUserInfo($objMember->mb_gslot_uid);
 			writeLog($logHead.$objMember->mb_uid."-UserInfo status=".$arrResult['status']);
 			if($arrResult['status'] == 1)
 			{
@@ -255,10 +259,31 @@ class BaseController extends Controller
 		return $iResult;
 	}
 
+	protected function hslEgg(&$objMember){
+		$iResult = 0;
+		$logHead = "<HslEgg> ";
+		//Request Slot Money
+		if($objMember->mb_hslot_token !== ""){
+			
+			$arrResult = $this->libApiHslot->getUserInfo($objMember->mb_hslot_token);
+			writeLog($logHead.$objMember->mb_uid."-UserInfo status=".$arrResult['status']);
+			if($arrResult['status'] == 1)
+			{
+				writeLog($logHead.$objMember->mb_uid."-UserInfo Balance=".$arrResult['balance']." Money=".$objMember->mb_money);
+				$objMember->mb_hslot_money = $arrResult['balance'];
+				$this->modelMember->updateHslotMoney($objMember);   
+				$iResult = 1;
+			}
+		} else {
+            $iResult = 1;
+        }
+		return $iResult;
+	}
+
 	protected function alltoGame(&$objMember, $iGame = 0){
 		$logHead = "<AlltoGame> ";
 		$iResult = 0;
-		$objUser = $this->modelMember->getInfoByFid($objMember->mb_fid, true);
+		$objUser = $this->modelMember->getByFid($objMember->mb_fid);
 		if(diffDt(date('Y-m-d H:i:s'), $objUser->mb_time_call) < DELAY_TRANSFER){
 			writeLog($logHead.$objMember->mb_uid."-Now=".date('Y-m-d H:i:s')." Call=".$objUser->mb_time_call);
 			return $iResult;
@@ -267,33 +292,38 @@ class BaseController extends Controller
 		
 		if($iGame == GAME_CASINO_EVOL){
 			if($this->sltoMb($objMember) == 1 && $this->fsltoMb($objMember) == 1 &&
-				$this->kgtoMb($objMember) == 1 && $this->gsltoMb($objMember) == 1 ){
+				$this->kgtoMb($objMember) == 1 && $this->gsltoMb($objMember) == 1 && $this->hsltoMb($objMember) == 1 ){
 					$iResult = $this->mbtoEv($objMember);
 			}
 		} else if($iGame == GAME_SLOT_1){
 			if($this->evtoMb($objMember) == 1 && $this->fsltoMb($objMember) == 1 &&
-				$this->kgtoMb($objMember) == 1 && $this->gsltoMb($objMember) == 1 ) {
+				$this->kgtoMb($objMember) == 1 && $this->gsltoMb($objMember) == 1 && $this->hsltoMb($objMember) == 1 ) {
 					$iResult = $this->mbtoSl($objMember);
 			}
 		} else if($iGame == GAME_SLOT_2){
 			if($this->evtoMb($objMember) == 1 && $this->sltoMb($objMember) == 1 &&
-				$this->kgtoMb($objMember) == 1 && $this->gsltoMb($objMember) == 1 ) {
+				$this->kgtoMb($objMember) == 1 && $this->gsltoMb($objMember) == 1 && $this->hsltoMb($objMember) == 1 ) {
 					$iResult = $this->mbtoFsl($objMember);
 			}
 		} else if($iGame == GAME_SLOT_3){
 			if($this->evtoMb($objMember) == 1 && $this->sltoMb($objMember) == 1 &&
-				$this->kgtoMb($objMember) == 1 && $this->fsltoMb($objMember) == 1 ) {
+				$this->kgtoMb($objMember) == 1 && $this->fsltoMb($objMember) == 1 && $this->hsltoMb($objMember) == 1) {
 					$iResult = $this->mbtoGsl($objMember);
 			}
-		} else if($iGame == GAME_CASINO_KGON){
+		} else if($iGame == GAME_CASINO_KGON || $iGame == GAME_SLOT_4){
 			if($this->evtoMb($objMember) == 1 && $this->sltoMb($objMember) == 1 &&
-				$this->fsltoMb($objMember) == 1 && $this->gsltoMb($objMember) == 1) {
+				$this->fsltoMb($objMember) == 1 && $this->gsltoMb($objMember) == 1 && $this->hsltoMb($objMember) == 1 ) {
 					$iResult = $this->mbtoKg($objMember);
+			}
+		} else if($iGame == GAME_SLOT_5){
+			if($this->evtoMb($objMember) == 1 && $this->sltoMb($objMember) == 1 &&
+				$this->fsltoMb($objMember) == 1 && $this->kgtoMb($objMember) == 1 && $this->gsltoMb($objMember) == 1 ) {
+					$iResult = $this->mbtoHsl($objMember);
 			}
 		} else {
 			if($this->evtoMb($objMember) == 1 && $this->sltoMb($objMember) == 1 &&
 				$this->fsltoMb($objMember) == 1 && $this->kgtoMb($objMember) == 1 &&
-				$this->gsltoMb($objMember) == 1) {
+				$this->gsltoMb($objMember) == 1 && $this->hsltoMb($objMember) == 1 ) {
 					$iResult = 1;
 			}
 		}
@@ -312,7 +342,7 @@ class BaseController extends Controller
 		//에볼 => 지갑 머니넘기기
 		if($objMember->mb_live_id > 0){
 			//에볼 머니 요청
-			$arrResult = $this->libApicas->getUserInfo($objMember->mb_live_uid);
+			$arrResult = $this->libApiCas->getUserInfo($objMember->mb_live_uid);
 			writeLog($logHead.$objMember->mb_uid."-UserInfo Status=".$arrResult['status']);
 
 			if($arrResult['status'] == 1)
@@ -323,7 +353,7 @@ class BaseController extends Controller
 					//에볼 머니 꺼내기
 					usleep(500000);
 					$amount = $arrResult['balance'];
-					$arrResp = $this->libApicas->subBalance($objMember->mb_live_uid, $amount);
+					$arrResp = $this->libApiCas->subBalance($objMember->mb_live_uid, $amount);
 				} else {
 					$objMember->mb_live_money = $arrResult['balance'];
 					$this->modelMember->updateLiveMoney($objMember); 
@@ -334,10 +364,11 @@ class BaseController extends Controller
 				if($arrResp['status'] == 1)
                 {
                     writeLog($logHead.$objMember->mb_uid."-Withdraw RemainBalance=".$arrResp['balance']);
+					$objMember->mb_live_money = $arrResp['balance'];
+					$this->modelMember->updateLiveMoney($objMember);   
+						
 					if($this->modelMember->moneyProc($objMember, $amount)){
-                        $objMember->mb_live_money = $arrResp['balance'];
-                        $this->modelMember->updateLiveMoney($objMember);   
-						$objMember->mb_money += $amount;   
+                        $objMember->mb_money += $amount;   
 						writeLog($logHead.$objMember->mb_uid."-Withdraw Money=".$objMember->mb_money);
                         $iResult = 1;
                     }
@@ -364,7 +395,7 @@ class BaseController extends Controller
 		}
 		//카지노 => 지갑 머니넘기기
 		if($objMember->mb_kgon_id > 0){
-			$arrResult = $this->libApikgon->getUserInfo($objMember->mb_kgon_uid);
+			$arrResult = $this->libApiKgon->getUserInfo($objMember->mb_kgon_uid);
 			writeLog($logHead." ".$objMember->mb_uid."-UserInfo Status=".$arrResult['status']);
 			if($arrResult['status'] == 1)
 			{
@@ -374,7 +405,7 @@ class BaseController extends Controller
 					//에볼 머니 꺼내기
 					usleep(500000);
 					//카지노 머니 전부 꺼내기
-					$arrResp = $this->libApikgon->subBalance($objMember->mb_kgon_uid, $amount, true);
+					$arrResp = $this->libApiKgon->subBalance($objMember->mb_kgon_uid, $amount, true);
 					
 				} else {
 					$objMember->mb_kgon_money = $amount;
@@ -387,9 +418,10 @@ class BaseController extends Controller
 				{
 					$amount = floor($arrResp['amount']);
 					writeLog($logHead.$objMember->mb_uid."-Withdraw RemainBalance=".$arrResp['balance']);
+					$objMember->mb_kgon_money = $arrResp['balance'];
+					$this->modelMember->updateKgonMoney($objMember);   
+						
 					if( $this->modelMember->moneyProc($objMember, $amount)){
-						$objMember->mb_kgon_money = $arrResp['balance'];
-						$this->modelMember->updateKgonMoney($objMember);   
 						$objMember->mb_money += $amount;   
 						writeLog($logHead.$objMember->mb_uid."-Withdraw Money=".$objMember->mb_money);
 						$iResult = 1;
@@ -413,8 +445,8 @@ class BaseController extends Controller
 		$logHead = "<SltoMb> ";
 		//슬롯 => 보유머니넘기기
 		if($objMember->mb_slot_uid !== ""){
-			//슬롯머니 요청
-			$arrResult = $this->libApislot->getUserInfo($objMember->mb_slot_uid);
+			
+			$arrResult = $this->libApiSlot->getUserInfo($objMember->mb_slot_uid);
 			writeLog($logHead." ".$objMember->mb_uid."-UserInfo resultCode=".$arrResult['resultCode']);
 			if($arrResult['status'] == 1)
 			{
@@ -424,7 +456,7 @@ class BaseController extends Controller
 					//슬롯머니 꺼내기
 					usleep(500000);
 					$amount = $arrResult['balance'];
-					$arrResp =  $this->libApislot->subBalance($objMember->mb_slot_uid, $amount);
+					$arrResp =  $this->libApiSlot->subBalance($objMember->mb_slot_uid, $amount);
 					writeLog($logHead." ".$objMember->mb_uid."-Withdraw resultCode=".$arrResult['resultCode']);
 				} else {
                     $objMember->mb_slot_money = $arrResult['balance'];
@@ -436,10 +468,11 @@ class BaseController extends Controller
 				if($arrResp['status'] == 1)
 				{
 					writeLog($logHead.$objMember->mb_uid."-Withdraw RemainBalance=".$arrResp['balance']);
-                    if($this->modelMember->moneyProc($objMember, $amount)){
-                        $objMember->mb_slot_money = $arrResp['balance'];
-                        $this->modelMember->updateSlotMoney($objMember);
-						$objMember->mb_money += $amount;   
+                    $objMember->mb_slot_money = $arrResp['balance'];
+					$this->modelMember->updateSlotMoney($objMember);
+						
+					if($this->modelMember->moneyProc($objMember, $amount)){
+                        $objMember->mb_money += $amount;   
 						writeLog($logHead.$objMember->mb_uid."-Withdraw Money=".$objMember->mb_money);
                         $iResult = 1;
                     }
@@ -463,7 +496,7 @@ class BaseController extends Controller
 		//네츄럴 => 지갑 머니넘기기
 		if($objMember->mb_fslot_id > 0){
 			//네츄럴 머니 요청
-			$arrResult = $this->libApifslot->getUserInfo($objMember->mb_fslot_uid);
+			$arrResult = $this->libApiFslot->getUserInfo($objMember->mb_fslot_uid);
 			writeLog($logHead.$objMember->mb_uid."-UserInfo Status=".$arrResult['status']);
 
 			if($arrResult['status'] == 1)
@@ -474,7 +507,7 @@ class BaseController extends Controller
 					//네츄럴 머니 꺼내기
 					usleep(500000);
 					$amount = $arrResult['balance'];
-					$arrResp = $this->libApifslot->subBalance($objMember->mb_fslot_uid, $amount);
+					$arrResp = $this->libApiFslot->subBalance($objMember->mb_fslot_uid, $amount);
 				} else {
 					$objMember->mb_fslot_money = $arrResult['balance'];
 					$this->modelMember->updateFslotMoney($objMember);   
@@ -485,10 +518,11 @@ class BaseController extends Controller
 				if($arrResp['status'] == 1)
                 {
                     writeLog($logHead.$objMember->mb_uid."-Withdraw RemainBalance=".$arrResp['balance']);
+					$objMember->mb_fslot_money = $arrResp['balance'];
+					$this->modelMember->updateFslotMoney($objMember);   
+						
 					if($this->modelMember->moneyProc($objMember, $amount)){
-                        $objMember->mb_fslot_money = $arrResp['balance'];
-                        $this->modelMember->updateFslotMoney($objMember);   
-						$objMember->mb_money += $amount;   
+                        $objMember->mb_money += $amount;   
 						writeLog($logHead.$objMember->mb_uid."-Withdraw Money=".$objMember->mb_money);
                         $iResult = 1;
                     }
@@ -511,8 +545,8 @@ class BaseController extends Controller
 		$logHead = "<GsltoMb> ";
 		//골드슬롯 => 보유머니넘기기
 		if($objMember->mb_gslot_uid !== ""){
-			//슬롯머니 요청
-			$arrResult = $this->libApigslot->getUserInfo($objMember->mb_gslot_uid);
+			
+			$arrResult = $this->libApiGslot->getUserInfo($objMember->mb_gslot_uid);
 			writeLog($logHead." ".$objMember->mb_uid."-UserInfo status=".$arrResult['status']);
 			if($arrResult['status'] == 1)
 			{
@@ -522,7 +556,7 @@ class BaseController extends Controller
 					//슬롯머니 꺼내기
 					usleep(500000);
 					$amount = $arrResult['balance'];
-					$arrResp =  $this->libApigslot->subBalance($objMember->mb_gslot_uid, $amount);
+					$arrResp =  $this->libApiGslot->subBalance($objMember->mb_gslot_uid, $amount);
 					writeLog($logHead." ".$objMember->mb_uid."-Withdraw status=".$arrResp['status']);
 				} else {
 					$objMember->mb_gslot_money = $arrResult['balance'];
@@ -534,18 +568,51 @@ class BaseController extends Controller
 				if($arrResp['status'] == 1)
 				{
 					writeLog($logHead.$objMember->mb_uid."-Withdraw balance=".$arrResp['balance']);
-                    if($this->modelMember->moneyProc($objMember, $amount)){
-                        $objMember->mb_gslot_money = $arrResp['balance'];
-                        $this->modelMember->updateGslotMoney($objMember);
-						$objMember->mb_money += $amount;   
+                    $objMember->mb_gslot_money = $arrResp['balance'];
+					$this->modelMember->updateGslotMoney($objMember);
+						
+					if($this->modelMember->moneyProc($objMember, $amount)){
+                        $objMember->mb_money += $amount;   
 						writeLog($logHead.$objMember->mb_uid."-Withdraw Money=".$objMember->mb_money);
                         $iResult = 1;
                     }
                 } 
 			} else {
-				// if($objMember->mb_slot_money == 0){
+				if($objMember->mb_gslot_money == 0){
 					$iResult = 1;
-				// }
+				}
+			}
+		} else {
+            $iResult = 1;
+        }
+		return $iResult;
+	}
+
+	protected function hsltoMb(&$objMember){
+		$iResult = 0;
+
+		$logHead = "<HsltoMb> ";
+		//골드슬롯 => 보유머니넘기기
+		if($objMember->mb_hslot_token !== ""){
+			
+			$arrResult = $this->libApiHslot->subBalance($objMember->mb_hslot_token);
+			writeLog($logHead." ".$objMember->mb_uid."-UserInfo status=".$arrResult['status']);
+			if($arrResult['status'] == 1)
+			{
+				$amount = $arrResult['amount'];
+
+				writeLog($logHead.$objMember->mb_uid."-Withdraw amount=".$arrResult['amount']);
+				$objMember->mb_hslot_money = $arrResult['balance'];
+				$this->modelMember->updateHslotMoney($objMember);
+
+				if($this->modelMember->updateAssets($objMember, $amount)){
+					$objMember->mb_money += $amount;   
+					writeLog($logHead.$objMember->mb_uid."-Withdraw Money=".$objMember->mb_money);
+					$iResult = 1;
+				}
+			} else {
+				if($objMember->mb_hslot_money == 0)
+					$iResult = 1;
 			}
 		} else {
             $iResult = 1;
@@ -560,7 +627,7 @@ class BaseController extends Controller
 		//에볼 <= 지갑 머니넘기기
 		if($objMember->mb_live_id > 0 && $objMember->mb_money > 0){
 			//에볼 머니 요청
-			$arrResult = $this->libApicas->addBalance($objMember->mb_live_uid, $objMember->mb_money);
+			$arrResult = $this->libApiCas->addBalance($objMember->mb_live_uid, $objMember->mb_money);
 			writeLog($logHead.$objMember->mb_uid."-Deposit Status=".$arrResult['status']);
 				
 			if($arrResult['status'] == 1)
@@ -588,7 +655,7 @@ class BaseController extends Controller
 		//카지노 <= 지갑 머니넘기기
 		if($objMember->mb_kgon_id > 0 && $objMember->mb_money > 0){
 			//에볼 머니 요청
-			$arrResult = $this->libApikgon->addBalance($objMember->mb_kgon_uid, $objMember->mb_money);
+			$arrResult = $this->libApiKgon->addBalance($objMember->mb_kgon_uid, $objMember->mb_money);
 			writeLog($logHead.$objMember->mb_uid."-Deposit Status=".$arrResult['status']);
 				
 			if($arrResult['status'] == 1)
@@ -615,8 +682,8 @@ class BaseController extends Controller
 		$logHead = "<MbtoSl> ";
 		//슬롯 <= 보유머니넘기기
 		if($objMember->mb_slot_uid !== "" && $objMember->mb_money > 0){
-			//슬롯머니 요청
-			$arrResult = $this->libApislot->addBalance($objMember->mb_slot_uid, $objMember->mb_money);
+			
+			$arrResult = $this->libApiSlot->addBalance($objMember->mb_slot_uid, $objMember->mb_money);
 			writeLog($logHead." ".$objMember->mb_uid."-Deposit resultCode=".$arrResult['resultCode']);
 			
 			if($arrResult['status'] == 1)
@@ -645,7 +712,7 @@ class BaseController extends Controller
 		//네츄럴 => 지갑 머니넘기기
 		if($objMember->mb_fslot_id > 0 && $objMember->mb_money > 0){
 			//네츄럴 머니 요청
-			$arrResult = $this->libApifslot->addBalance($objMember->mb_fslot_uid, $objMember->mb_money);
+			$arrResult = $this->libApiFslot->addBalance($objMember->mb_fslot_uid, $objMember->mb_money);
 			writeLog($logHead.$objMember->mb_uid."-Deposit Status=".$arrResult['status']);
 				
 			if($arrResult['status'] == 1)
@@ -671,8 +738,8 @@ class BaseController extends Controller
 		$logHead = "<MbtoGsl> ";
 		//슬롯 <= 보유머니넘기기
 		if($objMember->mb_gslot_uid !== "" && $objMember->mb_money > 0){
-			//슬롯머니 요청
-			$arrResult = $this->libApigslot->addBalance($objMember->mb_gslot_uid, $objMember->mb_money);
+			
+			$arrResult = $this->libApiGslot->addBalance($objMember->mb_gslot_uid, $objMember->mb_money);
 			writeLog($logHead." ".$objMember->mb_uid."-Deposit status=".$arrResult['status']);
 			
 			if($arrResult['status'] == 1)
@@ -683,6 +750,34 @@ class BaseController extends Controller
 				if($this->modelMember->moneyProc($objMember, 0-$arrResult['amount'])){
 					$objMember->mb_gslot_money = $arrResult['balance'];
 					$this->modelMember->updateGslotMoney($objMember);
+					$objMember->mb_money -= $arrResult['amount'];   
+					$iResult = 1;
+				}
+			} 
+		} else {
+            $iResult = 1;
+        }
+		return $iResult;
+	}
+
+	protected function mbtoHsl(&$objMember){
+		$iResult = 0;
+
+		$logHead = "<MbtoHsl> ";
+		//슬롯 <= 보유머니넘기기
+		if($objMember->mb_hslot_token !== "" && $objMember->mb_money > 0){
+			
+			$arrResult = $this->libApiHslot->addBalance($objMember->mb_hslot_token, $objMember->mb_money);
+			writeLog($logHead." ".$objMember->mb_uid."-Deposit status=".$arrResult['status']);
+			
+			if($arrResult['status'] == 1)
+			{
+				$arrResult['amount'] = $objMember->mb_money;
+
+				writeLog($logHead.$objMember->mb_uid."-Deposit Amount=".$arrResult['amount']);
+				if($this->modelMember->updateAssets($objMember, 0-$arrResult['amount'])){
+					$objMember->mb_hslot_money += $arrResult['amount'];
+					$this->modelMember->updateHslotMoney($objMember);
 					$objMember->mb_money -= $arrResult['amount'];   
 					$iResult = 1;
 				}

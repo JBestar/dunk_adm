@@ -17,9 +17,11 @@ class SlotPrd_Model extends Model {
                     ->findAll(); 
     }
 
-    public function getByCode($cat){
-        $strSql = "SELECT  * FROM ".$this->table." WHERE cat = '".$cat."' GROUP BY ref_code ";
-
+    public function getByCode($cat, $bGroup = false){
+        $strSql = "SELECT  * FROM ".$this->table." WHERE cat = '".$cat."'";
+        if($bGroup){
+            $strSql .= " GROUP BY ref_code ";
+        }
 
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();

@@ -161,15 +161,18 @@ class Home extends StdController
 	public function conf_slot_2(){
 		$slprdModel = new SlotPrd_Model();
 
-		if($_ENV['app.type'] == APPTYPE_1 || $_ENV['app.type'] == APPTYPE_2)
-			$gameId = GAME_SLOT_2;
-		else if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
+		$gameId = GAME_SLOT_2;
+		if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
 			$gameId = GAME_SLOT_3;
+		else if($_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_7)
+			$gameId = GAME_SLOT_4;
+		else if($_ENV['app.type'] == APPTYPE_8 || $_ENV['app.type'] == APPTYPE_9)
+			$gameId = GAME_SLOT_5;
 
 		$param = [
 			'game_name' => "네츄럴슬롯",
 			'game_id' => $gameId,
-			'game_prds' => $slprdModel->getByCode($gameId), 
+			'game_prds' => $slprdModel->getByCode($gameId, $gameId == GAME_SLOT_2), 
 		];
 		$this->load_view_page('home/conf_fslot', 'conf_game', LEVEL_ADMIN, $param);	
 	}

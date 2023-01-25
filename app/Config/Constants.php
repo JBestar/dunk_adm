@@ -112,6 +112,10 @@ defined('APPTYPE_2')        || define('APPTYPE_2', 2);      //FSlot
 defined('APPTYPE_3')        || define('APPTYPE_3', 3);      //Slot
 defined('APPTYPE_4')        || define('APPTYPE_4', 4);      //Slot + Gold
 defined('APPTYPE_5')        || define('APPTYPE_5', 5);      //Gold Slot
+defined('APPTYPE_6')        || define('APPTYPE_6', 6);      //Slot + KGON
+defined('APPTYPE_7')        || define('APPTYPE_7', 7);      //KGON Slot
+defined('APPTYPE_8')        || define('APPTYPE_8', 8);      //Slot + HI
+defined('APPTYPE_9')        || define('APPTYPE_9', 9);      //HI Slot
 
 defined('EXIT_SUCCESS')        || define('EXIT_SUCCESS', 0);        // no errors
 defined('EXIT_ERROR')          || define('EXIT_ERROR', 1);          // generic error
@@ -158,10 +162,11 @@ defined('CONF_SLOT_2')         || define('CONF_SLOT_2', 23);
 defined('CONF_CHARGE_MANUAL')  || define('CONF_CHARGE_MANUAL', 24);
 defined('CONF_DISCHA_MANUAL')  || define('CONF_DISCHA_MANUAL', 25);
 
-defined('CONF_NPG_DENY')        || define('CONF_NPG_DENY', 26);
+// defined('CONF_NPG_DENY')        || define('CONF_NPG_DENY', 26);
 defined('CONF_BPG_DENY')        || define('CONF_BPG_DENY', 27);
 defined('CONF_CAS_DENY')        || define('CONF_CAS_DENY', 28);
 defined('CONF_SLOT_DENY')       || define('CONF_SLOT_DENY', 29);
+defined('CONF_SLOT_HI')         || define('CONF_SLOT_HI', 30);
 defined('CONF_KGON_ENABLE')     || define('CONF_KGON_ENABLE', 31);
 defined('CONF_EOS5_ENABLE')     || define('CONF_EOS5_ENABLE', 32);
 defined('CONF_EOS3_ENABLE')     || define('CONF_EOS3_ENABLE', 33);
@@ -261,7 +266,10 @@ defined('GAME_EOS3_BALL')      || define('GAME_EOS3_BALL', 10);
 defined('GAME_COIN5_BALL')     || define('GAME_COIN5_BALL', 11);
 defined('GAME_COIN3_BALL')     || define('GAME_COIN3_BALL', 12);
 defined('GAME_SLOT_3')         || define('GAME_SLOT_3', 13);
-defined('GAME_HAPPY_BALL')       || define('GAME_HAPPY_BALL', 14);
+defined('GAME_HAPPY_BALL')     || define('GAME_HAPPY_BALL', 14);
+defined('GAME_SLOT_4')         || define('GAME_SLOT_4', 15);  //KGON slot
+defined('GAME_SLOT_5')         || define('GAME_SLOT_5', 16);  //
+
 
 defined('ROUND_5MIN')    || define('ROUND_5MIN', 5);
 defined('ROUND_3MIN')    || define('ROUND_3MIN', 3);

@@ -41,6 +41,10 @@ class Reward_Model extends Model {
         if($gameId == GAME_SLOT_12){
             if($_ENV['app.type'] == APPTYPE_4)
                 $strSQL.=" AND rw_game IN ( '".GAME_SLOT_1."', '".GAME_SLOT_3."') ";
+            else if($_ENV['app.type'] == APPTYPE_6)
+                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_1."', '".GAME_SLOT_4."') ";
+            else if($_ENV['app.type'] == APPTYPE_8)
+                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_1."', '".GAME_SLOT_5."') ";
             else
                 $strSQL.=" AND rw_game IN ( '".GAME_SLOT_1."', '".GAME_SLOT_2."') ";
         }

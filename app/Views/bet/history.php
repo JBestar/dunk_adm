@@ -3,10 +3,6 @@
 	<!--Sub Navbar-->
 	<div class = "sub-navbar" value="<?= $this->renderSection('history-active') ?>">
 		<p><i class="glyphicon glyphicon-book"></i> 배팅내역</p>
-		<!-- <?php if(!$npg_deny) :?>
-			<a href="<?php echo site_furl('bet/pbhistory');?>" class="sub-navbar-a" >파워볼</a>
-			<a href="<?php echo site_furl('bet/pshistory');?>" class="sub-navbar-a" >파워사다리</a>
-		<?php endif ?>    -->
 		<?php if($hpg_enable) :?>
 			<a href="<?php echo site_furl('bet/pbhistory');?>" class="sub-navbar-a" >해피볼</a>
 		<?php endif ?>  
@@ -31,13 +27,13 @@
 		<?php endif ?>
 		<?php if(!$slot_deny) :?>
 			<?php if($mb_level >= LEVEL_ADMIN) :  ?>
-				<?php if($_ENV['app.type'] == APPTYPE_1 || $_ENV['app.type'] == APPTYPE_3 || $_ENV['app.type'] == APPTYPE_4) :?>
+				<?php if($_ENV['app.type'] == APPTYPE_1 || $_ENV['app.type'] == APPTYPE_3 || $_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_8) :?>
 					<a href="<?php echo site_furl('bet/xslhistory');?>" class="sub-navbar-a" >정품슬롯</a>
 				<?php endif ?>
 				<?php if($_ENV['app.type'] != APPTYPE_3) :?>
 					<a href="<?php echo site_furl('bet/fslhistory');?>" class="sub-navbar-a" >네츄럴슬롯</a>
 				<?php endif ?>
-				<?php if($_ENV['app.type'] == APPTYPE_1 || $_ENV['app.type'] == APPTYPE_4) :?>
+				<?php if($_ENV['app.type'] == APPTYPE_1 || $_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_6  || $_ENV['app.type'] == APPTYPE_8) :?>
 					<a href="<?php echo site_furl('bet/slhistory');?>" class="sub-navbar-a" >슬롯</a>
 				<?php endif ?>
 			<?php else: ?>
