@@ -1577,8 +1577,8 @@ class UserApi extends BaseController
                     }
                 } else if($gameId == GAME_SLOT_5){
                     foreach($arrMember as $objMember){
-                        if($objMember->mb_hslot_token != "" && $objMember->mb_hslot_money > 0 ) {
-                            writeLog("<HSLOT> Recovery Uid=".$objMember->mb_uid." Balance=".$objMember->mb_hslot_money);
+                        if($objMember->mb_fslot_uid != "" && $objMember->mb_fslot_money > 0 ) {
+                            writeLog("<HSLOT> Recovery Uid=".$objMember->mb_uid." Balance=".$objMember->mb_fslot_money);
                             if(diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
                                 $iResult = 2;
                             } else $iResult = $this->hsltoMb($objMember);

@@ -263,15 +263,15 @@ class BaseController extends Controller
 		$iResult = 0;
 		$logHead = "<HslEgg> ";
 		//Request Slot Money
-		if($objMember->mb_hslot_token !== ""){
+		if($objMember->mb_fslot_uid !== ""){
 			
-			$arrResult = $this->libApiHslot->getUserInfo($objMember->mb_hslot_token);
+			$arrResult = $this->libApiHslot->getUserInfo($objMember->mb_fslot_uid);
 			writeLog($logHead.$objMember->mb_uid."-UserInfo status=".$arrResult['status']);
 			if($arrResult['status'] == 1)
 			{
 				writeLog($logHead.$objMember->mb_uid."-UserInfo Balance=".$arrResult['balance']." Money=".$objMember->mb_money);
-				$objMember->mb_hslot_money = $arrResult['balance'];
-				$this->modelMember->updateHslotMoney($objMember);   
+				$objMember->mb_fslot_money = $arrResult['balance'];
+				$this->modelMember->updateFslotMoney($objMember);   
 				$iResult = 1;
 			}
 		} else {
@@ -493,6 +493,8 @@ class BaseController extends Controller
 		$iResult = 0;
 		$logHead = "<FsltoMb> ";
 
+		if($_ENV['app.type'] != APPTYPE_1 && $_ENV['app.type'] != APPTYPE_2)
+			return 1;
 		//네츄럴 => 지갑 머니넘기기
 		if($objMember->mb_fslot_id > 0){
 			//네츄럴 머니 요청
@@ -591,27 +593,29 @@ class BaseController extends Controller
 	protected function hsltoMb(&$objMember){
 		$iResult = 0;
 
+		if($_ENV['app.type'] != APPTYPE_8 && $_ENV['app.type'] != APPTYPE_9)
+			return 1;
 		$logHead = "<HsltoMb> ";
 		//골드슬롯 => 보유머니넘기기
-		if($objMember->mb_hslot_token !== ""){
+		if($objMember->mb_fslot_uid !== ""){
 			
-			$arrResult = $this->libApiHslot->subBalance($objMember->mb_hslot_token);
+			$arrResult = $this->libApiHslot->subBalance($objMember->mb_fslot_uid);
 			writeLog($logHead." ".$objMember->mb_uid."-UserInfo status=".$arrResult['status']);
 			if($arrResult['status'] == 1)
 			{
 				$amount = $arrResult['amount'];
 
 				writeLog($logHead.$objMember->mb_uid."-Withdraw amount=".$arrResult['amount']);
-				$objMember->mb_hslot_money = $arrResult['balance'];
-				$this->modelMember->updateHslotMoney($objMember);
+				$objMember->mb_fslot_money = $arrResult['balance'];
+				$this->modelMember->updateFslotMoney($objMember);
 
-				if($this->modelMember->updateAssets($objMember, $amount)){
+				if($this->modelMember->moneyProc($objMember, $amount)){
 					$objMember->mb_money += $amount;   
 					writeLog($logHead.$objMember->mb_uid."-Withdraw Money=".$objMember->mb_money);
 					$iResult = 1;
 				}
 			} else {
-				if($objMember->mb_hslot_money == 0)
+				if($objMember->mb_fslot_money == 0)
 					$iResult = 1;
 			}
 		} else {
@@ -709,6 +713,8 @@ class BaseController extends Controller
 		$iResult = 0;
 		$logHead = "<MbtoFsl> ";
 
+		if($_ENV['app.type'] != APPTYPE_1 && $_ENV['app.type'] != APPTYPE_2 )
+			return 1;
 		//네츄럴 => 지갑 머니넘기기
 		if($objMember->mb_fslot_id > 0 && $objMember->mb_money > 0){
 			//네츄럴 머니 요청
@@ -763,11 +769,13 @@ class BaseController extends Controller
 	protected function mbtoHsl(&$objMember){
 		$iResult = 0;
 
+		if($_ENV['app.type'] != APPTYPE_8 && $_ENV['app.type'] != APPTYPE_9)
+			return 1;
 		$logHead = "<MbtoHsl> ";
 		//슬롯 <= 보유머니넘기기
-		if($objMember->mb_hslot_token !== "" && $objMember->mb_money > 0){
+		if($objMember->mb_fslot_uid !== "" && $objMember->mb_money > 0){
 			
-			$arrResult = $this->libApiHslot->addBalance($objMember->mb_hslot_token, $objMember->mb_money);
+			$arrResult = $this->libApiHslot->addBalance($objMember->mb_fslot_uid, $objMember->mb_money);
 			writeLog($logHead." ".$objMember->mb_uid."-Deposit status=".$arrResult['status']);
 			
 			if($arrResult['status'] == 1)
@@ -775,9 +783,9 @@ class BaseController extends Controller
 				$arrResult['amount'] = $objMember->mb_money;
 
 				writeLog($logHead.$objMember->mb_uid."-Deposit Amount=".$arrResult['amount']);
-				if($this->modelMember->updateAssets($objMember, 0-$arrResult['amount'])){
-					$objMember->mb_hslot_money += $arrResult['amount'];
-					$this->modelMember->updateHslotMoney($objMember);
+				if($this->modelMember->moneyProc($objMember, 0-$arrResult['amount'])){
+					$objMember->mb_fslot_money += $arrResult['amount'];
+					$this->modelMember->updateFslotMoney($objMember);
 					$objMember->mb_money -= $arrResult['amount'];   
 					$iResult = 1;
 				}
