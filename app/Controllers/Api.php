@@ -417,7 +417,7 @@ class Api extends BaseController{
 				$arrReqData['mb_uid'] = "";
 				$sessUser =  $this->modelSess->searchCount($arrReqData, $objAdmin->mb_level);
 				if(!is_null($sessUser->count)) 
-					$arrResult['data'][0][13] = $sessUser->count;  
+					$arrResult['data'][0][14] = $sessUser->count;  
 				$arrResult['status'] = "success";
 			} else $arrResult['status'] = "nopermit";
 
@@ -1511,9 +1511,7 @@ public function withdrawlist(){
 			$objAdmin = $this->modelMember->getInfo($strUid);
 
 			$stats = null;
-			$agBalance = -1;
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
-				
 				$stats = $eorderModel->getStatsByRound();	
 			}
 
@@ -1530,7 +1528,63 @@ public function withdrawlist(){
 			echo json_encode($arrResult);	
 		} 		
 	}
+	//배팅리력결과를 Ajax로 전송
+	public function eroomlist(){ 
 
+		if(is_login()) {
+			//model
+			$casRoomModel = new CasRoom_Model();
+			$confsiteModel = new ConfSite_Model();
+			
+			$strUid = $this->session->user_id;
+			$objAdmin = $this->modelMember->getInfo($strUid);
+
+			$arrRoom = null;
+			if($objAdmin->mb_level >= LEVEL_ADMIN){
+				
+				$arrRoom = $casRoomModel->gets();	
+			}
+
+			$objResult = new \StdClass;
+			$objResult->data = $arrRoom;	
+			$objResult->status = "success";
+		
+			echo json_encode($objResult);
+		}
+		else{
+		
+			$arrResult['status'] = "logout";
+
+			echo json_encode($arrResult);	
+		} 		
+	}
+
+	public function eroomstate(){
+		$jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+
+		if(is_login()) {
+			//model
+			$casRoomModel = new CasRoom_Model();
+			$confsiteModel = new ConfSite_Model();
+
+			$strUid = $this->session->user_id;
+			$objAdmin = $this->modelMember->getInfo($strUid);
+			if($objAdmin->mb_level >= LEVEL_ADMIN){
+				$casRoomModel->setState($arrReqData['id'], $arrReqData);
+				$arrResult['status'] = "success";
+			} else 
+				$arrResult['status'] = "fail";
+		
+			echo json_encode($arrResult);
+		}
+		else{
+		
+			$arrResult['status'] = "logout";
+
+			echo json_encode($arrResult);	
+		} 		
+	}
 
 	//배팅리력결과를 Ajax로 전송
 	public function slbetlist(){ 

@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Models\ConfSite_Model;
 use App\Models\SlotPrd_Model;
+use App\Models\CasRoom_Model;
 
 class Home extends StdController
 {
@@ -135,11 +136,33 @@ class Home extends StdController
 	}
 
 	public function conf_ebal(){
+		$arrType = [
+			"10"=> "EVOL365",
+			"11"=> "LUCKY",
+			"12"=> "VEDA",
+			"1"=> "NINE",
+			"2"=> "AMAZON",
+			"3"=> "AIRLINE",
+			"4"=> "NINEBAR",
+			"5"=> "CHROMA",
+			"6"=> "CITY",
+			"7"=> "CJ"
+		];
+
 		$param = [
 			'game_name' => "밸런스설정",
-			'game_id' => GAME_CASINO_EVOL
+			'game_id' => GAME_CASINO_EVOL,
+			'gamd_types' => $arrType
 		];
 		$this->load_view_page('ebal/conf_ebal', 'conf_ebal', LEVEL_ADMIN, $param);	
+	}
+
+	public function conf_eroom(){
+		$param = [
+			'game_name' => "방설정",
+			'game_id' => GAME_CASINO_EVOL,
+		];
+		$this->load_view_page('ebal/conf_eroom', 'conf_ebal', LEVEL_ADMIN, $param);	
 	}
 
 	public function conf_casino(){

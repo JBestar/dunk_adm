@@ -1,0 +1,41 @@
+<?= $this->extend('/ebal/ebal_cont') ?>
+<?= $this->section('ebal-active') ?><?=$game_name?><?= $this->endSection() ?>
+<?= $this->section('eval_content') ?>
+
+	<div class="bet-panel">
+		<div class="pbresult-list-div">
+			
+			<label style="font-size:18px; font-weight:normal">
+				에볼루션 방설정
+			</label>
+
+			<!-- <div style="float:right">
+				<button class="pbresult-list-view-but" id="ebal-start-but-id" style="margin-right:0px; " disabled>시작</button>
+				<button class="pbresult-list-view-but" id="ebal-stop-but-id" style="margin-right:3px; " disabled>정지</button>
+			</div> -->
+		</div>
+		<Table class="bet-table">
+			<thead>
+				<tr>
+					<th>번호</th>
+					<th>방</th>
+					<th>설정</th>
+				</tr>
+			</thead>
+			<tbody id="pbbet-table-id">
+
+			</tbody>
+		</Table>
+		
+	</div>
+
+<!--main_navbar.php-main-container-->
+</div>
+
+<?php if(array_key_exists("app.produce", $_ENV)) :?>
+    <script src="<?php echo site_furl('/assets/js/conf_eroom-script.js?t='.time());?>"></script>
+<?php else : ?>
+    <script src="<?php echo site_furl('/assets/js/conf_eroom-script.js?v=1');?>"></script>
+<?php endif ?>
+
+<?= $this->endSection() ?>

@@ -24,12 +24,13 @@ function showConfSite(arrData, all) {
         $("#confev-betmax-input-id").val(data[9]);
         $("#confev-conbet-input-id").val(data[11]);
         $("#confev-maxuser-input-id").val(data[12]);
+        $("#confev-signal-check-id").prop('checked', data[13] > 0 ? true : false);
     }
     
     $('#confev-balance-input-id').val('');
     $('#confev-balance-label-id').text('');
 
-    $('#confev-conuser-input-id').text('(접속자수: '+data[13]+")");
+    $('#confev-conuser-input-id').text('(접속자수: '+data[14]+")");
     if(parseInt(data[7]) >= 0){
         $('#confev-balance-input-id').val(data[7].toLocaleString());
         setTimeout(() =>{
@@ -58,8 +59,9 @@ function showConfSite(arrData, all) {
             $("#confev-bettype-select-id2").val(data[4]);
             $("#confev-betmode-select-id").val(data[5]);
             $("#confev-conbet-check-id2").prop('checked', data[6] > 0 ? true : false);
+            $("#confev-signal-check-id2").prop('checked', data[13] > 0 ? true : false);
         }
-        
+            
         $('#confev-balance-input-id2').val('');
         $('#confev-balance-label-id2').text('');
     
@@ -82,6 +84,7 @@ function showConfSite(arrData, all) {
             $("#confev-userpwd-input-id3").val(data[2]);
             $("#confev-bettype-select-id3").val(data[4]);
             $("#confev-conbet-check-id3").prop('checked', data[6] > 0 ? true : false);
+            $("#confev-signal-check-id3").prop('checked', data[13] > 0 ? true : false);
         }
         
         $('#confev-balance-input-id3').val('');
@@ -119,6 +122,9 @@ function addBtnEvent() {
         objData.con_ev = $("#confev-conbet-check-id").prop('checked') ? 1 : 0;
         objData.con_min = $("#confev-conbet-input-id").val();
         objData.user_max = $("#confev-maxuser-input-id").val();
+        objData.is_signal = 0;
+        if($("#confev-signal-check-id2").length > 0)
+            objData.is_signal = $("#confev-signal-check-id").prop('checked') ? 1 : 0;
 
         if($("#confev-betsite-input-id2").length > 0){
             objData.betmode_ev = $("#confev-betmode-select-id").val();
@@ -129,6 +135,7 @@ function addBtnEvent() {
             objData.active_ev2 = $("#confev-bet-check-id2").prop('checked') ? 1 : 0;
             objData.type_ev2 = $("#confev-bettype-select-id2").val();
             objData.con_ev2 = $("#confev-conbet-check-id2").prop('checked') ? 1 : 0;
+            objData.is_signal2 = $("#confev-signal-check-id2").prop('checked') ? 1 : 0;
 
             objData.site_ev3 = $("#confev-betsite-input-id3").val().trim();
             objData.userid_ev3 = $("#confev-userid-input-id3").val().trim();
@@ -136,6 +143,7 @@ function addBtnEvent() {
             objData.active_ev3 = $("#confev-bet-check-id3").prop('checked') ? 1 : 0;
             objData.type_ev3 = $("#confev-bettype-select-id3").val();
             objData.con_ev3 = $("#confev-conbet-check-id3").prop('checked') ? 1 : 0;
+            objData.is_signal3 = $("#confev-signal-check-id3").prop('checked') ? 1 : 0;
 
 
             if(objData.site_ev.length > 0 && objData.userid_ev.length> 0 && objData.site_ev === objData.site_ev2 && objData.userid_ev == objData.userid_ev2){

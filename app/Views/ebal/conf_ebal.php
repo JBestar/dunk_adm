@@ -30,16 +30,9 @@
 			<div>
 				<p> 보험타입</p>			
 				<select name="pbresult-number" class="" id="confev-bettype-select-id" style="padding:5px; width: 200px; margin-left:0px;">
-					<option value="10" >EVOL365</option>
-					<option value="11" >LUCKY</option>
-					<option value="12" >VEDA</option>
-					<option value="1" >NINE</option>
-					<option value="2" >AMAZON</option>
-					<option value="3" >AIRLINE</option>
-					<option value="4" >NINEBAR</option>
-					<option value="5" >CHROMA</option>
-					<option value="6" >CITY</option>
-					<option value="7" >CJ CASINO</option>
+					<?php foreach($gamd_types as $type=>$name):?>
+						<option value="<?=$type?>" ><?=$name?></option>
+					<?php endforeach?>
 				</select>
 			</div>
 			<div>
@@ -109,7 +102,7 @@
 				<input type = "number" class="conf-text-input"  id="confev-betmin-input-id" min="0" step="1000"> 원
 			</div>
 			<div>
-			<p>최대배팅금액:</p> 
+				<p>최대배팅금액:</p> 
 				<input type = "number" class="conf-text-input"  id="confev-betmax-input-id" min="0" step="10000"> 원
 			</div>
 		</div>
@@ -150,16 +143,9 @@
 			<div>
 				<p> 보험타입</p>			
 				<select name="pbresult-number" class="" id="confev-bettype-select-id" style="padding:5px; width: 200px; margin-left:0px;">
-					<option value="10" >EVOL365</option>
-					<option value="11" >LUCKY</option>
-					<option value="12" >VEDA</option>
-					<option value="1" >NINE</option>
-					<option value="2" >AMAZON</option>
-					<option value="3" >AIRLINE</option>
-					<option value="4" >NINEBAR</option>
-					<option value="5" >CHROMA</option>
-					<option value="6" >CITY</option>
-					<option value="7" >CJ CASINO</option>
+					<?php foreach($gamd_types as $type=>$name):?>
+						<option value="<?=$type?>" ><?=$name?></option>
+					<?php endforeach?>
 				</select>
 			</div>
 			<div>
@@ -184,7 +170,10 @@
 				<input type = "text" class="conf-text-input"  id="confev-balance-input-id" disabled> 
 				<label style="font-size:14px; font-weight:normal; padding-top:0px; min-width:100px;"  id="confev-balance-label-id"></label>
 			</div>
-			
+			<div>
+				<p>보험용도:</p> 
+				<input type="checkbox" id="confev-signal-check-id" style="zoom:120%; margin-top:5px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호용</label>
+			</div>
 		</div>
 		
 		<!-- 보험계정 2 -->
@@ -205,16 +194,9 @@
 			<div>
 				<p> 보험타입</p>			
 				<select name="pbresult-number" class="" id="confev-bettype-select-id2" style="padding:5px; width: 200px; margin-left:0px;">
-					<option value="10" >EVOL365</option>
-					<option value="11" >LUCKY</option>
-					<option value="12" >VEDA</option>
-					<option value="1" >NINE</option>
-					<option value="2" >AMAZON</option>
-					<option value="3" >AIRLINE</option>
-					<option value="4" >NINEBAR</option>
-					<option value="5" >CHROMA</option>
-					<option value="6" >CITY</option>
-					<option value="7" >CJ CASINO</option>
+					<?php foreach($gamd_types as $type=>$name):?>
+						<option value="<?=$type?>" ><?=$name?></option>
+					<?php endforeach?>
 				</select>
 			</div>
 			<div>
@@ -239,6 +221,10 @@
 				<input type = "text" class="conf-text-input"  id="confev-balance-input-id2" disabled> 
 				<label style="font-size:14px; font-weight:normal; padding-top:0px; min-width:100px;"  id="confev-balance-label-id2"></label>
 			</div>
+			<div>
+				<p>보험용도:</p> 
+				<input type="checkbox" id="confev-signal-check-id2" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호용</label>
+			</div>
 		</div>
 		<!-- 보험계정 3 -->
 		<div class="confsite-game-text-div">
@@ -258,16 +244,9 @@
 			<div>
 				<p> 보험타입</p>			
 				<select name="pbresult-number" class="" id="confev-bettype-select-id3" style="padding:5px; width: 200px; margin-left:0px;">
-					<option value="10" >EVOL365</option>
-					<option value="11" >LUCKY</option>
-					<option value="12" >VEDA</option>
-					<option value="1" >NINE</option>
-					<option value="2" >AMAZON</option>
-					<option value="3" >AIRLINE</option>
-					<option value="4" >NINEBAR</option>
-					<option value="5" >CHROMA</option>
-					<option value="6" >CITY</option>
-					<option value="7" >CJ CASINO</option>
+					<?php foreach($gamd_types as $type=>$name):?>
+						<option value="<?=$type?>" ><?=$name?></option>
+					<?php endforeach?>
 				</select>
 			</div>
 			<div>
@@ -291,6 +270,10 @@
 				<p>보험알:</p> 
 				<input type = "text" class="conf-text-input"  id="confev-balance-input-id3" disabled> 
 				<label style="font-size:14px; font-weight:normal; padding-top:0px; min-width:100px;"  id="confev-balance-label-id3"></label>
+			</div>
+			<div>
+				<p>보험용도:</p> 
+				<input type="checkbox" id="confev-signal-check-id3" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호용</label>
 			</div>
 		</div>
 		<?php endif ?>

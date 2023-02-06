@@ -26,7 +26,7 @@
       <a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
     <?php endif ?>  
 
-      <?php if($ebal_enable) :?>
+      <?php if(array_key_exists('app.ebal', $_ENV) && $_ENV['app.ebal'] > 0) :?>
         <a href="<?php echo siteFurl().'home/conf_ebal';?>" class="<?=$conf_ebal?>"><i class="glyphicon glyphicon-cd"></i> 에볼밸런스</a>
       <?php endif ?>  
     

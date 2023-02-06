@@ -50,7 +50,9 @@ class EbalBet_Model extends Model
         if(strlen($arrReqData['user']) > 0){
             $strCondition.=" AND bet_mb_fid = '".$arrReqData['user']."' ";            
         }
-        
+        if(array_key_exists('type', $arrReqData) && intval($arrReqData['type']) >= 0){
+            $strCondition.=" AND bet_type = '".$arrReqData['type']."' ";            
+        }
         if(array_key_exists('room', $arrReqData) && strlen($arrReqData['room']) > 0) {
             $strCondition.=" AND bet_table_name = '".$arrReqData['room']."' ";
         }
@@ -114,6 +116,9 @@ class EbalBet_Model extends Model
         if(strlen($arrReqData['user']) > 0){
             $strWhere.=" AND bet_mb_fid = '".$arrReqData['user']."' ";
         }
+        if(array_key_exists('type', $arrReqData) && intval($arrReqData['type']) >= 0){
+            $strWhere.=" AND bet_type = '".$arrReqData['type']."' ";            
+        }
         // $strWhere.=" AND bet_mb_level = 0 ";  
         if(array_key_exists('room', $arrReqData) && strlen($arrReqData['room']) > 0)
             $strWhere.=" AND bet_table_name = '".$arrReqData['room']."' ";
@@ -124,7 +129,7 @@ class EbalBet_Model extends Model
         
         $strSql = "";
         $strSql .= "SELECT bet_fid, bet_idx, bet_mb_uid, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_id, bet_game_type, bet_table_code, ";
-        $strSql .= " bet_choice, bet_result, point_amount, company_amount, obj_id, bet_table_name as game_name, rw_mb_uid, rw_point, '에볼루션' as prd_name";
+        $strSql .= " bet_type, bet_choice, bet_result, point_amount, company_amount, obj_id, bet_table_name as game_name, rw_mb_uid, rw_point, '에볼루션' as prd_name";
         $strSql .= " FROM ( ";
 
         $tbBetSearch = "bet_search";
@@ -210,6 +215,9 @@ class EbalBet_Model extends Model
 
         if(strlen($arrReqData['user']) > 0){
             $strSql.=" AND bet_mb_fid = '".$arrReqData['user']."' ";
+        }
+        if(array_key_exists('type', $arrReqData) && intval($arrReqData['type']) >= 0){
+            $strSql.=" AND bet_type = '".$arrReqData['type']."' ";            
         }
         // $strSql.=" AND bet_mb_level = 0 ";
         if(array_key_exists('room', $arrReqData) && strlen($arrReqData['room']) > 0) {

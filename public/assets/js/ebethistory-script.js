@@ -21,7 +21,7 @@ function ShowBetHistory(jsonBetData) {
     var state = $("#pbhistory-state-select-id").val();
 
     var strHead = "<th>ID</th><th>아이디</th><th>배팅시간</th><th>게임종류</th><th>게임방</th>";
-    strHead += "<th>요청금</th><th>배팅금</th><th>배팅선택</th><th>경기결과</th><th>적중금</th>";
+    strHead += "<th>요청금</th><th>배팅금</th><th>배팅타입</th><th>배팅선택</th><th>경기결과</th><th>적중금</th>";
     if(state == 1){
         strHead+= "<th>처리결과</th><th>처리</th>";
     } else {
@@ -60,6 +60,12 @@ function ShowBetHistory(jsonBetData) {
                 strBuf += parseInt(jsonBetData[nRow].obj_id).toLocaleString() + "원";
             strBuf += "</td><td>";
             strBuf += parseInt(jsonBetData[nRow].bet_money).toLocaleString() + "원";
+            strBuf += "</td>";
+            if(parseInt(jsonBetData[nRow].bet_type) == 0) {
+                strBuf += "<td  class = 'pb-home-table-betstate-wait'>누르기";
+            } else {
+                strBuf += "<td  class = 'pb-home-table-betstate-loss'>넘기기";
+            }
             strBuf += "</td><td>";
             strBuf += getEvolSide(jsonBetData[nRow].bet_choice);
             strBuf += "</td><td>";
@@ -206,6 +212,10 @@ function addEventListner() {
     $("#pbhistory-state-select-id").change(function() {
         requestTotalPage();
     });
+    
+    $("#pbhistory-type-select-id").change(function() {
+        requestTotalPage();
+    });
 }
 
 //Function to Request Betting History to WebServer
@@ -225,7 +235,10 @@ function requestBetHistory() {
     if ($("#pbhistory-state-select-id").length > 0) {
         state = $("#pbhistory-state-select-id").val();
     }
-
+    var type = -1;
+    if ($("#pbhistory-type-select-id").length > 0) {
+        type = $("#pbhistory-type-select-id").val();
+    }
     var jsonData = {
         "count": CountPerPage,
         "page": nPage,
@@ -236,6 +249,7 @@ function requestBetHistory() {
         "room": strRoom,
         "mode": -10,
         "state":state,
+        "type":type,
     };
     jsonData = JSON.stringify(jsonData);
     $(".loading").show();
@@ -253,7 +267,7 @@ function requestBetHistory() {
         },
         error: function(request, status, error) {
             $(".loading").hide();
-            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });
@@ -275,6 +289,10 @@ function requestTotalPage(bReqPage = true) {
     if ($("#pbhistory-state-select-id").length > 0) {
         state = $("#pbhistory-state-select-id").val();
     }
+    var type = -1;
+    if ($("#pbhistory-type-select-id").length > 0) {
+        type = $("#pbhistory-type-select-id").val();
+    }
     var jsonData = {
         "count": CountPerPage,
         "start": dtStart,
@@ -284,6 +302,7 @@ function requestTotalPage(bReqPage = true) {
         "room": strRoom,
         "mode": -10,
         "state":state,
+        "type":type,
     };
     jsonData = JSON.stringify(jsonData);
 

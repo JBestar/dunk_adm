@@ -81,49 +81,14 @@ class ConfSite_Model extends Model
 
     public function getEvolSite(){
 
-        /*
-        $data = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "" ];
-
-        $objConfig = $this->where('conf_id', CONF_EVOLSITE)->first();
-        if(!is_null($objConfig)){
-            $info = explode(';', $objConfig->conf_content);
-            if(count($info) >= 3){
-                $data[0] = $info[0];   
-                $data[1] = $info[1];   
-                $data[2] = $info[2];   
-                $objConfig->conf_active = intval($objConfig->conf_active); 
-                
-                $data[7] = -3; 
-                if(diffDt(date('Y-m-d H:i:s'), $objConfig->conf_update) < DELAY_TRANSFER){
-                    $data[7] = $objConfig->conf_active;
-                }
-                
-                $info = explode('#', $objConfig->conf_idx);
-                if(count($info) >= 5){
-                    $data[4] = intval($info[0]);
-                    $data[5] = intval($info[1]);
-                    $data[6] = intval($info[2]);
-                    $data[8] = intval($info[3]);
-                    $data[9] = intval($info[4]);
-                }
-            }
-        }
-
-        $objConfig = $this->where('conf_id', CONF_EVOLRUN)->first();
-        if(!is_null($objConfig)){
-            $data[3] = $objConfig->conf_active;
-            $data[10] = $objConfig->conf_idx;
-        }
-        */
-
         $arrBatch = array();
         
         $confIds = [CONF_EVOLSITE_1, CONF_EVOLRUN_1, CONF_EVOLSITE_2, CONF_EVOLRUN_2, CONF_EVOLSITE_3, CONF_EVOLRUN_3];  
         $arrConf = $this->find($confIds);
         
-        $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 20, 50, 0 ];
-        $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "" ];
-        $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "" ];
+        $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 20, 50, 0, 0 ];
+        $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0 ];
+        $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0 ];
 
         $idx = 0;
         foreach($arrConf as $objConf){
@@ -156,14 +121,16 @@ class ConfSite_Model extends Model
                             $data[$idx][4] = intval($info[0]);
                             $data[$idx][5] = intval($info[1]);
                             $data[$idx][6] = intval($info[2]);
+                            $data[$idx][6] = intval($info[2]);
                             if(count($info) >= 5 && $idx == 0){
                                 $data[$idx][8] = intval($info[3]);
                                 $data[$idx][9] = intval($info[4]);
-                                if(count($info) >= 7){
-                                    $data[$idx][11] = intval($info[5]);
-                                    $data[$idx][12] = intval($info[6]);
-                                }
-                            }
+                                $data[$idx][11] = intval($info[5]);
+                                $data[$idx][12] = intval($info[6]);
+                            } 
+                            if(count($info) >= 8)
+                                $data[$idx][13] = intval($info[7]);
+
                         }
                     }
 					break;
@@ -208,7 +175,7 @@ class ConfSite_Model extends Model
             $updateData = array();
             $updateData['conf_id'] = CONF_EVOLSITE_1;
             $updateData['conf_content'] = $strContent;
-            $strContent = $data['type_ev']."#".$data['bet_ev']."#".$data['con_ev']."#".$data['bet_min']."#".$data['bet_max']."#".$data['con_min']."#".$data['user_max'];
+            $strContent = $data['type_ev']."#".$data['bet_ev']."#".$data['con_ev']."#".$data['bet_min']."#".$data['bet_max']."#".$data['con_min']."#".$data['user_max']."#".$data['is_signal'];
             $updateData['conf_idx'] = $strContent;
             $arrBatch[] = $updateData;
         }
@@ -236,7 +203,7 @@ class ConfSite_Model extends Model
             $updateData = array();
             $updateData['conf_id'] = CONF_EVOLSITE_2;
             $updateData['conf_content'] = $strContent;
-            $strContent = $data['type_ev2']."#".$data['betmode_ev']."#".$data['con_ev2'];
+            $strContent = $data['type_ev2']."#".$data['betmode_ev']."#".$data['con_ev2']."#0#0#0#0#".$data['is_signal2'];
             $updateData['conf_idx'] = $strContent;
             $arrBatch[] = $updateData;
 
@@ -262,7 +229,7 @@ class ConfSite_Model extends Model
             $updateData = array();
             $updateData['conf_id'] = CONF_EVOLSITE_3;
             $updateData['conf_content'] = $strContent;
-            $strContent = $data['type_ev3']."#".$data['betmode_ev']."#".$data['con_ev3'];
+            $strContent = $data['type_ev3']."#".$data['betmode_ev']."#".$data['con_ev3']."#0#0#0#0#".$data['is_signal3'];
             $updateData['conf_idx'] = $strContent;
             $arrBatch[] = $updateData;
 

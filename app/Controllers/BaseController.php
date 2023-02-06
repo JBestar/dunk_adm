@@ -81,7 +81,7 @@ class BaseController extends Controller
 		
 		$confs = ['site_name'=>"", "gameper_full"=>false, "bpg_deny"=>false, "cas_deny"=>false, "slot_deny"=>false, 
 			"kgon_enable"=>false, "eos5_enable"=>false, "eos3_enable"=>false, "coin5_enable"=>false, "coin3_enable"=>false, 
-			"hpg_enable"=>false, "ebal_enable"=>false];
+			"hpg_enable"=>false];
 		$arrConf = $confsiteModel->getSiteConf();  
 		
 		foreach($arrConf as $objConf){
@@ -107,8 +107,6 @@ class BaseController extends Controller
 				case CONF_COIN3_ENABLE:	$confs['coin3_enable'] = $objConf->conf_active == STATE_ACTIVE?true:false;
 					break;
 				case CONF_HPG_ENABLE:	$confs['hpg_enable'] = $objConf->conf_active == STATE_ACTIVE?true:false;
-					break;
-				case CONF_EVOLSITE_1:	$confs['ebal_enable'] = $objConf->conf_active >= -2? true:false;
 					break;
 				default:break;
 			}

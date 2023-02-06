@@ -15,7 +15,12 @@
 
 			<input type="text" placeholder="            게임방" class="pbresult-text-input" id="pbhistory-room-input-id"  style="width:150px;">
 			
-            <select name="pbresult-number" class="pbresult-number-select" id="pbhistory-state-select-id" style="width:80px; margin-left:-5px;">
+            <select name="pbresult-number" class="pbresult-number-select" id="pbhistory-type-select-id" style="width:80px; margin-left:-5px;">
+				<option value="-1">전체</option>
+				<option value="0">누르기</option>
+				<option value="1">넘기기</option>
+			</select>
+            <select name="pbresult-number" class="pbresult-number-select" id="pbhistory-state-select-id" style="width:80px; margin-left:10px;">
 				<option value="0">정상</option>
 				<option value="1">미처리</option>
 			</select>
@@ -39,6 +44,7 @@
 					<th>게임방</th>
 					<th>요청금</th>
 					<th>배팅금</th>
+					<th>배팅타입</th>
 					<th>배팅선택</th>
 					<th>경기결과</th>
 					<th>적중금</th>
