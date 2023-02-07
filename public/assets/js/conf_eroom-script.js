@@ -8,22 +8,41 @@ function ShowRooms(arrRoom){
     var strBuf = "";
     if(arrRoom != null && arrRoom.length > 0 ){
         let room = null;
-        for (idx in arrRoom) {
+        let totalCnt = arrRoom.length;
+        let rowCnt = Math.ceil(totalCnt/2);
+        let idx = 0;
+        for (let i = 0; i < rowCnt ; i++) {
+            idx = i;
             room = arrRoom[idx];
 
             strBuf += "<tr><td>";
             strBuf += (parseInt(idx)+1);
             strBuf += "</td><td>";
             strBuf += room.name;
-            strBuf += "</td><td>";
-            if(room.stop == 1){
-                strBuf += '<button class="pbresult-list-view-but" onclick="setRoomState('+room.fid+', 0);">시작</button>';
-                strBuf += '<button class="pbresult-list-view-but" style="background: rgb(255, 58, 90);" disabled>정지</button>';
+            strBuf += '</td><td style="border-right:2px solid #aaa">';
+            if(room.stop == 0){
+                strBuf += '<button class="user-table button" onclick="setRoomState('+room.fid+', 1);" style="margin:0;">승인</button>';
 
             } else {
-                strBuf += '<button class="pbresult-list-view-but" style="background: rgb(133, 255, 142);" disabled>시작</button>';
-                strBuf += '<button class="pbresult-list-view-but" onclick="setRoomState('+room.fid+', 1);">정지</button>';
+                strBuf += '<button class="user-table button" onclick="setRoomState('+room.fid+', 0);" style="background: rgb(255, 58, 90); color: #edff00; margin:0;">차단</button>';
+            }
+            strBuf += "</td><td>";
 
+            idx = i+rowCnt;
+            if(idx >= totalCnt){
+                strBuf += "</td><td></td><td>";
+            } else {
+                room = arrRoom[idx];
+                strBuf += (parseInt(idx)+1);
+                strBuf += "</td><td>";
+                strBuf += room.name;
+                strBuf += "</td><td>";
+                if(room.stop == 0){
+                    strBuf += '<button class="user-table button" onclick="setRoomState('+room.fid+', 1);" style="margin:0;">승인</button>';
+    
+                } else {
+                    strBuf += '<button class="user-table button" onclick="setRoomState('+room.fid+', 0);" style="background: rgb(255, 58, 90); color: #edff00; margin:0;">차단</button>';
+                }
             }
             strBuf += "</td><tr>";
 
@@ -59,6 +78,15 @@ function requestRooms() {
 }
 
 function setRoomState(fid, state){
+
+    if(state == 0){
+        if(!confirm("승인하시겠습니까?"))
+            return;
+    } else if(state == 1){
+        if(!confirm("차단하시겠습니까?"))
+            return;
+    }
+
     var jsonData = {
         "id": fid,
         "stop": state,

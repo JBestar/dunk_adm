@@ -171,8 +171,8 @@
 				<label style="font-size:14px; font-weight:normal; padding-top:0px; min-width:100px;"  id="confev-balance-label-id"></label>
 			</div>
 			<div>
-				<p>보험용도:</p> 
-				<input type="checkbox" id="confev-signal-check-id" style="zoom:120%; margin-top:5px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호용</label>
+				<p>계정타입:</p> 
+				<input type="checkbox" id="confev-signal-check-id" style="zoom:120%; margin-top:5px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호값용</label>
 			</div>
 		</div>
 		
@@ -222,8 +222,8 @@
 				<label style="font-size:14px; font-weight:normal; padding-top:0px; min-width:100px;"  id="confev-balance-label-id2"></label>
 			</div>
 			<div>
-				<p>보험용도:</p> 
-				<input type="checkbox" id="confev-signal-check-id2" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호용</label>
+				<p>계정타입:</p> 
+				<input type="checkbox" id="confev-signal-check-id2" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호값용</label>
 			</div>
 		</div>
 		<!-- 보험계정 3 -->
@@ -272,8 +272,8 @@
 				<label style="font-size:14px; font-weight:normal; padding-top:0px; min-width:100px;"  id="confev-balance-label-id3"></label>
 			</div>
 			<div>
-				<p>보험용도:</p> 
-				<input type="checkbox" id="confev-signal-check-id3" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호용</label>
+				<p>계정타입:</p> 
+				<input type="checkbox" id="confev-signal-check-id3" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호값용</label>
 			</div>
 		</div>
 		<?php endif ?>

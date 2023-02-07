@@ -2,6 +2,11 @@
 <?= $this->section('ebal-active') ?><?=$game_name?><?= $this->endSection() ?>
 <?= $this->section('eval_content') ?>
 
+	<style>
+		.user-table button {
+			width:70px;
+		}
+	</style>
 	<div class="bet-panel">
 		<div class="pbresult-list-div">
 			
@@ -14,9 +19,12 @@
 				<button class="pbresult-list-view-but" id="ebal-stop-but-id" style="margin-right:3px; " disabled>정지</button>
 			</div> -->
 		</div>
-		<Table class="bet-table">
+		<Table class="user-table">
 			<thead>
 				<tr>
+					<th>번호</th>
+					<th>방</th>
+					<th style="border-right:2px solid #aaa">설정</th>
 					<th>번호</th>
 					<th>방</th>
 					<th>설정</th>
