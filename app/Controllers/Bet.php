@@ -224,7 +224,7 @@ class Bet extends StdController {
 
 	public function xslhistory(){
 		$modelSlotprd = new SlotPrd_Model();
-		$gameId = GAME_SLOT_1;
+		$gameId = GAME_SLOT_THEPLUS;
 		$arrPrd = $modelSlotprd->gets($gameId);
 
 		$param = [
@@ -240,13 +240,13 @@ class Bet extends StdController {
 		
 		$modelSlotprd = new SlotPrd_Model();
 
-		$gameId = GAME_SLOT_2;
+		$gameId = GAME_SLOT_GSPLAY;
 		if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
-			$gameId = GAME_SLOT_3;
+			$gameId = GAME_SLOT_GOLD;
 		else if($_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_7)
-			$gameId = GAME_SLOT_4;
+			$gameId = GAME_SLOT_KGON;
 		else if($_ENV['app.type'] == APPTYPE_8 || $_ENV['app.type'] == APPTYPE_9)
-			$gameId = GAME_SLOT_5;
+			$gameId = GAME_SLOT_STAR;
 
 		$arrPrd = $modelSlotprd->gets($gameId);
 
@@ -262,17 +262,17 @@ class Bet extends StdController {
 	public function slhistory(){
 		
 		$modelSlotprd = new SlotPrd_Model();
-		$gameId = GAME_SLOT_12;
+		$gameId = GAME_SLOT_ALL;
 		if($_ENV['app.type'] == APPTYPE_2)
-			$arrPrd = $modelSlotprd->gets(GAME_SLOT_2);
+			$arrPrd = $modelSlotprd->gets(GAME_SLOT_GSPLAY);
 		else if($_ENV['app.type'] == APPTYPE_5)
-			$arrPrd = $modelSlotprd->gets(GAME_SLOT_3);
+			$arrPrd = $modelSlotprd->gets(GAME_SLOT_GOLD);
 		else if($_ENV['app.type'] == APPTYPE_7)
-			$arrPrd = $modelSlotprd->gets(GAME_SLOT_4);
+			$arrPrd = $modelSlotprd->gets(GAME_SLOT_KGON);
 		else if($_ENV['app.type'] == APPTYPE_9)
-			$arrPrd = $modelSlotprd->gets(GAME_SLOT_5);
+			$arrPrd = $modelSlotprd->gets(GAME_SLOT_STAR);
 		else
-			$arrPrd = $modelSlotprd->gets(GAME_SLOT_1);
+			$arrPrd = $modelSlotprd->gets(GAME_SLOT_THEPLUS);
 		
 		$param = [
 			'game_name' => "슬롯",
@@ -319,20 +319,20 @@ class Bet extends StdController {
 	public function xslcalculate(){
 		$param = [
 			'game_name' => "정품슬롯",
-			'game_id' => GAME_SLOT_1,
+			'game_id' => GAME_SLOT_THEPLUS,
 		];
 
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_ADMIN, $param);
 	}
 	
 	public function fslcalculate(){
-		$gameId = GAME_SLOT_2;
+		$gameId = GAME_SLOT_GSPLAY;
 		if($_ENV['app.type'] == APPTYPE_4)
-			$gameId = GAME_SLOT_3;
+			$gameId = GAME_SLOT_GOLD;
 		else if($_ENV['app.type'] == APPTYPE_6)
-			$gameId = GAME_SLOT_4;
+			$gameId = GAME_SLOT_KGON;
 		else if($_ENV['app.type'] == APPTYPE_8)
-			$gameId = GAME_SLOT_5;
+			$gameId = GAME_SLOT_STAR;
 
 		$param = [
 			'game_name' => "네츄럴슬롯",
@@ -345,7 +345,7 @@ class Bet extends StdController {
 	public function slcalculate(){
 		$param = [
 			'game_name' => "슬롯",
-			'game_id' => GAME_SLOT_12,
+			'game_id' => GAME_SLOT_ALL,
 		];
 
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);

@@ -415,8 +415,8 @@ class Member_Model extends Model
             $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_bogleball");
         } elseif ($arrReqData['type'] == GAME_BOGLE_LADDER ) {
             $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_bogleladder");
-        } elseif ($arrReqData['type'] == GAME_SLOT_1 || $arrReqData['type'] == GAME_SLOT_2 || $arrReqData['type'] == GAME_SLOT_3 
-        || $arrReqData['type'] == GAME_SLOT_4 || $arrReqData['type'] == GAME_SLOT_5 || $arrReqData['type'] == GAME_SLOT_12 ) {
+        } elseif ($arrReqData['type'] == GAME_SLOT_THEPLUS || $arrReqData['type'] == GAME_SLOT_GSPLAY || $arrReqData['type'] == GAME_SLOT_GOLD 
+        || $arrReqData['type'] == GAME_SLOT_KGON || $arrReqData['type'] == GAME_SLOT_STAR || $arrReqData['type'] == GAME_SLOT_ALL ) {
             $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_slot");
         } elseif ($arrReqData['type'] == GAME_EOS5_BALL ) {
             $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_eos5ball");
@@ -635,7 +635,7 @@ class Member_Model extends Model
             $strSQL .= ' bet_bogleball ';
         } elseif ($arrReqData['type'] == GAME_BOGLE_LADDER ) {
             $strSQL .= ' bet_bogleladder ';
-        } elseif ($arrReqData['type'] == GAME_SLOT_1 || $arrReqData['type'] == GAME_SLOT_2 || $arrReqData['type'] == GAME_SLOT_3 || $arrReqData['type'] == GAME_SLOT_12 ) {
+        } elseif ($arrReqData['type'] == GAME_SLOT_THEPLUS || $arrReqData['type'] == GAME_SLOT_GSPLAY || $arrReqData['type'] == GAME_SLOT_GOLD || $arrReqData['type'] == GAME_SLOT_ALL ) {
             $strSQL .= ' bet_slot ';
         } elseif ($arrReqData['type'] == GAME_EOS5_BALL ) {
             $strSQL .= ' bet_eos5ball ';
@@ -651,7 +651,7 @@ class Member_Model extends Model
             return null;
         }
         $strSQL .= " WHERE bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
-        if ($arrReqData['type'] == GAME_SLOT_1 || $arrReqData['type'] == GAME_SLOT_2 || $arrReqData['type'] == GAME_SLOT_3){
+        if ($arrReqData['type'] == GAME_SLOT_THEPLUS || $arrReqData['type'] == GAME_SLOT_GSPLAY || $arrReqData['type'] == GAME_SLOT_GOLD){
             $strSQL .= " AND bet_game_id = '".$arrReqData['type']."' ";
         }
         $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) ";
@@ -835,8 +835,8 @@ class Member_Model extends Model
             $strSQL .= ' bet_bogleball ';
         } elseif ($arrReqData['type'] == GAME_BOGLE_LADDER ) {
             $strSQL .= ' bet_bogleladder ';
-        } elseif ($arrReqData['type'] == GAME_SLOT_1 || $arrReqData['type'] == GAME_SLOT_2 || $arrReqData['type'] == GAME_SLOT_3 
-        || $arrReqData['type'] == GAME_SLOT_4 || $arrReqData['type'] == GAME_SLOT_5 || $arrReqData['type'] == GAME_SLOT_12 ) {
+        } elseif ($arrReqData['type'] == GAME_SLOT_THEPLUS || $arrReqData['type'] == GAME_SLOT_GSPLAY || $arrReqData['type'] == GAME_SLOT_GOLD 
+        || $arrReqData['type'] == GAME_SLOT_KGON || $arrReqData['type'] == GAME_SLOT_STAR || $arrReqData['type'] == GAME_SLOT_ALL ) {
             $strSQL .= ' bet_slot ';
         } elseif ($arrReqData['type'] == GAME_EOS5_BALL ) {
             $strSQL .= ' bet_eos5ball ';
@@ -852,7 +852,7 @@ class Member_Model extends Model
             return null;
         }
         $strSQL .= " WHERE bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
-        if ($arrReqData['type'] == GAME_SLOT_1 || $arrReqData['type'] == GAME_SLOT_2 || $arrReqData['type'] == GAME_SLOT_3 || $arrReqData['type'] == GAME_SLOT_4 || $arrReqData['type'] == GAME_SLOT_5){
+        if ($arrReqData['type'] == GAME_SLOT_THEPLUS || $arrReqData['type'] == GAME_SLOT_GSPLAY || $arrReqData['type'] == GAME_SLOT_GOLD || $arrReqData['type'] == GAME_SLOT_KGON || $arrReqData['type'] == GAME_SLOT_STAR){
             $strSQL .= " AND bet_game_id = '".$arrReqData['type']."' ";
         } else if ($arrReqData['type'] == GAME_CASINO_EVOL ) {
             if(isEBalMode()){
@@ -869,15 +869,15 @@ class Member_Model extends Model
         $strSQL .= " SUM(CASE WHEN rw_mb_fid = ".$objEmp->mb_fid." THEN rw_point ELSE 0 END) AS result_2 FROM ".$this->rewardTb;
         $strSQL .= " WHERE rw_fid >= ".$arrReqData['rw_range'][0]." AND rw_fid <= ".$arrReqData['rw_range'][1];
         $strSQL .= " AND rw_mb_fid IN (SELECT mb_fid from tbmember) ";
-        if($arrReqData['type'] == GAME_SLOT_12){
+        if($arrReqData['type'] == GAME_SLOT_ALL){
             if($_ENV['app.type'] == APPTYPE_4)
-                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_1."', '".GAME_SLOT_3."') ";
+                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GOLD."') ";
             else if($_ENV['app.type'] == APPTYPE_6)
-                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_1."', '".GAME_SLOT_4."') ";
+                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_THEPLUS."', '".GAME_SLOT_KGON."') ";
             else if($_ENV['app.type'] == APPTYPE_8)
-                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_1."', '".GAME_SLOT_5."') ";
+                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_THEPLUS."', '".GAME_SLOT_STAR."') ";
             else
-                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_1."', '".GAME_SLOT_2."') ";
+                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GSPLAY."') ";
         }
         else if($arrReqData['type'] > 0)
             $strSQL.=" AND rw_game = '".$arrReqData['type']."' ";
@@ -970,7 +970,7 @@ class Member_Model extends Model
             $strCond .= " AND ".getBetTimeRange($arrReqData);
         }
 
-         $strSQL = " SELECT bet_money, bet_win_money, bet_count, name_kr AS bet_name, '".GAME_SLOT_1."' As bet_kind From ";
+         $strSQL = " SELECT bet_money, bet_win_money, bet_count, name_kr AS bet_name, '".GAME_SLOT_THEPLUS."' As bet_kind From ";
          $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count, bet_game_type  FROM bet_slot ";
 		 $strSQL.= $strCond." group by bet_game_type) AS bet_slot_g JOIN slot_prd on slot_prd.code = bet_slot_g.bet_game_type ";
          
@@ -1704,19 +1704,19 @@ class Member_Model extends Model
         if($iGame == GAME_CASINO_EVOL){
             $strSQL = 'SELECT SUM(mb_live_money) AS mb_game_money FROM '.$this->table;
             $strSQL .= ' WHERE mb_live_id > 0 ';
-        } else if($iGame == GAME_CASINO_KGON || $iGame == GAME_SLOT_4){
+        } else if($iGame == GAME_CASINO_KGON || $iGame == GAME_SLOT_KGON){
             $strSQL = 'SELECT SUM(mb_kgon_money) AS mb_game_money FROM '.$this->table;
             $strSQL .= ' WHERE mb_kgon_id > 0 ';
-        } else if($iGame == GAME_SLOT_1){
+        } else if($iGame == GAME_SLOT_THEPLUS){
             $strSQL = 'SELECT SUM(mb_slot_money) AS mb_game_money FROM '.$this->table;
             $strSQL .= " WHERE LENGTH(mb_slot_uid) > 0 ";
-        } else if($iGame == GAME_SLOT_2){
+        } else if($iGame == GAME_SLOT_GSPLAY){
             $strSQL = 'SELECT SUM(mb_fslot_money) AS mb_game_money FROM '.$this->table;
             $strSQL .= ' WHERE mb_fslot_id > 0';
-        } else if($iGame == GAME_SLOT_3){
+        } else if($iGame == GAME_SLOT_GOLD){
             $strSQL = 'SELECT SUM(mb_gslot_money) AS mb_game_money FROM '.$this->table;
             $strSQL .= ' WHERE LENGTH(mb_gslot_uid) > 0';
-        } else if($iGame == GAME_SLOT_5){
+        } else if($iGame == GAME_SLOT_STAR){
             $strSQL = 'SELECT SUM(mb_fslot_money) AS mb_game_money FROM '.$this->table;
             $strSQL .= ' WHERE LENGTH(mb_fslot_uid) > 0';
         } else null;

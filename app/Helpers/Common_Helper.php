@@ -230,11 +230,11 @@
           case GAME_CASINO: return $objMember->mb_game_cs;
           case GAME_BOGLE_BALL: return $objMember->mb_game_bb;
           case GAME_BOGLE_LADDER: return $objMember->mb_game_bs;
-          case GAME_SLOT_1: 
-          case GAME_SLOT_2: 
-          case GAME_SLOT_3: 
-          case GAME_SLOT_4: 
-          case GAME_SLOT_5: return $objMember->mb_game_sl;
+          case GAME_SLOT_THEPLUS: 
+          case GAME_SLOT_GSPLAY: 
+          case GAME_SLOT_GOLD: 
+          case GAME_SLOT_KGON: 
+          case GAME_SLOT_STAR: return $objMember->mb_game_sl;
           default: break;
       } 
       return 0;

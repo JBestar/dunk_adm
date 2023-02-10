@@ -161,7 +161,7 @@ class Api extends BaseController{
 			if($gameId == GAME_CASINO_EVOL){
 				$arrResult = $this->libApiCas->getAgentInfo();
 				if($arrResult['status'] == 1){
-					$confsiteModel->setConfActive(CONF_CASINO_EVOL, $arrResult['balance']);
+					$confsiteModel->setConfActive(CONF_API_HPPLAY, $arrResult['balance']);
 					writeLog("<CASINO> Agent Egg = ".$arrResult['balance']);
 				} else {
 					if($arrResult['error'] == INVALID_ACCESS_TOKEN){
@@ -170,11 +170,11 @@ class Api extends BaseController{
 						$errMsg = "파라메터오류";
 					} else $errMsg = "접속불가";
 				}
-				$agConf = $confsiteModel->getConf(CONF_CASINO_EVOL);
-			} else if($gameId == GAME_SLOT_1){
+				$agConf = $confsiteModel->getConf(CONF_API_HPPLAY);
+			} else if($gameId == GAME_SLOT_THEPLUS){
 				$arrResult = $this->libApiSlot->getAgentInfo();
 				if($arrResult['status'] == 1){
-					$confsiteModel->setConfActive(CONF_SLOT_1, $arrResult['balance']);
+					$confsiteModel->setConfActive(CONF_API_GSPLAY, $arrResult['balance']);
 					writeLog("<SLOT> Agent Egg = ".$arrResult['balance']);
 				} else {
 					if($arrResult['resultCode'] == SLOTCODE_IP_AUTH){
@@ -183,11 +183,11 @@ class Api extends BaseController{
 						$errMsg = "요청실패";
 					} else $errMsg = "접속불가";
 				}
-				$agConf = $confsiteModel->getConf(CONF_SLOT_1);
-			} else if($gameId == GAME_SLOT_2){
+				$agConf = $confsiteModel->getConf(CONF_API_GSPLAY);
+			} else if($gameId == GAME_SLOT_GSPLAY){
 				$arrResult = $this->libApiFslot->getAgentInfo();
 				if($arrResult['status'] == 1){
-					$confsiteModel->setConfActive(CONF_SLOT_2, $arrResult['balance']);
+					$confsiteModel->setConfActive(CONF_API_THEPLUS, $arrResult['balance']);
 					writeLog("<FSLOT> AGENT Egg = ".$arrResult['balance']);
 				} else {
 					if($arrResult['error'] == INVALID_ACCESS_TOKEN){
@@ -196,11 +196,11 @@ class Api extends BaseController{
 						$errMsg = "파라메터오류";
 					} else $errMsg = "접속불가";
 				}
-				$agConf = $confsiteModel->getConf(CONF_SLOT_2);
-			} else if($gameId == GAME_SLOT_3){
+				$agConf = $confsiteModel->getConf(CONF_API_THEPLUS);
+			} else if($gameId == GAME_SLOT_GOLD){
 				$arrResult = $this->libApiGslot->getUserInfo();
 				if($arrResult['status'] == 1){
-					$confsiteModel->setConfActive(CONF_SLOT_3, $arrResult['balance']);
+					$confsiteModel->setConfActive(CONF_API_GOLD, $arrResult['balance']);
 					writeLog("<GSLOT> AGENT Egg = ".$arrResult['balance']);
 				} else {
 					if($arrResult['msg'] == "INVALID_ACCESS_SECRETKEY"){
@@ -211,29 +211,29 @@ class Api extends BaseController{
 					writeLog("<GSLOT> AGENT Egg Msg = ".$arrResult['msg']);
 
 				}
-				$agConf = $confsiteModel->getConf(CONF_SLOT_3);
-			} else if($gameId == GAME_CASINO_KGON || $gameId == GAME_SLOT_4){
+				$agConf = $confsiteModel->getConf(CONF_API_GOLD);
+			} else if($gameId == GAME_CASINO_KGON || $gameId == GAME_SLOT_KGON){
 				$arrResult = $this->libApiKgon->getAgentInfo();
 				if($arrResult['status'] == 1){
-					$confsiteModel->setConfActive(CONF_CASINO_KGON, $arrResult['balance']);
+					$confsiteModel->setConfActive(CONF_API_KGON, $arrResult['balance']);
 					writeLog("<KGON> AGENT Egg = ".$arrResult['balance']);
 				} else {
 					if(array_key_exists('msg', $arrResult)){
 						$errMsg = $arrResult['msg'];
 					} else $errMsg = "접속불가";
 				}
-				$agConf = $confsiteModel->getConf(CONF_CASINO_KGON);
-			} else if($gameId == GAME_SLOT_5){
+				$agConf = $confsiteModel->getConf(CONF_API_KGON);
+			} else if($gameId == GAME_SLOT_STAR){
 				$arrResult = $this->libApiHslot->getAgentInfo();
 				if($arrResult['status'] == 1){
-					$confsiteModel->setConfActive(CONF_SLOT_HI, $arrResult['balance']);
+					$confsiteModel->setConfActive(CONF_API_STAR, $arrResult['balance']);
 					writeLog("<HSLOT> AGENT Egg = ".$arrResult['balance']);
 				} else {
 					$errMsg = "접속불가";
 					writeLog("<HSLOT> AGENT Egg Msg = ".$arrResult['msg']);
 
 				}
-				$agConf = $confsiteModel->getConf(CONF_SLOT_HI);
+				$agConf = $confsiteModel->getConf(CONF_API_STAR);
 			}
 			
 			$agInfo = null;

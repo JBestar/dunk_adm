@@ -16,7 +16,7 @@ class SlBet_Model extends Model
         'bet_win_money',
         'bet_agent_id', 
         'bet_player_id', 
-        'bet_game_id' ,         //GAME_SLOT_1 || GAME_SLOT_2 || GAME_SLOT_3
+        'bet_game_id' ,         //GAME_SLOT_THEPLUS || GAME_SLOT_GSPLAY || GAME_SLOT_GOLD
         'bet_game_type',        //Third Party No
         'bet_table_code',       //Slot Game Id
         'bet_choice', 
@@ -33,15 +33,15 @@ class SlBet_Model extends Model
     function getBetAccount($arrReqData){
 
         $strWhere = "";
-        if($arrReqData['game'] == GAME_SLOT_12){
+        if($arrReqData['game'] == GAME_SLOT_ALL){
             if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_3."') ";
+                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GOLD."') ";
             else if($_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_7)
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_4."') ";
+                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_KGON."') ";
             else if($_ENV['app.type'] == APPTYPE_8 || $_ENV['app.type'] == APPTYPE_9)
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_5."') ";
+                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_STAR."') ";
             else
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_2."') ";
+                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GSPLAY."') ";
         } else $strWhere=" WHERE bet_game_id = '".$arrReqData['game']."' ";
 
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
@@ -51,7 +51,7 @@ class SlBet_Model extends Model
             $strWhere.=" AND bet_mb_uid = '".$arrReqData['user']."' ";            
         }
         if(intval($arrReqData['mode']) > 0){
-            if($arrReqData['game'] == GAME_SLOT_12){
+            if($arrReqData['game'] == GAME_SLOT_ALL){
                 $strWhere.="  AND bet_game_type IN ( SELECT code FROM ".$this->mPrdTable." WHERE code = ".$arrReqData['mode']." OR ref_code = ".$arrReqData['mode']." ) ";
             } else {
                 $strWhere.="  AND bet_game_type = '".$arrReqData['mode']."' ";
@@ -108,15 +108,15 @@ class SlBet_Model extends Model
         $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_nickname, r.mb_slot_uid, r.mb_fslot_id  ";
         
         $strWhere= "";
-        if($arrReqData['game'] == GAME_SLOT_12){
+        if($arrReqData['game'] == GAME_SLOT_ALL){
             if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_3."') ";
+                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GOLD."') ";
             else if($_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_7)
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_4."') ";
+                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_KGON."') ";
             else if($_ENV['app.type'] == APPTYPE_8 || $_ENV['app.type'] == APPTYPE_9)
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_5."') ";
+                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_STAR."') ";
             else
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_2."') ";
+                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GSPLAY."') ";
         } else $strWhere.=" WHERE bet_game_id = '".$arrReqData['game']."' ";
         
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
@@ -126,7 +126,7 @@ class SlBet_Model extends Model
             $strWhere.=" AND bet_mb_uid = '".$arrReqData['user']."' ";
         }
         if(intval($arrReqData['mode']) > 0){
-            if($arrReqData['game'] == GAME_SLOT_12){
+            if($arrReqData['game'] == GAME_SLOT_ALL){
                 $strWhere.="  AND bet_game_type IN ( SELECT code FROM ".$this->mPrdTable." WHERE code = ".$arrReqData['mode']." OR ref_code = ".$arrReqData['mode']." ) ";
             } else {
                 $strWhere.="  AND bet_game_type = '".$arrReqData['mode']."' ";
@@ -222,15 +222,15 @@ class SlBet_Model extends Model
             // $strSql .= " JOIN ".$this->mMemberTable." ON ".$this->table.".bet_mb_uid = ".$this->mMemberTable.".mb_uid ";
         }
 
-        if($arrReqData['game'] == GAME_SLOT_12){
+        if($arrReqData['game'] == GAME_SLOT_ALL){
             if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
-                $strSql.=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_3."') ";
+                $strSql.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GOLD."') ";
             else if($_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_7)
-                $strSql.=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_4."') ";
+                $strSql.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_KGON."') ";
             else if($_ENV['app.type'] == APPTYPE_8 || $_ENV['app.type'] == APPTYPE_9)
-                $strSql.=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_5."') ";
+                $strSql.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_STAR."') ";
             else
-                $strSql.=" WHERE bet_game_id IN ('".GAME_SLOT_1."', '".GAME_SLOT_2."') ";
+                $strSql.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GSPLAY."') ";
         } else $strSql.=" WHERE bet_game_id = '".$arrReqData['game']."' ";
         
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
@@ -240,7 +240,7 @@ class SlBet_Model extends Model
             $strSql.=" AND bet_mb_uid = '".$arrReqData['user']."' ";
         }
         if(intval($arrReqData['mode']) > 0){
-            if($arrReqData['game'] == GAME_SLOT_12){
+            if($arrReqData['game'] == GAME_SLOT_ALL){
                 $strSql.="  AND bet_game_type IN ( SELECT code FROM ".$this->mPrdTable." WHERE code = ".$arrReqData['mode']." OR ref_code = ".$arrReqData['mode']." ) ";
             } else {
                 $strSql.="  AND bet_game_type = '".$arrReqData['mode']."' ";

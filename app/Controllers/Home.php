@@ -173,29 +173,29 @@ class Home extends StdController
 		$this->load_view_page('home/conf_casino', 'conf_game', LEVEL_ADMIN, $param);	
 	}
 
-	public function conf_slot_1(){
+	public function CONF_API_GSPLAY(){
 		$param = [
 			'game_name' => "정품슬롯",
-			'game_id' => GAME_SLOT_1
+			'game_id' => GAME_SLOT_THEPLUS
 		];
 		$this->load_view_page('home/conf_slot', 'conf_game', LEVEL_ADMIN, $param);	
 	}
 
-	public function conf_slot_2(){
+	public function CONF_API_THEPLUS(){
 		$slprdModel = new SlotPrd_Model();
 
-		$gameId = GAME_SLOT_2;
+		$gameId = GAME_SLOT_GSPLAY;
 		if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
-			$gameId = GAME_SLOT_3;
+			$gameId = GAME_SLOT_GOLD;
 		else if($_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_7)
-			$gameId = GAME_SLOT_4;
+			$gameId = GAME_SLOT_KGON;
 		else if($_ENV['app.type'] == APPTYPE_8 || $_ENV['app.type'] == APPTYPE_9)
-			$gameId = GAME_SLOT_5;
+			$gameId = GAME_SLOT_STAR;
 
 		$param = [
 			'game_name' => "네츄럴슬롯",
 			'game_id' => $gameId,
-			'game_prds' => $slprdModel->getByCode($gameId, $gameId == GAME_SLOT_2), 
+			'game_prds' => $slprdModel->getByCode($gameId, $gameId == GAME_SLOT_GSPLAY), 
 		];
 		$this->load_view_page('home/conf_fslot', 'conf_game', LEVEL_ADMIN, $param);	
 	}

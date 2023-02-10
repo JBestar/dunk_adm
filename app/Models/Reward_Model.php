@@ -38,15 +38,15 @@ class Reward_Model extends Model {
         $strSQL .= " WHERE rw_fid >= ".$arrReqData['rw_range'][0]." AND rw_fid <= ".$arrReqData['rw_range'][1];
 
         $strSQL.=" AND rw_mb_fid = '".$objEmp->mb_fid."' ";
-        if($gameId == GAME_SLOT_12){
+        if($gameId == GAME_SLOT_ALL){
             if($_ENV['app.type'] == APPTYPE_4)
-                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_1."', '".GAME_SLOT_3."') ";
+                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GOLD."') ";
             else if($_ENV['app.type'] == APPTYPE_6)
-                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_1."', '".GAME_SLOT_4."') ";
+                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_THEPLUS."', '".GAME_SLOT_KGON."') ";
             else if($_ENV['app.type'] == APPTYPE_8)
-                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_1."', '".GAME_SLOT_5."') ";
+                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_THEPLUS."', '".GAME_SLOT_STAR."') ";
             else
-                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_1."', '".GAME_SLOT_2."') ";
+                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GSPLAY."') ";
         }
         else if($gameId > 0)
             $strSQL.=" AND rw_game = '".$gameId."' ";

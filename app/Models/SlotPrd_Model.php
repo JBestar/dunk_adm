@@ -46,7 +46,7 @@ class SlotPrd_Model extends Model {
     public function search($arrReqData){
         
         $strSql = " SELECT * FROM ".$this->table;
-        $strSql.= " WHERE cat = ".GAME_SLOT_1;
+        $strSql.= " WHERE cat = ".GAME_SLOT_THEPLUS;
         if(strlen($arrReqData['name']) > 0){
             $strSql.= " AND (name LIKE '%".$arrReqData['name']."%' OR name_kr LIKE '%".$arrReqData['name']."%' ) ";
         }
@@ -64,7 +64,7 @@ class SlotPrd_Model extends Model {
     public function searchCount($arrReqData){
         
         $strSql = "SELECT count(*) as count FROM ".$this->table;
-        $strSql.= " WHERE cat = ".GAME_SLOT_1;
+        $strSql.= " WHERE cat = ".GAME_SLOT_THEPLUS;
         if(strlen($arrReqData['name']) > 0){
             $strSql.= " AND (name LIKE '%".$arrReqData['name']."%' OR name_kr LIKE '%".$arrReqData['name']."%' ) ";
         }
