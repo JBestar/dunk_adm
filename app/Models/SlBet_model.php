@@ -34,14 +34,17 @@ class SlBet_Model extends Model
 
         $strWhere = "";
         if($arrReqData['game'] == GAME_SLOT_ALL){
-            if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GOLD."') ";
-            else if($_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_7)
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_KGON."') ";
-            else if($_ENV['app.type'] == APPTYPE_8 || $_ENV['app.type'] == APPTYPE_9)
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_STAR."') ";
-            else
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GSPLAY."') ";
+            $gameId1 = GAME_SLOT_THEPLUS;
+            if($_ENV['app.slot'] == APP_SLOT_KGON)
+                $gameId1 = GAME_SLOT_KGON;
+            else if($_ENV['app.slot'] == APP_SLOT_STAR)
+                $gameId1 = GAME_SLOT_STAR;
+
+            $gameId2 = GAME_SLOT_GSPLAY;
+            if($_ENV['app.fslot'] == APP_FSLOT_GOLD)
+                $gameId2 = GAME_SLOT_GOLD;
+
+            $strWhere.=" WHERE bet_game_id IN ('".$gameId1."', '".$gameId2."') ";
         } else $strWhere=" WHERE bet_game_id = '".$arrReqData['game']."' ";
 
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
@@ -109,14 +112,18 @@ class SlBet_Model extends Model
         
         $strWhere= "";
         if($arrReqData['game'] == GAME_SLOT_ALL){
-            if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GOLD."') ";
-            else if($_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_7)
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_KGON."') ";
-            else if($_ENV['app.type'] == APPTYPE_8 || $_ENV['app.type'] == APPTYPE_9)
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_STAR."') ";
-            else
-                $strWhere.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GSPLAY."') ";
+            $gameId1 = GAME_SLOT_THEPLUS;
+            if($_ENV['app.slot'] == APP_SLOT_KGON)
+                $gameId1 = GAME_SLOT_KGON;
+            else if($_ENV['app.slot'] == APP_SLOT_STAR)
+                $gameId1 = GAME_SLOT_STAR;
+
+            $gameId2 = GAME_SLOT_GSPLAY;
+            if($_ENV['app.fslot'] == APP_FSLOT_GOLD)
+                $gameId2 = GAME_SLOT_GOLD;
+                
+            $strWhere.=" WHERE bet_game_id IN ('".$gameId1."', '".$gameId2."') ";
+            
         } else $strWhere.=" WHERE bet_game_id = '".$arrReqData['game']."' ";
         
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
@@ -223,14 +230,18 @@ class SlBet_Model extends Model
         }
 
         if($arrReqData['game'] == GAME_SLOT_ALL){
-            if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
-                $strSql.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GOLD."') ";
-            else if($_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_7)
-                $strSql.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_KGON."') ";
-            else if($_ENV['app.type'] == APPTYPE_8 || $_ENV['app.type'] == APPTYPE_9)
-                $strSql.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_STAR."') ";
-            else
-                $strSql.=" WHERE bet_game_id IN ('".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GSPLAY."') ";
+            $gameId1 = GAME_SLOT_THEPLUS;
+            if($_ENV['app.slot'] == APP_SLOT_KGON)
+                $gameId1 = GAME_SLOT_KGON;
+            else if($_ENV['app.slot'] == APP_SLOT_STAR)
+                $gameId1 = GAME_SLOT_STAR;
+
+            $gameId2 = GAME_SLOT_GSPLAY;
+            if($_ENV['app.fslot'] == APP_FSLOT_GOLD)
+                $gameId2 = GAME_SLOT_GOLD;
+                
+            $strSql.=" WHERE bet_game_id IN ('".$gameId1."', '".$gameId2."') ";
+
         } else $strSql.=" WHERE bet_game_id = '".$arrReqData['game']."' ";
         
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){

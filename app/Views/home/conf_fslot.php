@@ -12,10 +12,11 @@
 			<label>게임업체</label>
 			<select class="pbresult-game-select" id="confsite-prd-select-id">
 				<?php foreach ($game_prds as $prd):?>
-					<?php if($_ENV['app.type'] == APPTYPE_2 || $_ENV['app.type'] == APPTYPE_5 || $_ENV['app.type'] == APPTYPE_7 || $_ENV['app.type'] == APPTYPE_9) :?>
+					<?php if($prd->code == 215) {$prd->name_kr=$prd->name_kr."(NEW)"; }?>
+					<?php if($_ENV['app.type'] == APP_TYPE_2) :?>
 						<option value="<?=$prd->code?>"><?=$prd->name_kr?></option>
 					<?php elseif($prd->ref_code > 0):?>
-						<option value="<?=$prd->ref_code?>"><?=$prd->name_kr?></option>
+						<option value="<?=$prd->code?>"><?=$prd->name_kr?></option>
 					<?php endif ?>
 				<?php endforeach;?>
 			</select>

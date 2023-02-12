@@ -107,16 +107,6 @@ defined('APP_MX')           || define('APP_MX', 'Mx');
 defined('APP_AT')           || define('APP_AT', 'At');
 defined('APP_VEGAS')        || define('APP_VEGAS', 'Vegas');
 
-defined('APPTYPE_1')        || define('APPTYPE_1', 1);      //Slot + FSlot
-defined('APPTYPE_2')        || define('APPTYPE_2', 2);      //FSlot
-defined('APPTYPE_3')        || define('APPTYPE_3', 3);      //Slot
-defined('APPTYPE_4')        || define('APPTYPE_4', 4);      //Slot + Gold
-defined('APPTYPE_5')        || define('APPTYPE_5', 5);      //Gold Slot
-defined('APPTYPE_6')        || define('APPTYPE_6', 6);      //Slot + KGON
-defined('APPTYPE_7')        || define('APPTYPE_7', 7);      //KGON Slot
-defined('APPTYPE_8')        || define('APPTYPE_8', 8);      //Slot + HI
-defined('APPTYPE_9')        || define('APPTYPE_9', 9);      //HI Slot
-
 defined('APP_TYPE_1')        || define('APP_TYPE_1', 1);      //Slot + FSlot
 defined('APP_TYPE_2')        || define('APP_TYPE_2', 2);      //FSlot
 defined('APP_TYPE_3')        || define('APP_TYPE_3', 3);      //Slot
@@ -128,6 +118,10 @@ defined('APP_SLOT_STAR')     || define('APP_SLOT_STAR', 3);
 //Natural 
 defined('APP_FSLOT_GSPLAY')  || define('APP_FSLOT_GSPLAY', 1); 
 defined('APP_FSLOT_GOLD')    || define('APP_FSLOT_GOLD', 2); 
+
+//Casino
+defined('APP_CASINO_KGON')      || define('APP_CASINO_KGON', 2); 
+defined('APP_CASINO_STAR')     || define('APP_CASINO_STAR', 3); 
 
 defined('EXIT_SUCCESS')        || define('EXIT_SUCCESS', 0);        // no errors
 defined('EXIT_ERROR')          || define('EXIT_ERROR', 1);          // generic error
@@ -262,7 +256,8 @@ defined('TM_OFFSET')    	   || define('TM_OFFSET', 20);
 defined('LOG_WRITE')            || define('LOG_WRITE', true);
 defined('LOG_FILE')             || define('LOG_FILE', ROOTPATH."logs".DIRECTORY_SEPARATOR);
 
-
+defined('CURL_TIMEOUT_MIN')       || define('CURL_TIMEOUT_MIN', 5);
+defined('CURL_TIMEOUT_MAX')       || define('CURL_TIMEOUT_MAX', 100);
 //game type
 defined('GAME_POWER_BALL')     || define('GAME_POWER_BALL', 1);
 defined('GAME_POWER_LADDER')   || define('GAME_POWER_LADDER', 2);
@@ -281,7 +276,7 @@ defined('GAME_SLOT_GOLD')      || define('GAME_SLOT_GOLD', 13);
 defined('GAME_HAPPY_BALL')     || define('GAME_HAPPY_BALL', 14);
 defined('GAME_SLOT_KGON')      || define('GAME_SLOT_KGON', 15);  //KGON slot
 defined('GAME_SLOT_STAR')      || define('GAME_SLOT_STAR', 16);  //STAR slot
-defined('GAME_CASINO_STAR')    || define('GAME_CASINO_STAR', 16);  //STAR casino
+defined('GAME_CASINO_STAR')    || define('GAME_CASINO_STAR', 17);  //STAR casino
 
 
 defined('ROUND_5MIN')    || define('ROUND_5MIN', 5);

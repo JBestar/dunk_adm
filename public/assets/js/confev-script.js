@@ -32,11 +32,13 @@ function showGame(list) {
 }
 
 function requestGame() {
+    let gameId = $(".confsite-game-panel").attr('id');
+
     var jsonData = {
         "count": 1,
         "page": 1,
         "name": "",
-        "cat":4
+        "cat":gameId
     };
 
     jsonData = JSON.stringify(jsonData);

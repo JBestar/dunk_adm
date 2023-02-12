@@ -530,18 +530,26 @@ class UserApi extends BaseController
                 if(!$siteConfs['slot_deny']){
                     $betModel = new SlBet_Model();
 
-                    $objConfPb = $confgameModel->getByIndex(GAME_SLOT_THEPLUS);
-                    $arrSumData[15] = $betModel->getBetSumByDay($arrReqData, $objConfPb);
-                    
-                    if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
-                        $objConfPb = $confgameModel->getByIndex(GAME_SLOT_GOLD);
-                    else if($_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_7)
-                        $objConfPb = $confgameModel->getByIndex(GAME_SLOT_KGON);
-                    else if($_ENV['app.type'] == APPTYPE_8 || $_ENV['app.type'] == APPTYPE_9)
-                        $objConfPb = $confgameModel->getByIndex(GAME_SLOT_STAR);
-                    else 
-                        $objConfPb = $confgameModel->getByIndex(GAME_SLOT_GSPLAY);
-                    $arrSumData[16] = $betModel->getBetSumByDay($arrReqData, $objConfPb);
+                    if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] = APP_TYPE_3){
+
+                            $gameId = GAME_SLOT_THEPLUS;
+                        if($_ENV['app.slot'] == APP_SLOT_KGON)
+                            $gameId = GAME_SLOT_KGON;
+                        else if($_ENV['app.slot'] == APP_SLOT_STAR)
+                            $gameId = GAME_SLOT_STAR;
+
+                        $objConfPb = $confgameModel->getByIndex($gameId);
+                        $arrSumData[15] = $betModel->getBetSumByDay($arrReqData, $objConfPb);
+                    }
+
+                    if($_ENV['app.type'] == APP_TYPE_2){
+                        $gameId = GAME_SLOT_GSPLAY;
+                        if($_ENV['app.fslot'] == APP_FSLOT_GOLD)
+                            $gameId = GAME_SLOT_GOLD;
+                        $objConfPb = $confgameModel->getByIndex($gameId);
+                        $arrSumData[16] = $betModel->getBetSumByDay($arrReqData, $objConfPb);
+                    }
+
                     // writeLog("slot_deny");
 
                 }
@@ -1480,7 +1488,7 @@ class UserApi extends BaseController
 
                     foreach($arrMember as $objMember){
                         if($objMember->mb_live_id > 0 && $objMember->mb_live_money > 0 ){
-                            writeLog("<CASINO> Recovery Uid=".$objMember->mb_uid." Balance=".$objMember->mb_live_money);
+                            writeLog("<EVOL> Recovery Uid=".$objMember->mb_uid." Balance=".$objMember->mb_live_money);
                             if(diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
                                 $iResult = 2;
                             } else $iResult = $this->evtoMb($objMember);
@@ -1493,7 +1501,7 @@ class UserApi extends BaseController
                     $arrResult = $this->libApiCas->getAgentInfo();
                     if($arrResult['status'] == 1){
                         $confsiteModel->setConfActive(CONF_API_HPPLAY, $arrResult['balance']);
-                        writeLog("<CASINO> Agent Egg = ".$arrResult['balance']);
+                        writeLog("<EVOL> Agent Egg = ".$arrResult['balance']);
                         $balance = $arrResult['balance'];
                     }
                 } else if($gameId == GAME_SLOT_THEPLUS){
@@ -1576,8 +1584,8 @@ class UserApi extends BaseController
                     }
                 } else if($gameId == GAME_SLOT_STAR){
                     foreach($arrMember as $objMember){
-                        if($objMember->mb_fslot_uid != "" && $objMember->mb_fslot_money > 0 ) {
-                            writeLog("<HSLOT> Recovery Uid=".$objMember->mb_uid." Balance=".$objMember->mb_fslot_money);
+                        if($objMember->mb_hslot_token != "" && $objMember->mb_hslot_money > 0 ) {
+                            writeLog("<HSLOT> Recovery Uid=".$objMember->mb_uid." Balance=".$objMember->mb_hslot_money);
                             if(diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
                                 $iResult = 2;
                             } else $iResult = $this->hsltoMb($objMember);

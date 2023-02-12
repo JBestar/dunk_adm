@@ -26,13 +26,13 @@
 			<a href="<?php echo siteFurl().'home/conf_evol';?>" class="sub-navbar-a " >에볼루션</a>
 		<?php endif ?>   
 		<?php if(!$cas_deny) :?>
-			<a href="<?php echo siteFurl().'home/conf_casino';?>" class="sub-navbar-a" >호텔카지노</a>
+			<a href="<?php echo siteFurl().'home/conf_casino';?>" class="sub-navbar-a" >정품카지노</a>
 		<?php endif ?>
 		<?php if(!$slot_deny) :?>
-			<?php if($_ENV['app.type'] == APPTYPE_1 || $_ENV['app.type'] == APPTYPE_3 || $_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_8) :?>
+			<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_3) :?>
 				<a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="sub-navbar-a">정품슬롯</a>
 			<?php endif ?>
-			<?php if($_ENV['app.type'] != APPTYPE_3) :?>
+			<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_2) :?>
 				<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a">네츄럴슬롯</a>
 			<?php endif ?>
 		<?php endif ?>   

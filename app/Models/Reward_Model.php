@@ -39,14 +39,17 @@ class Reward_Model extends Model {
 
         $strSQL.=" AND rw_mb_fid = '".$objEmp->mb_fid."' ";
         if($gameId == GAME_SLOT_ALL){
-            if($_ENV['app.type'] == APPTYPE_4)
-                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GOLD."') ";
-            else if($_ENV['app.type'] == APPTYPE_6)
-                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_THEPLUS."', '".GAME_SLOT_KGON."') ";
-            else if($_ENV['app.type'] == APPTYPE_8)
-                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_THEPLUS."', '".GAME_SLOT_STAR."') ";
-            else
-                $strSQL.=" AND rw_game IN ( '".GAME_SLOT_THEPLUS."', '".GAME_SLOT_GSPLAY."') ";
+            $gameId1 = GAME_SLOT_THEPLUS;
+            if($_ENV['app.slot'] == APP_SLOT_KGON)
+                $gameId1 = GAME_SLOT_KGON;
+            else if($_ENV['app.slot'] == APP_SLOT_STAR)
+                $gameId1 = GAME_SLOT_STAR;
+
+            $gameId2 = GAME_SLOT_GSPLAY;
+            if($_ENV['app.fslot'] == APP_FSLOT_GOLD)
+                $gameId2 = GAME_SLOT_GOLD;
+        
+            $strSQL.=" AND rw_game IN ( '".$gameId1."', '".$gameId2."') ";
         }
         else if($gameId > 0)
             $strSQL.=" AND rw_game = '".$gameId."' ";

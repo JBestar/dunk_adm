@@ -35,13 +35,20 @@ function showGame(list, appType) {
             html += "<tr><td>";
             html += (parseInt(nRow) + firstIdx + 1);
             html += "</td><td>";
-            html += "<img class = 'zoom' width='25px' height='25px' src='" + game.img + "'></img>";
+            if(appType == 2)
+                html += "<img class = 'zoom' width='25px' height='25px' src='" + game.img + "'></img>";
+            else
+                html += "<img class = 'zoom' width='25px' height='25px' src='" + game.xslot_img + "'></img>";
             html += "</td><td>";
             html += game.provider;
             html += "</td><td>";
-            html += game.name_ko;
+            if(appType == 2)
+                html += game.name_ko;
+            else html += game.xslot_name_ko;
             html += "</td><td>";
-            html += game.name;
+            if(appType == 2)
+                html += game.name;
+            else html += game.xslot_name;
             html += "</td><td>";
             html += "<select class='' onchange='onChangeHidden(this)' data-fid='" + game.fid + "' ";
             if (game.hidden == 0) {
@@ -59,29 +66,29 @@ function showGame(list, appType) {
             html += "</td><td>";
 
             html += "<select class='act' onchange='onChangeAct(this)' data-fid='" + game.fid + "' ";
-            if(appType == 2 || appType == 5 || appType == 7 || appType == 9){
-                if(game.fslot_cnt > 1){
-                    html += " style='color:red'> ";
-                    html += "<option "+(game.act==0?"selected":"")+" value='0'>OUR</option>";
-                    html += "<option "+(game.act!=0?"selected":"")+" value='1'>OUR_NEW</option>";
-                } else if(game.prd_code == 215){
-                    html += " style='color:black'> ";
-                    html += "<option selected value='0'>OUR_NEW</option>";
-                } else {
+            if(appType == 2){
+                // if(game.fslot_cnt > 1){
+                //     html += " style='color:red'> ";
+                //     html += "<option "+(game.act==0?"selected":"")+" value='0'>OUR</option>";
+                //     html += "<option "+(game.act!=0?"selected":"")+" value='1'>OUR_NEW</option>";
+                // } else if(game.prd_code == 215){
+                //     html += " style='color:black'> ";
+                //     html += "<option selected value='0'>OUR_NEW</option>";
+                // } else {
                     html += " style='color:black'> ";
                     html += "<option selected value='0'>OUR</option>";
-                }
+                // }
             } else {
-                html += (game.act >= 1 ?" style='color:black'> ":" style='color:red'> ");
-                if(game.fslot_cnt > 1){
-                    html += "<option "+(game.act==1?"selected":"")+" value='1'>OUR</option>";
-                    html += "<option "+(game.act==2?"selected":"")+" value='2'>OUR_NEW</option>";
-                } else{
-                    if(parseInt(game.fslot_prd) != 215)
+                html += (game.act == 1 ?" style='color:black'> ":" style='color:red'> ");
+                // if(game.fslot_cnt > 1){
+                //     html += "<option "+(game.act==1?"selected":"")+" value='1'>OUR</option>";
+                //     html += "<option "+(game.act==2?"selected":"")+" value='2'>OUR_NEW</option>";
+                // } else{
+                    // if(parseInt(game.fslot_prd) != 215)
                         html += "<option "+(game.act==1?"selected":"")+" value='1'>OUR</option>";
-                    else 
-                        html += "<option "+(game.act==2?"selected":"")+" value='2'>OUR_NEW</option>";
-                }
+                    // else 
+                    //     html += "<option "+(game.act==2?"selected":"")+" value='2'>OUR_NEW</option>";
+                // }
                 html += "<option "+(game.act==0?"selected":"")+" value='0'>KPLAY</option></select>";
             }
             

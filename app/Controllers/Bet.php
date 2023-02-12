@@ -127,7 +127,11 @@ class Bet extends StdController {
 			$arrPrd +=  $modelCasprd->gets(GAME_CASINO_EVOL);
 		}
 		if(!isEBalMode() && !$confs["cas_deny"]){
-			$arrKgon =  $modelCasprd->gets(GAME_CASINO_KGON);
+			$gameId = GAME_CASINO_KGON;
+			if($_ENV['app.casino'] == APP_CASINO_STAR)
+				$gameId = GAME_CASINO_STAR;
+
+			$arrKgon =  $modelCasprd->gets($gameId);
 			foreach($arrKgon as $objPrd){
 				array_push($arrPrd, $objPrd);
 			}
@@ -225,6 +229,10 @@ class Bet extends StdController {
 	public function xslhistory(){
 		$modelSlotprd = new SlotPrd_Model();
 		$gameId = GAME_SLOT_THEPLUS;
+		if($_ENV['app.slot'] == APP_SLOT_KGON)
+			$gameId = GAME_SLOT_KGON;
+		else if($_ENV['app.slot'] == APP_SLOT_STAR)
+			$gameId = GAME_SLOT_STAR;
 		$arrPrd = $modelSlotprd->gets($gameId);
 
 		$param = [
@@ -241,13 +249,9 @@ class Bet extends StdController {
 		$modelSlotprd = new SlotPrd_Model();
 
 		$gameId = GAME_SLOT_GSPLAY;
-		if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
+		if($_ENV['app.fslot'] == APP_FSLOT_GOLD)
 			$gameId = GAME_SLOT_GOLD;
-		else if($_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_7)
-			$gameId = GAME_SLOT_KGON;
-		else if($_ENV['app.type'] == APPTYPE_8 || $_ENV['app.type'] == APPTYPE_9)
-			$gameId = GAME_SLOT_STAR;
-
+		
 		$arrPrd = $modelSlotprd->gets($gameId);
 
 		$param = [
@@ -263,17 +267,21 @@ class Bet extends StdController {
 		
 		$modelSlotprd = new SlotPrd_Model();
 		$gameId = GAME_SLOT_ALL;
-		if($_ENV['app.type'] == APPTYPE_2)
-			$arrPrd = $modelSlotprd->gets(GAME_SLOT_GSPLAY);
-		else if($_ENV['app.type'] == APPTYPE_5)
-			$arrPrd = $modelSlotprd->gets(GAME_SLOT_GOLD);
-		else if($_ENV['app.type'] == APPTYPE_7)
-			$arrPrd = $modelSlotprd->gets(GAME_SLOT_KGON);
-		else if($_ENV['app.type'] == APPTYPE_9)
-			$arrPrd = $modelSlotprd->gets(GAME_SLOT_STAR);
-		else
-			$arrPrd = $modelSlotprd->gets(GAME_SLOT_THEPLUS);
-		
+		if($_ENV['app.type'] == APP_TYPE_2){
+			if($_ENV['app.fslot'] == APP_FSLOT_GOLD)
+				$arrPrd = $modelSlotprd->gets(GAME_SLOT_GOLD);
+			else 
+				$arrPrd = $modelSlotprd->gets(GAME_SLOT_GSPLAY);
+		}
+		else {
+			if($_ENV['app.slot'] == APP_SLOT_THEPLUS)
+				$arrPrd = $modelSlotprd->gets(GAME_SLOT_THEPLUS);
+			else if($_ENV['app.slot'] == APP_SLOT_KGON)
+				$arrPrd = $modelSlotprd->gets(GAME_SLOT_KGON);
+			else if($_ENV['app.slot'] == APP_SLOT_STAR)
+				$arrPrd = $modelSlotprd->gets(GAME_SLOT_STAR);
+		}
+
 		$param = [
 			'game_name' => "슬롯",
 			'game_id' => $gameId,
@@ -317,9 +325,15 @@ class Bet extends StdController {
 	}
 
 	public function xslcalculate(){
+		$gameId = GAME_SLOT_THEPLUS;
+		if($_ENV['app.slot'] == APP_SLOT_KGON)
+			$gameId = GAME_SLOT_KGON;
+		else if($_ENV['app.slot'] == APP_SLOT_STAR)
+			$gameId = GAME_SLOT_STAR;
+
 		$param = [
 			'game_name' => "정품슬롯",
-			'game_id' => GAME_SLOT_THEPLUS,
+			'game_id' => $gameId,
 		];
 
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_ADMIN, $param);
@@ -327,13 +341,9 @@ class Bet extends StdController {
 	
 	public function fslcalculate(){
 		$gameId = GAME_SLOT_GSPLAY;
-		if($_ENV['app.type'] == APPTYPE_4)
+		if($_ENV['app.fslot'] == APP_FSLOT_GOLD)
 			$gameId = GAME_SLOT_GOLD;
-		else if($_ENV['app.type'] == APPTYPE_6)
-			$gameId = GAME_SLOT_KGON;
-		else if($_ENV['app.type'] == APPTYPE_8)
-			$gameId = GAME_SLOT_STAR;
-
+		
 		$param = [
 			'game_name' => "네츄럴슬롯",
 			'game_id' => $gameId,

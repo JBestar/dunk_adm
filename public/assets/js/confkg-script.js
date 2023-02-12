@@ -97,12 +97,13 @@ function requestGame() {
 
     var nPage = getActivePage();
     var sGame = $("#confsite-game-input-id").val();
+    let gameId = $(".confsite-game-panel").attr('id');
 
     var jsonData = {
         "count": CountPerPage,
         "page": nPage,
         "name": sGame,
-        "cat":3
+        "cat":gameId
     };
 
     jsonData = JSON.stringify(jsonData);
@@ -136,11 +137,12 @@ function requestGame() {
 function requestTotalPage() {
     CountPerPage = $("#confsite-number-select-id").val();
     var sGame = $("#confsite-game-input-id").val();
+    let gameId = $(".confsite-game-panel").attr('id');
 
     var jsonData = {
         "count": CountPerPage,
         "name": sGame,
-        "cat":3
+        "cat":gameId
     };
 
     jsonData = JSON.stringify(jsonData);

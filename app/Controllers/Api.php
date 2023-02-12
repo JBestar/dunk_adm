@@ -162,7 +162,7 @@ class Api extends BaseController{
 				$arrResult = $this->libApiCas->getAgentInfo();
 				if($arrResult['status'] == 1){
 					$confsiteModel->setConfActive(CONF_API_HPPLAY, $arrResult['balance']);
-					writeLog("<CASINO> Agent Egg = ".$arrResult['balance']);
+					writeLog("<EVOL> Agent Egg = ".$arrResult['balance']);
 				} else {
 					if($arrResult['error'] == INVALID_ACCESS_TOKEN){
 						$errMsg = "토큰불일치";
@@ -223,15 +223,16 @@ class Api extends BaseController{
 					} else $errMsg = "접속불가";
 				}
 				$agConf = $confsiteModel->getConf(CONF_API_KGON);
-			} else if($gameId == GAME_SLOT_STAR){
+			} else if($gameId == GAME_CASINO_STAR || $gameId == GAME_SLOT_STAR){
 				$arrResult = $this->libApiHslot->getAgentInfo();
 				if($arrResult['status'] == 1){
 					$confsiteModel->setConfActive(CONF_API_STAR, $arrResult['balance']);
 					writeLog("<HSLOT> AGENT Egg = ".$arrResult['balance']);
 				} else {
 					$errMsg = "접속불가";
-					writeLog("<HSLOT> AGENT Egg Msg = ".$arrResult['msg']);
-
+					if(array_key_exists('description', $arrResult)){
+						writeLog("<HSLOT> AGENT Egg Msg = ".$arrResult['description']);
+					}
 				}
 				$agConf = $confsiteModel->getConf(CONF_API_STAR);
 			}

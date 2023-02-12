@@ -206,7 +206,7 @@ class ApiCas_Lib  {
        
         $header =  $this->getHeader($post);
 
-        $response = getCurlRequest($url, $header, $post);
+        $response = getCurlRequest($url, $header, $post, CURL_TIMEOUT_MAX);
         
         $arrResult = json_decode($response, true);
 		
@@ -244,7 +244,7 @@ class ApiCas_Lib  {
        
         $header =  $this->getHeader($post);
 
-        $response = getCurlRequest($url, $header, $post);
+        $response = getCurlRequest($url, $header, $post, CURL_TIMEOUT_MAX);
         
         $arrResult = json_decode($response, true);
 		

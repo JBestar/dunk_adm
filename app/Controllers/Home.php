@@ -166,17 +166,27 @@ class Home extends StdController
 	}
 
 	public function conf_casino(){
+		$gameId = GAME_CASINO_KGON;
+		if($_ENV['app.casino'] == APP_CASINO_STAR)
+			$gameId = GAME_CASINO_STAR;
+
 		$param = [
-			'game_name' => "호텔카지노",
-			'game_id' => GAME_CASINO_KGON
+			'game_name' => "정품카지노",
+			'game_id' => $gameId
 		];
 		$this->load_view_page('home/conf_casino', 'conf_game', LEVEL_ADMIN, $param);	
 	}
 
 	public function conf_slot_1(){
+		$gameId = GAME_SLOT_THEPLUS;
+		if($_ENV['app.slot'] == APP_SLOT_KGON)
+			$gameId = GAME_SLOT_KGON;
+		else if($_ENV['app.slot'] == APP_SLOT_STAR)
+			$gameId = GAME_SLOT_STAR;
+
 		$param = [
 			'game_name' => "정품슬롯",
-			'game_id' => GAME_SLOT_THEPLUS
+			'game_id' => $gameId
 		];
 		$this->load_view_page('home/conf_slot', 'conf_game', LEVEL_ADMIN, $param);	
 	}
@@ -185,17 +195,13 @@ class Home extends StdController
 		$slprdModel = new SlotPrd_Model();
 
 		$gameId = GAME_SLOT_GSPLAY;
-		if($_ENV['app.type'] == APPTYPE_4 || $_ENV['app.type'] == APPTYPE_5)
+		if($_ENV['app.fslot'] == APP_FSLOT_GOLD)
 			$gameId = GAME_SLOT_GOLD;
-		else if($_ENV['app.type'] == APPTYPE_6 || $_ENV['app.type'] == APPTYPE_7)
-			$gameId = GAME_SLOT_KGON;
-		else if($_ENV['app.type'] == APPTYPE_8 || $_ENV['app.type'] == APPTYPE_9)
-			$gameId = GAME_SLOT_STAR;
 
 		$param = [
 			'game_name' => "네츄럴슬롯",
 			'game_id' => $gameId,
-			'game_prds' => $slprdModel->getByCode($gameId, $gameId == GAME_SLOT_GSPLAY), 
+			'game_prds' => $slprdModel->getByCode($gameId), 
 		];
 		$this->load_view_page('home/conf_fslot', 'conf_game', LEVEL_ADMIN, $param);	
 	}

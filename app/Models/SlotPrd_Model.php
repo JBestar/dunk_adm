@@ -19,9 +19,9 @@ class SlotPrd_Model extends Model {
 
     public function getByCode($cat, $bGroup = false){
         $strSql = "SELECT  * FROM ".$this->table." WHERE cat = '".$cat."'";
-        if($bGroup){
-            $strSql .= " GROUP BY ref_code ";
-        }
+        // if($bGroup){
+        //     $strSql .= " GROUP BY ref_code ";
+        // }
 
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();
@@ -44,9 +44,14 @@ class SlotPrd_Model extends Model {
     }
 
     public function search($arrReqData){
-        
+        $gameId = GAME_SLOT_THEPLUS;
+		if($_ENV['app.slot'] == APP_SLOT_KGON)
+			$gameId = GAME_SLOT_KGON;
+		else if($_ENV['app.slot'] == APP_SLOT_STAR)
+			$gameId = GAME_SLOT_STAR;
+
         $strSql = " SELECT * FROM ".$this->table;
-        $strSql.= " WHERE cat = ".GAME_SLOT_THEPLUS;
+        $strSql.= " WHERE cat = ".$gameId;
         if(strlen($arrReqData['name']) > 0){
             $strSql.= " AND (name LIKE '%".$arrReqData['name']."%' OR name_kr LIKE '%".$arrReqData['name']."%' ) ";
         }
@@ -62,9 +67,14 @@ class SlotPrd_Model extends Model {
     }
 
     public function searchCount($arrReqData){
-        
+        $gameId = GAME_SLOT_THEPLUS;
+		if($_ENV['app.slot'] == APP_SLOT_KGON)
+			$gameId = GAME_SLOT_KGON;
+		else if($_ENV['app.slot'] == APP_SLOT_STAR)
+			$gameId = GAME_SLOT_STAR;
+
         $strSql = "SELECT count(*) as count FROM ".$this->table;
-        $strSql.= " WHERE cat = ".GAME_SLOT_THEPLUS;
+        $strSql.= " WHERE cat = ".$gameId;
         if(strlen($arrReqData['name']) > 0){
             $strSql.= " AND (name LIKE '%".$arrReqData['name']."%' OR name_kr LIKE '%".$arrReqData['name']."%' ) ";
         }
