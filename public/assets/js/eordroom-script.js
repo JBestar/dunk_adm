@@ -36,8 +36,8 @@ function ShowOrdHistory(jsonBetData) {
             } else if(jsonBetData[nRow].ord_choice == "Player") {
                 
                 jsonBetData[nRow].ord_amount = parseInt(jsonBetData[nRow].ord_amount);
-                jsonBetData[nRow+1].ord_amount = parseInt(jsonBetData[nRow+1].ord_amount);
                 if(nRow+1 < cntRow && jsonBetData[nRow].tid === jsonBetData[nRow+1].tid && jsonBetData[nRow+1].ord_choice == "Banker"){
+                    jsonBetData[nRow+1].ord_amount = parseInt(jsonBetData[nRow+1].ord_amount);
                     if(jsonBetData[nRow].ord_amount == jsonBetData[nRow+1].ord_amount){
                         balPlayer = "0";
                         balBanker = "0";
@@ -127,7 +127,7 @@ function requestOrdHistory() {
         dataType: "json",
         success: function(jResult) {
             // $(".loading").hide();
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 ShowOrdHistory(jResult.data);
                 
