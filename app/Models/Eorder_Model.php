@@ -67,7 +67,8 @@ class Eorder_Model extends Model
         
         $strSql = "SELECT tid, name, nid, ord_choice, ord_amount FROM (SELECT tid, name, nid  FROM casino_room WHERE OPEN = ".STATE_ACTIVE.") AS tbRoom "; 
         $strSql.= " LEFT JOIN (SELECT ord_table_id, ord_table_name, ord_round_id, ord_choice, SUM(ord_amount) AS ord_amount FROM ".$this->table;
-        $strSql.= " WHERE ord_state != 7 AND ord_choice IN ('Player', 'Banker') AND ord_round_id COLLATE utf8mb4_general_ci IN ( SELECT nid FROM casino_room WHERE OPEN = ".STATE_ACTIVE."  ) GROUP BY ord_table_id, ord_round_id, ord_choice) AS tbBet ";
+        $strSql.= " WHERE ord_state = 1 AND ord_choice IN ('Player', 'Banker') GROUP BY ord_table_id, ord_choice) AS tbBet ";
+        // $strSql.= " WHERE ord_state != 7 AND ord_choice IN ('Player', 'Banker') AND ord_round_id COLLATE utf8mb4_general_ci IN ( SELECT nid FROM casino_room WHERE OPEN = ".STATE_ACTIVE."  ) GROUP BY ord_table_id, ord_round_id, ord_choice) AS tbBet ";
         $strSql.= " ON tbRoom.tid COLLATE utf8mb4_general_ci = tbBet.ord_table_id ORDER BY name ASC, ord_choice DESC ";
 
         // writeLog($strSql);

@@ -127,7 +127,7 @@ function requestOrdHistory() {
         dataType: "json",
         success: function(jResult) {
             // $(".loading").hide();
-            // console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 ShowOrdHistory(jResult.data);
                 
