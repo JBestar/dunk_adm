@@ -258,16 +258,6 @@ class ConfSite_Model extends Model
         $updateData['conf_id'] = CONF_DOMAIN;
         $updateData['conf_content'] = $arrData['domainname'];
         $arrBatch[] = $updateData;
-
-        // $updateData = array();
-        // $updateData['conf_id'] = CONF_USERPAGE;
-        // $updateData['conf_content'] = $arrData['homepage'];
-        // $arrBatch[] = $updateData;
-        
-        // $updateData = array();
-        // $updateData['conf_id'] = CONF_ADMINPAGE;
-        // $updateData['conf_content'] = $arrData['adminpage'];
-        // $arrBatch[] = $updateData;
         
         $updateData = array();
         $updateData['conf_id'] = CONF_NOTICE_MAIN;
@@ -367,6 +357,40 @@ class ConfSite_Model extends Model
         $updateData['conf_id'] = CONF_MAINTAIN;
         $updateData['conf_content'] = $arrData['content'];
         $updateData['conf_active'] = $arrData['maintain'];
+        $arrBatch[0] = $updateData;
+        return $this->builder()->updateBatch($arrBatch, 'conf_id');
+    }
+
+    
+    public function getEvpressConfig(){
+
+        $data = ["", "", 0];
+
+        $objConfig = $this->where('conf_id', CONF_EVOLPRESS)->first();
+        if(!is_null($objConfig)){
+            $data[2] = intval($objConfig->conf_active);
+            $info = explode('#', $objConfig->conf_idx);
+            if(count($info) >= 2){
+                $data[0] = $info[0];   
+                $data[1] = $info[1];   
+            }
+        }
+
+        return $data;
+    }
+
+    public function saveEvpressConfig($arrData){
+
+        if($arrData == null) return false;
+        if (!array_key_exists("enable", $arrData)) return false;
+        if (!array_key_exists("time", $arrData)) return false;
+        if (!array_key_exists("money", $arrData)) return false;
+        
+        $arrBatch = array();
+        
+        $updateData['conf_id'] = CONF_EVOLPRESS;
+        $updateData['conf_active'] = $arrData['enable'];
+        $updateData['conf_idx'] = $arrData['time']."#".$arrData['money'];
         $arrBatch[0] = $updateData;
         return $this->builder()->updateBatch($arrBatch, 'conf_id');
     }

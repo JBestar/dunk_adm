@@ -1416,8 +1416,6 @@ class Member_Model extends Model
                 return 3;
             }
             
-            
-            
         } else {
             return 0;
         }

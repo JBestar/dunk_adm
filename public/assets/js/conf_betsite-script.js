@@ -31,7 +31,6 @@ function addBtnEvent() {
 
         var jsonData = JSON.stringify(objData);
 
-        console.log(jsonData);
         if (!confirm("저장하시겠습니까?"))
             return;
 
@@ -53,7 +52,7 @@ function addBtnEvent() {
                 }
             },
             error: function(request, status, error) {
-                console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
             }
 
         });
@@ -86,7 +85,7 @@ function requestConfBetSite() {
         dataType: "json",
         url: FURL + "/api/getBetSite",
         success: function(jResult) {
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 showConfSite(jResult.data);
             } else if (jResult.status == "logout") {

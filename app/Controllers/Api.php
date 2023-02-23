@@ -22,6 +22,7 @@ use App\Models\SessTry_Model;
 use App\Models\EbalBet_Model;
 use App\Models\Ebalance_Model;
 use App\Models\Eorder_Model;
+use App\Models\EbalLog_Model;
 
 use App\Libraries\ApiCas_Lib;
 use App\Libraries\ApiSlot_Lib;
@@ -1910,6 +1911,105 @@ public function withdrawlist(){
 		echo json_encode($objResult);
 	}
 	
+	public function getevpress(){ 
+		
+		$objResult = new \StdClass;
+		if(is_login()) {
+			//model
+			$confsiteModel = new ConfSite_Model();
+			
+			$strUid = $this->session->user_id;
+			$objAdmin = $this->modelMember->getInfo($strUid);
+			if($objAdmin->mb_level < LEVEL_ADMIN){
+				$objResult->status = "fail";
+			} else {
+				$objResult->data = $confsiteModel->getEvpressConfig();
+				$objResult->status = "success";
+			}
+		}
+		else{
+			$objResult->status = "logout";
+		}
+		echo json_encode($objResult);
+	}
+
+	public function setevpress(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+
+		$objResult = new \StdClass;
+		if(is_login()) {
+			//model
+			$confsiteModel = new ConfSite_Model();
+			
+			$strUid = $this->session->user_id;
+			$objAdmin = $this->modelMember->getInfo($strUid);
+			if($objAdmin->mb_level < LEVEL_ADMIN){
+				$objResult->status = "fail";
+			} else {
+				$confsiteModel->saveEvpressConfig($arrReqData);
+				
+				$objResult->status = "success";
+			}
+		}
+		else{
+			$objResult->status = "logout";
+		}
+		echo json_encode($objResult);
+	}
+
+	public function eballoglist(){
+		$jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+
+		$objResult = new \StdClass;
+		if(is_login()) {
+			//model
+			$ebalLogModel = new EbalLog_Model();
+			
+			$strUid = $this->session->user_id;
+			$objAdmin = $this->modelMember->getInfo($strUid);
+			if($objAdmin->mb_level < LEVEL_ADMIN){
+				$objResult->status = "fail";
+			} else {
+				$objResult->status = "success";
+				$objResult->data = $ebalLogModel->search($arrReqData);
+			}
+		
+		}
+		else{
+			$objResult->status = "logout";
+
+		}
+		echo json_encode($objResult);
+
+	}
+
+	public function eballogcnt(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+
+		$objResult = new \StdClass;
+		if(is_login()) {
+			//model
+			$ebalLogModel = new EbalLog_Model();
+			
+			$strUid = $this->session->user_id;
+			$objAdmin = $this->modelMember->getInfo($strUid);
+			if($objAdmin->mb_level < LEVEL_ADMIN){
+				$objResult->status = "fail";
+			} else {
+				$objResult->status = "success";
+				$objResult->data = $ebalLogModel->searchCount($arrReqData);
+			}
+		
+		}
+		else{
+			$objResult->status = "logout";
+
+		}
+		echo json_encode($objResult);
+	}
 
 	//DB 정리
 	public function cleanDb(){ 

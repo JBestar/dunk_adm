@@ -34,7 +34,10 @@
 			<p id="conf-pw-label">계정 비밀번호:</p> 
 			<input type = "text" class="conf-text-input"  style="min-width:200px;" id="conf-userpwd-input-id">
 		</div>
-
+		<div class = "confsite-button-group">
+			<button class="confsite-cancel-button"  id="confsite-cancel-btn-id">취소</button>
+			<button class="confsite-ok-button" id="confsite-ok-btn-id">저장</button>
+		</div>
 		
 <?= $this->endSection() ?>
 

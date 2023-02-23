@@ -12,6 +12,7 @@ use App\Models\PsBet_Model;
 use App\Models\CsBet_Model;
 use App\Models\SlBet_Model;
 use App\Models\EbalBet_Model;
+use App\Models\EbalLog_Model;
 use App\Models\MoneyHistory_Model;
 use App\Models\SessLog_Model;
 use App\Models\Block_Model;
@@ -72,6 +73,22 @@ class UserApi extends BaseController
 
                 $iResult = $this->modelMember->register($arrData, $strError);
                 if ( $iResult == 1 ) {
+                    $objReqUser = $this->modelMember->getInfo(trim($arrData['mb_uid']));
+
+                    if(!is_null($objReqUser) && array_key_exists('app.ebal', $_ENV) && $_ENV['app.ebal'] > 0 && array_key_exists('mb_state_view', $arrData) ){
+                        $ebalLogModel = new EbalLog_Model();
+
+                        $data =[
+                            'log_mb_fid' => $objReqUser->mb_fid,
+                            'log_mb_uid' => $objReqUser->mb_uid,
+                            'log_data' => $arrData['mb_state_view'] == 1 ? "누르기":"넘기기",
+                            'log_type' => EBAL_LOGTYPE_PRESSMANUAL,
+                            'log_memo' => $objUser->mb_uid,
+                            'log_time' => date("Y-m-d H:i:s"),
+                        ];
+                        $ebalLogModel->register($data);
+                    }
+
                     $arrResult['status'] = 'success';
                 } elseif ( $iResult == 4 || $iResult == 5 ) {
                     $arrResult['status'] = 'ratio_error';
@@ -127,6 +144,24 @@ class UserApi extends BaseController
                 $iResult = 0;
                 if ($objAdmin->mb_level >= LEVEL_ADMIN) {
                     $iResult = $this->modelMember->modifyMember($arrData, $strError, $query);
+
+                    if(array_key_exists('app.ebal', $_ENV) && $_ENV['app.ebal'] > 0 && array_key_exists('mb_state_view', $arrData) ){
+
+                        if($objReqUser->mb_state_view != $arrData['mb_state_view']){
+                            $ebalLogModel = new EbalLog_Model();
+
+                            $data =[
+                                'log_mb_fid' => $objReqUser->mb_fid,
+                                'log_mb_uid' => $objReqUser->mb_uid,
+                                'log_data' => $arrData['mb_state_view'] == 1 ? "누르기":"넘기기",
+                                'log_type' => EBAL_LOGTYPE_PRESSMANUAL,
+                                'log_memo' => $objAdmin->mb_uid,
+                                'log_time' => date("Y-m-d H:i:s"),
+                            ];
+                            $ebalLogModel->register($data);
+                        }
+                    }
+
                 } else {
                     $iResult = $this->modelMember->modifyMemberRatio($arrData, $strError,  $query);
                 }

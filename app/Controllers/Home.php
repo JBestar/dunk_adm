@@ -165,6 +165,14 @@ class Home extends StdController
 		$this->load_view_page('ebal/conf_eroom', 'conf_ebal', LEVEL_ADMIN, $param);	
 	}
 
+	public function conf_epress(){
+		$param = [
+			'game_name' => "누르기설정",
+			'game_id' => GAME_CASINO_EVOL,
+		];
+		$this->load_view_page('ebal/conf_epress', 'conf_ebal', LEVEL_ADMIN, $param);	
+	}
+
 	public function conf_casino(){
 		$gameId = GAME_CASINO_KGON;
 		if($_ENV['app.casino'] == APP_CASINO_STAR)

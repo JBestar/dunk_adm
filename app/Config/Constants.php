@@ -210,7 +210,7 @@ defined('CONF_EVOLSITE_2')      || define('CONF_EVOLSITE_2', 63);         //에�
 defined('CONF_EVOLRUN_2')       || define('CONF_EVOLRUN_2', 64);         //에볼루션 밸런스 상태
 defined('CONF_EVOLSITE_3')      || define('CONF_EVOLSITE_3', 65);         //에볼루션 밸런스 상태
 defined('CONF_EVOLRUN_3')       || define('CONF_EVOLRUN_3', 66);         //에볼루션 밸런스 상태
-
+defined('CONF_EVOLPRESS')       || define('CONF_EVOLPRESS', 67);         //에볼루션 밸런스 상태
 
 defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);
 defined('LEVEL_MASTER')        || define('LEVEL_MASTER', 101);
@@ -415,3 +415,5 @@ defined('RATE_PLAYER')       || define('RATE_PLAYER', 2.0);
 defined('RATE_BANKER')       || define('RATE_BANKER', 1.95);     
 defined('RATE_TIE')          || define('RATE_TIE', 7.0);     
 
+defined('EBAL_LOGTYPE_PRESSMANUAL')    || define('EBAL_LOGTYPE_PRESSMANUAL', 1);
+defined('EBAL_LOGTYPE_PRESSAUTO')      || define('EBAL_LOGTYPE_PRESSAUTO', 2);

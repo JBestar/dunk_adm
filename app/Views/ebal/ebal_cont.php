@@ -5,6 +5,7 @@
 		<p><i class="glyphicon glyphicon-book"></i> 에볼밸런스</p>
         <a href="<?php echo site_furl('home/conf_ebal');?>" class="sub-navbar-a" >밸런스설정</a>
         <a href="<?php echo site_furl('home/conf_eroom');?>" class="sub-navbar-a" >방설정</a>
+        <a href="<?php echo site_furl('home/conf_epress');?>" class="sub-navbar-a" >누르기설정</a>
         <a href="<?php echo site_furl('bet/eordroom');?>" class="sub-navbar-a" >실시간</a>
         <a href="<?php echo site_furl('bet/ebalhistory');?>" class="sub-navbar-a" >밸런스내역</a>
         <a href="<?php echo site_furl('bet/ebethistory');?>" class="sub-navbar-a" >배팅내역</a>

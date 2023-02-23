@@ -13,11 +13,6 @@
 			<label style="font-size:18px; font-weight:normal">
 				에볼루션 방설정
 			</label>
-
-			<!-- <div style="float:right">
-				<button class="pbresult-list-view-but" id="ebal-start-but-id" style="margin-right:0px; " disabled>시작</button>
-				<button class="pbresult-list-view-but" id="ebal-stop-but-id" style="margin-right:3px; " disabled>정지</button>
-			</div> -->
 		</div>
 		<Table class="user-table">
 			<thead>
