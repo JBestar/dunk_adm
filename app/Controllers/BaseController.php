@@ -297,7 +297,7 @@ class BaseController extends Controller
 	protected function alltoGame(&$objMember, $iGame = 0){
 		$logHead = "<AlltoGame> ";
 		$iResult = 0;
-		$objUser = $this->modelMember->getByFid($objMember->mb_fid);
+		$objUser = $this->modelMember->getInfoByFid($objMember->mb_fid, true);
 		if(diffDt(date('Y-m-d H:i:s'), $objUser->mb_time_call) < DELAY_TRANSFER){
 			writeLog($logHead.$objMember->mb_uid."-Now=".date('Y-m-d H:i:s')." Call=".$objUser->mb_time_call);
 			return $iResult;

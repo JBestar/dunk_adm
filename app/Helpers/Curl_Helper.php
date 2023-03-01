@@ -1,6 +1,6 @@
 <?php
 
-function getCurlRequest($url, $headers = null, $post = null, $timeout = 10){
+function getCurlRequest($url, $headers = null, $post = null, $timeout = 20){
     
     $timeoutConnect = 5;
 
