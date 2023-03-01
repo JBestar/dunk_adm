@@ -361,9 +361,9 @@
 
 				<?php else :?>
 					<?php if(!is_null($objMember) && $objMember->mb_state_delete == 1) :  ?>
-						<input type="checkbox" id="useredit-offline-check-id" style="zoom:140%; margin-top:4px; width:20px;" checked>
+						<input type="checkbox" id="useredit-offline-check-id" style="zoom:140%; margin-top:4px; width:20px; margin-right:5px; " checked>
 					<?php else :  ?>
-						<input type="checkbox" id="useredit-offline-check-id" style="zoom:140%; margin-top:4px; width:20px;" >
+						<input type="checkbox" id="useredit-offline-check-id" style="zoom:140%; margin-top:4px; width:20px; margin-right:5px;" >
 					<?php endif ?>
 					<p>오프라인 유저</p> 
 				<?php endif ?>
