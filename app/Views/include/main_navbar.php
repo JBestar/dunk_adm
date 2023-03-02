@@ -23,9 +23,9 @@
 					<?php if(!$eos5_deny || !$eos3_deny) :?>
 						<td>EOS<span id="main-navbar-emp_eorate-id">0 % | 0 %</span></td>
 					<?php endif ?>  
-					<?php if(!$hpg_deny) :?>
-						<td>해피볼<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
-					<?php endif ?>   
+					<?php if(!$coin5_deny || !$coin3_deny) :?>
+						<td>코인<span id="main-navbar-emp_corate-id">0 % | 0 %</span></td>
+					<?php endif ?>
 				<?php else : ?>
 
 				<td>새 문의&nbsp;<a href="<?php echo site_furl('/board/message');?>" id="main-navbar-newmessage-id">0 통</a></td>
@@ -45,13 +45,13 @@
 					<?php endif ?>     
 					<?php if(!$slot_deny) :?>
 						<td>슬롯<span id="main-navbar-emp_slrate-id">0 %</span></td>
-					<?php endif ?>  
-					<?php if(!$coin5_deny || !$coin3_deny) :?>
-						<td>코인<span id="main-navbar-emp_corate-id">0 % | 0 %</span></td>
 					<?php endif ?> 
+					<?php if(!$hpg_deny) :?>
+						<td>해피볼<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
+					<?php endif ?>    
 				<?php else : ?>
-					<td>가입신청&nbsp;<a href="<?php echo site_furl('/user/member/0');?>" id="main-navbar-user_wait-id">0 명</span></td>
-					<td>환전&nbsp;<a href="<?php echo site_furl('/bank/withdraw');?>" id="main-navbar-exchange_wait-id">0 대기</span></td>
+					<td>가입신청&nbsp;<a href="<?php echo site_furl('/user/member/0');?>" id="main-navbar-user_wait-id">0 명</a></td>
+					<td>환전&nbsp;<a href="<?php echo site_furl('/bank/withdraw');?>" id="main-navbar-exchange_wait-id">0 대기</a></td>
 				<?php endif ?>
 			</tr>
 
@@ -123,7 +123,7 @@
 
 					</tr>
 					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">EOS5분 조합:</td>
+						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">EOS3분 조합:</td>
 						<td>배팅<span id="main-navbar-e32bet-id">0 원</span></td>
 						<td>적중<span id="main-navbar-e32betearn-id">0 원</span></td>
 
