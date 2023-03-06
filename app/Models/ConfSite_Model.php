@@ -362,6 +362,16 @@ class ConfSite_Model extends Model
     }
 
     
+    public function getEvpressState(){
+
+        $objConfig = $this->where('conf_id', CONF_EVOLPRESS)->first();
+        if(!is_null($objConfig) && intval($objConfig->conf_content) == STATE_ACTIVE){
+            return true;
+        }
+
+        return false;
+    }
+
     public function getEvpressConfig(){
 
         $data = ["", "", 0];

@@ -41,9 +41,21 @@ class Api extends BaseController{
 		}	
 	}
 
-	public function login(){ 
-		writeLog($_SERVER['HTTP_HOST']);
+	public function test(){ 
+
+		// exec ('c:\\WINDOWS\\system32\\cmd.exe pm2 stop oliveWst', $output );
+
+		// echo '$output : ';
+		// print_r($output);
+		// echo '<br>';
+
+		// $shell = new \COM('WScript.Shell');
+		// $app = $shell->Run('C:/Windows/System32/notepad.exe');
+
+		// writeLog($_SERVER['HTTP_HOST']); //veda.com:82
 	}
+
+
 	/*
     //관리자 로그인
 	public function login(){ 

@@ -146,28 +146,34 @@ class Bet extends StdController {
 	}
 	
 	public function ebalhistory(){
+		$confsiteModel = new ConfSite_Model();
 
 		$param = [
 			'game_name' => "밸런스내역",
 			'game_id' => GAME_CASINO_EVOL,
+			'evpress' => $confsiteModel->getEvpressState(),
 		];
 		$this->load_view_page('ebal/ebalhistory', 'conf_ebal', LEVEL_ADMIN, $param);
 	}
 	
 	public function eordroom(){
+		$confsiteModel = new ConfSite_Model();
 
 		$param = [
 			'game_name' => "실시간",
 			'game_id' => GAME_CASINO_EVOL,
+			'evpress' => $confsiteModel->getEvpressState(),
 		];
 		$this->load_view_page('ebal/eordroom', 'conf_ebal', LEVEL_ADMIN, $param);
 	}
 
 	public function ebethistory(){
+		$confsiteModel = new ConfSite_Model();
 
 		$param = [
 			'game_name' => "배팅내역",
 			'game_id' => GAME_CASINO_EVOL,
+			'evpress' => $confsiteModel->getEvpressState(),
 		];
 		$this->load_view_page('ebal/ebethistory', 'conf_ebal', LEVEL_ADMIN, $param);
 	}
