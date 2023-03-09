@@ -124,4 +124,20 @@ class Sess_Model extends Model {
 
     }
 
+    
+    function searchPress($arrReqData, $mbLv=LEVEL_ADMIN)
+    {
+        $strSql = "SELECT ".$this->table.".*, member.mb_nickname, member.mb_level, ";
+        $strSql .= " member.mb_money, member.mb_point, member.mb_state_view FROM ".$this->table;
+        $strSql .= " JOIN member ON ".$this->table.".sess_mb_fid = member.mb_fid ";
+        $strSql .= " WHERE mb_level < '".$mbLv."' ";
+        
+        $strSql.=" ORDER BY sess_join ASC ";
+
+        $query = $this -> db -> query($strSql);
+        $result = $query -> getResult();
+        
+        return $result; 
+
+    }
 }

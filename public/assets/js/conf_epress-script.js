@@ -1,21 +1,17 @@
 $(document).ready(function() {
     setNavBarElement();
-    requestTotalPage();
     requestConf();
     addBtnEvent();
+    requestList();
     setInterval(function() {
-        requestLogHistory();
-    }, 120000);
+        requestList();
+    }, 60000);
 });
-
-function requestPageInfo() {
-    requestLogHistory();
-}
 
 function showConf(data) {
     if (data && data.length > 2) {
         $("#confev-autopress-check-id").prop('checked', data[2] == 1 ? true : false);
-        $("#confev-bettime-input-id").val(parseInt(data[0])); 
+        // $("#confev-bettime-input-id").val(parseInt(data[0])); 
         $("#confev-moneypercent-input-id").val(parseInt(data[1])); 
     }
 }
@@ -57,7 +53,7 @@ function addBtnEvent() {
         var objData = new Object();
 
         objData.enable = $("#confev-autopress-check-id").prop('checked') ? 1 : 0;
-        objData.time = $("#confev-bettime-input-id").val();
+        // objData.time = $("#confev-bettime-input-id").val();
         objData.money = $("#confev-moneypercent-input-id").val();
 
         var jsonData = JSON.stringify(objData);
@@ -85,49 +81,41 @@ function addBtnEvent() {
             error: function(request, status, error) {
                 // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
             }
-
         });
-
-
     });
-
 
     $("#confsite-cancel-btn-id").click(function() {
         location.reload();
     });
-
-    $("#pbhistory-list-view-but-id").click(function() {
-        requestTotalPage();
-    });
-
-    $("#pbhistory-number-select-id").change(function() {
-        requestTotalPage();
-    });
     
 }
 
-function ShowLogHistory(arrInfo){
+function ShowList(arrInfo){
     var strBuf = "";
 
-    var curPage = getActivePage();
-    var firstIdx = (curPage - 1) * CountPerPage;
+    var firstIdx = 0;
 
     for (nRow in arrInfo) {
         strBuf += "<tr><td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td><td>";
-        strBuf += arrInfo[nRow].log_mb_uid;
+        strBuf += arrInfo[nRow].sess_mb_uid;
         strBuf += "</td><td>";
-        strBuf += arrInfo[nRow].log_data;
+        strBuf += arrInfo[nRow].sess_join;
         strBuf += "</td><td>";
-        if(parseInt(arrInfo[nRow].log_type) == 2)
-            strBuf += "자동";
-        else
-            strBuf += "회원수정";
+        strBuf += parseFloat(arrInfo[nRow].sess_money).toLocaleString();
         strBuf += "</td><td>";
-        strBuf += arrInfo[nRow].log_time;
+        strBuf += parseFloat(arrInfo[nRow].mb_money).toLocaleString();
+        strBuf += "</td>";
+        if(parseInt(arrInfo[nRow].mb_state_view) == 1)
+            strBuf += "<td  class = 'pb-home-table-betstate-wait'>누르기";
+        else 
+            strBuf += "<td  class = 'pb-home-table-betstate-loss'>넘기기";
         strBuf += "</td><td>";
-        strBuf += arrInfo[nRow].log_memo;
+        if(parseInt(arrInfo[nRow].mb_state_view) == 1)
+            strBuf += "<button onclick='changePress(" + arrInfo[nRow].sess_mb_fid + ", 0)'>넘기기</button> ";
+        else 
+            strBuf += "<button onclick='changePress(" + arrInfo[nRow].sess_mb_fid + ", 1)'>누르기</button> ";
         strBuf += "</td></tr>";
     }
 
@@ -138,24 +126,16 @@ function ShowLogHistory(arrInfo){
 
 }
 
-function requestLogHistory() {
+function requestList() {
 
-    var dtStart = $("#pbhistory-datestart-input-id").val();
-    var dtEnd = $("#pbhistory-dateend-input-id").val();
-    CountPerPage = $("#pbhistory-number-select-id").val();
     var strUser = $("#pbhistory-userid-input-id").val();
-    var nPage = getActivePage();
     var jsonData = {
-        "count": CountPerPage,
-        "page": nPage,
-        "start": dtStart,
-        "end": dtEnd,
         "user": strUser,
     };
     jsonData = JSON.stringify(jsonData);
     $(".loading").show();
     $.ajax({
-        url: FURL + '/api/eballoglist',
+        url: FURL + '/api/evpresslist',
         data: { json_: jsonData },
         type: 'post',
         dataType: "json",
@@ -163,7 +143,7 @@ function requestLogHistory() {
             $(".loading").hide();
             // console.log(jResult);
             if (jResult.status == "success") {
-                ShowLogHistory(jResult.data);
+                ShowList(jResult.data);
             }
         },
         error: function(request, status, error) {
@@ -174,33 +154,21 @@ function requestLogHistory() {
     });
 }
 
-
-function requestTotalPage(bReqPage = true) {
-
-    var dtStart = $("#pbhistory-datestart-input-id").val();
-    var dtEnd = $("#pbhistory-dateend-input-id").val();
-    CountPerPage = $("#pbhistory-number-select-id").val();
-    var strUser = $("#pbhistory-userid-input-id").val();
-   
+function changePress(fid, state){
     var jsonData = {
-        "count": CountPerPage,
-        "start": dtStart,
-        "end": dtEnd,
-        "user": strUser,
+        "mb_fid": fid,
+        "mb_state_view": state,
     };
     jsonData = JSON.stringify(jsonData);
-
     $.ajax({
-        url: FURL + '/api/eballogcnt',
+        url: FURL + '/api/changeevpress',
         data: { json_: jsonData },
-        dataType: 'json',
         type: 'post',
+        dataType: "json",
         success: function(jResult) {
             // console.log(jResult);
             if (jResult.status == "success") {
-                TotalCount = jResult.data.count;
-                setFirstPage();
-                requestLogHistory();
+                requestList();
             }
         },
         error: function(request, status, error) {

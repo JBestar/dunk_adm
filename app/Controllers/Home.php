@@ -183,7 +183,20 @@ class Home extends StdController
 			
 			$this->load_view_page('ebal/conf_epress', 'conf_ebal', LEVEL_ADMIN, $param);	
 		}
-		
+	}
+	public function conf_epresslog(){
+		$confsiteModel = new ConfSite_Model();
+		$param = [
+			'game_name' => "누르기내역",
+			'game_id' => GAME_CASINO_EVOL,
+			'evpress' => $confsiteModel->getEvpressState(),
+		];
+		if(!$param['evpress'])
+			$this->response->redirect($_ENV['app.furl'].'/home/conf_ebal');
+		else {
+			
+			$this->load_view_page('ebal/conf_epresslog', 'conf_ebal', LEVEL_ADMIN, $param);	
+		}
 	}
 
 	public function conf_casino(){

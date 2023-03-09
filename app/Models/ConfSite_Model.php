@@ -393,11 +393,11 @@ class ConfSite_Model extends Model
 
         if($arrData == null) return false;
         if (!array_key_exists("enable", $arrData)) return false;
-        if (!array_key_exists("time", $arrData)) return false;
+        // if (!array_key_exists("time", $arrData)) return false;
         if (!array_key_exists("money", $arrData)) return false;
         
         $arrBatch = array();
-        
+        $arrData['time'] = 0;
         $updateData['conf_id'] = CONF_EVOLPRESS;
         $updateData['conf_active'] = $arrData['enable'];
         $updateData['conf_idx'] = $arrData['time']."#".$arrData['money'];

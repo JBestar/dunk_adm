@@ -12,7 +12,7 @@ function showCalcualte(arrCalcData, empLv) {
     var strBuf = "";
     var colorLv = 0;
     var elemDataTbBody = document.getElementById("calculate-table-tbody-id");
-    let sumChg = 0, sumExg = 0, sumMon = 0, sumPot = 0, sumBet = 0, sumWin = 0, sumRat = 0;
+    let sumChg = 0, sumExg = 0, sumMon = 0, sumPot = 0, sumBet = 0, sumWin = 0, sumRat = 0, sumLast = 0;
     for (nRow in arrCalcData) {
         strBuf += "<tr";
 
@@ -32,33 +32,34 @@ function showCalcualte(arrCalcData, empLv) {
         strBuf += "</td><td>";
         strBuf += arrCalcData[nRow].mb_nickname; //
         strBuf += "</td><td>";
-            sumMon += parseInt(arrCalcData[nRow].mb_money_all);
-        strBuf += parseInt(arrCalcData[nRow].mb_money_single).toLocaleString() + " / " + parseInt(arrCalcData[nRow].mb_money_all).toLocaleString();
+            sumMon += parseFloat(arrCalcData[nRow].mb_money_all);
+        strBuf += parseFloat(arrCalcData[nRow].mb_money_single).toLocaleString() + " / " + parseFloat(arrCalcData[nRow].mb_money_all).toLocaleString();
         strBuf += "</td><td>";
-            sumPot += parseInt(arrCalcData[nRow].mb_point_all);
-        strBuf += parseInt(arrCalcData[nRow].mb_point_single).toLocaleString() + " / " + parseInt(arrCalcData[nRow].mb_point_all).toLocaleString();
+            sumPot += parseFloat(arrCalcData[nRow].mb_point_all);
+        strBuf += parseFloat(arrCalcData[nRow].mb_point_single).toLocaleString() + " / " + parseFloat(arrCalcData[nRow].mb_point_all).toLocaleString();
         strBuf += "</td><td>";
-            sumChg += parseInt(arrCalcData[nRow].mb_charge);
-        strBuf += parseInt(arrCalcData[nRow].mb_charge).toLocaleString(); //
+            sumChg += parseFloat(arrCalcData[nRow].mb_charge);
+        strBuf += parseFloat(arrCalcData[nRow].mb_charge).toLocaleString(); //
         strBuf += "</td><td>";
-            sumExg += parseInt(arrCalcData[nRow].mb_exchange);
-        strBuf += parseInt(arrCalcData[nRow].mb_exchange).toLocaleString();
+            sumExg += parseFloat(arrCalcData[nRow].mb_exchange);
+        strBuf += parseFloat(arrCalcData[nRow].mb_exchange).toLocaleString();
         strBuf += "</td><td>";
-        strBuf += parseInt(arrCalcData[nRow].mb_charge_benefit).toLocaleString();
+        strBuf += parseFloat(arrCalcData[nRow].mb_charge_benefit).toLocaleString();
         strBuf += "</td><td>";
             
-            sumBet += parseInt(arrCalcData[nRow].mb_bet_money);
-        strBuf += parseInt(arrCalcData[nRow].mb_bet_money).toLocaleString();
+            sumBet += parseFloat(arrCalcData[nRow].mb_bet_money);
+        strBuf += parseFloat(arrCalcData[nRow].mb_bet_money).toLocaleString();
         strBuf += "</td><td>";
-            sumWin += parseInt(arrCalcData[nRow].mb_bet_win_money);
-        strBuf += parseInt(arrCalcData[nRow].mb_bet_win_money).toLocaleString();
+            sumWin += parseFloat(arrCalcData[nRow].mb_bet_win_money);
+        strBuf += parseFloat(arrCalcData[nRow].mb_bet_win_money).toLocaleString();
         strBuf += "</td><td>";
-        strBuf += parseInt(arrCalcData[nRow].mb_bet_benefit_money).toLocaleString();
+        strBuf += parseFloat(arrCalcData[nRow].mb_bet_benefit_money).toLocaleString();
         strBuf += "</td><td>";
-            sumRat += parseInt(arrCalcData[nRow].mb_rate_all);
-        strBuf += parseInt(arrCalcData[nRow].mb_rate_single).toLocaleString() + " / " + parseInt(arrCalcData[nRow].mb_rate_all).toLocaleString();
+            sumRat += parseFloat(arrCalcData[nRow].mb_rate_all);
+        strBuf += parseFloat(arrCalcData[nRow].mb_rate_single).toLocaleString() + " / " + parseFloat(arrCalcData[nRow].mb_rate_all).toLocaleString();
         strBuf += "</td><td>";
-        strBuf += parseInt(arrCalcData[nRow].mb_last_money).toLocaleString();
+        strBuf += parseFloat(arrCalcData[nRow].mb_last_money).toLocaleString();
+            sumLast += parseFloat(arrCalcData[nRow].mb_last_money);
         strBuf += "</td></tr>";
     }
 
@@ -73,7 +74,7 @@ function showCalcualte(arrCalcData, empLv) {
         strBuf += "<td>"+ sumWin.toLocaleString() +"</td>";
         strBuf += "<td>"+ (sumBet-sumWin).toLocaleString() +"</td>";
         strBuf += "<td>"+ sumRat.toLocaleString() +"</td>";
-        strBuf += "<td></td></tr>";
+        strBuf += "<td>"+ sumLast.toLocaleString() +"</td></tr>";
     }  
     elemDataTbBody.innerHTML = strBuf;
 

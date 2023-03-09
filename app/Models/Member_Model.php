@@ -352,6 +352,18 @@ class Member_Model extends Model
         return $bResult;
     }
 
+    public function updateState($objMember, $arrReqData)
+    {
+
+        if(array_key_exists('mb_state_view', $arrReqData))
+            $this->builder()->set('mb_state_view', $arrReqData['mb_state_view']);
+        else return false;
+
+        $this->builder()->where('mb_fid', $objMember->mb_fid);
+
+        return $this->builder()->update();
+    }
+
     public function updateMoney($objMember)
     {
         $this->builder()->set('mb_money', $objMember->mb_money);

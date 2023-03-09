@@ -35,6 +35,9 @@ class EbalLog_Model extends Model
         if(strlen($arrReqData['user']) > 0){
             $strSql.=" AND log_mb_uid = '".$arrReqData['user']."' ";
         }
+        if(intval($arrReqData['type']) > 0){
+            $strSql.=" AND log_type = '".$arrReqData['type']."' ";
+        }
         $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
 
         $strSql.=" ORDER BY log_fid DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
@@ -53,6 +56,9 @@ class EbalLog_Model extends Model
         $strSql.=" WHERE log_time >= '".$arrReqData['start']."' AND log_time <= '".$arrReqData['end']."'" ; 
         if(strlen($arrReqData['user']) > 0){
             $strSql.=" AND log_mb_uid = '".$arrReqData['user']."' ";
+        }
+        if(intval($arrReqData['type']) > 0){
+            $strSql.=" AND log_type = '".$arrReqData['type']."' ";
         }
         $query = $this -> db -> query($strSql);
         $result = $query -> getRow();

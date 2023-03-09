@@ -1970,6 +1970,68 @@ public function withdrawlist(){
 		echo json_encode($objResult);
 	}
 
+	public function changeevpress(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+
+		$objResult = new \StdClass;
+		if(is_login()) {
+			//model
+			$strUid = $this->session->user_id;
+			$objAdmin = $this->modelMember->getInfo($strUid);
+			$objReqUser = $this->modelMember->getInfoByFid($arrReqData['mb_fid']);
+			if($objAdmin->mb_level < LEVEL_ADMIN || is_null($objReqUser)){
+				$objResult->status = "fail";
+			} else {
+				
+				if($this->modelMember->updateState($objReqUser, $arrReqData)){
+					$ebalLogModel = new EbalLog_Model();
+					$data =[
+						'log_mb_fid' => $objReqUser->mb_fid,
+						'log_mb_uid' => $objReqUser->mb_uid,
+						'log_data' => $arrReqData['mb_state_view'] == 1 ? "누르기":"넘기기",
+						'log_type' => EBAL_LOGTYPE_PRESSMANUAL,
+						'log_memo' => $objAdmin->mb_uid,
+						'log_time' => date("Y-m-d H:i:s"),
+					];
+					$ebalLogModel->register($data);
+				}
+				
+				$objResult->status = "success";
+			}
+		}
+		else{
+			$objResult->status = "logout";
+		}
+		echo json_encode($objResult);
+	}
+
+	public function evpresslist(){
+		$jsonData = $_REQUEST['json_'];
+		$arrReqData = json_decode($jsonData, true);
+		if(is_login())
+		{
+
+            $strUid = $this->session->user_id;
+            $objUser = $this->modelMember->getInfo($strUid);
+
+            if($objUser->mb_level  >= LEVEL_ADMIN) {
+
+                $arrData = $this->modelSess->searchPress($arrReqData, $objUser->mb_level);
+                    
+                $arrResult['data'] = $arrData;
+                $arrResult['status'] = "success";
+            } else{
+                $arrResult['status'] = "fail";
+            }
+
+		}
+		else{
+			$arrResult['status'] = "logout";
+		}
+		echo json_encode($arrResult);
+	}
+
 	public function eballoglist(){
 		$jsonData = $_REQUEST['json_'];
 		$arrReqData = json_decode($jsonData, true);
