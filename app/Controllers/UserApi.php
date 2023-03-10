@@ -71,7 +71,23 @@ class UserApi extends BaseController
                 $confsiteModel = new ConfSite_Model();
                 $confsiteModel->readMemConf();
 
-                $iResult = $this->modelMember->register($arrData, $strError);
+                $checkOk = preg_match("/^[A-Za-z0-9_+]{4,16}$/", $arrData['mb_uid']);
+                if(!$checkOk){
+                    $strError  = ["아이디는 4자~16자, 영문 또는 숫자만 사용 가능합니다."];
+                } else {
+                    $pwdLen = strlen($arrData['mb_pwd']);
+                    if($pwdLen < 8 || $pwdLen > 20 )
+                        $checkOk = false;
+                    else $checkOk = preg_match("/^[A-Za-z0-9]*[\W]+[A-Za-z0-9]*$/", $arrData['mb_pwd']);
+        
+                    if(!$checkOk)
+                        $strError  = ["비밀번호는 8자~20자, 특수문자 한개 이상 입력하셔야 합니다."];
+                }
+
+                if($checkOk)
+                    $iResult = $this->modelMember->register($arrData, $strError);
+                else $iResult = -1;
+
                 if ( $iResult == 1 ) {
                     $objReqUser = $this->modelMember->getInfo(trim($arrData['mb_uid']));
 
@@ -120,7 +136,7 @@ class UserApi extends BaseController
             
             $strUid = $this->session->user_id;
             $objAdmin = $this->modelMember->getInfo($strUid);
-            $objReqUser = $this->modelMember->getInfoByFid($arrData['mb_fid']);
+            $objReqUser = $this->modelMember->getInfoByFid($arrData['mb_fid'], true);
             $arrData['mb_emp_fid'] = 0;
             if ($objAdmin->mb_level >= LEVEL_ADMIN && strlen($arrData['mb_emp_uid']) > 0){
                 $objEmp = $this->modelMember->getInfo($arrData['mb_emp_uid']);
@@ -143,7 +159,21 @@ class UserApi extends BaseController
                 $query = "";
                 $iResult = 0;
                 if ($objAdmin->mb_level >= LEVEL_ADMIN) {
-                    $iResult = $this->modelMember->modifyMember($arrData, $strError, $query);
+
+                    $checkOk = true;
+                    if($arrData['mb_pwd'] !== $objReqUser->mb_pwd){
+                        $pwdLen = strlen($arrData['mb_pwd']);
+                        if($pwdLen < 8 || $pwdLen > 20 )
+                            $checkOk = false;
+                        else $checkOk = preg_match("/^[A-Za-z0-9]*[\W]+[A-Za-z0-9]*$/", $arrData['mb_pwd']);
+            
+                        if(!$checkOk)
+                            $strError  = ["비밀번호는 8자~20자, 특수문자 한개 이상 입력하셔야 합니다."];
+                    }
+
+                    if($checkOk)
+                        $iResult = $this->modelMember->modifyMember($arrData, $strError, $query);
+                    else $iResult = -1;
 
                     if(array_key_exists('app.ebal', $_ENV) && $_ENV['app.ebal'] > 0 && array_key_exists('mb_state_view', $arrData) ){
 

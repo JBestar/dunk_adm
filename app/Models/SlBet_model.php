@@ -48,16 +48,16 @@ class SlBet_Model extends Model
         } else $strWhere=" WHERE bet_game_id = '".$arrReqData['game']."' ";
 
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strWhere.=" AND ".getBetTimeRange($arrReqData);
+            $strWhere.=" AND ".getBetTimeRange($arrReqData, $this->db);
         }
         if(strlen($arrReqData['user']) > 0){
-            $strWhere.=" AND bet_mb_uid = '".$arrReqData['user']."' ";            
+            $strWhere.=" AND bet_mb_uid = ".$this->db->escape($arrReqData['user']);
         }
         if(intval($arrReqData['mode']) > 0){
             if($arrReqData['game'] == GAME_SLOT_ALL){
-                $strWhere.="  AND bet_game_type IN ( SELECT code FROM ".$this->mPrdTable." WHERE code = ".$arrReqData['mode']." OR ref_code = ".$arrReqData['mode']." ) ";
+                $strWhere.=" AND bet_game_type IN ( SELECT code FROM ".$this->mPrdTable." WHERE code = ".$this->db->escape($arrReqData['mode'])." OR ref_code = ".$this->db->escape($arrReqData['mode'])." ) ";
             } else {
-                $strWhere.="  AND bet_game_type = '".$arrReqData['mode']."' ";
+                $strWhere.="  AND bet_game_type = ".$this->db->escape($arrReqData['mode']);
             }
         }
         
@@ -107,6 +107,11 @@ class SlBet_Model extends Model
 
     function search($objEmp, $arrReqData)
     {
+        if(is_null($objEmp)){
+            $result = null;
+            return $result;
+        }
+
         $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_slot_uid, mb_fslot_id  ";
         $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_nickname, r.mb_slot_uid, r.mb_fslot_id  ";
         
@@ -127,16 +132,16 @@ class SlBet_Model extends Model
         } else $strWhere.=" WHERE bet_game_id = '".$arrReqData['game']."' ";
         
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strWhere.=" AND ".getBetTimeRange($arrReqData);
+            $strWhere.=" AND ".getBetTimeRange($arrReqData, $this->db);
         }
         if(strlen($arrReqData['user']) > 0){
-            $strWhere.=" AND bet_mb_uid = '".$arrReqData['user']."' ";
+            $strWhere.=" AND bet_mb_uid = ".$this->db->escape($arrReqData['user']);
         }
         if(intval($arrReqData['mode']) > 0){
             if($arrReqData['game'] == GAME_SLOT_ALL){
-                $strWhere.="  AND bet_game_type IN ( SELECT code FROM ".$this->mPrdTable." WHERE code = ".$arrReqData['mode']." OR ref_code = ".$arrReqData['mode']." ) ";
+                $strWhere.=" AND bet_game_type IN ( SELECT code FROM ".$this->mPrdTable." WHERE code = ".$this->db->escape($arrReqData['mode'])." OR ref_code = ".$this->db->escape($arrReqData['mode'])." ) ";
             } else {
-                $strWhere.="  AND bet_game_type = '".$arrReqData['mode']."' ";
+                $strWhere.=" AND bet_game_type = ".$this->db->escape($arrReqData['mode']);
             }
         }
         if($objEmp->mb_level < LEVEL_ADMIN){
@@ -207,6 +212,12 @@ class SlBet_Model extends Model
 
     function searchCount($objEmp, $arrReqData)
     {
+        if(is_null($objEmp)){
+            $result = new \StdClass;
+            $result->count = 0;
+            return $result;
+        }
+
         $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_slot_uid, mb_fslot_id ";
         $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_slot_uid, r.mb_fslot_id ";
 
@@ -242,19 +253,19 @@ class SlBet_Model extends Model
                 
             $strSql.=" WHERE bet_game_id IN ('".$gameId1."', '".$gameId2."') ";
 
-        } else $strSql.=" WHERE bet_game_id = '".$arrReqData['game']."' ";
+        } else $strSql.=" WHERE bet_game_id = ".$this->db->escape($arrReqData['game'])." ";
         
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSql.=" AND ".getBetTimeRange($arrReqData);
+            $strSql.=" AND ".getBetTimeRange($arrReqData, $this->db);
         }
         if(strlen($arrReqData['user']) > 0){
-            $strSql.=" AND bet_mb_uid = '".$arrReqData['user']."' ";
+            $strSql.=" AND bet_mb_uid = ".$this->db->escape($arrReqData['user']);
         }
         if(intval($arrReqData['mode']) > 0){
             if($arrReqData['game'] == GAME_SLOT_ALL){
-                $strSql.="  AND bet_game_type IN ( SELECT code FROM ".$this->mPrdTable." WHERE code = ".$arrReqData['mode']." OR ref_code = ".$arrReqData['mode']." ) ";
+                $strSql.="  AND bet_game_type IN ( SELECT code FROM ".$this->mPrdTable." WHERE code = ".$this->db->escape($arrReqData['mode'])." OR ref_code = ".$this->db->escape($arrReqData['mode'])." ) ";
             } else {
-                $strSql.="  AND bet_game_type = '".$arrReqData['mode']."' ";
+                $strSql.="  AND bet_game_type = ".$this->db->escape($arrReqData['mode']);
             }
         }
         if($objEmp->mb_level < LEVEL_ADMIN){

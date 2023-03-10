@@ -23,9 +23,6 @@ class SlotPrd_Model extends Model {
 
     public function getByCode($cat, $bGroup = false){
         $strSql = "SELECT  * FROM ".$this->table." WHERE cat = '".$cat."' AND maintain = '0' ";
-        // if($bGroup){
-        //     $strSql .= " GROUP BY ref_code ";
-        // }
 
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();

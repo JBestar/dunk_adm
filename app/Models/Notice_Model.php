@@ -125,23 +125,23 @@ class Notice_Model extends Model {
           $strSql.=" WHERE notice_state_delete = '".STATE_DISABLE."' AND notice_type = '".NOTICE_CUSTOMER."'  ";
 
           if(strlen($arrReqData['notice_mb_uid']) > 0 )
-              $strSql.=" AND notice_mb_uid = '".$arrReqData['notice_mb_uid']."' ";            
+              $strSql.=" AND notice_mb_uid = ".$this->db->escape($arrReqData['notice_mb_uid']);            
 
         } else if($arrReqData['notice_type'] == 2 ){                    //발송쪽지
           $strSql.=" WHERE notice_state_delete = '".STATE_DISABLE."' AND notice_type = '".NOTICE_MSG."'  ";
 
           if(strlen($arrReqData['notice_mb_uid']) > 0 )
-              $strSql.=" AND notice_mb_uid = '".$arrReqData['notice_mb_uid']."' ";
+              $strSql.=" AND notice_mb_uid = ".$this->db->escape($arrReqData['notice_mb_uid']);
 
         } else {                                                        //전체
           $strSql.=" WHERE (notice_state_delete = '".STATE_DISABLE."' AND notice_type = '".NOTICE_CUSTOMER."'  ";
 
           if(strlen($arrReqData['notice_mb_uid']) > 0 )
-              $strSql.=" AND notice_mb_uid = '".$arrReqData['notice_mb_uid']."' ";
+              $strSql.=" AND notice_mb_uid = ".$this->db->escape($arrReqData['notice_mb_uid']);
 
           $strSql.=") OR (notice_state_delete = '".STATE_DISABLE."' AND notice_type = '".NOTICE_MSG."' ";            
           if(strlen($arrReqData['notice_mb_uid']) > 0 )
-              $strSql.=" AND notice_mb_uid = '".$arrReqData['notice_mb_uid']."' ";
+              $strSql.=" AND notice_mb_uid = ".$this->db->escape($arrReqData['notice_mb_uid']);
           $strSql.=") ";
         }
 
@@ -166,23 +166,23 @@ class Notice_Model extends Model {
           $strSql.=" WHERE notice_state_delete = '".STATE_DISABLE."' AND notice_type = '".NOTICE_CUSTOMER."'  ";
 
           if(strlen($arrReqData['notice_mb_uid']) > 0 )
-              $strSql.=" AND notice_mb_uid = '".$arrReqData['notice_mb_uid']."' ";            
+              $strSql.=" AND notice_mb_uid = ".$this->db->escape($arrReqData['notice_mb_uid']);            
 
         } else if($arrReqData['notice_type'] == 2 ){
           $strSql.=" WHERE notice_state_delete = '".STATE_DISABLE."' AND notice_type = '".NOTICE_MSG."'  ";
 
           if(strlen($arrReqData['notice_mb_uid']) > 0 )
-              $strSql.=" AND notice_mb_uid = '".$arrReqData['notice_mb_uid']."' ";
+              $strSql.=" AND notice_mb_uid = ".$this->db->escape($arrReqData['notice_mb_uid']);
 
         } else {
           $strSql.=" WHERE (notice_state_delete = '".STATE_DISABLE."' AND notice_type = '".NOTICE_CUSTOMER."'  ";
 
           if(strlen($arrReqData['notice_mb_uid']) > 0 )
-              $strSql.=" AND notice_mb_uid = '".$arrReqData['notice_mb_uid']."' ";
+              $strSql.=" AND notice_mb_uid = ".$this->db->escape($arrReqData['notice_mb_uid']);
 
           $strSql.=") OR (notice_state_delete = '".STATE_DISABLE."' AND notice_type = '".NOTICE_MSG."' ";            
           if(strlen($arrReqData['notice_mb_uid']) > 0 )
-              $strSql.=" AND notice_mb_uid = '".$arrReqData['notice_mb_uid']."' ";
+              $strSql.=" AND notice_mb_uid = ".$this->db->escape($arrReqData['notice_mb_uid']);
           $strSql.=") ";
         }
 

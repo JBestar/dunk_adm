@@ -101,10 +101,10 @@ class Exchange_Model extends Model {
         $strSQL = "SELECT SUM(exchange_money) AS exchange_sum FROM ".$this->table;
         $strSQL.=" WHERE (exchange_action_state = '".STATE_VERIFY."' OR exchange_action_state = '".STATE_HOT."') ";
         if(array_key_exists('start', $arrReqData) && strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
-            $strSQL.=" AND exchange_time_require >= '".$arrReqData['start']." 0:0:0' AND exchange_time_require <= '".$arrReqData['end']." 23:59:59' " ;
-        if(array_key_exists('mb_uid', $arrReqData) && strlen($arrReqData['mb_uid']) > 0){
-            $strSQL.=" AND exchange_mb_uid = '".$arrReqData['mb_uid']."' ";
-        }
+            $strSQL.=" AND exchange_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND exchange_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
+        if(array_key_exists('mb_uid', $arrReqData) && strlen($arrReqData['mb_uid']) > 0)
+            $strSQL.=" AND exchange_mb_uid = ".$this->db->escape($arrReqData['mb_uid']);
+
         $strSQL .= " AND exchange_mb_uid NOT IN (SELECT mb_uid FROM ".$this->mMemberTable." WHERE mb_level >= ".LEVEL_ADMIN.") ";
 
         $objResult = $this -> db -> query($strSQL)->getRow();
@@ -126,7 +126,7 @@ class Exchange_Model extends Model {
         $strSQL .= " SELECT SUM(exchange_money) AS exchange_money, exchange_mb_uid FROM ".$this->table;
         $strSQL.=" WHERE (exchange_action_state = '2' OR exchange_action_state = '5')  ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
-            $strSQL.=" AND ".getTimeRange("exchange_time_require", $arrReqData);
+            $strSQL.=" AND ".getTimeRange("exchange_time_require", $arrReqData, $this->db);
         $strSQL .= " AND exchange_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) ";
         
         // writeLog($strSQL);
@@ -147,10 +147,10 @@ class Exchange_Model extends Model {
         $strSql .= " JOIN member ON ".$this->table.".exchange_mb_uid = member.mb_uid ";
         $strSql .= " WHERE ( exchange_state_delete = '0' ";
         if(array_key_exists('start', $arrReqData) && strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSql.=" AND exchange_time_require >= '".$arrReqData['start']." 0:0:0' AND exchange_time_require <= '".$arrReqData['end']." 23:59:59'" ; 
+            $strSql.=" AND exchange_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND exchange_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
         }
         if(strlen($arrReqData['mb_uid']) > 0){
-            $strSql.=" AND exchange_mb_uid = '".$arrReqData['mb_uid']."' ";
+            $strSql.=" AND exchange_mb_uid = ".$this->db->escape($arrReqData['mb_uid']);
         }
         $strSql .= " ) OR exchange_action_state IN (1, 4) ";
 
@@ -171,10 +171,10 @@ class Exchange_Model extends Model {
         $strSql = "SELECT count(*) as count FROM ".$this->table;
         $strSql .= " WHERE ( exchange_state_delete = '0' ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSql.=" AND exchange_time_require >= '".$arrReqData['start']." 0:0:0' AND exchange_time_require <= '".$arrReqData['end']." 23:59:59'" ; 
+            $strSql.=" AND exchange_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND exchange_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
         }
         if(strlen($arrReqData['mb_uid']) > 0){
-            $strSql.=" AND exchange_mb_uid = '".$arrReqData['mb_uid']."' ";
+            $strSql.=" AND exchange_mb_uid = ".$this->db->escape($arrReqData['mb_uid']);
         }
         $strSql .= " ) OR exchange_action_state IN (1, 4) ";
 

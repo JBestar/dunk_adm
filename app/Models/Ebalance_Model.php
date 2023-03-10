@@ -32,22 +32,16 @@ class Ebalance_Model extends Model
     
     function getBetAccount($reqData){
         
-        // $where = " WHERE bet_state > ".BET_STATE_RES." AND bet_state < ".BET_STATE_DENY  ;
         $where = ""  ;
-        // $strCondition = " WHERE bet_money != bet_win_money ";
-        // if(strlen($reqData['start']) > 0 && strlen($reqData['end']) > 0 ){
-            $where.=" WHERE ".getTimeRange('bet_tm_req', $reqData);
-            // $strCondition.=" AND ".getBetTimeRange($reqData);
-        // }
+
+        $where.=" WHERE ".getTimeRange('bet_tm_req', $reqData, $this->db);
+
         if(strlen($reqData['user']) > 0){
-            $where.=" AND bet_site_uid = '".$reqData['user']."' ";
-            // $strCondition.=" AND bet_mb_uid = '".$reqData['user']."' ";   
+            $where.=" AND bet_site_uid = ".$this->db->escape($reqData['user']);
         }
         if(strlen(trim($reqData['room'])) > 0){
             $where.=" AND bet_table_name LIKE '%".trim($reqData['room'])."%' ";
-            // $strCondition.=" AND bet_table_code in ( SELECT tid FROM  casino_game WHERE tid = '".$reqData['room']."' OR name LIKE '%".$reqData['room']."%' ) ";
         }
-        // $strCondition.=" AND bet_game_id = '0' AND bet_player_id = '0' ";
 
         //총배팅금, 적중금
         $arrSum = array();
@@ -114,11 +108,8 @@ class Ebalance_Model extends Model
 
     public function searchCount($reqData){
 
-        // $where = " WHERE bet_state > ".BET_STATE_REQ." AND bet_state < ".BET_STATE_DENY  ;
         $where = "";
-        // if(strlen($reqData['start']) > 0 && strlen($reqData['end']) > 0 ){
-            $where.=" WHERE  ".getTimeRange('bet_tm_req', $reqData);
-        // }
+        $where.=" WHERE  ".getTimeRange('bet_tm_req', $reqData, $this->db);
         if(strlen($reqData['bet']) > 0){
             if(intval($reqData['bet']) == 1)
                 $where.=" AND bet_type IN (".BET_TYPE_ZERO.", ".BET_TYPE_NORMAL.") ";
@@ -126,7 +117,7 @@ class Ebalance_Model extends Model
                 $where.=" AND bet_type = '".BET_TYPE_FORCE."' ";
         }
         if(strlen($reqData['user']) > 0){
-            $where.=" AND bet_site_uid = '".$reqData['user']."' ";
+            $where.=" AND bet_site_uid = ".$this->db->escape($reqData['user']);
         }
         if(strlen(trim($reqData['room'])) > 0){
             $where.=" AND bet_table_name LIKE '%".trim($reqData['room'])."%' ";
@@ -143,11 +134,8 @@ class Ebalance_Model extends Model
 
     public function searchList($reqData){
         
-        // $where = " WHERE bet_state > ".BET_STATE_REQ." AND bet_state < ".BET_STATE_DENY  ;
         $where = " "  ;
-        // if(strlen($reqData['start']) > 0 && strlen($reqData['end']) > 0 ){
-            $where.=" WHERE ".getTimeRange('bet_tm_req', $reqData);
-        // }
+        $where.=" WHERE ".getTimeRange('bet_tm_req', $reqData, $this->db);
         if(strlen($reqData['bet']) > 0){
             if(intval($reqData['bet']) == 1)
                 $where.=" AND bet_type IN (".BET_TYPE_ZERO.", ".BET_TYPE_NORMAL.") ";
@@ -155,7 +143,7 @@ class Ebalance_Model extends Model
                 $where.=" AND bet_type = '".BET_TYPE_FORCE."' ";
         }
         if(strlen($reqData['user']) > 0){
-            $where.=" AND  bet_site_uid = '".$reqData['user']."' ";
+            $where.=" AND bet_site_uid = ".$this->db->escape($reqData['user']);
         }
         if(strlen(trim($reqData['room'])) > 0){
             $where.=" AND bet_table_name LIKE '%".trim($reqData['room'])."%' ";

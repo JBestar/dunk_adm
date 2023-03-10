@@ -1354,7 +1354,7 @@ public function withdrawlist(){
 		$arrGetData = json_decode($jsonData, true);
 
 		if(is_login()) {
-			writeLog("csbetlist");
+			// writeLog("csbetlist");
 			$tmNow = microtime(true) * 1000;
 
 			//model
@@ -1382,7 +1382,7 @@ public function withdrawlist(){
 				$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
 			} 
 			$arrBetResults = $csbetModel->search($objAdmin, $arrGetData);
-			writeLog("csbetlist end duration = ".(microtime(true) * 1000 - $tmNow));
+			// writeLog("csbetlist end duration = ".(microtime(true) * 1000 - $tmNow));
 			
 			$objResult = new \StdClass;
 			$objResult->data = $arrBetResults;	
@@ -1406,7 +1406,7 @@ public function withdrawlist(){
 		$arrGetData = json_decode($jsonData, true);
 
 		if(is_login()) {
-			writeLog("csbetlistcnt");
+			// writeLog("csbetlistcnt");
 			$tmNow = microtime(true) * 1000;
 			//model
 			if(isEBalMode()){
@@ -1435,7 +1435,7 @@ public function withdrawlist(){
 					$arrBetAccount = $csbetModel->getBetAccount($arrGetData);
 			}
 			$objCount = $csbetModel->searchCount($objAdmin, $arrGetData);
-			writeLog("csbetlistcnt end duration = ".(microtime(true) * 1000 - $tmNow));
+			// writeLog("csbetlistcnt end duration = ".(microtime(true) * 1000 - $tmNow));
 			
 			$arrResult['data'] = $objCount;
 			$arrResult['account'] = $arrBetAccount;

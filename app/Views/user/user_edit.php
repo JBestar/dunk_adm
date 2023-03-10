@@ -26,7 +26,7 @@
 			<?php } else {?>
 			<input type = "text"   id="useredit-id-input-id" class="english_s" value="<?=$objMember->mb_uid ?>" disabled>
 			<?php } ?>
-			<label>(영문,숫자만 가능)</label>
+			<label>(4~16자 영문,숫자만 가능)</label>
 		</div>
 		<!---->
 		<div class="useredit-text-div">
@@ -40,7 +40,7 @@
 				<input type = "text" id="useredit-nickname-input-id" value="<?=$objMember->mb_nickname?>" disabled>
 				<?php } ?>		
 			<?php } ?>
-			<label>(길이 2~20)</label>
+			<label>(길이 2~20자)</label>
 		</div>
 		<!---->
         <?php $this->renderSection('user-edit-check-level')  ?>
@@ -52,6 +52,7 @@
 			<?php } else {?>
 			<input type = "text" id="useredit-pwd-input-id" class="english_s" value="<?=$objMember->mb_pwd?>" >
 			<?php } ?>
+			<label>(8~20자, 특수문자 한개 이상)</label>
 		</div>
 		<?php }?>
 		<!---->
@@ -86,7 +87,7 @@
 			<?php } else if(is_null($objMember->mb_bank_own)) {  ?>
 			<input type = "text" id="useredit-bankaccount-input-id">
 			<?php } else {?>
-			<input type = "text" id="useredit-bankaccount-input-id" value="<?=$objMember->mb_bank_own?>" >
+			<input type = "text" id="useredit-bankaccount-input-id" value="<?=$objMember->mb_bank_own?>"  disabled>
 			<?php } ?>
 		</div>
 		<!---->
@@ -95,7 +96,7 @@
 			<?php if(is_null($objMember) || is_null($objMember->mb_bank_num)) {  ?>						
 			<input type = "text" id="useredit-bankserial-input-id">
 			<?php } else {?>
-			<input type = "text" id="useredit-bankserial-input-id" value="<?=$objMember->mb_bank_num?>" >
+			<input type = "text" id="useredit-bankserial-input-id" value="<?=$objMember->mb_bank_num?>"  disabled>
 			<?php } ?>
 			<label>(-없이 숫자만입력)</label>
 		</div>

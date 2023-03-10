@@ -67,13 +67,13 @@
 			<Table class="main-navbar-betinfo-table">
 				<?php if(!$hpg_deny) :?>
 				<tr>
-					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">해피볼단폴:</td>
+					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">해피단:</td>
 					<td>배팅<span id="main-navbar-pbbet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-pbbetearn-id">0 원</span></td>
 					<!--<td>누름<span id="main-navbar-pbbetpress-id">0 원</span></td>-->
 				</tr>
 				<tr>
-					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">해피볼조합:</td>
+					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">해피조:</td>
 					<td>배팅<span id="main-navbar-pb2bet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-pb2betearn-id">0 원</span></td>
 					<!--<td>누름<span id="main-navbar-pb2betpress-id">0 원</span></td>-->
@@ -81,17 +81,17 @@
 				<?php endif ?>   
 				<?php if(!$bpg_deny) :?>
 				<tr>
-					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보글볼단폴:</td>
+					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보볼단:</td>
 					<td>배팅<span id="main-navbar-bbbet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-bbbetearn-id">0 원</span></td>
 				</tr>
 				<tr>
-					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보글볼조합:</td>
+					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보볼조:</td>
 					<td>배팅<span id="main-navbar-bb2bet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-bb2betearn-id">0 원</span></td>
 				</tr>
 				<tr>
-					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보글사다리:</td>
+					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보사달:</td>
 					<td>배팅<span id="main-navbar-bsbet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-bsbetearn-id">0 원</span></td>
 				</tr>
@@ -103,13 +103,13 @@
 			<Table class="main-navbar-betinfo-table">
 				<?php if(!$eos5_deny) :?>
 					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">EOS5분 단폴:</td>
+						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">EOS5단:</td>
 						<td>배팅<span id="main-navbar-e5bet-id">0 원</span></td>
 						<td>적중<span id="main-navbar-e5betearn-id">0 원</span></td>
 
 					</tr>
 					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">EOS5분 조합:</td>
+						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">EOS5조:</td>
 						<td>배팅<span id="main-navbar-e52bet-id">0 원</span></td>
 						<td>적중<span id="main-navbar-e52betearn-id">0 원</span></td>
 
@@ -117,13 +117,13 @@
 				<?php endif ?>
 				<?php if(!$eos3_deny) :?>
 					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">EOS3분 단폴:</td>
+						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">EOS3단:</td>
 						<td>배팅<span id="main-navbar-e3bet-id">0 원</span></td>
 						<td>적중<span id="main-navbar-e3betearn-id">0 원</span></td>
 
 					</tr>
 					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">EOS3분 조합:</td>
+						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">EOS3조:</td>
 						<td>배팅<span id="main-navbar-e32bet-id">0 원</span></td>
 						<td>적중<span id="main-navbar-e32betearn-id">0 원</span></td>
 
@@ -136,13 +136,13 @@
 			<Table class="main-navbar-betinfo-table">
 				<?php if(!$coin5_deny) :?>
 					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인5분 단폴:</td>
+						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인5단:</td>
 						<td>배팅<span id="main-navbar-c5bet-id">0 원</span></td>
 						<td>적중<span id="main-navbar-c5betearn-id">0 원</span></td>
 
 					</tr>
 					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인5분 조합:</td>
+						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인5조:</td>
 						<td>배팅<span id="main-navbar-c52bet-id">0 원</span></td>
 						<td>적중<span id="main-navbar-c52betearn-id">0 원</span></td>
 
@@ -150,13 +150,13 @@
 				<?php endif ?>
 				<?php if(!$coin3_deny) :?>
 					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인3분 단폴:</td>
+						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인3단:</td>
 						<td>배팅<span id="main-navbar-c3bet-id">0 원</span></td>
 						<td>적중<span id="main-navbar-c3betearn-id">0 원</span></td>
 
 					</tr>
 					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인3분 조합:</td>
+						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인3조:</td>
 						<td>배팅<span id="main-navbar-c32bet-id">0 원</span></td>
 						<td>적중<span id="main-navbar-c32betearn-id">0 원</span></td>
 

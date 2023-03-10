@@ -99,10 +99,10 @@ class Charge_Model extends Model
         $strSQL = "SELECT SUM(charge_money) AS charge_sum FROM ".$this->table;
         $strSQL.=" WHERE (charge_action_state = '".STATE_VERIFY."' OR charge_action_state = '".STATE_HOT."') ";
         if(array_key_exists('start', $arrReqData) && strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSQL.=" AND charge_time_require >= '".$arrReqData['start']." 0:0:0' AND charge_time_require <= '".$arrReqData['end']." 23:59:59'" ; 
+            $strSQL.=" AND charge_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND charge_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59'") ; 
         }
         if(array_key_exists('mb_uid', $arrReqData) && strlen($arrReqData['mb_uid']) > 0){
-            $strSQL.=" AND charge_mb_uid = '".$arrReqData['mb_uid']."' ";
+            $strSQL.=" AND charge_mb_uid = ".$this->db->escape($arrReqData['mb_uid']);
         }
         $strSQL .= " AND charge_mb_uid NOT IN (SELECT mb_uid FROM ".$this->mMemberTable." WHERE mb_level >= ".LEVEL_ADMIN.") ";
 
@@ -125,7 +125,7 @@ class Charge_Model extends Model
         $strSQL .= " SELECT SUM(charge_money) AS charge_money, charge_mb_uid FROM ".$this->table;
         $strSQL.=" WHERE (charge_action_state = '2'  OR charge_action_state = '5') ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
-            $strSQL.=" AND ".getTimeRange("charge_time_require", $arrReqData);
+            $strSQL.=" AND ".getTimeRange("charge_time_require", $arrReqData, $this->db);
         $strSQL .= " AND charge_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) ";
             
         // writeLog($strSQL);
@@ -146,10 +146,10 @@ class Charge_Model extends Model
         $strSql .= " JOIN member ON ".$this->table.".charge_mb_uid = member.mb_uid ";
         $strSql .= " WHERE ( charge_state_delete = '0' ";
         if(array_key_exists('start', $arrReqData) && strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSql.=" AND charge_time_require >= '".$arrReqData['start']." 0:0:0' AND charge_time_require <= '".$arrReqData['end']." 23:59:59'" ; 
+            $strSql.=" AND charge_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND charge_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
         }
         if(strlen($arrReqData['mb_uid']) > 0){
-            $strSql.=" AND charge_mb_uid = '".$arrReqData['mb_uid']."' ";
+            $strSql.=" AND charge_mb_uid = ".$this->db->escape($arrReqData['mb_uid']);
         }
         $strSql .= " ) OR charge_action_state IN (1, 4) ";
 
@@ -170,10 +170,10 @@ class Charge_Model extends Model
         $strSql = "SELECT count(*) as count FROM ".$this->table;
         $strSql .= " WHERE ( charge_state_delete = '0' ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSql.=" AND charge_time_require >= '".$arrReqData['start']." 0:0:0' AND charge_time_require <= '".$arrReqData['end']." 23:59:59'" ; 
+            $strSql.=" AND charge_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND charge_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
         }
         if(strlen($arrReqData['mb_uid']) > 0){
-            $strSql.=" AND charge_mb_uid = '".$arrReqData['mb_uid']."' ";
+            $strSql.=" AND charge_mb_uid = ".$this->db->escape($arrReqData['mb_uid']);
         }
         $strSql .= " ) OR charge_action_state IN (1, 4) ";
         $query = $this -> db -> query($strSql);

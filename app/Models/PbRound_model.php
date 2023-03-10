@@ -125,13 +125,13 @@ class PbRound_Model extends Model
         $bWhere = false;
         if (strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
             $bWhere = true;
-            $strSql .= " WHERE round_date >= '".$arrReqData['start']."' AND round_date <= '".$arrReqData['end']."'";
+            $strSql .= " WHERE round_date >= ".$this->db->escape($arrReqData['start'])." AND round_date <= ".$this->db->escape($arrReqData['end']);
         }
         if (strlen($arrReqData['round']) > 0) {
             if ($bWhere) {
-                $strSql .= " AND round_num = '".$arrReqData['round']."' ";
+                $strSql .= " AND round_num = ".$this->db->escape($arrReqData['round']);
             } else {
-                $strSql .= " WHERE round_num = '".$arrReqData['round']."' ";
+                $strSql .= " WHERE round_num = ".$this->db->escape($arrReqData['round']);
             }
         }
         $nStartRow = ($arrReqData['page'] - 1) * $arrReqData['count'];
@@ -149,13 +149,13 @@ class PbRound_Model extends Model
         $bWhere = false;
         if (strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
             $bWhere = true;
-            $strSql .= " WHERE round_date >= '".$arrReqData['start']."' AND round_date <= '".$arrReqData['end']."'";
+            $strSql .= " WHERE round_date >= ".$this->db->escape($arrReqData['start'])." AND round_date <= ".$this->db->escape($arrReqData['end']);
         }
         if (strlen($arrReqData['round']) > 0) {
             if ($bWhere) {
-                $strSql .= " AND round_num = '".$arrReqData['round']."' ";
+                $strSql .= " AND round_num = ".$this->db->escape($arrReqData['round']);
             } else {
-                $strSql .= " WHERE round_num = '".$arrReqData['round']."' ";
+                $strSql .= " WHERE round_num = ".$this->db->escape($arrReqData['round']);
             }
         }
         $query = $this->db->query($strSql);

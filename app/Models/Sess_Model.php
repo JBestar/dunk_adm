@@ -86,13 +86,13 @@ class Sess_Model extends Model {
         $strSql = "SELECT ".$this->table.".*, member.mb_nickname, member.mb_level, ";
         $strSql .= " (member.mb_money+member.mb_live_money+member.mb_slot_money+member.mb_fslot_money+member.mb_kgon_money+member.mb_gslot_money+member.mb_hslot_money) AS mb_money, member.mb_point FROM ".$this->table;
         $strSql .= " JOIN member ON ".$this->table.".sess_mb_fid = member.mb_fid ";
-        $strSql .= " WHERE mb_level < '".$mbLv."' ";
+        $strSql .= " WHERE mb_level < ".$mbLv;
         
         if(strlen($arrReqData['mb_uid']) > 0){
-            $strSql.=" AND sess_mb_uid = '".$arrReqData['mb_uid']."' ";
+            $strSql.=" AND sess_mb_uid = ".$this->db->escape($arrReqData['mb_uid']);
         }
         if(intval($arrReqData['type']) >= 0){
-            $strSql.=" AND sess_type = '".$arrReqData['type']."' ";
+            $strSql.=" AND sess_type = ".$this->db->escape($arrReqData['type']);
         }
         $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
 
@@ -110,12 +110,12 @@ class Sess_Model extends Model {
     {
         $strSql = "SELECT count(*) as count FROM ".$this->table;
         $strSql .= " JOIN member ON ".$this->table.".sess_mb_fid = member.mb_fid ";
-        $strSql .= " WHERE mb_level < '".$mbLv."' ";
+        $strSql .= " WHERE mb_level < ".$mbLv;
         if(strlen($arrReqData['mb_uid']) > 0){
-            $strSql.=" AND sess_mb_uid = '".$arrReqData['mb_uid']."' ";
+            $strSql.=" AND sess_mb_uid = ".$this->db->escape($arrReqData['mb_uid']);
         }
         if(intval($arrReqData['type']) >= 0){
-            $strSql.=" AND sess_type = '".$arrReqData['type']."' ";
+            $strSql.=" AND sess_type = ".$this->db->escape($arrReqData['type']);
         }
         $query = $this -> db -> query($strSql);
         $result = $query -> getRow();

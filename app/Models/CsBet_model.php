@@ -43,15 +43,15 @@ class CsBet_Model extends Model
         $strCondition .= " bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
         // }
         if(strlen($arrReqData['user']) > 0){
-            $strCondition.=" AND bet_mb_uid = '".$arrReqData['user']."' ";            
+            $strCondition.=" AND bet_mb_uid = ".$this->db->escape($arrReqData['user']);
         }
         $strCondition .= " AND bet_money != bet_win_money ";
         if(intval($arrReqData['mode']) >= 0){
-            $strCondition.=" AND bet_game_id = '".$arrReqData['mode']."' ";
+            $strCondition.=" AND bet_game_id = ".$this->db->escape($arrReqData['mode']);
         } else if(intval($arrReqData['mode']) == -10){
             $strCondition.=" AND bet_game_id = '0' AND bet_player_id = '0' ";
             if(strlen($arrReqData['room']) > 0)
-                $strCondition.=" AND bet_table_code in ( SELECT tid FROM  casino_game WHERE tid = '".$arrReqData['room']."' OR name LIKE '%".$arrReqData['room']."%' ) ";
+                $strCondition.=" AND bet_table_code in ( SELECT tid FROM  casino_game WHERE tid = ".$this->db->escape($arrReqData['room'])." OR name = ".$this->db->escape($arrReqData['room'])." ) ";
         }
 
         //총배팅금, 적중금
@@ -96,6 +96,11 @@ class CsBet_Model extends Model
     {
         $gameId = GAME_CASINO_EVOL;
 
+        if(is_null($objEmp)){
+            $result = null;
+            return $result;
+        }
+
         $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_live_id ";
         $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_nickname, r.mb_live_id ";
 
@@ -107,29 +112,17 @@ class CsBet_Model extends Model
         //     $strWhere.=" WHERE ".getBetTimeRange($arrReqData);
         // }
         if(strlen($arrReqData['user']) > 0){
-            if($bWhere) $strWhere.= " AND ";
-            else $strWhere.= " WHERE ";
-            $strWhere.=" bet_mb_uid = '".$arrReqData['user']."' ";
-            $bWhere = true;
+            $strWhere.=" AND bet_mb_uid = ".$this->db->escape($arrReqData['user']);
         }
         if(intval($arrReqData['mode']) >= 0){
-            if($bWhere) $strWhere.= " AND ";
-            else $strWhere.= " WHERE ";
-            $strWhere.=" bet_game_id = '".$arrReqData['mode']."' ";
-            $bWhere = true;
+            $strWhere.=" AND bet_game_id = ".$this->db->escape($arrReqData['mode']);
         } else if(intval($arrReqData['mode']) == -10){
-            if($bWhere) $strWhere.= " AND ";
-            else $strWhere.= " WHERE ";
-            $strWhere.=" bet_game_id = '0' AND bet_player_id = '0' ";
+            $strWhere.=" AND bet_game_id = '0' AND bet_player_id = '0' ";
             if(strlen($arrReqData['room']) > 0)
-                $strWhere.=" AND bet_table_code in ( SELECT tid FROM  casino_game WHERE tid = '".$arrReqData['room']."' OR name LIKE '%".$arrReqData['room']."%' ) ";
-            $bWhere = true;
+                $strWhere.=" AND bet_table_code in ( SELECT tid FROM  casino_game WHERE tid = ".$this->db->escape($arrReqData['room'])." OR name = ".$this->db->escape($arrReqData['room'])." ) ";
         }
         if($objEmp->mb_level < LEVEL_ADMIN){
-            if($bWhere) $strWhere.= " AND ";
-            else $strWhere.= " WHERE ";  
-            $strWhere.=" bet_mb_uid in ( SELECT mb_uid FROM  tbmember UNION ALL SELECT '".$objEmp->mb_uid."' AS mb_uid ) ";
-            $bWhere = true;
+            $strWhere.=" AND bet_mb_uid in ( SELECT mb_uid FROM  tbmember UNION ALL SELECT '".$objEmp->mb_uid."' AS mb_uid ) ";
         }
         if(array_key_exists("state", $arrReqData) && $arrReqData['state'] > 0){
             $strWhere.=" AND company_amount > 0 ";
@@ -194,12 +187,18 @@ class CsBet_Model extends Model
 
     function searchCount($objEmp, $arrReqData)
     {
+        if(is_null($objEmp)){
+            $result = new \StdClass;
+            $result->count = 0;
+            return $result;
+        } 
+        
         $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_live_id ";
         $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_live_id ";
 
-         $strSql = "";
-        if($objEmp->mb_level < LEVEL_ADMIN){
+        $strSql = "";
 
+        if($objEmp->mb_level < LEVEL_ADMIN){
 
             $strSql = "WITH RECURSIVE tbmember (".$strTbColum.") AS";
             $strSql .= " ( SELECT ".$strTbColum." FROM ".$this->mMemberTable." WHERE mb_emp_fid = '".$objEmp->mb_fid."'";
@@ -208,16 +207,11 @@ class CsBet_Model extends Model
 
             $strSql .= "SELECT count(bet_fid) as count  FROM ".$this->table;
 
-            // $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";         
-            // $strSql .=" ) AS mb_table ";
-            // $strSql .=" ON ".$this->table.".bet_mb_uid = mb_table.mb_uid ";
         } else {
             $strSql .= "SELECT count(bet_fid) as count  FROM ".$this->table;
-            // $strSql .= " JOIN member ON ".$this->table.".bet_mb_uid = ".$this->mMemberTable.".mb_uid ";
         }
         
         $bWhere = true;
-        $strSql .= " WHERE ";
         $strSql .= " bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
 
         // if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
@@ -225,28 +219,17 @@ class CsBet_Model extends Model
         //     $bWhere = true;
         // }
         if(strlen($arrReqData['user']) > 0){
-            if($bWhere) $strSql.= " AND ";
-            else $strSql.= " WHERE ";    
-            $strSql.=" bet_mb_uid = '".$arrReqData['user']."' ";
-            $bWhere = true;
+            $strSql.=" AND bet_mb_uid = ".$this->db->escape($arrReqData['user']);
         }
         if(intval($arrReqData['mode']) >= 0){
-            if($bWhere) $strSql.= " AND ";
-            else $strSql.= " WHERE ";    
-            $strSql.=" bet_game_id = '".$arrReqData['mode']."' ";
-            $bWhere = true;
+            $strSql.=" AND bet_game_id = ".$this->db->escape($arrReqData['mode']);
         } else if(intval($arrReqData['mode']) == -10){
-            if($bWhere) $strSql.= " AND ";
-            else $strSql.= " WHERE ";    
-            $strSql.=" bet_game_id = '0' AND bet_player_id = '0' ";
+            $strSql.=" AND bet_game_id = '0' AND bet_player_id = '0' ";
             if(strlen($arrReqData['room']) > 0)
-                $strSql.=" AND bet_table_code in ( SELECT tid FROM  casino_game WHERE tid = '".$arrReqData['room']."' OR name LIKE '%".$arrReqData['room']."%' ) ";
-            $bWhere = true;
+                $strSql.=" AND bet_table_code in ( SELECT tid FROM  casino_game WHERE tid = ".$this->db->escape($arrReqData['room'])." OR name = ".$this->db->escape($arrReqData['room'])." ) ";
         }
         if($objEmp->mb_level < LEVEL_ADMIN){
-            if($bWhere) $strSql.= " AND ";
-            else $strSql.= " WHERE ";    
-            $strSql.=" bet_mb_uid in ( SELECT mb_uid FROM  tbmember UNION ALL SELECT '".$objEmp->mb_uid."' AS mb_uid ) ";
+            $strSql.=" AND bet_mb_uid in ( SELECT mb_uid FROM  tbmember UNION ALL SELECT '".$objEmp->mb_uid."' AS mb_uid ) ";
         }
         if(array_key_exists("state", $arrReqData) && $arrReqData['state'] > 0){
             $strSql.=" AND company_amount > 0 ";

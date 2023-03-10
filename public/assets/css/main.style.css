@@ -271,7 +271,7 @@ tr {
     border: none;
     font-size: 14px;
     color: var(--bar-font-color);
-    padding: 5px 10px;
+    padding: 5px 5px;
 }
 
 .main-navbar-info-table td span {

@@ -13,7 +13,7 @@ class Block_Model extends Model {
 
     
     public function getByIp($ip, $bStop =  false){
-        $where = "block_ip = '".$ip."' ";
+        $where = "block_ip = ".$this->db->escape($ip);
         
         if($bStop)
             $where.= " AND block_state = '1' ";
@@ -53,7 +53,7 @@ class Block_Model extends Model {
         $strSql = "SELECT ".$this->table.".* FROM ".$this->table;
         $strSql .= " WHERE block_fid > '0' ";
         if(strlen($arrReqData['ip']) > 0){
-            $strSql.=" AND block_ip = '".$arrReqData['ip']."' ";
+            $strSql.=" AND block_ip = ".$this->db->escape($arrReqData['ip']);
         }
         $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
 
@@ -72,7 +72,7 @@ class Block_Model extends Model {
         $strSql = "SELECT count(*) as count FROM ".$this->table;
         $strSql .= " WHERE block_fid > '0' ";
         if(strlen($arrReqData['ip']) > 0){
-            $strSql.=" AND block_ip = '".$arrReqData['ip']."' ";
+            $strSql.=" AND block_ip = ".$this->db->escape($arrReqData['ip']);
         }
         $query = $this -> db -> query($strSql);
         $result = $query -> getRow();

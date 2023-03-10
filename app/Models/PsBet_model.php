@@ -172,18 +172,18 @@ class PsBet_Model extends Model {
         
         $strCondition = " WHERE bet_state <> ".BET_STATE_TIE;
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strCondition.=" AND ".getBetTimeRange($arrReqData);
+            $strCondition.=" AND ".getBetTimeRange($arrReqData, $this->db);
                         
         }
         if(strlen($arrReqData['user']) > 0){
-            $strCondition.=" AND bet_mb_uid = '".$arrReqData['user']."' ";            
+            $strCondition.=" AND bet_mb_uid = ".$this->db->escape($arrReqData['user']);            
         }
         if(strlen($arrReqData['round']) > 0){
-            $strCondition.=" AND bet_round_no = '".$arrReqData['round']."' ";            
+            $strCondition.=" AND bet_round_no = ".$this->db->escape($arrReqData['round']);            
         }
         if((int)$arrReqData['mode'] > 0){
             if($arrReqData['mode'] <= 3)
-                $strCondition.=" AND bet_mode = '".$arrReqData['mode']."' ";
+                $strCondition.=" AND bet_mode = ".$this->db->escape($arrReqData['mode']);
             else 
                 $strCondition.=" AND bet_mode >= 4 AND bet_mode <= 7 ";
 
@@ -235,7 +235,7 @@ class PsBet_Model extends Model {
         $bWhere = false;
         $strWhere="";
         if (strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
-            $strWhere .= " WHERE ".getBetTimeRange($arrReqData);
+            $strWhere .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
             $bWhere = true;
         }
         if (strlen($arrReqData['user']) > 0) {
@@ -244,7 +244,7 @@ class PsBet_Model extends Model {
             } else {
                 $strWhere .= ' WHERE ';
             }
-            $strWhere .= " bet_mb_uid = '".$arrReqData['user']."' ";
+            $strWhere .= " bet_mb_uid = ".$this->db->escape($arrReqData['user']);
             $bWhere = true;
         }
         if (strlen($arrReqData['round']) > 0) {
@@ -253,7 +253,7 @@ class PsBet_Model extends Model {
             } else {
                 $strWhere .= ' WHERE ';
             }
-            $strWhere .= " bet_round_no = '".$arrReqData['round']."' ";
+            $strWhere .= " bet_round_no = ".$this->db->escape($arrReqData['round']);
             $bWhere = true;
         }
         if ((int) $arrReqData['mode'] > 0) {
@@ -264,7 +264,7 @@ class PsBet_Model extends Model {
             }
 
             if($arrReqData['mode'] <= 3)
-                $strWhere.=" bet_mode = '".$arrReqData['mode']."' ";
+                $strWhere.=" bet_mode = ".$this->db->escape($arrReqData['mode']);
             else 
                 $strWhere.=" bet_mode >= 4 AND bet_mode <= 7 ";
         }
@@ -342,26 +342,26 @@ class PsBet_Model extends Model {
 
         $bWhere = false;
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSql.=" WHERE ".getBetTimeRange($arrReqData);
+            $strSql.=" WHERE ".getBetTimeRange($arrReqData, $this->db);
             $bWhere = true;
         }
         if(strlen($arrReqData['user']) > 0){
             if($bWhere) $strSql.= " AND ";
             else $strSql.= " WHERE ";    
-            $strSql.=" bet_mb_uid = '".$arrReqData['user']."' ";
+            $strSql.=" bet_mb_uid = ".$this->db->escape($arrReqData['user']);
             $bWhere = true;
         }
         if(strlen($arrReqData['round']) > 0){
             if($bWhere) $strSql.= " AND ";
             else $strSql.= " WHERE ";    
-            $strSql.=" bet_round_fid = '".$arrReqData['round']."' ";
+            $strSql.=" bet_round_fid = ".$this->db->escape($arrReqData['round']);
             $bWhere = true;
         }
         if((int)$arrReqData['mode'] > 0){
             if($bWhere) $strSql.= " AND ";
             else $strSql.= " WHERE ";    
             if($arrReqData['mode'] <= 3)
-                $strSql.=" bet_mode = '".$arrReqData['mode']."' ";
+                $strSql.=" bet_mode = ".$this->db->escape($arrReqData['mode']);
             else 
                 $strSql.=" bet_mode >= 4 AND bet_mode <= 7 ";
         }

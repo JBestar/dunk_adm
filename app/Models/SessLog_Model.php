@@ -32,12 +32,12 @@ class SessLog_Model extends Model {
         $strSql = "SELECT ".$this->table.".*, member.mb_nickname, member.mb_level, block_ip, block_state FROM ".$this->table;
         $strSql .= " JOIN member ON ".$this->table.".log_mb_uid = member.mb_uid ";
         $strSql .= ' LEFT JOIN '.$tbBlock.' ON '.$this->table.'.log_ip = '.$tbBlock.'.block_ip ';
-        $strSql .= " WHERE log_delete = '0' AND mb_level < '".$mbLv."' " ;
+        $strSql .= " WHERE log_delete = '0' AND mb_level < ".$mbLv ;
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSql.=" AND log_time >= '".$arrReqData['start']." 0:0:0' AND log_time <= '".$arrReqData['end']." 23:59:59'" ; 
+            $strSql.=" AND log_time >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND log_time <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
         }
         if(strlen($arrReqData['mb_uid']) > 0){
-            $strSql.=" AND log_mb_uid = '".$arrReqData['mb_uid']."' ";
+            $strSql.=" AND log_mb_uid = ".$this->db->escape($arrReqData['mb_uid']);
         }
         $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
 
@@ -55,12 +55,12 @@ class SessLog_Model extends Model {
     {
         $strSql = "SELECT count(*) as count FROM ".$this->table;
         $strSql .= " JOIN member ON ".$this->table.".log_mb_uid = member.mb_uid ";
-        $strSql .= " WHERE log_delete = '0' AND mb_level < '".$mbLv."' " ;
+        $strSql .= " WHERE log_delete = '0' AND mb_level < ".$mbLv ;
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSql.=" AND log_time >= '".$arrReqData['start']." 0:0:0' AND log_time <= '".$arrReqData['end']." 23:59:59'" ; 
+            $strSql.=" AND log_time >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND log_time <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
         }
         if(strlen($arrReqData['mb_uid']) > 0){
-            $strSql.=" AND log_mb_uid = '".$arrReqData['mb_uid']."' ";
+            $strSql.=" AND log_mb_uid = ".$this->db->escape($arrReqData['mb_uid']);
         }
         $query = $this -> db -> query($strSql);
         $result = $query -> getRow();

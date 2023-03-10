@@ -276,6 +276,11 @@ class Member_Model extends Model
 
     public function moneyProc(&$objUser, $dtMoney, $dtPoint=0, $nCharge=0, $nExchange=0)
     {
+        $dtMoney = floatval($dtMoney);
+        $dtPoint = floatval($dtPoint);
+        $nCharge = floatval($nCharge);
+        $nExchange = floatval($nExchange);
+
         $strSql1 = 'UPDATE '.$this->table.' SET ';
         if ($dtMoney >= 0) {
             $strSql1 .= 'mb_money = mb_money+'.$dtMoney;
@@ -326,6 +331,7 @@ class Member_Model extends Model
 
     public function trasferMoney($objSender, $objReceiver, $amount){
 
+        $amount = floatval($amount);
         if($amount <= 0)
             return false;
         
@@ -455,7 +461,7 @@ class Member_Model extends Model
         
         $strCond = ""; 
         if (strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
-            $strCond = " WHERE ".getBetTimeRange($arrReqData);
+            $strCond = " WHERE ".getBetTimeRange($arrReqData, $this->db);
         }
         $strSQL = " SELECT MIN(bet_fid) AS min_fid, MAX(bet_fid) AS max_fid FROM ".$tbName;
         $strSQL.= $strCond; 
@@ -522,7 +528,7 @@ class Member_Model extends Model
         
         $strCond = ""; 
         if (strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
-            $strCond = " WHERE ".getTimeRange("rw_time", $arrReqData);
+            $strCond = " WHERE ".getTimeRange("rw_time", $arrReqData, $this->db);
         }
         $strSQL = " SELECT MIN(rw_fid) AS min_fid, MAX(rw_fid) AS max_fid FROM ".$tbName;
         $strSQL.= $strCond; 
@@ -539,158 +545,7 @@ class Member_Model extends Model
          }
          return $range;
      }
-     /*
-    // 배팅금액 (하부포함)
-    public function calcBetMoneys($objEmp, $arrReqData, $confs)
-    {
-        // $strCond = "";
-        // if (strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
-        //     $strCond = " WHERE ".getBetTimeRange($arrReqData);
-        // }
-
-        $strTbColum = ' mb_fid, mb_uid, mb_level, mb_emp_fid ';
-        $strTbRColum = ' r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid ';
-
-        $strSQL = 'WITH RECURSIVE tbmember ('.$strTbColum.') AS';
-        $strSQL .= ' ( SELECT '.$strTbColum.' FROM '.$this->table." WHERE mb_emp_fid = '".$objEmp->mb_fid."'";
-        $strSQL .= ' UNION ALL SELECT '.$strTbRColum.' FROM '.$this->table.' r ';
-        $strSQL .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
-
-        $strSQL .= ' SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money ';
-        $strSQL .= '  FROM ( SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_slot';
-        $strSQL .= " WHERE bet_fid >= ".$arrReqData['slot_range'][0]." AND bet_fid <= ".$arrReqData['slot_range'][1];
-        $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) ";
-
-        if(!$confs['hpg_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_happyball ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['hpb_range'][0]." AND bet_fid <= ".$arrReqData['hpb_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
-        }
-
-        if(!$confs['bpg_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleball ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['bpb_range'][0]." AND bet_fid <= ".$arrReqData['bpb_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
-
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleladder ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['bps_range'][0]." AND bet_fid <= ".$arrReqData['bps_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
-        }
-
-        if(!$confs['eos5_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_eos5ball ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['eos5_range'][0]." AND bet_fid <= ".$arrReqData['eos5_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
-        }
-
-        if(!$confs['eos3_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_eos3ball ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['eos3_range'][0]." AND bet_fid <= ".$arrReqData['eos3_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
-        }
-
-        if(!$confs['coin5_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_coin5ball ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['coin5_range'][0]." AND bet_fid <= ".$arrReqData['coin5_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
-        }
-
-        if(!$confs['coin3_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_coin3ball ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['coin3_range'][0]." AND bet_fid <= ".$arrReqData['coin3_range'][1];
-            $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
-        }
-
-        if(!$confs['evol_deny'] || !$confs['cas_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_casino ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['cas_range'][0]." AND bet_fid <= ".$arrReqData['cas_range'][1];
-            $strSQL .= " AND company_amount = 0 AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) )";
-        }
-        $strSQL .= " ) AS bet_table ";
-
-        // writeLog($strSQL);
-
-        $objResult = $this->db->query($strSQL)->getRow();
-        // writeLog("calcBetMoneys END");
-
-        $arrBetData['bet_money'] = 0;          // 배팅머니
-        $arrBetData['bet_win_money'] = 0;      // 적중머니
-        $arrBetData['bet_benefit_money'] = 0;  // 배팅손익
-
-         if (!is_null($objResult->bet_money)) {
-             $arrBetData['bet_money'] += $objResult->bet_money;
-         }
-        if (!is_null($objResult->bet_win_money)) {
-            $arrBetData['bet_win_money'] += $objResult->bet_win_money;
-        }
-
-        $arrBetData['bet_benefit_money'] = $arrBetData['bet_money'] - $arrBetData['bet_win_money'];  // 배팅손익
-
-        return $arrBetData;
-    }
-
-    // 배팅금액 (하부포함)
-    public function calcBetMoneysByGame($objEmp, $arrReqData)
-    {
-        $strTbColum = ' mb_fid, mb_uid, mb_level, mb_emp_fid ';
-        $strTbRColum = ' r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid ';
-
-        $strSQL = 'WITH RECURSIVE tbmember ('.$strTbColum.') AS';
-        $strSQL .= ' ( SELECT '.$strTbColum.' FROM '.$this->table." WHERE mb_emp_fid = '".$objEmp->mb_fid."'";
-        $strSQL .= ' UNION ALL SELECT '.$strTbRColum.' FROM '.$this->table.' r ';
-        $strSQL .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
-
-        $strSQL .= ' SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM ';
-        if ($arrReqData['type'] == GAME_POWER_BALL ) {
-            $strSQL .= ' bet_powerball ';
-        } elseif ($arrReqData['type'] == GAME_POWER_LADDER ) {
-            $strSQL .= ' bet_powerladder ';
-        } elseif ($arrReqData['type'] == GAME_CASINO_EVOL ) {
-            $strSQL .= ' bet_casino ';
-        } elseif ($arrReqData['type'] == GAME_BOGLE_BALL ) {
-            $strSQL .= ' bet_bogleball ';
-        } elseif ($arrReqData['type'] == GAME_BOGLE_LADDER ) {
-            $strSQL .= ' bet_bogleladder ';
-        } elseif ($arrReqData['type'] == GAME_SLOT_THEPLUS || $arrReqData['type'] == GAME_SLOT_GSPLAY || $arrReqData['type'] == GAME_SLOT_GOLD || $arrReqData['type'] == GAME_SLOT_ALL ) {
-            $strSQL .= ' bet_slot ';
-        } elseif ($arrReqData['type'] == GAME_EOS5_BALL ) {
-            $strSQL .= ' bet_eos5ball ';
-        } elseif ($arrReqData['type'] == GAME_EOS3_BALL ) {
-            $strSQL .= ' bet_eos3ball ';
-        } elseif ($arrReqData['type'] == GAME_COIN5_BALL ) {
-            $strSQL .= ' bet_coin5ball ';
-        } elseif ($arrReqData['type'] == GAME_COIN3_BALL ) {
-            $strSQL .= ' bet_coin3ball ';
-        } elseif ($arrReqData['type'] == GAME_HAPPY_BALL ) {
-            $strSQL .= ' bet_happyball ';
-        } else {
-            return null;
-        }
-        $strSQL .= " WHERE bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
-        if ($arrReqData['type'] == GAME_SLOT_THEPLUS || $arrReqData['type'] == GAME_SLOT_GSPLAY || $arrReqData['type'] == GAME_SLOT_GOLD){
-            $strSQL .= " AND bet_game_id = '".$arrReqData['type']."' ";
-        }
-        $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember UNION ALL SELECT '".$objEmp->mb_uid."' as mb_uid) ";
-        // writeLog($strSQL);
-        $objResult = $this->db->query($strSQL)->getRow();
-        // writeLog("calcBetMoneysByGame END");
-
-        $arrBetData['bet_money'] = 0;          // 배팅머니
-        $arrBetData['bet_win_money'] = 0;      // 적중머니
-        $arrBetData['bet_benefit_money'] = 0;  // 배팅손익
-
-         if (!is_null($objResult->bet_money)) {
-             $arrBetData['bet_money'] += $objResult->bet_money;
-         }
-        if (!is_null($objResult->bet_win_money)) {
-            $arrBetData['bet_win_money'] += $objResult->bet_win_money;
-        }
-
-        $arrBetData['bet_benefit_money'] = $arrBetData['bet_money'] - $arrBetData['bet_win_money'];  // 배팅손익
-
-        return $arrBetData;
-    }
-    */
+     
     //유저별 충환전 총액
     public function calcTransfer(&$objUser){
         $strSQL = " SELECT SUM(charge_money) AS result_1 FROM ".$this->chargeTb;
@@ -734,13 +589,13 @@ class Member_Model extends Model
         $strSQL .= " UNION ALL ( SELECT SUM(charge_money) AS result_1, '0' AS result_2 FROM ".$this->chargeTb;
         $strSQL.=" WHERE (charge_action_state = '2'  OR charge_action_state = '5') ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
-            $strSQL.=" AND ".getTimeRange("charge_time_require", $arrReqData);
+            $strSQL.=" AND ".getTimeRange("charge_time_require", $arrReqData, $this->db);
         $strSQL .= " AND charge_mb_uid IN (SELECT mb_uid from tbmember ) )";
         //환전금액
         $strSQL .= " UNION ALL ( SELECT SUM(exchange_money) AS result_1, '0' AS result_2 FROM ".$this->exchangeTb;
         $strSQL.=" WHERE (exchange_action_state = '2'  OR exchange_action_state = '5') ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
-            $strSQL.=" AND ".getTimeRange("exchange_time_require", $arrReqData);
+            $strSQL.=" AND ".getTimeRange("exchange_time_require", $arrReqData, $this->db);
         $strSQL .= " AND exchange_mb_uid IN (SELECT mb_uid from tbmember ) )";
 
         return $strSQL;
@@ -917,7 +772,7 @@ class Member_Model extends Model
     {
         $strCond = " WHERE bet_mb_uid = '".$arrReqData['mb_uid']."' ";
         if (array_key_exists('start', $arrReqData) && strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
-            $strCond .= " AND ".getBetTimeRange($arrReqData);
+            $strCond .= " AND ".getBetTimeRange($arrReqData, $this->db);
         }
 
         $strSQL = ' SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money ';
@@ -986,7 +841,7 @@ class Member_Model extends Model
     public function statistUserBet($arrReqData, $confs){
         $strCond = " WHERE bet_mb_uid = '".$arrReqData['mb_uid']."' ";
         if (array_key_exists('start', $arrReqData) && strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
-            $strCond .= " AND ".getBetTimeRange($arrReqData);
+            $strCond .= " AND ".getBetTimeRange($arrReqData, $this->db);
         }
 
          $strSQL = " SELECT bet_money, bet_win_money, bet_count, name_kr AS bet_name, '".GAME_SLOT_THEPLUS."' As bet_kind From ";
@@ -1523,8 +1378,10 @@ class Member_Model extends Model
         }
 
         $arrData['mb_bank_name'] = trim($arrData['mb_bank_name']);
-        $arrData['mb_bank_own'] = trim($arrData['mb_bank_own']);
-        $arrData['mb_bank_num'] = trim($arrData['mb_bank_num']);
+        if(array_key_exists('mb_bank_own', $arrData))
+            unset($arrData['mb_bank_own']);
+        if(array_key_exists('mb_bank_num', $arrData))
+            unset($arrData['mb_bank_num']);
         $arrData['mb_bank_pwd'] = trim($arrData['mb_bank_pwd']);
 
         if(array_key_exists('mb_money', $arrData))
@@ -1548,6 +1405,7 @@ class Member_Model extends Model
     {
         // 결과 0:오류 1:성공 2:아이디중복 3:추천인 오류 4:파워볼 배당율오류 5:파워사다리 배당율오류 6:키노사다리 배당율 오류
 
+        $arrData['mb_fid'] = intval($arrData['mb_fid']);
         // 아이디체크
         $objMember = $this->getInfoByFid($arrData['mb_fid']);
         if (is_null($objMember)) {
@@ -1641,6 +1499,8 @@ class Member_Model extends Model
 
     public function updateMemberByFid($arrData, &$query)
     {
+        $arrData['mb_fid'] = intval($arrData['mb_fid']);
+
         if (array_key_exists('mb_state_active', $arrData)) {
             $this->builder()->set('mb_state_active', $arrData['mb_state_active']);
         } elseif (array_key_exists('mb_game_pb', $arrData)) {
@@ -1765,7 +1625,7 @@ class Member_Model extends Model
             $sqlBuilder->where('mb_state_active', $arrReqData['mb_state']);
         }
         if (strlen($arrReqData['mb_uid']) > 0){
-            $where = "  mb_uid LIKE '%".$arrReqData['mb_uid']."%' OR mb_fid = '".$arrReqData['mb_uid']."' ";
+            $where = " mb_uid LIKE '%".$this->db->escapeLikeString($arrReqData['mb_uid'])."%' OR mb_fid = ".$this->db->escape($arrReqData['mb_uid']);
 
             $sqlBuilder->where($where);
         }
@@ -1793,13 +1653,14 @@ class Member_Model extends Model
                 $strSQL.=" AND mb_emp_fid = '".$iEmpFid."' ";
 
             if($arrReqData['mb_grade'] != 0){            
-                $strSQL.=" AND mb_grade = '".$arrReqData['mb_grade']."' ";
+                $strSQL.=" AND mb_grade = ".$this->db->escape($arrReqData['mb_grade']);
             }
             if ($arrReqData['mb_state'] >= 0){
-                $strSQL.=" AND mb_state_active = '".$arrReqData['mb_state']."' ";
+                $strSQL.=" AND mb_state_active = ".$this->db->escape($arrReqData['mb_state']);
             }
             if(strlen($arrReqData['mb_uid']) > 0){            
-                $strSQL.=" AND mb_uid LIKE '".$arrReqData['mb_uid']."%' ";
+                $strSQL.=" AND mb_uid LIKE '%".$this->db->escapeLikeString($arrReqData['mb_uid'])."%'";
+                
             }
             return $this -> db -> query($strSQL)->getRow();
 
@@ -1823,13 +1684,13 @@ class Member_Model extends Model
             $where .= " AND mb_emp_fid = '".$iEmpFid."'";
         }
         if (strlen($arrReqData['mb_uid']) > 0) {
-            $where .= " AND ( mb_uid LIKE '%".$arrReqData['mb_uid']."%' OR mb_fid = '".$arrReqData['mb_uid']."') ";
+            $where .= " AND ( mb_uid LIKE '%".$this->db->escapeLikeString($arrReqData['mb_uid'])."%' OR mb_fid = ".$this->db->escape($arrReqData['mb_uid'])." ) ";
         }
         if ($arrReqData['mb_grade'] != 0){
-            $where .= " AND mb_grade = '".$arrReqData['mb_grade']."'";
+            $where .= " AND mb_grade = ".$this->db->escape($arrReqData['mb_grade']);
         }
         if ($arrReqData['mb_state'] >= 0){
-            $where .= " AND mb_state_active = '".$arrReqData['mb_state']."' ";
+            $where .= " AND mb_state_active = ".$this->db->escape($arrReqData['mb_state']);
         }
 
 
@@ -1872,13 +1733,13 @@ class Member_Model extends Model
                 $strSQL .= " AND mb_emp_fid = '".$iEmpFid."'";
             }
             if (strlen($arrReqData['mb_uid']) > 0) {
-                $strSQL .= " AND mb_uid LIKE '%".$arrReqData['mb_uid']."%'";
+                $strSQL .= " AND mb_uid LIKE '%".$this->db->escapeLikeString($arrReqData['mb_uid'])."%'";
             }
             if ($arrReqData['mb_grade'] != 0){
-                $strSQL .= " AND mb_grade = '".$arrReqData['mb_grade']."'";
+                $strSQL .= " AND mb_grade = ".$this->db->escape($arrReqData['mb_grade']);
             }
             if ($arrReqData['mb_state'] >= 0){
-                $strSQL .= " AND mb_state_active = '".$arrReqData['mb_state']."' ";
+                $strSQL .= " AND mb_state_active = ".$this->db->escape($arrReqData['mb_state']);
             }
 
             $strSQL .= " ORDER BY (CASE WHEN mb_state_active = 2 THEN 0 ELSE 1 END) ";

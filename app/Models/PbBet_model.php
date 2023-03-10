@@ -203,7 +203,7 @@ class PbBet_Model extends Model
         
         $strCondition = " WHERE bet_state <> ".BET_STATE_TIE;
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strCondition.=" AND ".getBetTimeRange($arrReqData);
+            $strCondition.=" AND ".getBetTimeRange($arrReqData, $this->db);
                         
         }
         if(strlen($arrReqData['user']) > 0){
@@ -271,7 +271,7 @@ class PbBet_Model extends Model
         $bWhere = false;
         $strWhere="";
         if (strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
-            $strWhere .= " WHERE ".getBetTimeRange($arrReqData);
+            $strWhere .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
             $bWhere = true;
         }
         if (strlen($arrReqData['user']) > 0) {
@@ -280,7 +280,7 @@ class PbBet_Model extends Model
             } else {
                 $strWhere .= ' WHERE ';
             }
-            $strWhere .= " bet_mb_uid = '".$arrReqData['user']."' ";
+            $strWhere .= " bet_mb_uid = ".$this->db->escape($arrReqData['user']);
             $bWhere = true;
         }
         if (strlen($arrReqData['round']) > 0) {
@@ -289,7 +289,7 @@ class PbBet_Model extends Model
             } else {
                 $strWhere .= ' WHERE ';
             }
-            $strWhere .= " bet_round_no = '".$arrReqData['round']."' ";
+            $strWhere .= " bet_round_no = ".$this->db->escape($arrReqData['round']);
             $bWhere = true;
         }
         if ((int) $arrReqData['mode'] > 0) {
@@ -331,9 +331,7 @@ class PbBet_Model extends Model
             $strSql .= ' INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )';
 
             $strSql .= " SELECT * FROM ".$this->table;  
-            // $strSql .= '  JOIN (SELECT  * FROM tbmember UNION SELECT '.$strTbColum.' FROM '.$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";
-            // $strSql .= ' ) AS mb_table ';
-            // $strSql .= ' ON '.$this->table.'.bet_mb_uid = mb_table.mb_uid ';
+
             $strSql .=$strWhere.") ".$tbBetSearch;
 
             //Join bet_reward
@@ -378,9 +376,6 @@ class PbBet_Model extends Model
 
             $strSql .= "SELECT count(bet_fid) as count  FROM ".$this->table;
 
-            // $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";         
-            // $strSql .=" ) AS mb_table ";
-            // $strSql .=" ON ".$this->table.".bet_mb_uid = mb_table.mb_uid ";
         } else {
             $strSql .= "SELECT count(bet_fid) as count  FROM ".$this->table;
         }
@@ -388,19 +383,19 @@ class PbBet_Model extends Model
 
         $bWhere = false;
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSql.=" WHERE ".getBetTimeRange($arrReqData);
+            $strSql.=" WHERE ".getBetTimeRange($arrReqData, $this->db);
             $bWhere = true;
         }
         if(strlen($arrReqData['user']) > 0){
             if($bWhere) $strSql.= " AND ";
             else $strSql.= " WHERE ";    
-            $strSql.=" bet_mb_uid = '".$arrReqData['user']."' ";
+            $strSql.=" bet_mb_uid = ".$this->db->escape($arrReqData['user']);
             $bWhere = true;
         }
         if(strlen($arrReqData['round']) > 0){
             if($bWhere) $strSql.= " AND ";
             else $strSql.= " WHERE ";    
-            $strSql.=" bet_round_no = '".$arrReqData['round']."' ";
+            $strSql.=" bet_round_no = ".$this->db->escape($arrReqData['round']);
             $bWhere = true;
         }
         if((int)$arrReqData['mode'] > 1){
