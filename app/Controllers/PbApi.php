@@ -8,6 +8,7 @@ use App\Models\PbRound_Model;
 use App\Models\PsBet_Model;
 use App\Models\CsBet_Model;
 use App\Models\PsRound_Model;
+use App\Models\EbalBet_Model;
 
 class PbApi extends BaseController {
 
