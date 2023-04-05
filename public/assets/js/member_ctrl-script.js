@@ -540,6 +540,7 @@ function showMemEdit(idx, mbFid){
     $("#eo2_ratio").val(member.mb_game_eo2_ratio);
     $("#co_ratio").val(member.mb_game_co_ratio);
     $("#co2_ratio").val(member.mb_game_co2_ratio);
+    $("#hl_ratio").val(member.mb_game_hl_ratio);
 
     $("#pb_percent").val(member.mb_game_pb_percent);
     $("#pb2_percent").val(member.mb_game_pb2_percent);
@@ -698,6 +699,10 @@ function readConfigToObject() {
         objMember.mb_game_sl_ratio = $("#sl_ratio").val();
     } 
     
+    if($("#hl_ratio").length > 0){
+        objMember.mb_game_hl_ratio = $("#hl_ratio").val();
+    } 
+
     if ($("#offline_user").length > 0){
         objMember.mb_state_delete = $("#offline_user").prop('checked') ? 1 : 0;
     } else objMember.mb_state_delete = 0;

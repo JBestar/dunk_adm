@@ -46,6 +46,9 @@
 					<?php if(!$slot_deny) :?>
 						<td>슬롯<span id="main-navbar-emp_slrate-id">0 %</span></td>
 					<?php endif ?> 
+					<?php if(!$hold_deny) :?>
+						<td>홀덤<span id="main-navbar-emp_hlrate-id">0 %</span></td>
+					<?php endif ?> 
 					<?php if(!$hpg_deny) :?>
 						<td>해피볼<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
 					<?php endif ?>    
@@ -192,6 +195,13 @@
 					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">카지노:</td>
 					<td>배팅<span id="main-navbar-kgbet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-kgbetearn-id">0 원</span></td>
+				</tr>
+    			<?php endif ?>  
+				<?php if(!$hold_deny) :?>
+				<tr>
+					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">홀덤:</td>
+					<td>배팅<span id="main-navbar-hlbet-id">0 원</span></td>
+					<td>적중<span id="main-navbar-hlbetearn-id">0 원</span></td>
 				</tr>
     			<?php endif ?>  
 			</Table>

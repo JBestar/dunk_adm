@@ -142,7 +142,7 @@ function showMemberInfo(objUser) {
         if(objUser.mb_money == null)
             objUser.mb_money = 0;
         strBuf = (parseInt(objUser.mb_money)+parseInt(objUser.mb_live_money)+parseInt(objUser.mb_slot_money)+parseInt(objUser.mb_fslot_money)
-            +parseInt(objUser.mb_kgon_money)+parseInt(objUser.mb_gslot_money)+parseInt(objUser.mb_hslot_money)).toLocaleString() + " 원";
+            +parseInt(objUser.mb_kgon_money)+parseInt(objUser.mb_gslot_money)+parseInt(objUser.mb_hslot_money)+parseInt(objUser.mb_hold_money)).toLocaleString() + " 원";
         $("#main-navbar-emp_money-id").text(strBuf);
 
         if(objUser.mb_point == null)
@@ -165,6 +165,9 @@ function showMemberInfo(objUser) {
 
         strBuf = objUser.mb_game_sl_ratio + " %";
         $("#main-navbar-emp_slrate-id").text(strBuf);
+
+        strBuf = objUser.mb_game_hl_ratio + " %";
+        $("#main-navbar-emp_hlrate-id").text(strBuf);
 
         strBuf = objUser.mb_game_ps_ratio + " %";
         $("#main-navbar-emp_psrate-id").text(strBuf);
@@ -343,6 +346,8 @@ function showEmpBetInfo(arrBetInfo) {
     $("#main-navbar-kgbet-id").text(parseInt(arrBetInfo[17][0]).toLocaleString() + " 원");
     $("#main-navbar-kgbetearn-id").text(parseInt(arrBetInfo[17][1]).toLocaleString() + " 원");
 
+    $("#main-navbar-hlbet-id").text(parseInt(arrBetInfo[18][0]).toLocaleString() + " 원");
+    $("#main-navbar-hlbetearn-id").text(parseInt(arrBetInfo[18][1]).toLocaleString() + " 원");
 }
 
 

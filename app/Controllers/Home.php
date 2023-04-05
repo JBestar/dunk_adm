@@ -135,6 +135,14 @@ class Home extends StdController
 		$this->load_view_page('home/conf_evol', 'conf_game', LEVEL_ADMIN, $param);	
 	}
 
+	public function conf_hold(){
+		$param = [
+			'game_name' => "홀덤",
+			'game_id' => GAME_HOLD_CMS
+		];
+		$this->load_view_page('home/conf_evol', 'conf_game', LEVEL_ADMIN, $param);	
+	}
+
 	public function conf_ebal(){
 		$arrType = [
 			"10"=> "EVOL365",

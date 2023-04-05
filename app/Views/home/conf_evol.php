@@ -41,7 +41,9 @@
 		</div>
 		<div class="confsite-game-text-div">
 			<p>에이젼트 페이지:</p>
-			<button class="confsite-cancel-button" id="confsite-agent-btn-id" style="margin-bottom:20px; width:200px;">바로 가기</button>
+			<?php if($game_id == GAME_CASINO_EVOL) :?>
+				<button class="confsite-cancel-button" id="confsite-agent-btn-id" style="margin-bottom:20px; width:200px;">바로 가기</button>
+			<?php endif ?>
 		</div>
 		
 		<div class = "confsite-button-group" style="margin-top:50px;">

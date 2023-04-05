@@ -48,7 +48,7 @@ function showMember(arrMember, confs) {
         strBuf += "Lv " + parseInt(arrMember[nRow].mb_grade).toLocaleString();
         strBuf += "</td><td> <span id='mm_" + arrMember[nRow].mb_fid + "'>";
         strBuf += (parseInt(arrMember[nRow].mb_money) + parseInt(arrMember[nRow].mb_live_money) + parseInt(arrMember[nRow].mb_slot_money) + parseInt(arrMember[nRow].mb_fslot_money) + parseInt(arrMember[nRow].mb_kgon_money)
-             + parseInt(arrMember[nRow].mb_gslot_money)+ parseInt(arrMember[nRow].mb_hslot_money) ).toLocaleString() + "</span>";
+             + parseInt(arrMember[nRow].mb_gslot_money)+parseInt(arrMember[nRow].mb_hslot_money)+parseInt(arrMember[nRow].mb_hold_money) ).toLocaleString() + "</span>";
         strBuf += '<button class="refresh_btn" onclick="refreshEgg(' + arrMember[nRow].mb_fid + ', this);"></button>';
         strBuf += "</td> <td id='mp_" + arrMember[nRow].mb_fid + "'>";
         strBuf += parseInt(arrMember[nRow].mb_point).toLocaleString();
@@ -132,11 +132,17 @@ function showMember(arrMember, confs) {
                 }
             }
             if(!confs.slot_deny){
-
                 if (arrMember[nRow].mb_game_sl == 1) {
                     strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>슬롯</button>";
                 } else {
                     strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >슬롯</button>";
+                }
+            }
+            if(!confs.hold_deny){
+                if (arrMember[nRow].mb_game_hl == 1) {
+                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>홀덤</button>";
+                } else {
+                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >홀덤</button>";
                 }
             }
         }
@@ -263,90 +269,91 @@ function requestTotalPage() {
 
 function addButtonElementListener(buttonElement) {
     buttonElement.addEventListener("click", function() {
+        let jsonData = null;
 
         if (this.innerHTML.search("삭제") >= 0) {
-            var jsonData = { "mb_fid": this.name };
+            jsonData = { "mb_fid": this.name };
             requestDeleteMember(jsonData);
         } else if (this.innerHTML.search("IP차단") >= 0) {
-            var jsonData = { "block_ip": this.name, "block_state": 1 };
+            jsonData = { "block_ip": this.name, "block_state": 1 };
             requestAddBlock(jsonData);
         } else if (this.innerHTML.search("차단해제") >= 0) {
-            var jsonData = { "block_ip": this.name, "block_state": 0 };
+            jsonData = { "block_ip": this.name, "block_state": 0 };
             requestAddBlock(jsonData);
         } else if (this.innerHTML.search("승인") >= 0) {
-            var jsonData = { "mb_fid": this.name, "mb_state_active": 0 };
+            jsonData = { "mb_fid": this.name, "mb_state_active": 0 };
             requestUpdateMember(jsonData);
         } else if (this.innerHTML.search("차단") >= 0) {
-            var jsonData = { "mb_fid": this.name, "mb_state_active": 1 };
+            jsonData = { "mb_fid": this.name, "mb_state_active": 1 };
             requestUpdateMember(jsonData);
         } else if (this.innerHTML.search("대기") >= 0) {
-            var jsonData = { "mb_fid": this.name, "mb_state_active": 1 };
+            jsonData = { "mb_fid": this.name, "mb_state_active": 1 };
             requestWaitToPermit(this, jsonData);
         } else if (this.innerHTML == "해피볼") {
             if (this.className.search("button-active") >= 0) {
-                var jsonData = { "mb_fid": this.name, "mb_game_pb": 0 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_pb": 0 };
             } else {
-                var jsonData = { "mb_fid": this.name, "mb_game_pb": 1 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_pb": 1 };
             }
+            requestUpdateMember(jsonData);
         } else if (this.innerHTML.search("파사달") >= 0) {
+
             if (this.className.search("button-active") >= 0) {
-                var jsonData = { "mb_fid": this.name, "mb_game_ps": 0 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_ps": 0 };
             } else {
-                var jsonData = { "mb_fid": this.name, "mb_game_ps": 1 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_ps": 1 };
             }
+            requestUpdateMember(jsonData);
         } else if (this.innerHTML.search("보글볼") >= 0) {
             if (this.className.search("button-active") >= 0) {
-                var jsonData = { "mb_fid": this.name, "mb_game_bb": 0 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_bb": 0 };
             } else {
-                var jsonData = { "mb_fid": this.name, "mb_game_bb": 1 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_bb": 1 };
             }
+            requestUpdateMember(jsonData);
         } else if (this.innerHTML.search("보사달") >= 0) {
             if (this.className.search("button-active") >= 0) {
-                var jsonData = { "mb_fid": this.name, "mb_game_bs": 0 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_bs": 0 };
             } else {
-                var jsonData = { "mb_fid": this.name, "mb_game_bs": 1 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_bs": 1 };
             }
+            requestUpdateMember(jsonData);
         } else if (this.innerHTML.search("코인") >= 0) {
             if (this.className.search("button-active") >= 0) {
-                var jsonData = { "mb_fid": this.name, "mb_game_co": 0 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_co": 0 };
             } else {
-                var jsonData = { "mb_fid": this.name, "mb_game_co": 1 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_co": 1 };
             }
+            requestUpdateMember(jsonData);
         } else if (this.innerHTML.search("카지노") >= 0) {
             if (this.className.search("button-active") >= 0) {
-                var jsonData = { "mb_fid": this.name, "mb_game_cs": 0 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_cs": 0 };
             } else {
-                var jsonData = { "mb_fid": this.name, "mb_game_cs": 1 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_cs": 1 };
             }
+            requestUpdateMember(jsonData);
         } else if (this.innerHTML.search("슬롯") >= 0) {
             if (this.className.search("button-active") >= 0) {
-                var jsonData = { "mb_fid": this.name, "mb_game_sl": 0 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_sl": 0 };
             } else {
-                var jsonData = { "mb_fid": this.name, "mb_game_sl": 1 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_sl": 1 };
             }
+            requestUpdateMember(jsonData);
         } else if (this.innerHTML === "EOS") {
             if (this.className.search("button-active") >= 0) {
-                var jsonData = { "mb_fid": this.name, "mb_game_eo": 0 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_eo": 0 };
             } else {
-                var jsonData = { "mb_fid": this.name, "mb_game_eo": 1 };
-                requestUpdateMember(jsonData);
+                jsonData = { "mb_fid": this.name, "mb_game_eo": 1 };
             }
-        }  else if (this.innerHTML === "-") {
+            requestUpdateMember(jsonData);
+        } else if (this.innerHTML === "홀덤") {
+            if (this.className.search("button-active") >= 0) {
+                jsonData = { "mb_fid": this.name, "mb_game_hl": 0 };
+            } else {
+                jsonData = { "mb_fid": this.name, "mb_game_hl": 1 };
+            }
+            requestUpdateMember(jsonData);
+        } else if (this.innerHTML === "-") {
             countBlank(this.name, -1);
         } else if (this.innerHTML === "-10") {
             countBlank(this.name, -10);
@@ -359,7 +366,6 @@ function addButtonElementListener(buttonElement) {
 }
 
 function addBtnEvent() {
-    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
 
     var elemTable = document.getElementById("user-member-table-id");
     var elemTableBtns = elemTable.getElementsByTagName("button");

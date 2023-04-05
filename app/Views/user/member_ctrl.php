@@ -403,6 +403,12 @@
 										<input type="number" id="sl_ratio" step="0.01" class="form-control" value="0.00" min="0" />
 									</div>
 								<?php endif ?>
+								<?php if(!$hold_deny) :?>
+									<div class="col-md-2">홀덤 배당율 (%)</div>
+									<div class="col-md-2">
+										<input type="number" id="hl_ratio" step="0.01" class="form-control" value="0.00" min="0" />
+									</div>
+								<?php endif ?>
 								</div>
 							</div>
 								

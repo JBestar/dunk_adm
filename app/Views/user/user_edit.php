@@ -330,7 +330,17 @@
 				<?php } ?>
 			</div>
 		<?php endif ?>   
-		
+		<?php if(!$hold_deny) :?>
+			<div class="useredit-percent-div">
+				<p>홀덤:</p>			 
+				<label> 배당율(%)</label>
+				<?php if(is_null($objMember)) {  ?>
+				<input type = "number" step="0.1" id="useredit-hlbetrate-input-id" value="0" >
+				<?php } else {?>
+				<input type = "number" step="0.1" id="useredit-hlbetrate-input-id" value="<?=$objMember->mb_game_hl_ratio?>">
+				<?php } ?>
+			</div>
+		<?php endif ?> 
 		<?php $this->renderSection('user-edit-check-level')  ?>
 		<?php if ($mb_level >= LEVEL_ADMIN) { ?>
         

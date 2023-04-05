@@ -156,6 +156,14 @@ class Bet extends StdController {
 		$this->load_view_page('ebal/ebalhistory', 'conf_ebal', LEVEL_ADMIN, $param);
 	}
 	
+	public function hlhistory(){
+		$param = [
+			'game_name' => "홀덤",
+			'game_id' => GAME_HOLD_CMS,
+		];
+		$this->load_view_page('bet/hlhistory', 'bet_history', LEVEL_MIN, $param);
+	}
+
 	public function eordroom(){
 		$confsiteModel = new ConfSite_Model();
 
@@ -362,6 +370,15 @@ class Bet extends StdController {
 		$param = [
 			'game_name' => "슬롯",
 			'game_id' => GAME_SLOT_ALL,
+		];
+
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
+	}
+
+	public function hlcalculate(){
+		$param = [
+			'game_name' => "홀덤",
+			'game_id' => GAME_HOLD_CMS,
 		];
 
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);

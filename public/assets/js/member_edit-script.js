@@ -90,6 +90,10 @@ function readConfigToObject() {
         objMember.mb_game_sl_ratio = $("#useredit-slbetrate-input-id").val();
     }
     
+    if($("#useredit-hlbetrate-input-id").length > 0){
+        objMember.mb_game_hl_ratio = $("#useredit-hlbetrate-input-id").val();
+    }
+
     if ($("#useredit-offline-check-id").length > 0){
         objMember.mb_state_delete = $("#useredit-offline-check-id").prop('checked') ? 1 : 0;
     } 

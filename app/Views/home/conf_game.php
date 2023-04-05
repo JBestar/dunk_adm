@@ -35,7 +35,10 @@
 			<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_2) :?>
 				<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a">네츄럴슬롯</a>
 			<?php endif ?>
-		<?php endif ?>   
+		<?php endif ?>  
+		<?php if(!$hold_deny) :?>
+			<a href="<?php echo siteFurl().'home/conf_hold';?>" class="sub-navbar-a" >홀덤</a>
+		<?php endif ?> 
 	</div>
 	<!--Site Setting-->
 	<div class="confsite-game-panel"  id="<?=$game_id?>">

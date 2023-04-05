@@ -41,7 +41,9 @@
 				<a href="<?php echo site_furl('bet/slcalculate');?>" class="sub-navbar-a" >슬롯</a>
 			<?php endif ?>
 		<?php endif ?>   
-
+		<?php if(!$hold_deny) :?>
+			<a href="<?php echo site_furl('bet/hlcalculate');?>" class="sub-navbar-a" >홀덤</a>
+		<?php endif ?> 
 	</div>
 
 	<div class="bet-panel">

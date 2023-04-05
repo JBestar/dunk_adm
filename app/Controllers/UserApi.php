@@ -11,6 +11,7 @@ use App\Models\PbBet_Model;
 use App\Models\PsBet_Model;
 use App\Models\CsBet_Model;
 use App\Models\SlBet_Model;
+use App\Models\HlBet_Model;
 use App\Models\EbalBet_Model;
 use App\Models\EbalLog_Model;
 use App\Models\MoneyHistory_Model;
@@ -496,7 +497,7 @@ class UserApi extends BaseController
                 // $arrReqData['end'] = $strDate.' 23:59:00';
 
                 $arrSumData = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], 
-                    [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0] ];
+                    [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0] ];
                 
                 $tmNow = microtime(true) * 1000;
                 writeLog("empbetinfo");
@@ -617,6 +618,12 @@ class UserApi extends BaseController
 
                     $objConfPb = $confgameModel->getByIndex(GAME_CASINO_KGON);
                     $arrSumData[17] = $betModel->getBetSumByDay($arrReqData, $objConfPb);
+                }
+                if(!$siteConfs['hold_deny']){
+                    $betModel = new HlBet_Model();
+
+                    $objConfPb = $confgameModel->getByIndex(GAME_HOLD_CMS);
+                    $arrSumData[18] = $betModel->getBetSumByDay($arrReqData, $objConfPb);
                 }
                 writeLog("empbetinfo end duration = ".(microtime(true) * 1000 - $tmNow));
 
@@ -1657,6 +1664,25 @@ class UserApi extends BaseController
                     if($arrResult['status'] == 1){
                         $confsiteModel->setConfActive(CONF_API_STAR, $arrResult['balance']);
                         writeLog("<HSLOT> Agent Egg = ".$arrResult['balance']);
+                        $balance = $arrResult['balance'];
+                    }
+                }  else if($gameId == GAME_HOLD_CMS){
+                    foreach($arrMember as $objMember){
+                        if($objMember->mb_hold_uid != "" && $objMember->mb_hold_money > 0 ) {
+                            writeLog("<HOLDEM> Recovery Uid=".$objMember->mb_uid." Balance=".$objMember->mb_hold_money);
+                            if(diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
+                                $iResult = 2;
+                            } else $iResult = $this->holtoMb($objMember);
+                            if($iResult == 0)
+                                break;
+                            else usleep(500000);
+                        } 
+                    }
+
+                    $arrResult = $this->libApiHold->getUserInfo();
+                    if($arrResult['status'] == 1){
+                        $confsiteModel->setConfActive(CONF_API_HOLD, $arrResult['balance']);
+                        writeLog("<HOLDEM> Agent Egg = ".$arrResult['balance']);
                         $balance = $arrResult['balance'];
                     }
                 } 

@@ -10,6 +10,7 @@ use App\Models\Transfer_Model;
 use App\Models\ConfSite_Model;
 use App\Models\CsBet_Model;
 use App\Models\SlBet_Model;
+use App\Models\HlBet_Model;
 use App\Models\SlotGame_Model;
 use App\Models\SlotPrd_Model;
 use App\Models\SessLog_Model;
@@ -252,7 +253,16 @@ class Api extends BaseController{
 					}
 				}
 				$agConf = $confsiteModel->getConf(CONF_API_STAR);
-			}
+			} else if($gameId == GAME_HOLD_CMS){
+				$arrResult = $this->libApiHold->getUserInfo();
+				if($arrResult['status'] == 1){
+					$confsiteModel->setConfActive(CONF_API_HOLD, $arrResult['balance']);
+					writeLog("<HOLD> Agent Egg = ".$arrResult['balance']);
+				} else {
+					$errMsg = "접속불가";
+				}
+				$agConf = $confsiteModel->getConf(CONF_API_HOLD);
+			} 
 			
 			$agInfo = null;
 			if(!is_null($agConf)){
@@ -1668,6 +1678,77 @@ public function withdrawlist(){
 					$arrBetAccount = $slbetModel->getBetAccount($arrGetData);
 			} 
 			$objCount = $slbetModel->searchCount($objAdmin, $arrGetData);
+			
+			$arrResult['data'] = $objCount;
+			$arrResult['account'] = $arrBetAccount;	
+			$arrResult['status'] = "success";
+		
+			echo json_encode($arrResult);
+		}
+		else{
+		
+			$arrResult['status'] = "logout";
+
+			echo json_encode($arrResult);	
+		} 		
+	}
+
+	
+	public function hlbetlist(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrGetData = json_decode($jsonData, true);
+
+		if(is_login()) {
+			//model
+			$hlbetModel = new HlBet_Model();
+			$confsiteModel = new ConfSite_Model();
+			$confsiteModel->readBetConf();
+			
+			$strUid = $this->session->user_id;
+			$objAdmin = $this->modelMember->getInfo($strUid);
+			if($objAdmin->mb_level >= LEVEL_ADMIN && strlen(trim($arrGetData['emp'])) > 0){
+				$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
+			}
+			$arrBetResults = $hlbetModel->search($objAdmin, $arrGetData);
+			
+			$objResult = new \StdClass;
+			$objResult->data = $arrBetResults;	
+			$objResult->status = "success";
+		
+			echo json_encode($objResult);
+		}
+		else{
+		
+			$arrResult['status'] = "logout";
+
+			echo json_encode($arrResult);	
+		} 		
+	}
+
+
+
+	public function hlbetlistcnt(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrGetData = json_decode($jsonData, true);
+
+		if(is_login()) {
+			//model
+			$hlbetModel = new HlBet_Model();
+			$confsiteModel = new ConfSite_Model();
+			$confsiteModel->readBetConf();
+			
+			$strUid = $this->session->user_id;
+			$objAdmin = $this->modelMember->getInfo($strUid);
+			
+			$arrBetAccount = null;
+			if($objAdmin->mb_level >= LEVEL_ADMIN){
+				if(strlen(trim($arrGetData['emp'])) > 0){
+					$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
+				}
+				else 	
+					$arrBetAccount = $hlbetModel->getBetAccount($arrGetData);
+			} 
+			$objCount = $hlbetModel->searchCount($objAdmin, $arrGetData);
 			
 			$arrResult['data'] = $objCount;
 			$arrResult['account'] = $arrBetAccount;	
