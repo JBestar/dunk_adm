@@ -1,13 +1,23 @@
 $(document).ready(function() {
     addEventListner();
     requestTotalPage();
+
+    setTimeout(function() {
+        memberLoop();
+    }, 60000);
 });
 
 function requestPageInfo() {
     requestMember();
 }
 
-
+function memberLoop() {
+    requestMember();
+    // 60초뒤에 다시 실행
+    setTimeout(function() {
+        memberLoop();
+    }, 60000);
+}
 
 function showMember(arrMember, confs) {
 
