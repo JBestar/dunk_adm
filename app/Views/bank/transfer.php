@@ -11,7 +11,7 @@
 		
 		<div class="pbresult-list-div">
 			<label>기간</label>
-			<input type="date" id="transfer-datestart-input-id"  value="<?php echo date('Y-m')."-01";?>">
+			<input type="date" id="transfer-datestart-input-id"  value="<?php echo date('Y-m-d');?>">
             <label> ~ </label>
             <input type="date" id="transfer-dateend-input-id"  value="<?php echo date('Y-m-d'); ?>">
             <label>아이디</label>
@@ -27,7 +27,10 @@
 					<option value="3">사이트 => 슬롯</option>
 					<option value="4">슬롯 => 사이트</option>
 				<?php endif ?>
-				
+				<?php if(!$slot_deny) :?>
+					<option value="5">사이트 => 홀덤</option>
+					<option value="6">홀덤 => 사이트</option>
+				<?php endif ?>
 			</select>
 
 			<select name="pbresult-number" class="pbresult-number-select" id="transfer-number-select-id">
@@ -44,17 +47,14 @@
 			<thead>
 				<tr>
 					<th>번호</th>
-					<th>닉네임</th>
 					<th>아이디</th>
-					<th>현재금액</th>
-					<th>카지노금</th>
-					<th>슬롯머니</th>
+					<!-- <th>현재금액</th> -->
 					<th>구분</th>
 					<th>이동금액</th>
-					<th>충전전 사이트머니</th>
-					<th>충전후 사이트머니</th>
-					<th>충전전 게임사머니</th>
-					<th>충전후 게임사머니</th>
+					<th>이동전 사이트머니</th>
+					<th>이동후 사이트머니</th>
+					<th>이동전 게임사머니</th>
+					<th>이동후 게임사머니</th>
 					<th>일짜</th>
 					
 				</tr>

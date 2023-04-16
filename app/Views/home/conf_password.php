@@ -14,8 +14,12 @@
 		<p style="width:200px;">로그인시 아이피 검사</p>
 	</div>
 	<div class="confsite-password-text-div">
-		<p>접속 아이피:</p> <input type="text" id="confsite-ip-input-id" placeholder="X.X.X.X" pattern="^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$">
-		<p style="width:200px;" ></p>
+		<p>접속 아이피:</p> 
+		<input type="text" id="confsite-ip-input-id" placeholder="X.X.X.X" pattern="^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$" style="width:120px; margin-right:5px;">
+		<input type="text" id="confsite-ip2-input-id" placeholder="X.X.X.X" pattern="^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$" style="width:120px; margin-right:5px;">
+		<input type="text" id="confsite-ip3-input-id" placeholder="X.X.X.X" pattern="^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$" style="width:120px; margin-right:5px;">
+		<input type="text" id="confsite-ip4-input-id" placeholder="X.X.X.X" pattern="^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$" style="width:120px; margin-right:5px;">
+		<input type="text" id="confsite-ip5-input-id" placeholder="X.X.X.X" pattern="^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$" style="width:120px; margin-right:5px;">
 	</div>
 	<div class="confsite-password-text-div">
 		<p>보유금액:</p> <input type="text" id="confsite-egg-input-id" disabled>
@@ -45,6 +49,6 @@
 <?php if(array_key_exists("app.produce", $_ENV)) :?>
     <script src="<?php echo site_furl('/assets/js/confpwd-script.js?t='.time());?>"></script>
 <?php else : ?>
-    <script src="<?php echo site_furl('/assets/js/confpwd-script.js?v=1');?>"></script>
+    <script src="<?php echo site_furl('/assets/js/confpwd-script.js?v=2');?>"></script>
 <?php endif ?>
 <?= $this->endSection() ?>

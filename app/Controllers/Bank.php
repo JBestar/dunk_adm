@@ -31,7 +31,7 @@ class Bank extends StdController {
 		$this->load_view_page('bank/exchange', 'bank_exchange');
 	}
 
-	// public function transfer(){
-	// 	$this->load_view_page('bank/transfer', 'bank_transfer');
-	// }
+	public function transfer(){
+		$this->load_view_page('bank/transfer', 'bank_transfer');
+	}
 }

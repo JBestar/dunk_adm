@@ -1715,7 +1715,7 @@ class Member_Model extends Model
         } else {
             $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid', 'mb_nickname', 
             'mb_money', 'mb_point', 'mb_grade', 'mb_color', 'mb_state_active', 'mb_state_delete', 'mb_blank_count',
-            'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money', 'mb_gslot_money', 'mb_hslot_money' ];
+            'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money', 'mb_gslot_money', 'mb_hslot_money', 'mb_hold_money' ];
 
             $strTbColum = " ".implode(", ", $fields);
             $strTbRColum = " r.".implode(", r.", $fields);

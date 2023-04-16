@@ -205,7 +205,6 @@ class MoneyHistory_Model extends Model
             $strSql .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
 
             $strSql .= "SELECT * FROM ".$this->table;
-            // $strSql .=" JOIN tbmember ON ".$this->table.".money_mb_fid = tbmember.mb_fid ";
 
             $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
             $strSql .=" ) AS mb_table ";
@@ -247,7 +246,6 @@ class MoneyHistory_Model extends Model
         }
         $strSql .= "SELECT count(money_fid) as count  FROM ".$this->table;
         if($objEmp->mb_level < LEVEL_ADMIN){
-            // $strSql .=" JOIN tbmember ON ".$this->table.".money_mb_fid = tbmember.mb_fid ";
             $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
             $strSql .=" ) AS mb_table ";
             $strSql .=" ON ".$this->table.".money_mb_fid = mb_table.mb_fid ";

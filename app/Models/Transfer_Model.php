@@ -4,38 +4,39 @@ use CodeIgniter\Model;
 
 class Transfer_Model extends Model {
 	
-	protected $table = 'transfer_history';
+	protected $table = 'money_transfer';
     protected $returnType = 'object'; 
-    protected $allowedFields = [
-        'money_mb_fid', 
-        'money_mb_uid', 
-        'money_mb_emp_fid', 
-        'money_amount', 
-        'money_site_before', 
-        'money_site_after', 
-        'money_live_before', 
-        'money_live_after', 
-        'money_change_type', 
-        'money_update_time',
-    ];
+    protected $allowedFields = ['trans_mb_fid', 'trans_mb_uid', 'trans_emp_fid', 'trans_amount', 
+        'money_before', 'money_after', 'egg_before', 'egg_after', 'trans_type', 
+        'trans_time'];
+
     protected $primaryKey = 'money_fid';
     private $mMemberTable  = 'member';
 
+    public function register($type, $objUser, $gPoint, $balance){
+        if(is_null($objUser)) return false;    
+        if($balance == 0) return true;
 
-    public function getByUserFid($strUserFId){
-        $this->builder()->where('money_mb_fid', $strUserFId);
-        
-        $this->builder()->limit(20);
-        $this->builder()->orderBy('money_update_time', 'DESC');
-        return $this->builder()->get()->getResult();
+        $data = [
+            'trans_mb_fid' => $objUser->mb_fid,
+            'trans_mb_uid' => $objUser->mb_uid,
+            'trans_mb_emp_fid' => $objUser->mb_emp_fid,
+            'trans_amount' => $balance,
+            'money_before' => $objUser->mb_money,
+            'money_after' => $objUser->mb_money - $balance,
+            'egg_before' => $gPoint,
+            'egg_after' => $gPoint + $balance,
+            'trans_type' => $type,
+            'trans_time' => date("Y-m-d H:i:s"),
+        ];
+
+        return $this->insert($data);
     }
-
-
 
     function search($objEmp, $arrReqData)
     {
-        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_money, mb_live_money, mb_slot_money ";
-        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid , r.mb_nickname, r.mb_money, r.mb_live_money, r.mb_slot_money ";
+        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_money, mb_live_money, mb_slot_money, mb_fslot_money, mb_kgon_money, mb_gslot_money, mb_hslot_money, mb_hold_money ";
+        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid , r.mb_nickname, r.mb_money, r.mb_live_money, r.mb_slot_money, r.mb_fslot_money, r.mb_kgon_money, r.mb_gslot_money, r.mb_hslot_money, r.mb_hold_money ";
 
         $strSql = "";
         if($objEmp->mb_level < LEVEL_ADMIN){
@@ -44,38 +45,41 @@ class Transfer_Model extends Model {
             $strSql .= " UNION ALL SELECT ".$strTbRColum." FROM ".$this->mMemberTable." r ";
             $strSql .= " INNER JOIN tbmember ON r.mb_emp_fid = tbmember.mb_fid )";
 
-            $strSql .= "SELECT ".$this->table.".*, mb_table.mb_nickname, mb_table.mb_money, mb_table.mb_live_money, mb_table.mb_slot_money FROM ".$this->table;
+            $strSql .= "SELECT * FROM ".$this->table;
+
             $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
             $strSql .=" ) AS mb_table ";
-            $strSql .=" ON ".$this->table.".money_mb_uid = mb_table.mb_uid ";
-        } else {
-            $strSql .= "SELECT ".$this->table.".*, member.mb_nickname, member.mb_money, member.mb_live_money, member.mb_slot_money FROM ".$this->table;
-            $strSql .="  JOIN member ";
-            $strSql .=" ON ".$this->table.".money_mb_uid = member.mb_uid ";
-        }
-        $bWhere = false;
+            $strSql .=" ON ".$this->table.".trans_mb_fid = mb_table.mb_fid ";
 
-        if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSql.=" WHERE money_update_time >= '".$arrReqData['start']." 0:0:0' AND money_update_time <= '".$arrReqData['end']." 23:59:59'" ;
-            $bWhere = true;            
+        } else {
+            $strSql .= "SELECT * FROM ".$this->table;
         }
+        $strSql.=" WHERE trans_time >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND trans_time <= ".$this->db->escape($arrReqData['end']." 23:59:59") ;
         if(strlen($arrReqData['user']) > 0){
-            
-            if($bWhere) $strSql.= " AND ";
-            else $strSql.= " WHERE ";
-            $strSql.=" money_mb_uid = '".$arrReqData['user']."' ";
-            $bWhere = true;
+            $strSql.=" AND trans_mb_fid = ".$this->db->escape($arrReqData['user']);
         }
-        if((int)$arrReqData['mode'] > 0){
-            if($bWhere) $strSql.= " AND ";
-            else $strSql.= " WHERE ";
-            $strSql.=" money_change_type = '".$arrReqData['mode']."' ";
+        if(intval($arrReqData['mode']) > 0){
+            if(intval($arrReqData['mode']) == 1){
+                $strSql.=" AND trans_type IN (".TRANS_SITE_EVOL.", ".TRANS_SITE_KGON.")";
+            } else if(intval($arrReqData['mode']) == 2){
+                $strSql.=" AND trans_type IN (".TRANS_EVOL_SITE.", ".TRANS_KGON_SITE.")";
+            } else if(intval($arrReqData['mode']) == 3){
+                $strSql.=" AND trans_type IN (".TRANS_SITE_PLUS.", ".TRANS_SITE_GSPL.", ".TRANS_SITE_GOLD.", ".TRANS_SITE_STAR.")";
+            } else if(intval($arrReqData['mode']) == 4){
+                $strSql.=" AND trans_type IN (".TRANS_PLUS_SITE.", ".TRANS_GOLD_SITE.", ".TRANS_STAR_SITE.", ".TRANS_SITE_STAR.")";
+            } else if(intval($arrReqData['mode']) == 5){
+                $strSql.=" AND trans_type IN (".TRANS_SITE_HOLD.")";
+            } else if(intval($arrReqData['mode']) == 6){
+                $strSql.=" AND trans_type IN (".TRANS_HOLD_SITE.")";
+            }
+
         }
 
         $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
-        $strSql.=" ORDER BY money_fid DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
+        $strSql.=" ORDER BY trans_fid DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();
+        // writeLog($strSql);
         
         return $result; 
 
@@ -97,30 +101,20 @@ class Transfer_Model extends Model {
         if($objEmp->mb_level < LEVEL_ADMIN){
             $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
             $strSql .=" ) AS mb_table ";
-            $strSql .=" ON ".$this->table.".money_mb_uid = mb_table.mb_uid ";
+            $strSql .=" ON ".$this->table.".trans_mb_uid = mb_table.mb_uid ";
         }
-        $bWhere = false;
-
-        if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSql.=" WHERE money_update_time >= '".$arrReqData['start']." 0:0:0' AND money_update_time <= '".$arrReqData['end']." 23:59:59'" ;
-            $bWhere = true;            
-        }
+        $strSql.=" WHERE trans_time >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND trans_time <= ".$this->db->escape($arrReqData['end']." 23:59:59") ;
         if(strlen($arrReqData['user']) > 0){
-            
-            if($bWhere) $strSql.= " AND ";
-            else $strSql.= " WHERE ";
-            $strSql.=" money_mb_uid = '".$arrReqData['user']."' ";
-            $bWhere = true;
+            $strSql.=" AND trans_mb_fid = ".$this->db->escape($arrReqData['user']);
         }
-        if((int)$arrReqData['mode'] > 0){
-            if($bWhere) $strSql.= " AND ";
-            else $strSql.= " WHERE ";
-            $strSql.=" money_change_type = '".$arrReqData['mode']."' ";
+        if(intval($arrReqData['mode']) > 0){
+            $strSql.=" AND trans_type = ".$this->db->escape($arrReqData['mode']);
         }
-
+        
         $query = $this -> db -> query($strSql);
         $result = $query -> getRow();
-        
+        // writeLog($strSql);
+
         return $result; 
 
     }

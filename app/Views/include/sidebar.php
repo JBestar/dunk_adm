@@ -58,7 +58,7 @@
     <a href="<?php echo siteFurl().'bank/withdraw';?>" class="<?=$bank_withdraw?>"><i class="glyphicon glyphicon-minus-sign"></i>  환전관리</a>
     <?php } ?>
     <a href="<?php echo siteFurl().'bank/exchange';?>" class="<?=$bank_exchange?>"><i class="glyphicon glyphicon-ok-sign"></i> 머니거래내역</a>
-    <!-- <a href="<?php echo siteFurl().'bank/transfer';?>" class="<?=$bank_transfer?>"><i class="glyphicon glyphicon-transfer"></i>  머니이동내역</a> -->
+    <a href="<?php echo siteFurl().'bank/transfer';?>" class="<?=$bank_transfer?>"><i class="glyphicon glyphicon-transfer"></i>  머니이동내역</a>
     
   </div>
   <?php if(!$hpg_deny || !$bpg_deny || !$eos5_deny || !$eos3_deny || !$coin5_deny || !$coin3_deny) :?>

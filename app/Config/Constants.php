@@ -282,7 +282,7 @@ defined('GAME_HAPPY_BALL')     || define('GAME_HAPPY_BALL', 14);
 defined('GAME_SLOT_KGON')      || define('GAME_SLOT_KGON', 15);  //KGON slot
 defined('GAME_SLOT_STAR')      || define('GAME_SLOT_STAR', 16);  //STAR slot
 defined('GAME_CASINO_STAR')    || define('GAME_CASINO_STAR', 17);  //STAR casino
-defined('GAME_HOLD_CMS')         || define('GAME_HOLD_CMS', 18);  //Cms Holdem
+defined('GAME_HOLD_CMS')       || define('GAME_HOLD_CMS', 18);  //Cms Holdem
 
 defined('ROUND_5MIN')    || define('ROUND_5MIN', 5);
 defined('ROUND_3MIN')    || define('ROUND_3MIN', 3);
@@ -341,13 +341,22 @@ defined('MONEYCHANGE_BET_EBAL')   || define('MONEYCHANGE_BET_EBAL', 43);
 defined('MONEYCHANGE_DENY_EBAL')  || define('MONEYCHANGE_DENY_EBAL', 44);
 defined('MONEYCHANGE_WIN_EBAL')   || define('MONEYCHANGE_WIN_EBAL', 45);
 
+//money transfer type
+defined('TRANS_SITE_EVOL')      || define('TRANS_SITE_EVOL', 1);  
+defined('TRANS_EVOL_SITE')      || define('TRANS_EVOL_SITE', 2);  
+defined('TRANS_SITE_KGON')      || define('TRANS_SITE_KGON', 3); 
+defined('TRANS_KGON_SITE')      || define('TRANS_KGON_SITE', 4); 
+defined('TRANS_SITE_PLUS')      || define('TRANS_SITE_PLUS', 5); 
+defined('TRANS_PLUS_SITE')      || define('TRANS_PLUS_SITE', 6); 
+defined('TRANS_SITE_GSPL')      || define('TRANS_SITE_GSPL', 7); 
+defined('TRANS_GSPL_SITE')      || define('TRANS_GSPL_SITE', 8); 
+defined('TRANS_SITE_GOLD')      || define('TRANS_SITE_GOLD', 9); 
+defined('TRANS_GOLD_SITE')      || define('TRANS_GOLD_SITE', 10); 
+defined('TRANS_SITE_STAR')      || define('TRANS_SITE_STAR', 11); 
+defined('TRANS_STAR_SITE')      || define('TRANS_STAR_SITE', 12); 
+defined('TRANS_SITE_HOLD')      || define('TRANS_SITE_HOLD', 13); 
+defined('TRANS_HOLD_SITE')      || define('TRANS_HOLD_SITE', 14); 
 
-defined('TRANS_SITE_EVOL')      || define('TRANS_SITE_EVOL', 1); 
-defined('TRANS_EVOL_SITE')      || define('TRANS_EVOL_SITE', 2); 
-defined('TRANS_SITE_SLOT')      || define('TRANS_SITE_SLOT', 3); 
-defined('TRANS_SLOT_SITE')      || define('TRANS_SLOT_SITE', 4); 
-defined('TRANS_SITE_FSLOT')     || define('TRANS_SITE_FSLOT', 5); 
-defined('TRANS_FSLOT_SITE')     || define('TRANS_FSLOT_SITE', 6); 
 
 defined('NOTICE_MSG')            || define('NOTICE_MSG', 0);
 defined('NOTICE_BOARD')          || define('NOTICE_BOARD', 1);   

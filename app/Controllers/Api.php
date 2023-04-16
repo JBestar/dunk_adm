@@ -6,7 +6,6 @@ use App\Models\Clean_Model;
 use App\Models\ConfGame_Model;
 use App\Models\Exchange_Model;
 use App\Models\MoneyHistory_Model;
-use App\Models\Transfer_Model;
 use App\Models\ConfSite_Model;
 use App\Models\CsBet_Model;
 use App\Models\SlBet_Model;
@@ -1017,10 +1016,10 @@ public function withdrawlist(){
 				else $arrGetData['user'] = 0;
 			}
 
-			$arrBetResults = $moneyhistoryModel->search($objAdmin, $arrGetData);
+			$arrData = $moneyhistoryModel->search($objAdmin, $arrGetData);
 		
 			$objResult = new \StdClass;
-			$objResult->data = $arrBetResults;			
+			$objResult->data = $arrData;			
 			$objResult->status = "success";
 		
 			echo json_encode($objResult);
@@ -1043,7 +1042,6 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$moneyhistoryModel = new MoneyHistory_Model();
-			
 			
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
@@ -1074,17 +1072,19 @@ public function withdrawlist(){
 	public function translist(){ 
 		$jsonData = $_REQUEST['json_'];
 		$arrGetData = json_decode($jsonData, true);
-		//var_dump($arrBetData);
 		if(is_login()) {
-			//model
-			$transferhistoryModel = new Transfer_Model();
-			
 			
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
 			
-			$arrData = $transferhistoryModel->search($objAdmin, $arrGetData);
-		
+			if(strlen($arrGetData['user']) > 0){
+				$objUser = $this->modelMember->getInfo(trim($arrGetData['user']));
+				if(!is_null($objUser))
+					$arrGetData['user'] = $objUser->mb_fid;
+				else $arrGetData['user'] = 0;
+			}
+
+			$arrData = $this->modelTransfer->search($objAdmin, $arrGetData);
 		
 			$objResult = new \StdClass;
 			$objResult->data = $arrData;			
@@ -1106,16 +1106,19 @@ public function withdrawlist(){
 	public function translistcnt(){ 
 		$jsonData = $_REQUEST['json_'];
 		$arrGetData = json_decode($jsonData, true);
-		//var_dump($arrBetData);
 		if(is_login()) {
-			//model
-			$transferhistoryModel = new Transfer_Model();
-			
 			
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
 			
-			$objCount = $transferhistoryModel->searchCount($objAdmin, $arrGetData);
+			if(strlen($arrGetData['user']) > 0){
+				$objUser = $this->modelMember->getInfo(trim($arrGetData['user']));
+				if(!is_null($objUser))
+					$arrGetData['user'] = $objUser->mb_fid;
+				else $arrGetData['user'] = 0;
+			}
+
+			$objCount = $this->modelTransfer->searchCount($objAdmin, $arrGetData);
 			
 			$arrResult['data'] = $objCount;
 			$arrResult['status'] = "success";

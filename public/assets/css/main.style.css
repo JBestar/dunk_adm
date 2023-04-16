@@ -240,7 +240,7 @@ Style - main_navbar.php
     left: 210px;
     border-radius: 10px;
     background-color: var(--bar-bg-color);
-    padding: 10px 10px 5px 10px;
+    padding: 20px 10px 10px 10px;
     z-index: 1;
     box-shadow: 0px -20px 50px 10px var(--main-bg-color);
     min-width: 1000px;
@@ -270,8 +270,8 @@ Style - main_navbar.php
 tr {
     border: none;
     font-size: 14px;
-    color: var(--bar-font-color);
-    padding: 5px 5px;
+    color: #000;
+    padding: 3px 5px;
 }
 
 .main-navbar-info-table td span {
@@ -328,8 +328,8 @@ tr {
 tr {
     border: none;
     font-size: 12px;
-    color: var(--bar-font-color);
-    padding: 0px 5px;
+    color: #000;
+    padding: 3px 5px;
 }
 
 .main-navbar-betinfo-table td span {

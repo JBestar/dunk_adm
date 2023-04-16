@@ -12,7 +12,9 @@ function readPasswordToObject() {
     jsonData.password_newok = $("#confsite-password-newok-input-id").val();
 
     if ($("#confsite-ip-input-id").length > 0) {
-        jsonData.ip_addr = $("#confsite-ip-input-id").val();
+        jsonData.ip_addr = $("#confsite-ip-input-id").val()+";"+$("#confsite-ip2-input-id").val()
+            +";"+$("#confsite-ip3-input-id").val()+";"+$("#confsite-ip4-input-id").val()
+            +";"+$("#confsite-ip5-input-id").val();
         jsonData.ip_check = $("#confsite-ip-check-id").prop('checked') ? 1 : 0;
     }
     return jsonData;
@@ -101,7 +103,33 @@ function addBtnEvent() {
 }
 
 function setJoinIp(ipInfo) {
-    $("#confsite-ip-input-id").val(ipInfo.ip_addr);
+    ips = ipInfo.ip_addr.split(';');
+    
+    if(ips.length > 0)
+        $("#confsite-ip-input-id").val(ips[0]);
+    else 
+        $("#confsite-ip-input-id").val("");
+
+    if(ips.length > 1)
+        $("#confsite-ip2-input-id").val(ips[1]);
+    else 
+        $("#confsite-ip2-input-id").val("");
+
+    if(ips.length > 2)
+        $("#confsite-ip3-input-id").val(ips[2]);
+    else 
+        $("#confsite-ip3-input-id").val("");
+
+    if(ips.length > 3)
+        $("#confsite-ip4-input-id").val(ips[3]);
+    else 
+        $("#confsite-ip4-input-id").val("");
+
+    if(ips.length > 4)
+        $("#confsite-ip5-input-id").val(ips[4]);
+    else 
+        $("#confsite-ip5-input-id").val("");
+
     $("#confsite-ip-check-id").prop('checked', ipInfo.ip_check > 0 ? true : false);
     $("#confsite-egg-input-id").val(ipInfo.money);
     if(ipInfo.egg > 0)

@@ -19,52 +19,52 @@ function showMoneyHistory(arrData) {
         strBuf += "<tr><td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td><td>";
-        strBuf += arrData[nRow].mb_nickname;
+        strBuf += arrData[nRow].trans_mb_uid;
         strBuf += "</td><td>";
-        strBuf += arrData[nRow].money_mb_uid;
-        strBuf += "</td><td>";
-        strBuf += parseInt(arrData[nRow].mb_money).toLocaleString();
-        strBuf += "</td><td>";
-        strBuf += parseInt(arrData[nRow].mb_live_money).toLocaleString();
-        strBuf += "</td><td>";
-        strBuf += parseInt(arrData[nRow].mb_slot_money).toLocaleString();
-        strBuf += "</td><td>";
-
-        switch (arrData[nRow].money_change_type) {
-            case '1':
-                strBuf += "<span style='color:green;'>사이트 => 카지노</span>";
+        
+        switch (parseInt(arrData[nRow].trans_type)) {
+            case 1:
+            case 3:
+                strBuf += "<span style='color:#00ff00;'>사이트 => 카지노</span>";
                 break;
-            case '2':
-                strBuf += "<span style='color:green;'>카지노 => 사이트</span>";
+            case 2:
+            case 4:
+                strBuf += "<span style='color:#00aa00;'>카지노 => 사이트</span>";
                 break;
-            case '3':
-                strBuf += "<span style='color:blue;'>사이트 => 슬롯</span>";
+            case 5:
+            case 7:
+            case 9:
+            case 11:
+                strBuf += "<span style='color:#0000ff;'>사이트 => 슬롯</span>";
                 break;
-            case '4':
-                strBuf += "<span style='color:blue;'>슬롯 => 사이트</span>";
+            case 6:
+            case 8:
+            case 10:
+            case 12:
+                strBuf += "<span style='color:#0000aa;'>슬롯 => 사이트</span>";
                 break;
-            case '5':
-                strBuf += "<span style='color:red;'>사이트 => 슬롯</span>";
+            case 13:
+                strBuf += "<span style='color:#ff0000;'>사이트 => 홀덤</span>";
                 break;
-            case '6':
-                strBuf += "<span style='color:red;'>슬롯 => 사이트</span>";
+            case 14:
+                strBuf += "<span style='color:#aa0000;'>홀덤 => 사이트</span>";
                 break;
             default:
-                strBuf += parseInt(arrData[nRow].money_change_type).toLocaleString();
+                strBuf += parseInt(arrData[nRow].trans_type);
                 break;
         }
         strBuf += "</td><td>";
-        strBuf += Math.abs(parseInt(arrData[nRow].money_amount)).toLocaleString();
+        strBuf += Math.abs(parseInt(arrData[nRow].trans_amount)).toLocaleString();
         strBuf += "</td><td>";
-        strBuf += parseInt(arrData[nRow].money_site_before).toLocaleString();
+        strBuf += parseInt(arrData[nRow].money_before).toLocaleString();
         strBuf += "</td><td>";
-        strBuf += parseInt(arrData[nRow].money_site_after).toLocaleString();
+        strBuf += parseInt(arrData[nRow].money_after).toLocaleString();
         strBuf += "</td><td>";
-        strBuf += parseInt(arrData[nRow].money_live_before).toLocaleString();
+        strBuf += parseInt(arrData[nRow].egg_before).toLocaleString();
         strBuf += "</td><td>";
-        strBuf += parseInt(arrData[nRow].money_live_after).toLocaleString();
+        strBuf += parseInt(arrData[nRow].egg_after).toLocaleString();
         strBuf += "</td><td>";
-        strBuf += arrData[nRow].money_update_time;
+        strBuf += arrData[nRow].trans_time;
         strBuf += "</td></tr>";
 
     }
@@ -76,7 +76,6 @@ function showMoneyHistory(arrData) {
     elemBetDataTb.innerHTML = strBuf;
 
 }
-
 
 
 function addEventListner() {
@@ -110,7 +109,7 @@ function requestTransferHistory() {
         dataType: "json",
         success: function(jResult) {
             $(".loading").hide();
-            //console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 showMoneyHistory(jResult.data);
             }
@@ -143,7 +142,7 @@ function requestTotalPage() {
         dataType: 'json',
         type: 'post',
         success: function(jResult) {
-            //console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
                 setFirstPage();
@@ -151,7 +150,7 @@ function requestTotalPage() {
             }
         },
         error: function(request, status, error) {
-            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
     });
