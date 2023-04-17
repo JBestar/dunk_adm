@@ -8,14 +8,13 @@
 		<h4 style="float: left; margin: 5px 20px 5px 10px;  font-weight: bold; color: #0090ff; font-size: 20px;"
 			id="main-navbar-level-id"></h4>
 
-			<!-- style="box-shadow: -1px -1px 1px 1px #adaeaf inset;" border:solid #000 2px;-->
+	<!-- style="box-shadow: -1px -1px 1px 1px #adaeaf inset;" border:solid #000 2px;-->
 	<!-- <style>
 		#main-navbar-table-id {
 			background-color:#c7ccd4; 
 			outline: 2px solid #9ea1a5;
 			border-radius: 5px;
 		}
-		
 	</style> -->
 		<Table class="main-navbar-info-table" id="main-navbar-table-id" style=" ">
 			<tr>
@@ -75,108 +74,7 @@
 		</Table>
 
 		<?php if($mb_level >= LEVEL_ADMIN) :  ?>
-		
 			
-			<!-- <?php if(!$bpg_deny || !$hpg_deny) :?>
-			<Table class="main-navbar-betinfo-table">
-				<?php if(!$hpg_deny) :?>
-				<tr>
-					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">해피단:</td>
-					<td>배팅<span id="main-navbar-pbbet-id">0 원</span></td>
-					<td>적중<span id="main-navbar-pbbetearn-id">0 원</span></td>
-				</tr>
-				<tr>
-					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">해피조:</td>
-					<td>배팅<span id="main-navbar-pb2bet-id">0 원</span></td>
-					<td>적중<span id="main-navbar-pb2betearn-id">0 원</span></td>
-				</tr>
-				<?php endif ?>   
-				<?php if(!$bpg_deny) :?>
-				<tr>
-					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보볼단:</td>
-					<td>배팅<span id="main-navbar-bbbet-id">0 원</span></td>
-					<td>적중<span id="main-navbar-bbbetearn-id">0 원</span></td>
-				</tr>
-				<tr>
-					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보볼조:</td>
-					<td>배팅<span id="main-navbar-bb2bet-id">0 원</span></td>
-					<td>적중<span id="main-navbar-bb2betearn-id">0 원</span></td>
-				</tr>
-				<tr>
-					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">보사달:</td>
-					<td>배팅<span id="main-navbar-bsbet-id">0 원</span></td>
-					<td>적중<span id="main-navbar-bsbetearn-id">0 원</span></td>
-				</tr>
-				<?php endif ?>     
-			</Table>
-			<?php endif ?>     
-
-			<?php if(!$eos5_deny || !$eos3_deny) :?>
-			<Table class="main-navbar-betinfo-table">
-				<?php if(!$eos5_deny) :?>
-					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">EOS5단:</td>
-						<td>배팅<span id="main-navbar-e5bet-id">0 원</span></td>
-						<td>적중<span id="main-navbar-e5betearn-id">0 원</span></td>
-
-					</tr>
-					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">EOS5조:</td>
-						<td>배팅<span id="main-navbar-e52bet-id">0 원</span></td>
-						<td>적중<span id="main-navbar-e52betearn-id">0 원</span></td>
-
-					</tr>
-				<?php endif ?>
-				<?php if(!$eos3_deny) :?>
-					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">EOS3단:</td>
-						<td>배팅<span id="main-navbar-e3bet-id">0 원</span></td>
-						<td>적중<span id="main-navbar-e3betearn-id">0 원</span></td>
-
-					</tr>
-					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">EOS3조:</td>
-						<td>배팅<span id="main-navbar-e32bet-id">0 원</span></td>
-						<td>적중<span id="main-navbar-e32betearn-id">0 원</span></td>
-
-					</tr>
-				<?php endif ?> 
-			</Table>
-			<?php endif ?>  -->
-
-			<!-- <?php if(!$coin5_deny || !$coin3_deny) :?>
-			<Table class="main-navbar-betinfo-table">
-				<?php if(!$coin5_deny) :?>
-					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인5단:</td>
-						<td>배팅<span id="main-navbar-c5bet-id">0 원</span></td>
-						<td>적중<span id="main-navbar-c5betearn-id">0 원</span></td>
-
-					</tr>
-					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인5조:</td>
-						<td>배팅<span id="main-navbar-c52bet-id">0 원</span></td>
-						<td>적중<span id="main-navbar-c52betearn-id">0 원</span></td>
-
-					</tr>
-				<?php endif ?>
-				<?php if(!$coin3_deny) :?>
-					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인3단:</td>
-						<td>배팅<span id="main-navbar-c3bet-id">0 원</span></td>
-						<td>적중<span id="main-navbar-c3betearn-id">0 원</span></td>
-
-					</tr>
-					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">코인3조:</td>
-						<td>배팅<span id="main-navbar-c32bet-id">0 원</span></td>
-						<td>적중<span id="main-navbar-c32betearn-id">0 원</span></td>
-
-					</tr>
-				<?php endif ?> 
-			</Table>
-			<?php endif ?>  -->
-
 			<?php if(!$evol_deny || !$cas_deny || !$slot_deny || !$hold_deny) :?>
 			<Table class="main-navbar-betinfo-table" style="margin-left:20px; ">
 				<?php if(!$hold_deny) :?>
