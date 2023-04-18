@@ -167,7 +167,7 @@
 		<?php } else {?>
 			<input type="checkbox" id="confsite-multilog-check-id" checked>
 		<?php }?>
-		<label for="confsite-multilog-check-id"> 회원가입시 중복로그인 허용</label>
+		<label for="confsite-multilog-check-id"> 중복로그인 허용</label>
 	</div>
 	<div class="confsite-site-check-div">
 		<?php if (is_null($arrConfig) || $arrConfig[CONF_TRANS_DENY-1]->conf_active == 1){ ?>

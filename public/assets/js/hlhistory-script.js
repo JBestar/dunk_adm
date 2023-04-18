@@ -7,7 +7,7 @@ $(document).ready(function() {
     }, 1000);
     setTimeout(function() {
         pbhitoryLoop();
-    }, 3000);
+    }, 5000);
 });
 
 function requestPageInfo() {
@@ -252,5 +252,5 @@ function pbhitoryLoop() {
     // 1초뒤에 다시 실행
     setTimeout(function() {
         pbhitoryLoop();
-    }, 3000);
+    }, 5000);
 }
