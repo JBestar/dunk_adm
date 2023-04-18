@@ -199,13 +199,13 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
         return;
     $("#main-navbar-table-id td a").removeClass("flicker");
 
-    var strBuf = objEmpInfo.new_message + " 통";
+    var strBuf = objEmpInfo.new_message + " 신청";
     $("#main-navbar-newmessage-id").text(strBuf);
 
     var nWaitCnt = 0;
     nWaitCnt += parseInt(objEmpInfo.waituser);
 
-    strBuf = nWaitCnt + " 명";
+    strBuf = nWaitCnt + " 신청";
     $("#main-navbar-user_wait-id").text(strBuf);
 
     strBuf = (parseInt(objEmpInfo.wait_charge) + parseInt(objEmpInfo.moment_charge))  + " 대기";

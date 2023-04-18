@@ -35,7 +35,7 @@
 						<td>코인<span id="main-navbar-emp_corate-id">0 % | 0 %</span></td>
 					<?php endif ?>
 				<?php else : ?>
-					<td>충전대기<a href="<?php echo site_furl('/bank/deposit');?>" id="main-navbar-charge_wait-id">0 대기</a></td>
+					<td>가입<a href="<?php echo site_furl('/user/member/0');?>" id="main-navbar-user_wait-id">0 신청</a></td>
 				<?php endif ?>
 
 			</tr>
@@ -56,18 +56,18 @@
 						<td>해피볼<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
 					<?php endif ?>    
 				<?php else : ?>
-					<td>환전대기<a href="<?php echo site_furl('/bank/withdraw');?>" id="main-navbar-exchange_wait-id">0 대기</a></td>
+					<td>문의<a href="<?php echo site_furl('/board/message');?>" id="main-navbar-newmessage-id">0 신청</a></td>
 				<?php endif ?>
 			</tr>
 
 			<?php if($mb_level >= LEVEL_ADMIN) :  ?>
 			<tr>
 				<td>충전금액<span id="main-navbar-emp_charge-id">0 원</span></td>
-				<td>가입신청<a href="<?php echo site_furl('/user/member/0');?>" id="main-navbar-user_wait-id">0 명</a></td>
+				<td>충전<a href="<?php echo site_furl('/bank/deposit');?>" id="main-navbar-charge_wait-id">0 대기</a></td>
 			</tr>
 			<tr>
 				<td>환전금액<span id="main-navbar-emp_exchange-id">0 원</span></td>
-				<td>문의신청<a href="<?php echo site_furl('/board/message');?>" id="main-navbar-newmessage-id">0 통</a></td>
+				<td>환전<a href="<?php echo site_furl('/bank/withdraw');?>" id="main-navbar-exchange_wait-id">0 대기</a></td>
 			</tr>
 			<?php endif ?>
 
