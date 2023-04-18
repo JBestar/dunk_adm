@@ -7,7 +7,7 @@ $(document).ready(function() {
     }, 1000);
     setTimeout(function() {
         pbhitoryLoop();
-    }, 5000);
+    }, 3000);
 });
 
 function requestPageInfo() {
@@ -184,7 +184,7 @@ function requestBetHistory() {
         dataType: "json",
         success: function(jResult) {
             // $(".loading").hide();
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 ShowBetHistory(jResult.data);
             }
@@ -252,5 +252,5 @@ function pbhitoryLoop() {
     // 1초뒤에 다시 실행
     setTimeout(function() {
         pbhitoryLoop();
-    }, 5000);
+    }, 3000);
 }
