@@ -9,6 +9,16 @@
 	<th>적중금</th>
 	<th>배팅결과</th>
 	<th>포인트</th>
+	<th>플레1</th>
+	<th>플레2</th>
+	<th>플레3</th>
+	<th>플레4</th>
+	<th>플레5</th>
+	<th>플레6</th>
+	<th>플레7</th>
+	<th>플레8</th>
+	<th>플레9</th>
+	<th>커뮤니티</th>
 <?= $this->endSection() ?>
 <?= $this->section('history_script') ?>
 <script>var mGameId = <?=$game_id?></script>

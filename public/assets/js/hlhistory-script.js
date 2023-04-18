@@ -7,7 +7,7 @@ $(document).ready(function() {
     }, 1000);
     setTimeout(function() {
         pbhitoryLoop();
-    }, 300000);
+    }, 5000);
 });
 
 function requestPageInfo() {
@@ -48,6 +48,26 @@ function ShowBetHistory(jsonBetData) {
         if (jsonBetData[nRow].rw_point != null)
             strBuf += jsonBetData[nRow].rw_point;
         else strBuf += "0";
+        strBuf += "</td><td>";
+        strBuf += toCardInfo(jsonBetData[nRow].bet_player_1);
+        strBuf += "</td><td>";
+        strBuf += toCardInfo(jsonBetData[nRow].bet_player_2);
+        strBuf += "</td><td>";
+        strBuf += toCardInfo(jsonBetData[nRow].bet_player_3);
+        strBuf += "</td><td>";
+        strBuf += toCardInfo(jsonBetData[nRow].bet_player_4);
+        strBuf += "</td><td>";
+        strBuf += toCardInfo(jsonBetData[nRow].bet_player_5);
+        strBuf += "</td><td>";
+        strBuf += toCardInfo(jsonBetData[nRow].bet_player_6);
+        strBuf += "</td><td>";
+        strBuf += toCardInfo(jsonBetData[nRow].bet_player_7);
+        strBuf += "</td><td>";
+        strBuf += toCardInfo(jsonBetData[nRow].bet_player_8);
+        strBuf += "</td><td>";
+        strBuf += toCardInfo(jsonBetData[nRow].bet_player_9);
+        strBuf += "</td><td>";
+        strBuf += toCardInfo(jsonBetData[nRow].bet_community);
         strBuf += "</td></tr>";
 
     }
@@ -59,6 +79,47 @@ function ShowBetHistory(jsonBetData) {
 
 }
 
+function toCardInfo(strCards){
+    let cards = strCards.trim().split(',');
+
+    let buf = "";
+    let sign = "";
+    let cardNum = "";
+    let num = 0
+
+    for(let card of cards){
+        card = card.trim();
+        if(card.length < 1)
+            continue;
+        card = parseInt(card);
+        sign = Math.ceil(card/13);
+        num = card%13; 
+
+        if(num == 0){
+            cardNum = "K";    
+        } else if(num == 12){
+            cardNum = "Q";    
+        } else if(num == 11){
+            cardNum = "J";    
+        } else if(num < 11){
+            cardNum = num;    
+        }
+        
+        if(sign == 1){
+            buf += "<span style='color:black'>♠"; 
+        } else if(sign == 2){
+            buf += "<span style='color:black'>♣"; 
+        } else if(sign == 3){
+            buf += "<span style='color:red'>♦"; 
+        } else if(sign == 4){
+            buf += "<span style='color:red'>♥"; 
+        } else
+            buf += "<span style='color:black'>"; 
+
+        buf += cardNum+"</span>" + " ";
+    }
+    return buf;
+}
 
 function ShowBetAccount(arrBetAccount) {
 
@@ -115,15 +176,15 @@ function requestBetHistory() {
         "game": mGameId
     };
     jsonData = JSON.stringify(jsonData);
-    $(".loading").show();
+    // $(".loading").show();
     $.ajax({
         url: FURL + '/api/hlbetlist',
         data: { json_: jsonData },
         type: 'post',
         dataType: "json",
         success: function(jResult) {
-            $(".loading").hide();
-            // console.log(jResult);
+            // $(".loading").hide();
+            console.log(jResult);
             if (jResult.status == "success") {
                 ShowBetHistory(jResult.data);
             }
@@ -191,5 +252,5 @@ function pbhitoryLoop() {
     // 1초뒤에 다시 실행
     setTimeout(function() {
         pbhitoryLoop();
-    }, 300000);
+    }, 5000);
 }

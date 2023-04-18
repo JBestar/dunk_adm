@@ -17,6 +17,16 @@ class HlBet_Model extends Model
         'bet_agent_id', 
         'bet_player_id', 
         'bet_table_code', 
+        'bet_player_1', 
+        'bet_player_2', 
+        'bet_player_3', 
+        'bet_player_4', 
+        'bet_player_5', 
+        'bet_player_6', 
+        'bet_player_7', 
+        'bet_player_8', 
+        'bet_player_9', 
+        'bet_community', 
     ];
     protected $primaryKey = 'bet_fid';
     private $mMemberTable = 'member';
@@ -76,8 +86,8 @@ class HlBet_Model extends Model
             return $result;
         }
 
-        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_live_id ";
-        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_nickname, r.mb_live_id ";
+        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname ";
+        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_nickname ";
 
         $strWhere =" WHERE ".getBetTimeRange($arrReqData, $this->db);
         if(strlen($arrReqData['user']) > 0){
@@ -91,8 +101,8 @@ class HlBet_Model extends Model
         $strWhere.=" ORDER BY bet_fid DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
         
         $strSql = "";
-        $strSql .= "SELECT bet_fid, bet_idx, bet_mb_uid, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_table_code, ";
-        $strSql .= " rw_mb_uid, rw_point ";
+        $strSql .= "SELECT ".implode(", ", $this->allowedFields);
+        $strSql .= ", rw_mb_uid, rw_point ";
         $strSql .= " FROM ( ";
 
         $tbBetSearch = "bet_search";
@@ -144,8 +154,8 @@ class HlBet_Model extends Model
             return $result;
         } 
         
-        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_live_id ";
-        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_live_id ";
+        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid ";
+        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid ";
 
         $strSql = "";
 
@@ -180,20 +190,10 @@ class HlBet_Model extends Model
     function getBetSumByDay($arrReqInfo, $objConf){
 
         $arrSum = array();
+        $strSql = " SELECT SUM(bet_money) AS bet_money_sum, SUM(bet_win_money) AS win_money_sum  FROM ".$this->table;
+        $strSql .= " WHERE bet_time >= '".$arrReqInfo['start']."' "; //AND bet_time <= '".$arrReqInfo['end']."' ";
 
-        // if($arrReqInfo['gm_range'][0] >= 0){
-            $strSql = " SELECT SUM(bet_money) AS bet_money_sum, SUM(bet_win_money) AS win_money_sum  FROM ".$this->table;
-            $strSql .= " WHERE bet_time >= '".$arrReqInfo['start']."' "; //AND bet_time <= '".$arrReqInfo['end']."' ";
-    
-            // writeLog($strSql);
-            // $strSql .= " AND bet_mb_uid NOT IN (SELECT mb_uid FROM ".$this->mMemberTable." WHERE mb_level >= ".LEVEL_ADMIN.") ";
-            $objResult = $this -> db -> query($strSql)->getRow();
-            // writeLog("BetSumByDay End");
-        // } else {
-        //     $objResult= new \StdClass;
-        //     $objResult->bet_money_sum = 0;
-        //     $objResult->win_money_sum = 0;
-        // }
+        $objResult = $this -> db -> query($strSql)->getRow();
         
         $nSum = 0;
         if(!is_null($objResult->bet_money_sum)) {
