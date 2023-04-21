@@ -33,13 +33,13 @@ function readConfigToObject() {
 
     jsonData.mainnotice = $("#confsite-mainnotice-text-id").val();
     jsonData.mainnotice_ok = $("#confsite-mainnotice-check-id").prop('checked') ? 1 : 0;
-    if($("#confsite-deposite-check-id").length > 0){
-        jsonData.depositenotice = $("#confsite-deposite-text-id").summernote('code');
-        jsonData.depositenotice_ok = $("#confsite-deposite-check-id").prop('checked') ? 1 : 0;
-        jsonData.depositenotice_color = $("#confsite-deposite-color-id").val();
-        jsonData.urgentnotice = $("#confsite-urgentnotice-text-id").summernote('code');
-        jsonData.urgentnotice_ok = $("#confsite-urgentnotice-check-id").prop('checked') ? 1 : 0;
-        jsonData.urgentnotice_color = $("#confsite-urgentnotice-color-id").val();
+    jsonData.depositenotice = $("#confsite-deposite-text-id").summernote('code');
+    jsonData.depositenotice_ok = $("#confsite-deposite-check-id").prop('checked') ? 1 : 0;
+    jsonData.depositenotice_color = $("#confsite-deposite-color-id").val();
+    jsonData.urgentnotice = $("#confsite-urgentnotice-text-id").summernote('code');
+    jsonData.urgentnotice_ok = $("#confsite-urgentnotice-check-id").prop('checked') ? 1 : 0;
+    jsonData.urgentnotice_color = $("#confsite-urgentnotice-color-id").val();
+    if($("#confsite-chargemanual-text-id").length > 0){
         jsonData.chargemanual = $("#confsite-chargemanual-text-id").summernote('code');
         jsonData.discharmanual = $("#confsite-discharmanual-text-id").summernote('code');
     }
@@ -88,7 +88,7 @@ function addBtnEvent() {
                 }
             },
             error: function(request, status, error) {
-                console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             }
 
         });

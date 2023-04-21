@@ -117,17 +117,29 @@
 				</tr>
     			<?php endif ?>  
 				
+				<?php if(array_key_exists('app.site', $_ENV) && $_ENV['app.site'] == 2 ) :?>
+					<?php if(!$bpg_deny || !$hpg_deny || !$eos5_deny || !$eos3_deny || !$coin5_deny || !$coin3_deny) :?>
+						<tr>
+							<td style="font-weight: bold; color: #0090ff; font-size: 14px;">미니게임:</td>
+							<td style="vertical-align:top;">배팅<span id="main-navbar-minibet-id">0 원</span></td>
+							<td style="vertical-align:top;">적중<span id="main-navbar-minibetearn-id">0 원</span></td>
+						</tr>
+					<?php endif ?>  
+				<?php endif ?>  
+				
 			</Table>
 			<?php endif ?>     
 			
-			<?php if(!$bpg_deny || !$hpg_deny || !$eos5_deny || !$eos3_deny || !$coin5_deny || !$coin3_deny) :?>
-				<Table class="main-navbar-betinfo-table" style="">
-					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px; vertical-align:top;">미니게임:</td>
-						<td style="vertical-align:top;">배팅<span id="main-navbar-minibet-id">0 원</span></td>
-						<td style="vertical-align:top;">적중<span id="main-navbar-minibetearn-id">0 원</span></td>
-					</tr>
-				</Table>
+			<?php if(!array_key_exists('app.site', $_ENV) || $_ENV['app.site'] != 2 ) :?>
+				<?php if(!$bpg_deny || !$hpg_deny || !$eos5_deny || !$eos3_deny || !$coin5_deny || !$coin3_deny) :?>
+					<Table class="main-navbar-betinfo-table" style="">
+						<tr>
+							<td style="font-weight: bold; color: #0090ff; font-size: 14px; vertical-align:top;">미니게임:</td>
+							<td style="vertical-align:top;">배팅<span id="main-navbar-minibet-id">0 원</span></td>
+							<td style="vertical-align:top;">적중<span id="main-navbar-minibetearn-id">0 원</span></td>
+						</tr>
+					</Table>
+				<?php endif ?>  
 			<?php endif ?>  
 
 		<?php endif ?>

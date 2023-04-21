@@ -271,26 +271,28 @@ class ConfSite_Model extends Model
         $updateData['conf_content'] = $arrData['bank'];
         $arrBatch[] = $updateData;
         
-        if(array_key_exists('depositenotice', $arrData)){
-            $updateData = array();
-            $updateData['conf_id'] = CONF_NOTICE_BANK;
-            $updateData['conf_content'] = $arrData['depositenotice'];
-            $updateData['conf_active'] = $arrData['depositenotice_ok'];
-            $updateData['conf_idx'] = $arrData['depositenotice_color'];
-            $arrBatch[] = $updateData;
+        $updateData = array();
+        $updateData['conf_id'] = CONF_NOTICE_BANK;
+        $updateData['conf_content'] = $arrData['depositenotice'];
+        $updateData['conf_active'] = $arrData['depositenotice_ok'];
+        $updateData['conf_idx'] = $arrData['depositenotice_color'];
+        $arrBatch[] = $updateData;
 
-            $updateData = array();
-            $updateData['conf_id'] = CONF_NOTICE_URGENT;
-            $updateData['conf_content'] = $arrData['urgentnotice'];
-            $updateData['conf_active'] = $arrData['urgentnotice_ok'];
-            $updateData['conf_idx'] = $arrData['urgentnotice_color'];
-            $arrBatch[] = $updateData;
+        $updateData = array();
+        $updateData['conf_id'] = CONF_NOTICE_URGENT;
+        $updateData['conf_content'] = $arrData['urgentnotice'];
+        $updateData['conf_active'] = $arrData['urgentnotice_ok'];
+        $updateData['conf_idx'] = $arrData['urgentnotice_color'];
+        $arrBatch[] = $updateData;
     
+        if(array_key_exists('chargemanual', $arrData)){
             $updateData = array();
             $updateData['conf_id'] = CONF_CHARGE_MANUAL;
             $updateData['conf_content'] = $arrData['chargemanual'];
             $arrBatch[] = $updateData;
-    
+        }
+
+        if(array_key_exists('discharmanual', $arrData)){
             $updateData = array();
             $updateData['conf_id'] = CONF_DISCHA_MANUAL;
             $updateData['conf_content'] = $arrData['discharmanual'];
