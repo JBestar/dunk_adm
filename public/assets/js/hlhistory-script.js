@@ -16,7 +16,7 @@ function requestPageInfo() {
 
 
 //Function to Show Betting History
-function ShowBetHistory(jsonBetData) {
+function ShowBetHistory(jsonBetData, level) {
     var elemBetDataTb = document.getElementById("pbbet-table-id");
     var strBuf = "";
     var curPage = getActivePage();
@@ -48,26 +48,29 @@ function ShowBetHistory(jsonBetData) {
         if (jsonBetData[nRow].rw_point != null)
             strBuf += jsonBetData[nRow].rw_point;
         else strBuf += "0";
-        strBuf += "</td><td>";
-        strBuf += toCardInfo(jsonBetData[nRow].bet_player_1);
-        strBuf += "</td><td>";
-        strBuf += toCardInfo(jsonBetData[nRow].bet_player_2);
-        strBuf += "</td><td>";
-        strBuf += toCardInfo(jsonBetData[nRow].bet_player_3);
-        strBuf += "</td><td>";
-        strBuf += toCardInfo(jsonBetData[nRow].bet_player_4);
-        strBuf += "</td><td>";
-        strBuf += toCardInfo(jsonBetData[nRow].bet_player_5);
-        strBuf += "</td><td>";
-        strBuf += toCardInfo(jsonBetData[nRow].bet_player_6);
-        strBuf += "</td><td>";
-        strBuf += toCardInfo(jsonBetData[nRow].bet_player_7);
-        strBuf += "</td><td>";
-        strBuf += toCardInfo(jsonBetData[nRow].bet_player_8);
-        strBuf += "</td><td>";
-        strBuf += toCardInfo(jsonBetData[nRow].bet_player_9);
-        strBuf += "</td><td>";
-        strBuf += toCardInfo(jsonBetData[nRow].bet_community);
+        if(level >= LEVEL_ADMIN){
+            strBuf += "</td>";
+            strBuf += toCardInfo(jsonBetData[nRow].bet_player_1, jsonBetData[nRow].bet_player_seat==1);
+            strBuf += "</td>";
+            strBuf += toCardInfo(jsonBetData[nRow].bet_player_2, jsonBetData[nRow].bet_player_seat==2);
+            strBuf += "</td>";
+            strBuf += toCardInfo(jsonBetData[nRow].bet_player_3, jsonBetData[nRow].bet_player_seat==3);
+            strBuf += "</td>";
+            strBuf += toCardInfo(jsonBetData[nRow].bet_player_4, jsonBetData[nRow].bet_player_seat==4);
+            strBuf += "</td>";
+            strBuf += toCardInfo(jsonBetData[nRow].bet_player_5, jsonBetData[nRow].bet_player_seat==5);
+            strBuf += "</td>";
+            strBuf += toCardInfo(jsonBetData[nRow].bet_player_6, jsonBetData[nRow].bet_player_seat==6);
+            strBuf += "</td>";
+            strBuf += toCardInfo(jsonBetData[nRow].bet_player_7, jsonBetData[nRow].bet_player_seat==7);
+            strBuf += "</td>";
+            strBuf += toCardInfo(jsonBetData[nRow].bet_player_8, jsonBetData[nRow].bet_player_seat==8);
+            strBuf += "</td>";
+            strBuf += toCardInfo(jsonBetData[nRow].bet_player_9, jsonBetData[nRow].bet_player_seat==9);
+            strBuf += "</td>";
+            strBuf += toCardInfo(jsonBetData[nRow].bet_community);
+        }
+       
         strBuf += "</td></tr>";
 
     }
@@ -79,10 +82,13 @@ function ShowBetHistory(jsonBetData) {
 
 }
 
-function toCardInfo(strCards){
+function toCardInfo(strCards, mark=false){
     let cards = strCards.trim().split(',');
 
-    let buf = "";
+    let buf = "<td>";
+    if(mark)
+        buf = "<td style='border:1px solid #0000ff;'>";
+
     let sign = "";
     let cardNum = "";
     let num = 0
@@ -186,7 +192,7 @@ function requestBetHistory() {
             // $(".loading").hide();
             // console.log(jResult);
             if (jResult.status == "success") {
-                ShowBetHistory(jResult.data);
+                ShowBetHistory(jResult.data, jResult.level);
             }
         },
         error: function(request, status, error) {
@@ -248,9 +254,12 @@ function requestTotalPage(bReqPage = true) {
 function pbhitoryLoop() {
 
     requestBetHistory();
+    let tmCount = 30000; 
+    if(mObjUser && mObjUser.mb_level >= LEVEL_ADMIN)
+        tmCount = 5000;
 
     // 1초뒤에 다시 실행
     setTimeout(function() {
         pbhitoryLoop();
-    }, 5000);
+    }, tmCount);
 }

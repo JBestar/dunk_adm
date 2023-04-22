@@ -1712,11 +1712,12 @@ public function withdrawlist(){
 			if($objAdmin->mb_level >= LEVEL_ADMIN && strlen(trim($arrGetData['emp'])) > 0){
 				$objAdmin = $this->modelMember->getInfo(trim($arrGetData['emp']));
 			}
-			$arrBetResults = $hlbetModel->search($objAdmin, $arrGetData);
+			$arrBetResults = $hlbetModel->search($objAdmin, $arrGetData, $objAdmin->mb_level >= LEVEL_ADMIN);
 			
 			$objResult = new \StdClass;
 			$objResult->data = $arrBetResults;	
 			$objResult->status = "success";
+			$objResult->level = $objAdmin->mb_level;
 		
 			echo json_encode($objResult);
 		}

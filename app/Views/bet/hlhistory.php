@@ -9,6 +9,7 @@
 	<th>적중금</th>
 	<th>배팅결과</th>
 	<th>포인트</th>
+<?php if($mb_level >= LEVEL_ADMIN) :  ?>
 	<th>플레1</th>
 	<th>플레2</th>
 	<th>플레3</th>
@@ -19,6 +20,7 @@
 	<th>플레8</th>
 	<th>플레9</th>
 	<th>커뮤니티</th>
+<?php endif ?>
 <?= $this->endSection() ?>
 <?= $this->section('history_script') ?>
 <script>var mGameId = <?=$game_id?></script>

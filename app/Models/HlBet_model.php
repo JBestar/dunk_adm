@@ -78,7 +78,7 @@ class HlBet_Model extends Model
     }
 
 
-    function search($objEmp, $arrReqData)
+    function search($objEmp, $arrReqData, $bAll)
     {
 
         if(is_null($objEmp)){
@@ -100,8 +100,17 @@ class HlBet_Model extends Model
         $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
         $strWhere.=" ORDER BY bet_fid DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
         
-        $strSql = "";
-        $strSql .= "SELECT ".implode(", ", $this->allowedFields);
+        if($bAll){
+            $fields = [ 'bet_idx', 'bet_emp_fid', 'bet_mb_uid', 'bet_round_no', 'bet_time', 'bet_money', 
+                'bet_win_money', 'bet_player_1', 'bet_player_2', 
+                'bet_player_3',  'bet_player_4', 'bet_player_5', 'bet_player_6', 'bet_player_7', 'bet_player_8', 
+                'bet_player_9',  'bet_community', 'bet_player_seat', 'bet_order' ];
+        } else {
+            $fields = [ 'bet_idx', 'bet_emp_fid', 'bet_mb_uid', 'bet_round_no', 'bet_time', 'bet_money', 
+            'bet_win_money'];
+        }
+
+        $strSql = "SELECT ".implode(", ", $fields);
         $strSql .= ", rw_mb_uid, rw_point ";
         $strSql .= " FROM ( ";
 
