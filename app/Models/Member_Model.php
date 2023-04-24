@@ -1569,7 +1569,7 @@ class Member_Model extends Model
     // 관리자 보유금
     public function calcAdminMoney()
     {
-        $strSQL = 'SELECT SUM(mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money+mb_gslot_money+mb_hslot_money) AS emp_money, SUM(mb_point) AS emp_point FROM '.$this->table;
+        $strSQL = 'SELECT SUM(mb_money+mb_live_money+mb_slot_money+mb_fslot_money+mb_kgon_money+mb_gslot_money+mb_hslot_money+mb_hold_money) AS emp_money, SUM(mb_point) AS emp_point FROM '.$this->table;
         $strSQL .= ' WHERE mb_level < '.LEVEL_ADMIN;
         $strSQL .=" AND mb_state_active != '".PERMIT_DELETE."' ";
 

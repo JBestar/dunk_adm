@@ -161,6 +161,7 @@ class Home extends StdController
 			"14"=> "MISSION",
 			// "15"=> "MONEY",
 			"16"=> "알로하",
+			"17"=> "KING",
 		];
 		$confsiteModel = new ConfSite_Model();
 
