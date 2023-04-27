@@ -146,7 +146,7 @@ function showMemberInfo(objUser) {
 
         if(objUser.mb_point == null)
             objUser.mb_point = 0;
-        strBuf = parseInt(objUser.mb_point).toLocaleString() + " P";
+        strBuf = parseFloat(objUser.mb_point).toLocaleString() + " P";
         $("#main-navbar-emp_point-id").text(strBuf);
 
         strBuf = parseInt(objUser.mb_money_charge).toLocaleString() + " 원";

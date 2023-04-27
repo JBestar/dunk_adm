@@ -55,12 +55,13 @@ function showMoneyHistory(jsonBetData) {
             case 18: strBuf += "보글사다리 정산"; break;
             case 19: strBuf += "하부이동"; break;
             case 20: strBuf += "상부이동"; break;
-            case 27: strBuf += "하부환수"; break;
-            case 28: strBuf += "상부환수"; break;
             case 23: strBuf += "직충전"; break;
-            case 26: strBuf += "직환전"; break;
             case 24: strBuf += "머니회수"; break;
             case 25: strBuf += "포인트회수"; break;
+            case 26: strBuf += "직환전"; break;
+            case 27: strBuf += "하부환수"; break;
+            case 28: strBuf += "상부환수"; break;
+            case 29: strBuf += "머니지급"; break;
             case 31: strBuf += "EOS5분파워볼 배팅"; break;
             case 32: strBuf += "EOS5분파워볼 배팅취소"; break;
             case 33: strBuf += "EOS5분파워볼 정산"; break;

@@ -37,7 +37,26 @@ class Home extends StdController
 	}
 
 	public function conf_sound(){
-		$this->load_view_page('home/conf_sound', 'conf_site', LEVEL_ADMIN);	
+		$arrSound = [
+			"sound1.mp3"=> "알림음1",
+			"sound2.mp3"=> "알림음2",
+			"sound3.mp3"=> "알림음3",
+			"sound4.mp3"=> "알림음4",
+			"sound5.mp3"=> "알림음5",
+			"sound6.mp3"=> "알림음6",
+			"sound7.mp3"=> "알림음7",
+			"sound8.mp3"=> "알림음8",
+			"sound9.mp3"=> "알림음9",
+			"sound10.mp3"=> "알림음10",
+			"sound11.mp3"=> "알림음11",
+			"sound12.mp3"=> "알림음12",
+		];
+		
+		$param = [
+			'sounds' => $arrSound,
+		];
+
+		$this->load_view_page('home/conf_sound', 'conf_site', LEVEL_ADMIN, $param);	
 	}
 
 	public function conf_clean(){

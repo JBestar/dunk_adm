@@ -411,7 +411,6 @@
 				<?php } else {?>
 				<input type = "text" id="useredit-money-input-id" value="<?=num_format(allMoney($objMember), NUM_POINT_CNT)?>" disabled>
 				<label>원</label>
-				<button class="pbresult-list-view-but" id="useredit-withdraw-money-id">회수</button>  
 				<?php } ?>
 			</div>
 			<!---->
@@ -439,10 +438,17 @@
 					<button class="pbresult-money-but" id="money_4">10만원</button>  
 					<button class="pbresult-money-but" id="money_5">50만원</button>  
 					<button class="pbresult-money-but" id="money_6">100만원</button>  
-					<button class="pbresult-list-view-but" id="useredit-give-but-id" style="margin-right:0px;">직충전</button>  
-					<button class="pbresult-list-view-but" id="useredit-withdraw-but-id"  style="margin-left:5px;">직환전</button>  
-
+					<button class="pbresult-money-but" id="money_9">전체</button>
+					<button class="pbresult-money-but" id="money_0">정정</button>
 				</div>
+				<div class="useredit-text-div">
+					<p></p> 
+					<button class="pbresult-list-view-but" id="useredit-give-but-id" style="margin-left:280px; margin-right:0px;">지급</button>  
+					<button class="pbresult-list-view-but" id="useredit-collect-but-id"  style="margin-left:5px;">회수</button>  
+					<button class="pbresult-list-view-but" id="useredit-deposit-but-id" style="margin-left:38px; margin-right:0px;">직충전</button>  
+					<button class="pbresult-list-view-but" id="useredit-withdraw-but-id"  style="margin-left:5px;">직환전</button>  
+				</div>
+
 			<?php endif ?>
 
 		<?php } else {?>

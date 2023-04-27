@@ -150,8 +150,8 @@ function addBtnEvent() {
         requestWithdraw(1)
     });
         
-    $("#useredit-give-but-id").click(function() {
-        var nAmount = parseInt($("#useredit-transfer-input-id").val().replace(/,/g, ""));
+    $("#useredit-deposit-but-id").click(function() {
+        var nAmount = parseFloat($("#useredit-transfer-input-id").val().replace(/,/g, ""));
         if (isNaN(nAmount) || nAmount == "") {
             nAmount = 0;
         }
@@ -171,9 +171,10 @@ function addBtnEvent() {
         requestTrasnfer(jsonData);
     });
     
+
     //직환전
     $("#useredit-withdraw-but-id").click(function() {
-        var nAmount = parseInt($("#useredit-transfer-input-id").val().replace(/,/g, ""));
+        var nAmount = parseFloat($("#useredit-transfer-input-id").val().replace(/,/g, ""));
         if (isNaN(nAmount) || nAmount == "") {
             nAmount = 0;
         }
@@ -195,7 +196,7 @@ function addBtnEvent() {
     });
     
     $("#useredit-transfer-but-id").click(function() {
-        var nAmount = parseInt($("#useredit-transfer-input-id").val().replace(/,/g, ""));
+        var nAmount = parseFloat($("#useredit-transfer-input-id").val().replace(/,/g, ""));
         if (isNaN(nAmount) || nAmount == "") {
             nAmount = 0;
         }
@@ -218,7 +219,7 @@ function addBtnEvent() {
     
     
     $("#useredit-return-but-id").click(function() {
-        var nAmount = parseInt($("#useredit-transfer-input-id").val().replace(/,/g, ""));
+        var nAmount = parseFloat($("#useredit-transfer-input-id").val().replace(/,/g, ""));
         if (isNaN(nAmount) || nAmount == "") {
             nAmount = 0;
         }
@@ -239,6 +240,49 @@ function addBtnEvent() {
 
     });
 
+    //give money
+    $("#useredit-give-but-id").click(function() {
+        var nAmount = parseFloat($("#useredit-transfer-input-id").val().replace(/,/g, ""));
+        if (isNaN(nAmount) || nAmount == "") {
+            nAmount = 0;
+        }
+        if (nAmount == 0) {
+            alert("지급금액을 입력 해주세요.");
+            return false;
+        }
+
+        if (!confirm(nAmount.toLocaleString() + "원을 지급하시겠습니까?"))
+            return;
+    
+        var jsonData = {
+            'mb_fid': $("#subnavbar-fid-p-id").html(),
+            'amount': nAmount,
+            'type':4
+        }
+        requestTrasnfer(jsonData);
+    });
+
+    //collect money
+    $("#useredit-collect-but-id").click(function() {
+        var nAmount = parseFloat($("#useredit-transfer-input-id").val().replace(/,/g, ""));
+        if (isNaN(nAmount) || nAmount == "") {
+            nAmount = 0;
+        }
+        if (nAmount == 0) {
+            alert("회수금액을 입력 해주세요.");
+            return false;
+        }
+
+        if (!confirm(nAmount.toLocaleString() + "원을 회수하시겠습니까?"))
+            return;
+    
+        var jsonData = {
+            'mb_fid': $("#subnavbar-fid-p-id").html(),
+            'amount': nAmount,
+            'type':5
+        }
+        requestTrasnfer(jsonData);
+    });
 
 }
 
@@ -318,8 +362,18 @@ $(function() {
         e.preventDefault();
         tr_price(1000000);
     });
-
+    // 전체
+    $("#money_9").on("click", function(e) {
+        e.preventDefault();
+        $("#useredit-transfer-input-id").val($("#useredit-money-input-id").val());
+    });
+    // 정정
+    $("#money_0").on("click", function(e) {
+        e.preventDefault();
+        tr_price(0);
+    });
 });
+
 
 
 function tr_price(price) {

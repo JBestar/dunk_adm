@@ -1213,7 +1213,7 @@ class UserApi extends BaseController
             } else if($objEmp->mb_level >= LEVEL_ADMIN) {
                 $objResult->status = 'fail';
                 
-                if($arrData['type'] == 0){          //직충전
+                if($arrData['type'] == 0 || $arrData['type'] == 4){          //Deposit or Payment
                     $iResult = 1;
                     if($_ENV['mem.delay_play'] > 0 && $_ENV['mem.depodeny_play'] &&  diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
                         $iResult = 2;
@@ -1222,31 +1222,35 @@ class UserApi extends BaseController
                     if($iResult == 1){
                         if($this->modelMember->moneyProc($objMember, $arrData['amount']))
                         {
-                            $chargeModel = new Charge_Model();
+                            if($arrData['type'] == 0){
+                                $chargeModel = new Charge_Model();
 
-                            $data =[
-                                'charge_emp_fid' => $objMember->mb_emp_fid,
-                                'charge_mb_uid' => $objMember->mb_uid,
-                                'charge_mb_realname' => $objMember->mb_bank_own,
-                                'charge_mb_phone' => $objMember->mb_phone,
-                                'charge_money' => $arrData['amount'],
-                                'charge_time_require' => date("Y-m-d H:i:s"),
-                                'charge_action_state' => 5,
-                                'charge_action_uid' => $objEmp->mb_uid,
-                                'charge_time_process' => date("Y-m-d H:i:s"),
-                                'charge_money_before' => allMoney($objMember),
-                                'charge_money_after' => allMoney($objMember) + $arrData['amount'],
-                            ];
-                            $chargeModel->register($data);
-
-                            $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, $arrData['amount'], MONEYCHANGE_INC);
+                                $data =[
+                                    'charge_emp_fid' => $objMember->mb_emp_fid,
+                                    'charge_mb_uid' => $objMember->mb_uid,
+                                    'charge_mb_realname' => $objMember->mb_bank_own,
+                                    'charge_mb_phone' => $objMember->mb_phone,
+                                    'charge_money' => $arrData['amount'],
+                                    'charge_time_require' => date("Y-m-d H:i:s"),
+                                    'charge_action_state' => 5,
+                                    'charge_action_uid' => $objEmp->mb_uid,
+                                    'charge_time_process' => date("Y-m-d H:i:s"),
+                                    'charge_money_before' => allMoney($objMember),
+                                    'charge_money_after' => allMoney($objMember) + $arrData['amount'],
+                                ];
+                                $chargeModel->register($data);
+                                $iChangeType = MONEYCHANGE_INC;
+                            } else 
+                                $iChangeType = MONEYCHANGE_GIVE;
+                            
+                            $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, $arrData['amount'], $iChangeType);
                             $objResult->status = 'success';
                         }
                     } else if($iResult == 2) {
                         $objResult->status = 'fail';
                         $objResult->msg = '회원이 게임플레이중이므로 충전 하실수 없습니다. '.intval(($_ENV['mem.delay_play']-diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet))/60+1)."분후 다시 시도해주세요.";
                     }
-                } else if($arrData['type'] == 1){           //직환전
+                } else if($arrData['type'] == 1 || $arrData['type'] == 5){           //Withdraw OR 
                     $iResult = 1;
                     if(floatval($objMember->mb_money) < $arrData['amount']){
                         if($_ENV['mem.delay_play'] > 0 && $_ENV['mem.withdeny_play'] && diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
@@ -1263,27 +1267,31 @@ class UserApi extends BaseController
                         }
                         if($arrData['amount'] > 0 && $this->modelMember->moneyProc($objMember, 0-$arrData['amount']))
                         {
-                            $exchangeModel = new Exchange_Model();
+                            if($arrData['type'] == 1){
+                                $exchangeModel = new Exchange_Model();
 
-                            $data =[
-                                'exchange_emp_fid' => $objMember->mb_emp_fid,
-                                'exchange_mb_uid' => $objMember->mb_uid,
-                                'exchange_mb_phone' => $objMember->mb_phone,
-                                'exchange_money' => $arrData['amount'],
-                                'exchange_time_require' => date("Y-m-d H:i:s"),
-                                'exchange_action_state' => 5,
-                                'exchange_action_uid' => $objEmp->mb_uid,
-                                'exchange_time_process' => date("Y-m-d H:i:s"),
-                                'exchange_bank_name' => $objMember->mb_bank_name,
-                                'exchange_bank_account' => $objMember->mb_bank_own,
-                                'exchange_bank_serial' => $objMember->mb_bank_num,
-                                'exchange_money_before' => allMoney($objMember),
-                                'exchange_money_after' => allMoney($objMember)-$arrData['amount']
-
-                            ];
-                            $exchangeModel->register($data);
-
-                            $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], MONEYCHANGE_DEC);
+                                $data =[
+                                    'exchange_emp_fid' => $objMember->mb_emp_fid,
+                                    'exchange_mb_uid' => $objMember->mb_uid,
+                                    'exchange_mb_phone' => $objMember->mb_phone,
+                                    'exchange_money' => $arrData['amount'],
+                                    'exchange_time_require' => date("Y-m-d H:i:s"),
+                                    'exchange_action_state' => 5,
+                                    'exchange_action_uid' => $objEmp->mb_uid,
+                                    'exchange_time_process' => date("Y-m-d H:i:s"),
+                                    'exchange_bank_name' => $objMember->mb_bank_name,
+                                    'exchange_bank_account' => $objMember->mb_bank_own,
+                                    'exchange_bank_serial' => $objMember->mb_bank_num,
+                                    'exchange_money_before' => allMoney($objMember),
+                                    'exchange_money_after' => allMoney($objMember)-$arrData['amount']
+    
+                                ];
+                                $exchangeModel->register($data);
+    
+                                $iChangeType = MONEYCHANGE_DEC;
+                            } else $iChangeType = MONEYCHANGE_WITHDRAW;
+                            
+                            $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], $iChangeType);
                             $objResult->status = 'success';
                         }
                     } else if($iResult == 2) {
@@ -1413,7 +1421,7 @@ class UserApi extends BaseController
             } else if($objEmp->mb_level < LEVEL_ADMIN) {
                 $objResult->status = 'fail';
             } else {
-                if($arrData['type'] == 0){              //머니회수
+                if($arrData['type'] == 0){              //collect all money
                     if($_ENV['mem.delay_play'] > 0 && $_ENV['mem.withdeny_play'] && diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
                         $iResult = 2;
                     } 

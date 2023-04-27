@@ -12,18 +12,9 @@
 			<label>신규회원 알림음:</label> 
 			<select name="pbresult-number" class="pbresult-number-select" id="confsound-alarm1-select-id" style="width: 150px; float: left;">
 				<option value="sound_reg.mp3">신규알림음</option>
-				<option value="sound1.mp3">알림음1</option>
-				<option value="sound2.mp3">알림음2</option>
-				<option value="sound3.mp3">알림음3</option>
-				<option value="sound4.mp3">알림음4</option>
-				<option value="sound5.mp3">알림음5</option>
-				<option value="sound6.mp3">알림음6</option>
-				<option value="sound7.mp3">알림음7</option>
-				<option value="sound8.mp3">알림음8</option>
-				<option value="sound9.mp3">알림음9</option>
-				<option value="sound10.mp3">알림음10</option>
-				<option value="sound11.mp3">알림음11</option>
-				<option value="sound12.mp3">알림음12</option>
+				<?php foreach($sounds as $fName=>$sName):?>
+					<option value="<?=$fName?>" ><?=$sName?></option>
+				<?php endforeach?>	
 			</select>
 			<audio id="confsound-alarm1-audio-id" controls>
 			  <source id="confsound-alarm1-source-id" >
@@ -35,18 +26,9 @@
 			<label>머니충전 알림음:</label> 
 			<select name="pbresult-number" class="pbresult-number-select" id="confsound-alarm2-select-id" style="width: 150px; float: left;">
 				<option value="sound_dep.mp3">신규알림음</option>
-				<option value="sound1.mp3">알림음1</option>
-				<option value="sound2.mp3">알림음2</option>
-				<option value="sound3.mp3">알림음3</option>
-				<option value="sound4.mp3">알림음4</option>
-				<option value="sound5.mp3">알림음5</option>
-				<option value="sound6.mp3">알림음6</option>
-				<option value="sound7.mp3">알림음7</option>
-				<option value="sound8.mp3">알림음8</option>
-				<option value="sound9.mp3">알림음9</option>
-				<option value="sound10.mp3">알림음10</option>
-				<option value="sound11.mp3">알림음11</option>
-				<option value="sound12.mp3">알림음12</option>
+				<?php foreach($sounds as $fName=>$sName):?>
+					<option value="<?=$fName?>" ><?=$sName?></option>
+				<?php endforeach?>	
 			</select>
 			<audio id="confsound-alarm2-audio-id" controls>
 			  
@@ -60,18 +42,9 @@
 			<label>머니환전 알림음:</label> 
 			<select name="pbresult-number" class="pbresult-number-select" id="confsound-alarm3-select-id" style="width: 150px; float: left;">
 				<option value="sound_wit.mp3">신규알림음</option>
-				<option value="sound1.mp3">알림음1</option>
-				<option value="sound2.mp3">알림음2</option>
-				<option value="sound3.mp3">알림음3</option>
-				<option value="sound4.mp3">알림음4</option>
-				<option value="sound5.mp3">알림음5</option>
-				<option value="sound6.mp3">알림음6</option>
-				<option value="sound7.mp3">알림음7</option>
-				<option value="sound8.mp3">알림음8</option>
-				<option value="sound9.mp3">알림음9</option>
-				<option value="sound10.mp3">알림음10</option>
-				<option value="sound11.mp3">알림음11</option>
-				<option value="sound12.mp3">알림음12</option>
+				<?php foreach($sounds as $fName=>$sName):?>
+					<option value="<?=$fName?>" ><?=$sName?></option>
+				<?php endforeach?>	
 			</select>
 			<audio id="confsound-alarm3-audio-id" controls>
 			  
@@ -85,18 +58,9 @@
 			<label>새쪽지 알림음:</label> 
 			<select name="pbresult-number" class="pbresult-number-select" id="confsound-alarm4-select-id" style="width: 150px; float: left;">
 				<option value="sound_msg.mp3">신규알림음</option>
-				<option value="sound1.mp3">알림음1</option>
-				<option value="sound2.mp3">알림음2</option>
-				<option value="sound3.mp3">알림음3</option>
-				<option value="sound4.mp3">알림음4</option>
-				<option value="sound5.mp3">알림음5</option>
-				<option value="sound6.mp3">알림음6</option>
-				<option value="sound7.mp3">알림음7</option>
-				<option value="sound8.mp3">알림음8</option>
-				<option value="sound9.mp3">알림음9</option>
-				<option value="sound10.mp3">알림음10</option>
-				<option value="sound11.mp3">알림음11</option>
-				<option value="sound12.mp3">알림음12</option>
+				<?php foreach($sounds as $fName=>$sName):?>
+					<option value="<?=$fName?>" ><?=$sName?></option>
+				<?php endforeach?>	
 			</select>
 			<audio id="confsound-alarm4-audio-id" controls>
 			  
