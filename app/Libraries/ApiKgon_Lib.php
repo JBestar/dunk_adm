@@ -64,13 +64,13 @@ class ApiKgon_Lib  {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['msg'] = INTERNAL_ERROR;
+            $arrResult['msg'] = CONNECT_ERROR;
         }
 
 
         return $arrResult;
     }
-    
+
     public function getAgentInfo()
     {
         if(strlen($this->mHost) < 1){
@@ -137,7 +137,7 @@ class ApiKgon_Lib  {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['msg'] = INTERNAL_ERROR;
+            $arrResult['msg'] = CONNECT_ERROR;
         }
 
         return $arrResult;
@@ -179,7 +179,7 @@ class ApiKgon_Lib  {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['code'] = INTERNAL_ERROR;
+            $arrResult['code'] = CONNECT_ERROR;
         }
 
 
@@ -195,7 +195,7 @@ class ApiKgon_Lib  {
         
         $url = $this->mHost."/deposit";
         $post = "username=".$id;
-        $post.= "&amount=".$balance;
+        $post.= "&amount=".intval($balance);
        
         $header =  $this->getHeader($post);
 
@@ -206,16 +206,18 @@ class ApiKgon_Lib  {
 		if(!is_null($arrResult) && array_key_exists("code", $arrResult)) {
 			if($arrResult['code'] == 0){
                 $arrResult['status'] = 1;
+				$arrResult['amount'] = intval($balance);
                 // "code": 0,
                 // "balance": 50000
             } else { //
                 $arrResult['status'] = 0;
+                // writeLog($arrResult['msg']);
                 //"code": -1,
                 //"msg": "XXX"
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['msg'] = INTERNAL_ERROR;
+            $arrResult['msg'] = CONNECT_ERROR;
         }
 
         return $arrResult;
@@ -234,7 +236,7 @@ class ApiKgon_Lib  {
             $post.= "&amount=1&all=y";
         }
         else{
-            $post.= "&amount=".$balance;
+            $post.= "&amount=".intval($balance);
             $post.= "&all=n";
         } 
 
@@ -253,13 +255,13 @@ class ApiKgon_Lib  {
                 // "amount": 10000         //처리된 금액
             } else { //
                 $arrResult['status'] = 0;
-                writeLog($arrResult['msg']);
+                // writeLog($arrResult['msg']);
                 //"code": -1,
                 //"msg": "XXX"
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['msg'] = INTERNAL_ERROR;
+            $arrResult['msg'] = CONNECT_ERROR;
         }
         return $arrResult;
     }

@@ -64,7 +64,7 @@ class ApiFslot_Lib {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['error'] = INTERNAL_ERROR;
+            $arrResult['error'] = CONNECT_ERROR;
         }
 
 
@@ -103,7 +103,7 @@ class ApiFslot_Lib {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['error'] = INTERNAL_ERROR;
+            $arrResult['error'] = CONNECT_ERROR;
         }
 
         return $arrResult;
@@ -142,7 +142,7 @@ class ApiFslot_Lib {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['error'] = INTERNAL_ERROR;
+            $arrResult['error'] = CONNECT_ERROR;
         }
 
         return $arrResult;
@@ -182,7 +182,7 @@ class ApiFslot_Lib {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['error'] = INTERNAL_ERROR;
+            $arrResult['error'] = CONNECT_ERROR;
         }
 
 
@@ -198,7 +198,7 @@ class ApiFslot_Lib {
         $url = $this->mHost."/user/add_balance";
 
         $arrPost['user_id'] = $id;
-        $arrPost['amount'] = $amount;    
+        $arrPost['amount'] = intval($amount);  
         $post = json_encode($arrPost);
        
         $header =  $this->getHeader($post);
@@ -219,7 +219,7 @@ class ApiFslot_Lib {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['error'] = INTERNAL_ERROR;
+            $arrResult['error'] = CONNECT_ERROR;
         }
 
         return $arrResult;
@@ -255,7 +255,7 @@ class ApiFslot_Lib {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['error'] = INTERNAL_ERROR;
+            $arrResult['error'] = CONNECT_ERROR;
         }
 
         return $arrResult;

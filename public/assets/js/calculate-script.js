@@ -202,10 +202,10 @@ function addRow(nTbRow, arrCalcData, level) {
         //     elemCell3.innerHTML = getMemberLevelString(arrCalcData[nRow].mb_level);
         
         var elemCell4 = elemNewRow.insertCell(3);
-        elemCell4.innerHTML = parseInt(arrCalcData[nRow].mb_money_single).toLocaleString() + " / " + parseInt(arrCalcData[nRow].mb_money_all).toLocaleString();
+        elemCell4.innerHTML = parseFloat(arrCalcData[nRow].mb_money_single).toLocaleString() + " / " + parseFloat(arrCalcData[nRow].mb_money_all).toLocaleString();
 
         var elemCell5 = elemNewRow.insertCell(4);
-        elemCell5.innerHTML = parseInt(arrCalcData[nRow].mb_point_single).toLocaleString() + " / " + parseInt(arrCalcData[nRow].mb_point_all).toLocaleString();
+        elemCell5.innerHTML = parseFloat(arrCalcData[nRow].mb_point_single).toLocaleString() + " / " + parseFloat(arrCalcData[nRow].mb_point_all).toLocaleString();
         
         var elemCell6 = elemNewRow.insertCell(5);
         elemCell6.innerHTML = parseInt(arrCalcData[nRow].mb_charge).toLocaleString(); //
@@ -223,13 +223,13 @@ function addRow(nTbRow, arrCalcData, level) {
         elemCell10.innerHTML = parseInt(arrCalcData[nRow].mb_bet_win_money).toLocaleString();
 
         var elemCell11 = elemNewRow.insertCell(10);
-        elemCell11.innerHTML = parseInt(arrCalcData[nRow].mb_bet_benefit_money).toLocaleString();
+        elemCell11.innerHTML = parseFloat(arrCalcData[nRow].mb_bet_benefit_money).toLocaleString();
 
         var elemCell12 = elemNewRow.insertCell(11);
-        elemCell12.innerHTML = parseInt(arrCalcData[nRow].mb_rate_single).toLocaleString() + " / " + parseInt(arrCalcData[nRow].mb_rate_all).toLocaleString();
+        elemCell12.innerHTML = parseFloat(arrCalcData[nRow].mb_rate_single).toLocaleString() + " / " + parseFloat(arrCalcData[nRow].mb_rate_all).toLocaleString();
 
         var elemCell13 = elemNewRow.insertCell(12);
-        elemCell13.innerHTML = parseInt(arrCalcData[nRow].mb_last_money).toLocaleString();
+        elemCell13.innerHTML = parseFloat(arrCalcData[nRow].mb_last_money).toLocaleString();
 
         elemNewRow.addEventListener("click", rowEventHander);
 

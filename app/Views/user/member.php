@@ -74,7 +74,6 @@
 					<th>Lv</th>
 					<th>현재금액</th>
 					<th>포인트</th>
-					<!-- <th>게임사별<br>보유알</th> -->
 					<?php if ($mb_level >= LEVEL_ADMIN) {?>	
 						<?php if(!$slot_deny) :?>
 							<th style="width:130px;">공배팅</th>

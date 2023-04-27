@@ -45,15 +45,6 @@ function getMemberLevelString(nLevel, bNeed=false) {
              return "관리자";
         else
             return (LEVEL_ADMIN-nLevel)+"레벨";
-        // else if (nLevel == LEVEL_COMPANY)
-        //     return "1레벨";
-        // else if (nLevel == LEVEL_AGENCY)
-        //     return "2레벨";
-        // else if (nLevel == LEVEL_EMPLOYEE)
-        //     return "3레벨";
-        // else if (nLevel == LEVEL_MARKET)
-        //     return "4레벨";
-        // else return "5레벨";
     }  else if(mLevelType !== undefined && mLevelType == 3){
         if(bNeed){
             if (nLevel >= LEVEL_ADMIN)

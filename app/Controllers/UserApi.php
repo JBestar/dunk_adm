@@ -410,10 +410,11 @@ class UserApi extends BaseController
             
             if ($bPermit) {
         		// writeLog("[assets] ".$strUid." (".$sess_id.")");
-
 				$this->modelSess->updateLast($sess_id);
-                if($objUser->mb_level < LEVEL_ADMIN)
+                if($objUser->mb_level < LEVEL_ADMIN){
                     $this->modelMember->calcTransfer($objUser);
+                    $objUser->mb_money_all = allMoney($objUser);
+                }
                 else{
 				    $objSess = $this->modelSess->getBySess($sess_id);
                     if($objSess != null)
@@ -763,7 +764,6 @@ class UserApi extends BaseController
 
         if (is_login()) {
             // model
-            
 			$confsiteModel = new ConfSite_Model();
 
 			$objResult = new \stdClass();
@@ -783,6 +783,7 @@ class UserApi extends BaseController
                     $arrMember = [];
                 }
                 foreach ($arrMember as $objMember) {
+                    $objMember->mb_money_all = allMoney($objMember);
                     $objEmpInfo = $this->modelMember->find($objMember->mb_emp_fid);
                     if ($objEmpInfo != null){
                         $objMember->mb_empname = $objEmpInfo->mb_uid;
@@ -1247,7 +1248,7 @@ class UserApi extends BaseController
                     }
                 } else if($arrData['type'] == 1){           //직환전
                     $iResult = 1;
-                    if(intval($objMember->mb_money) < $arrData['amount']){
+                    if(floatval($objMember->mb_money) < $arrData['amount']){
                         if($_ENV['mem.delay_play'] > 0 && $_ENV['mem.withdeny_play'] && diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
                             $iResult = 2;
                         } 
@@ -1257,7 +1258,7 @@ class UserApi extends BaseController
                     
                     if($iResult == 1){
                         
-                        if(intval($objMember->mb_money) < $arrData['amount']){
+                        if(floatval($objMember->mb_money) < $arrData['amount']){
                             $arrData['amount'] = $objMember->mb_money;
                         }
                         if($arrData['amount'] > 0 && $this->modelMember->moneyProc($objMember, 0-$arrData['amount']))

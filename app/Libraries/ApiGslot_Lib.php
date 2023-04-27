@@ -38,7 +38,7 @@ class ApiGslot_Lib  {
         }
 
         $url = $this->mHost;
-
+        
         $arrPost['method'] = "user_create";
         $arrPost['agent_code'] = $this->mAgCode;
         $arrPost['agent_token'] = $this->mAgToken;
@@ -136,6 +136,8 @@ class ApiGslot_Lib  {
         $arrPost['game_type'] = "slot";
         $arrPost['provider_code'] = $provider;
         $arrPost['game_code'] = $gameCode;
+        $arrPost['lang'] = "ko";
+        
         $post = json_encode($arrPost);
 
         $header =  $this->getHeader($post);
@@ -178,15 +180,16 @@ class ApiGslot_Lib  {
         $arrPost['amount'] = intval($balance);
         // $arrPost['game_type'] = "slot";
         $post = json_encode($arrPost);
-       
+
         $header =  $this->getHeader($post);
 
-        $response = getCurlRequest($url, $header, $post);
+        $response = getCurlRequest($url, $header, $post, CURL_TIMEOUT_MAX);
         
         $arrResult = json_decode($response, true);
 		
 		if(!is_null($arrResult) && array_key_exists("status", $arrResult)) {
 			if($arrResult['status'] == 1){
+				$arrResult['amount'] = intval($balance);
                 // "status": 1, 
                 // "msg": "success",
                 // "user_balance": 10000,
@@ -194,6 +197,8 @@ class ApiGslot_Lib  {
             } else { //
                 // "status": 0,
                 // "msg": "INSUFFICIENT_FUNDS"
+                writeLog("<Gslot> addBalance msg=".$arrResult['msg']);
+
             }
 		} else {
             $arrResult['status'] = 0;
@@ -216,13 +221,13 @@ class ApiGslot_Lib  {
         $arrPost['agent_code'] = $this->mAgCode;
         $arrPost['agent_token'] = $this->mAgToken;
         $arrPost['user_code'] = $id;
-        $arrPost['amount'] = intval($balance);
+        $arrPost['amount'] = floatval($balance);
         // $arrPost['game_type'] = "slot";
         $post = json_encode($arrPost);
 
         $header =  $this->getHeader($post);
 
-        $response = getCurlRequest($url, $header, $post);
+        $response = getCurlRequest($url, $header, $post, CURL_TIMEOUT_MAX);
         
         $arrResult = json_decode($response, true);
 		

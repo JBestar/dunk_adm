@@ -26,21 +26,14 @@ function showMoneyHistory(jsonBetData) {
 
         strBuf += "<tr><td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
-        // strBuf += "</td><td>";
-        // if(jsonBetData[nRow].mb_nickname != null)
-        //     strBuf += jsonBetData[nRow].mb_nickname;
         strBuf += "</td><td>";
         strBuf += jsonBetData[nRow].money_mb_uid;
-        // strBuf += "</td><td>";
-        // if(jsonBetData[nRow].mb_money != null)
-        //     strBuf += (parseInt(jsonBetData[nRow].mb_money)+parseInt(jsonBetData[nRow].mb_live_money)+parseInt(jsonBetData[nRow].mb_slot_money)
-        //     +parseInt(jsonBetData[nRow].mb_fslot_money)+parseInt(jsonBetData[nRow].mb_kgon_money)+parseInt(jsonBetData[nRow].mb_gslot_money)).toLocaleString();
         strBuf += "</td><td>";
-        strBuf += parseInt(jsonBetData[nRow].money_amount).toLocaleString();
+        strBuf += parseFloat(jsonBetData[nRow].money_amount).toLocaleString();
         strBuf += "</td><td>";
-        strBuf += parseInt(jsonBetData[nRow].money_before).toLocaleString();
+        strBuf += parseFloat(jsonBetData[nRow].money_before).toLocaleString();
         strBuf += "</td><td>";
-        strBuf += parseInt(jsonBetData[nRow].money_after).toLocaleString();
+        strBuf += parseFloat(jsonBetData[nRow].money_after).toLocaleString();
         strBuf += "</td><td>";
         strBuf += jsonBetData[nRow].money_update_time;
         strBuf += "</td><td>";
@@ -51,9 +44,6 @@ function showMoneyHistory(jsonBetData) {
             case 4: strBuf += "해피볼 배팅"; break;
             case 5: strBuf += "해피볼 배팅취소"; break;
             case 6: strBuf += "해피볼 정산"; break;
-            // case 7: strBuf += "파워사다리 배팅"; break;
-            // case 8: strBuf += "파워사다리 배팅취소"; break;
-            // case 9: strBuf += "파워사다리 정산"; break;
             case 10: strBuf += "키노사다리 배팅"; break;
             case 11: strBuf += "키노사다리 배팅취소"; break;
             case 12: strBuf += "키노사다리 정산"; break;

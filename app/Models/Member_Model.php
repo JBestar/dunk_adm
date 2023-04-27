@@ -857,6 +857,11 @@ class Member_Model extends Model
             $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_coin3ball  ";
             $strSQL.= $strCond." ) AS bet_c3_g ";
         }
+        if(!$confs['hold_deny']){
+            $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '홀덤' AS bet_name, '".GAME_HOLD_CMS."' As bet_kind  From ";
+            $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_holdem  ";
+            $strSQL.= $strCond." ) AS bet_hl_g ";
+        }
 
         if(!$confs['evol_deny'] || !$confs['cas_deny']){
             if(isEBalMode()){
@@ -866,8 +871,8 @@ class Member_Model extends Model
 
             $strCond.= " AND company_amount = 0 AND ";
             if(isEBalMode())
-                $strSQL .= " point_amount <> ".BET_STATE_TIE;
-            else $strSQL .= " bet_money <> bet_win_money ";
+                $strCond .= " point_amount <> ".BET_STATE_TIE;
+            else $strCond .= " bet_money <> bet_win_money ";
 
             $strSQL.= " UNION All SELECT bet_money, bet_win_money, bet_count, bet_name, '".GAME_CASINO_EVOL."' As bet_kind From ";
             $strSQL.= " (SELECT bet_casino_g.*, name_ko AS bet_name from (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count, bet_game_id FROM ".$tbName;
@@ -1372,10 +1377,12 @@ class Member_Model extends Model
         }
 
         $arrData['mb_bank_name'] = trim($arrData['mb_bank_name']);
-        if(array_key_exists('mb_bank_own', $arrData))
-            unset($arrData['mb_bank_own']);
-        if(array_key_exists('mb_bank_num', $arrData))
-            unset($arrData['mb_bank_num']);
+        $arrData['mb_bank_own'] = trim($arrData['mb_bank_own']);
+        $arrData['mb_bank_num'] = trim($arrData['mb_bank_num']);
+        // if(array_key_exists('mb_bank_own', $arrData))
+        //     unset($arrData['mb_bank_own']);
+        // if(array_key_exists('mb_bank_num', $arrData))
+        //     unset($arrData['mb_bank_num']);
         $arrData['mb_bank_pwd'] = trim($arrData['mb_bank_pwd']);
 
         if(array_key_exists('mb_money', $arrData))

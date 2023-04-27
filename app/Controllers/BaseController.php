@@ -739,7 +739,7 @@ class BaseController extends Controller
 		$logHead = "<MbtoEv> ";
 
 		//Site => Evol
-		if($objMember->mb_live_id > 0 && $objMember->mb_money > 0){
+		if($objMember->mb_live_id > 0 && intval($objMember->mb_money) > 0){
 			//
 			$arrResult = $this->libApiCas->addBalance($objMember->mb_live_uid, $objMember->mb_money);
 			writeLog($logHead.$objMember->mb_uid."-Deposit Status=".$arrResult['status']);
@@ -769,14 +769,13 @@ class BaseController extends Controller
 		$logHead = "<MbtoKg> ";
 
 		//Site => KGON
-		if($objMember->mb_kgon_id > 0 && $objMember->mb_money > 0){
+		if($objMember->mb_kgon_id > 0 && intval($objMember->mb_money) > 0){
 			//
 			$arrResult = $this->libApiKgon->addBalance($objMember->mb_kgon_uid, $objMember->mb_money);
 			writeLog($logHead.$objMember->mb_uid."-Deposit Status=".$arrResult['status']);
 				
 			if($arrResult['status'] == 1)
 			{
-				$arrResult['amount'] = $objMember->mb_money;
 				writeLog($logHead.$objMember->mb_uid."-Deposit Balance=".$arrResult['balance']);
 				if($this->modelMember->moneyProc($objMember, 0-$arrResult['amount'])){
 					$objMember->mb_kgon_money = $arrResult['balance'];
@@ -798,15 +797,13 @@ class BaseController extends Controller
 		$iResult = 0;
 		$logHead = "<MbtoSl> ";
 		//Site => Slot
-		if($objMember->mb_slot_uid !== "" && $objMember->mb_money > 0){
+		if($objMember->mb_slot_uid !== "" && intval($objMember->mb_money) > 0){
 			
 			$arrResult = $this->libApiSlot->addBalance($objMember->mb_slot_uid, $objMember->mb_money);
 			writeLog($logHead." ".$objMember->mb_uid."-Deposit resultCode=".$arrResult['resultCode']);
 			
 			if($arrResult['status'] == 1)
 			{
-				$arrResult['amount'] = $objMember->mb_money;
-
 				writeLog($logHead.$objMember->mb_uid."-Deposit Balance=".$arrResult['balance']);
 				if($this->modelMember->moneyProc($objMember, 0-$arrResult['amount'])){
 					$objMember->mb_slot_money = $arrResult['balance'];
@@ -829,7 +826,7 @@ class BaseController extends Controller
 		$logHead = "<MbtoFsl> ";
 
 		//Site => Fslot
-		if($objMember->mb_fslot_id > 0 && $objMember->mb_money > 0){
+		if($objMember->mb_fslot_id > 0 && intval($objMember->mb_money) > 0){
 			//
 			$arrResult = $this->libApiFslot->addBalance($objMember->mb_fslot_uid, $objMember->mb_money);
 			writeLog($logHead.$objMember->mb_uid."-Deposit Status=".$arrResult['status']);
@@ -858,15 +855,13 @@ class BaseController extends Controller
 
 		$logHead = "<MbtoGsl> ";
 		//Site => Gold slot
-		if($objMember->mb_gslot_uid !== "" && $objMember->mb_money > 0){
+		if($objMember->mb_gslot_uid !== "" && intval($objMember->mb_money) > 0){
 			
 			$arrResult = $this->libApiGslot->addBalance($objMember->mb_gslot_uid, $objMember->mb_money);
 			writeLog($logHead." ".$objMember->mb_uid."-Deposit status=".$arrResult['status']);
 			
 			if($arrResult['status'] == 1)
 			{
-				$arrResult['amount'] = $objMember->mb_money;
-
 				writeLog($logHead.$objMember->mb_uid."-Deposit Balance=".$arrResult['balance']);
 				if($this->modelMember->moneyProc($objMember, 0-$arrResult['amount'])){
 					$objMember->mb_gslot_money = $arrResult['balance'];
@@ -888,15 +883,13 @@ class BaseController extends Controller
 
 		$logHead = "<MbtoHsl> ";
 		//Site => Star Slot
-		if($objMember->mb_hslot_token !== "" && $objMember->mb_money > 0){
+		if($objMember->mb_hslot_token !== "" && intval($objMember->mb_money) > 0){
 			
 			$arrResult = $this->libApiHslot->addBalance($objMember->mb_hslot_token, $objMember->mb_money);
 			writeLog($logHead." ".$objMember->mb_uid."-Deposit status=".$arrResult['status']);
 			
 			if($arrResult['status'] == 1)
 			{
-				$arrResult['amount'] = $objMember->mb_money;
-
 				writeLog($logHead.$objMember->mb_uid."-Deposit Amount=".$arrResult['amount']);
 				if($this->modelMember->moneyProc($objMember, 0-$arrResult['amount'])){
 					$objMember->mb_hslot_money += $arrResult['amount'];
@@ -917,15 +910,13 @@ class BaseController extends Controller
 		$iResult = 0;
 		$logHead = "<MbtoHold> ";
 		//Site => Holdem
-		if($objMember->mb_hold_uid !== "" && $objMember->mb_money > 0){
+		if($objMember->mb_hold_uid !== "" && intval($objMember->mb_money) > 0){
 			
 			$arrResult = $this->libApiHold->addBalance($objMember->mb_hold_uid, $objMember->mb_money);
 			writeLog($logHead." ".$objMember->mb_uid."-Deposit status=".$arrResult['status']);
 			
 			if($arrResult['status'] == 1)
 			{
-				$arrResult['amount'] = $objMember->mb_money;
-
 				writeLog($logHead.$objMember->mb_uid."-Deposit Amount=".$arrResult['amount']);
 				if($this->modelMember->moneyProc($objMember, 0-$arrResult['amount'])){
 					$objMember->mb_hold_money += $arrResult['amount'];

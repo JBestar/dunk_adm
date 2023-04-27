@@ -431,3 +431,6 @@ defined('RATE_TIE')          || define('RATE_TIE', 7.0);
 
 defined('EBAL_LOGTYPE_PRESSMANUAL')    || define('EBAL_LOGTYPE_PRESSMANUAL', 1);
 defined('EBAL_LOGTYPE_PRESSAUTO')      || define('EBAL_LOGTYPE_PRESSAUTO', 2);
+
+defined('NUM_POINT_CNT')            || define('NUM_POINT_CNT', 3);    
+

@@ -63,7 +63,7 @@ function showMember(arrMember, confs) {
         if(parseInt(arrMember[nRow].mb_egg) > 0 )
             strBuf += "</td><td> <span id='mm_" + arrMember[nRow].mb_fid + "' style='color:red'>";
         else strBuf += "</td><td> <span id='mm_" + arrMember[nRow].mb_fid + "' style='color:black'>";
-        strBuf += parseInt(arrMember[nRow].mb_money).toLocaleString() + "</span>";
+        strBuf += parseFloat(arrMember[nRow].mb_money).toLocaleString() + "</span>";
         strBuf += '<button class="refresh_btn" onclick="refreshEgg(' + arrMember[nRow].mb_fid + ', this);"></button>';
         if (confs.emp_level >= LEVEL_ADMIN) {
             strBuf += "</td><td>";
@@ -71,7 +71,7 @@ function showMember(arrMember, confs) {
                 strBuf += "<button name='" + arrMember[nRow].mb_fid + "'>알회수</button>";
         }
         strBuf += "</td> <td id='mp_" + arrMember[nRow].mb_fid + "'>";
-        strBuf += parseInt(arrMember[nRow].mb_point).toLocaleString();
+        strBuf += parseFloat(arrMember[nRow].mb_point).toLocaleString();
         strBuf += "</td> <td>";
         arrMember[nRow].bet_sum = 0;
         arrMember[nRow].bet_sum += (arrMember[nRow].bet_pb_m?parseFloat(arrMember[nRow].bet_pb_m):0);
@@ -99,11 +99,11 @@ function showMember(arrMember, confs) {
         strBuf += "</td> <td>";
         if(arrMember[nRow].rw_point == null)
             arrMember[nRow].rw_point = 0;
-        strBuf += parseInt(arrMember[nRow].rw_point).toLocaleString();
+        strBuf += parseFloat(arrMember[nRow].rw_point).toLocaleString();
         strBuf += "</td> <td>";
         if(arrMember[nRow].chg_point == null)
             arrMember[nRow].chg_point = 0;
-        strBuf += parseInt(arrMember[nRow].chg_point).toLocaleString();
+        strBuf += parseFloat(arrMember[nRow].chg_point).toLocaleString();
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_time_join;
         strBuf += "</td> <td>";
@@ -411,7 +411,7 @@ function showMemCharge(idx, mbFid){
     $("#charge_user_name").val(member.mb_nickname);
     $("#charge_user_id").val(member.mb_uid);
     $("#charge_user_fid").val(member.mb_fid);
-    $("#charge_user_money").val(parseInt(member.mb_money).toLocaleString());
+    $("#charge_user_money").val(parseFloat(member.mb_money).toLocaleString());
     $("#charge_money").val('');
     $("#btn-charge-apply").show();
     $("#btn-discharge-apply").hide();
@@ -432,7 +432,7 @@ function showMemDischarge(idx, mbFid){
     $("#charge_user_name").val(member.mb_nickname);
     $("#charge_user_id").val(member.mb_uid);
     $("#charge_user_fid").val(member.mb_fid);
-    $("#charge_user_money").val(parseInt(member.mb_money).toLocaleString());
+    $("#charge_user_money").val(parseFloat(member.mb_money).toLocaleString());
     $("#charge_money").val('');
     $("#btn-charge-apply").hide();
     $("#btn-discharge-apply").show();
@@ -555,9 +555,9 @@ function showMemEdit(idx, mbFid){
 
     $("#bank_name").val(member.mb_bank_name);
     $("#bank_owner").val(member.mb_bank_own);
-    $("#bank_owner").attr("disabled", true);
+    // $("#bank_owner").attr("disabled", true);
     $("#bank_number").val(member.mb_bank_num);
-    $("#bank_number").attr("disabled", true);
+    // $("#bank_number").attr("disabled", true);
     $("#bank_password").val(member.mb_bank_pwd);
 
     $("#btn-mem-apply").text("수정 ");
@@ -619,9 +619,9 @@ function initMemEditDlg(){
 
     $("#bank_name").val('');
     $("#bank_owner").val('');
-    $("#bank_owner").attr("disabled", false);
+    // $("#bank_owner").attr("disabled", false);
     $("#bank_number").val('');
-    $("#bank_number").attr("disabled", false);
+    // $("#bank_number").attr("disabled", false);
     $("#bank_password").val('');
 
 }

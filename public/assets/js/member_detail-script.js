@@ -300,11 +300,12 @@ function showIpLog(arrData){
 
 function showBetLog(arrData, date){
     let tHtml = "";
+    let num = 1;
     for (nRow in arrData) {
         if(arrData[nRow].bet_count < 1)
             continue;
         tHtml += "<tr><td>";
-        tHtml += (parseInt(nRow) + 1);
+        tHtml += (num++);
         tHtml += "</td><td>";
         tHtml += date;
         tHtml += "</td><td>";

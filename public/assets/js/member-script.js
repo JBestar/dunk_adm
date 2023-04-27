@@ -57,11 +57,10 @@ function showMember(arrMember, confs) {
         strBuf += "</td> <td>";
         strBuf += "Lv " + parseInt(arrMember[nRow].mb_grade).toLocaleString();
         strBuf += "</td><td> <span id='mm_" + arrMember[nRow].mb_fid + "'>";
-        strBuf += (parseInt(arrMember[nRow].mb_money) + parseInt(arrMember[nRow].mb_live_money) + parseInt(arrMember[nRow].mb_slot_money) + parseInt(arrMember[nRow].mb_fslot_money) + parseInt(arrMember[nRow].mb_kgon_money)
-             + parseInt(arrMember[nRow].mb_gslot_money)+parseInt(arrMember[nRow].mb_hslot_money)+parseInt(arrMember[nRow].mb_hold_money) ).toLocaleString() + "</span>";
+        strBuf += parseFloat(arrMember[nRow].mb_money_all).toLocaleString() + "</span>";
         strBuf += '<button class="refresh_btn" onclick="refreshEgg(' + arrMember[nRow].mb_fid + ', this);"></button>';
         strBuf += "</td> <td id='mp_" + arrMember[nRow].mb_fid + "'>";
-        strBuf += parseInt(arrMember[nRow].mb_point).toLocaleString();
+        strBuf += parseFloat(arrMember[nRow].mb_point).toLocaleString();
         strBuf += "</td> <td>";
         if (confs.emp_level >= LEVEL_ADMIN) {
             if (!confs.slot_deny) {

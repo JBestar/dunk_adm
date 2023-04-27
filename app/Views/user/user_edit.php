@@ -87,7 +87,7 @@
 			<?php } else if(is_null($objMember->mb_bank_own)) {  ?>
 			<input type = "text" id="useredit-bankaccount-input-id">
 			<?php } else {?>
-			<input type = "text" id="useredit-bankaccount-input-id" value="<?=$objMember->mb_bank_own?>"  disabled>
+			<input type = "text" id="useredit-bankaccount-input-id" value="<?=$objMember->mb_bank_own?>" >
 			<?php } ?>
 		</div>
 		<!---->
@@ -96,7 +96,7 @@
 			<?php if(is_null($objMember) || is_null($objMember->mb_bank_num)) {  ?>						
 			<input type = "text" id="useredit-bankserial-input-id">
 			<?php } else {?>
-			<input type = "text" id="useredit-bankserial-input-id" value="<?=$objMember->mb_bank_num?>"  disabled>
+			<input type = "text" id="useredit-bankserial-input-id" value="<?=$objMember->mb_bank_num?>" >
 			<?php } ?>
 			<label>(-없이 숫자만입력)</label>
 		</div>
@@ -409,7 +409,7 @@
 				<input type = "text" id="useredit-money-input-id">
 				<label>원</label>
 				<?php } else {?>
-				<input type = "text" id="useredit-money-input-id" value="<?=number_format(allMoney($objMember))?>" disabled>
+				<input type = "text" id="useredit-money-input-id" value="<?=num_format(allMoney($objMember), NUM_POINT_CNT)?>" disabled>
 				<label>원</label>
 				<button class="pbresult-list-view-but" id="useredit-withdraw-money-id">회수</button>  
 				<?php } ?>
@@ -421,7 +421,7 @@
 				<input type = "text" id="useredit-point-input-id">
 				<label>P</label>
 				<?php } else {?>
-				<input type = "text" id="useredit-point-input-id" value="<?=number_format($objMember->mb_point)?>" disabled>
+				<input type = "text" id="useredit-point-input-id" value="<?=num_format($objMember->mb_point, NUM_POINT_CNT)?>" disabled>
 				<label>P&nbsp;</label>
 				<button class="pbresult-list-view-but" id="useredit-withdraw-point-id">회수</button>  
 				<?php } ?>
@@ -451,12 +451,12 @@
 				<p class="useredit-seperate-div">
 				<div class="useredit-text-div">
 					<p>보유금액:</p> 
-					<input type = "text" id="useredit-money-input-id" value="<?=number_format(allMoney($objMember))?>"  disabled>
+					<input type = "text" id="useredit-money-input-id" value="<?=num_format(allMoney($objMember), NUM_POINT_CNT)?>"  disabled>
 					<label>원</label>
 				</div>
 				<div class="useredit-text-div">
 					<p>보유포인트:</p> 
-					<input type = "text" id="useredit-point-input-id" value="<?=number_format($objMember->mb_point)?>" disabled>
+					<input type = "text" id="useredit-point-input-id" value="<?=num_format($objMember->mb_point, NUM_POINT_CNT)?>" disabled>
 					<label>P</label>
 				</div>
 

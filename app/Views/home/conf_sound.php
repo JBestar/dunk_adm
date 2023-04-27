@@ -11,6 +11,7 @@
 		<div class="confother-sound-div">
 			<label>신규회원 알림음:</label> 
 			<select name="pbresult-number" class="pbresult-number-select" id="confsound-alarm1-select-id" style="width: 150px; float: left;">
+				<option value="sound_reg.mp3">신규알림음</option>
 				<option value="sound1.mp3">알림음1</option>
 				<option value="sound2.mp3">알림음2</option>
 				<option value="sound3.mp3">알림음3</option>
@@ -25,26 +26,15 @@
 				<option value="sound12.mp3">알림음12</option>
 			</select>
 			<audio id="confsound-alarm1-audio-id" controls>
-			  <!--
-			  <source src="" type="audio/ogg">
-			  -->
 			  <source id="confsound-alarm1-source-id" >
 			  Your browser does not support the audio element.
 			</audio>
-			<!--
-			<input type="range" id="confsound-volume-id" min="0" max="100" step="1" style="width: 100px;">
-			
-			<label>볼륨</label>
-			<button><i class="glyphicon glyphicon-play"></i></button>
-			
-			<button><i class="glyphicon glyphicon-stop"></i></button>
-			-->
-			
 		</div>
 		
 		<div class="confother-sound-div">
 			<label>머니충전 알림음:</label> 
 			<select name="pbresult-number" class="pbresult-number-select" id="confsound-alarm2-select-id" style="width: 150px; float: left;">
+				<option value="sound_dep.mp3">신규알림음</option>
 				<option value="sound1.mp3">알림음1</option>
 				<option value="sound2.mp3">알림음2</option>
 				<option value="sound3.mp3">알림음3</option>
@@ -69,6 +59,7 @@
 		<div class="confother-sound-div">
 			<label>머니환전 알림음:</label> 
 			<select name="pbresult-number" class="pbresult-number-select" id="confsound-alarm3-select-id" style="width: 150px; float: left;">
+				<option value="sound_wit.mp3">신규알림음</option>
 				<option value="sound1.mp3">알림음1</option>
 				<option value="sound2.mp3">알림음2</option>
 				<option value="sound3.mp3">알림음3</option>
@@ -93,6 +84,7 @@
 		<div class="confother-sound-div">
 			<label>새쪽지 알림음:</label> 
 			<select name="pbresult-number" class="pbresult-number-select" id="confsound-alarm4-select-id" style="width: 150px; float: left;">
+				<option value="sound_msg.mp3">신규알림음</option>
 				<option value="sound1.mp3">알림음1</option>
 				<option value="sound2.mp3">알림음2</option>
 				<option value="sound3.mp3">알림음3</option>

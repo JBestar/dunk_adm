@@ -36,9 +36,9 @@ function showMember(arrMember) {
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_nickname;
         strBuf += "</td> <td>";
-        strBuf += parseInt(arrMember[nRow].mb_money).toLocaleString();
+        strBuf += parseFloat(arrMember[nRow].mb_money).toLocaleString();
         strBuf += "</td> <td>";
-        strBuf += parseInt(arrMember[nRow].mb_point).toLocaleString();
+        strBuf += parseFloat(arrMember[nRow].mb_point).toLocaleString();
         strBuf += "</td> <td>";
         if(arrMember[nRow].sess_type == 1)
             strBuf += "앱"; 

@@ -139,10 +139,9 @@ function showMemberInfo(objUser) {
 
     if (objUser.mb_level < LEVEL_ADMIN) {
 
-        if(objUser.mb_money == null)
-            objUser.mb_money = 0;
-        strBuf = (parseInt(objUser.mb_money)+parseInt(objUser.mb_live_money)+parseInt(objUser.mb_slot_money)+parseInt(objUser.mb_fslot_money)
-            +parseInt(objUser.mb_kgon_money)+parseInt(objUser.mb_gslot_money)+parseInt(objUser.mb_hslot_money)+parseInt(objUser.mb_hold_money)).toLocaleString() + " 원";
+        if(objUser.mb_money_all == null)
+            objUser.mb_money_all = 0;
+        strBuf = parseFloat(objUser.mb_money_all).toLocaleString() + " 원";
         $("#main-navbar-emp_money-id").text(strBuf);
 
         if(objUser.mb_point == null)
@@ -216,12 +215,12 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
 
     if(objEmpInfo.emp_money == null)
         objEmpInfo.emp_money = 0;
-    strBuf = parseInt(objEmpInfo.emp_money).toLocaleString() + " 원";
+    strBuf = parseFloat(objEmpInfo.emp_money).toLocaleString() + " 원";
     $("#main-navbar-emp_money-id").text(strBuf);
 
     if(objEmpInfo.emp_point == null)
         objEmpInfo.emp_point = 0;
-    strBuf = parseInt(objEmpInfo.emp_point).toLocaleString() + " P";
+    strBuf = parseFloat(objEmpInfo.emp_point).toLocaleString() + " P";
     $("#main-navbar-emp_point-id").text(strBuf);
 
     strBuf = parseInt(objEmpInfo.emp_money_charge).toLocaleString() + " 원";

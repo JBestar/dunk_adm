@@ -65,14 +65,13 @@ class ApiCas_Lib  {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['error'] = INTERNAL_ERROR;
+            $arrResult['error'] = CONNECT_ERROR;
         }
 
 
         return $arrResult;
     }
 
-    
     public function getAgentInfo()
     {
         if(strlen($this->mHost) < 1){
@@ -105,7 +104,7 @@ class ApiCas_Lib  {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['error'] = INTERNAL_ERROR;
+            $arrResult['error'] = CONNECT_ERROR;
         }
 
         return $arrResult;
@@ -143,7 +142,7 @@ class ApiCas_Lib  {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['error'] = INTERNAL_ERROR;
+            $arrResult['error'] = CONNECT_ERROR;
         }
 
         return $arrResult;
@@ -184,7 +183,7 @@ class ApiCas_Lib  {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['error'] = INTERNAL_ERROR;
+            $arrResult['error'] = CONNECT_ERROR;
         }
 
 
@@ -201,7 +200,7 @@ class ApiCas_Lib  {
         $url = $this->mHost."/customer/add_balance";
 
         $arrPost['user_id'] = $id;
-        $arrPost['balance'] = $balance;    
+        $arrPost['balance'] = intval($balance);    
         $post = json_encode($arrPost);
        
         $header =  $this->getHeader($post);
@@ -223,7 +222,7 @@ class ApiCas_Lib  {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['error'] = INTERNAL_ERROR;
+            $arrResult['error'] = CONNECT_ERROR;
         }
 
         return $arrResult;
@@ -261,7 +260,7 @@ class ApiCas_Lib  {
             }
 		} else {
             $arrResult['status'] = 0;
-            $arrResult['error'] = INTERNAL_ERROR;
+            $arrResult['error'] = CONNECT_ERROR;
         }
 
         return $arrResult;
