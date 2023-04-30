@@ -107,7 +107,7 @@ function showMember(arrMember, confs) {
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_time_join;
         strBuf += "</td> <td>";
-        strBuf += "<a href='"+FURL+"/user/member_detail/" + arrMember[nRow].mb_fid + "' >상세</a>";
+        strBuf += "<button onclick='popupMemberDetail("+ arrMember[nRow].mb_fid + ")' >상세</button>";
         strBuf += "</td> <td>";
         strBuf += "<button name='" + nRow + "' data-fid='" + arrMember[nRow].mb_fid + "' >수정</button>";
         strBuf += "</td> <td>";
@@ -528,6 +528,7 @@ function showMemEdit(idx, mbFid){
     $("#user_level").val(member.mb_grade);
     if(member.mb_color != "")
         $("#user_color").val(member.mb_color);
+    $("#memo").val(member.mb_memo);
     $("#pb_ratio").val(member.mb_game_pb_ratio);
     $("#pb2_ratio").val(member.mb_game_pb2_ratio);
     $("#ps_ratio").val(member.mb_game_ps_ratio);
@@ -701,6 +702,10 @@ function readConfigToObject() {
     
     if($("#hl_ratio").length > 0){
         objMember.mb_game_hl_ratio = $("#hl_ratio").val();
+    } 
+
+    if($("#memo").length > 0){
+        objMember.mb_memo = $("#memo").val();
     } 
 
     if ($("#offline_user").length > 0){

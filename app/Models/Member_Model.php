@@ -16,7 +16,7 @@ class Member_Model extends Model
         'mb_uid', 'mb_pwd', 'mb_level', 'mb_emp_fid', 'mb_emp_permit', 'mb_nickname', 'mb_email', 'mb_phone',
         'mb_bank_name', 'mb_bank_own', 'mb_bank_num', 'mb_bank_pwd', 'mb_time_join', 'mb_time_last', 'mb_time_bet', 'mb_time_call', 
         'mb_ip_join', 'mb_ip_last', 'mb_money', 'mb_point', 'mb_money_charge', 'mb_money_exchange',
-        'mb_grade', 'mb_color', 'mb_state_active', 'mb_state_bet', 'mb_state_delete', 'mb_state_alarm', 'mb_state_view',
+        'mb_grade', 'mb_color', 'mb_memo', 'mb_state_active', 'mb_state_bet', 'mb_state_delete', 'mb_state_alarm', 'mb_state_view',
         'mb_game_pb', 'mb_game_ps', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 'mb_game_eo', 'mb_game_co', 'mb_game_hl',
         'mb_game_pb_ratio', 'mb_game_pb2_ratio', 'mb_game_ps_ratio', 'mb_game_bb_ratio', 'mb_game_bb2_ratio',
         'mb_game_bs_ratio', 'mb_game_cs_ratio', 'mb_game_sl_ratio', 'mb_game_eo_ratio', 'mb_game_eo2_ratio',
@@ -970,12 +970,12 @@ class Member_Model extends Model
             return $this->getMemberByLevel($nReqLevel, $bLowLev, $mbFid);
         } else {
             $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid', 'mb_emp_permit', 'mb_nickname', 'mb_phone', 'mb_money', 'mb_point', 
-                'mb_grade', 'mb_color', 'mb_state_active', 'mb_state_delete', 
+                'mb_grade', 'mb_color', 'mb_memo', 'mb_state_active', 'mb_state_delete', 
                 'mb_game_pb_ratio', 'mb_game_pb2_ratio','mb_game_ps_ratio', 'mb_game_bb_ratio', 'mb_game_bb2_ratio', 'mb_game_bs_ratio', 'mb_game_cs_ratio', 
                 'mb_game_sl_ratio', 'mb_game_eo_ratio', 'mb_game_eo2_ratio', 'mb_game_co_ratio', 'mb_game_co2_ratio', 'mb_game_hl_ratio', 
                 'mb_game_pb_percent', 'mb_game_pb2_percent', 'mb_game_ps_percent', 'mb_game_bb_percent',
                 'mb_game_bb2_percent', 'mb_game_bs_percent', 'mb_game_eo_percent', 'mb_game_eo2_percent', 'mb_game_co_percent', 'mb_game_co2_percent', 'mb_range_ev',
-                'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money', 'mb_gslot_money', 'mb_hslot_money'
+                'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money', 'mb_gslot_money', 'mb_hslot_money', 'mb_hold_money'
             ]; 
 
             $strTbColum = " ".implode(", ", $fields);
@@ -1806,7 +1806,7 @@ class Member_Model extends Model
         $strTbColum.= ' mb_bank_name, mb_bank_own, mb_bank_num, mb_bank_pwd, mb_time_join, ';
         $strTbColum.= ' (mb_money + mb_live_money + mb_slot_money + mb_fslot_money + mb_kgon_money + mb_gslot_money + mb_hslot_money + mb_hold_money) as mb_money, ';
         $strTbColum.= ' (mb_live_money + mb_slot_money + mb_fslot_money + mb_kgon_money + mb_gslot_money + mb_hslot_money+ mb_hold_money) as mb_egg, ';
-        $strTbColum.= ' mb_point, mb_grade, mb_color, mb_state_active, mb_state_delete, ' ;
+        $strTbColum.= ' mb_point, mb_grade, mb_color, mb_memo, mb_state_active, mb_state_delete, ' ;
         $strTbColum .= ' mb_game_pb, mb_game_ps, mb_game_bb, mb_game_bs, mb_game_cs, mb_game_sl, mb_game_eo, mb_game_co, mb_game_hl, ';
         $strTbColum .= ' mb_game_pb_ratio, mb_game_pb2_ratio, mb_game_ps_ratio, mb_game_bb_ratio, mb_game_bb2_ratio, mb_game_bs_ratio, mb_game_cs_ratio, ';
         $strTbColum .= ' mb_game_sl_ratio, mb_game_eo_ratio, mb_game_eo2_ratio, mb_game_co_ratio, mb_game_co2_ratio, mb_game_hl_ratio, ';

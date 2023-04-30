@@ -48,7 +48,7 @@ function showMember(arrMember, confs) {
         strBuf += "</a>";
 
         strBuf += "</td> <td>";
-        strBuf += arrMember[nRow].mb_nickname;
+        strBuf += "<a onclick='popupMemberEdit(" + arrMember[nRow].mb_fid + ")' class='link-member'>"+ arrMember[nRow].mb_nickname+ "</a>";
         if(arrMember[nRow].mb_state_delete > 0){
             strBuf += "<br>(오프라인)";    
         }
@@ -91,7 +91,8 @@ function showMember(arrMember, confs) {
             strBuf += ">차단</button>";
         }
         
-        strBuf += "<a href='"+FURL+"/user/member_edit/" + arrMember[nRow].mb_fid + "' >수정</a>";
+        // strBuf += "<a href='"+FURL+"/user/member_edit/" + arrMember[nRow].mb_fid + "' >수정</a>";
+        strBuf += "<button onclick='popupMemberEdit("+arrMember[nRow].mb_fid + ")'>수정</button>";
         if (confs.emp_level >= LEVEL_ADMIN) {
             var strEncodeURI = FURL+"/board/message_edit/0/" + arrMember[nRow].mb_fid;
             strBuf += "<a href='" + strEncodeURI + "' >쪽지</a>";
@@ -386,4 +387,5 @@ function addBtnEvent() {
         addButtonElementListener(elemTableBtns[i]);
     }
 }
+
 

@@ -22,6 +22,17 @@
 				<option value="2">환전</option>
 				<option value="26">직환전</option>
 				<option value="3">포인트전환</option>
+				<option value="29">머니지급</option>
+				<option value="24">머니회수</option>
+				<option value="25">포인트회수</option>
+				<option value="19">하부이동</option>
+				<option value="20">상부이동</option>
+				<option value="27">하부환수</option>
+				<option value="28">상부환수</option>
+				<?php if($mb_level >= LEVEL_ADMIN) :  ?>
+					<option value="43">에볼배팅</option>				
+					<option value="45">에볼정산</option>
+				<?php endif ?> 
 				<?php if(!$hpg_deny) :?>
 					<option value="4">해피볼배팅</option>				
 					<option value="6">해피볼정산</option>
@@ -32,12 +43,6 @@
 					<option value="16">보사달배팅</option>
 					<option value="18">보사달정산</option>
 				<?php endif ?>   
-				<option value="19">하부이동</option>
-				<option value="20">상부이동</option>
-				<option value="27">하부환수</option>
-				<option value="28">상부환수</option>
-				<option value="24">머니회수</option>
-				<option value="25">포인트회수</option>
 				<?php if(!$eos5_deny) :?>
 					<option value="31">EOS5분배팅</option>				
 					<option value="33">EOS5분정산</option>
@@ -53,10 +58,6 @@
 				<?php if(!$coin3_deny) :?>
 					<option value="40">코인3분배팅</option>				
 					<option value="42">코인3분정산</option>
-				<?php endif ?> 
-				<?php if($mb_level >= LEVEL_ADMIN) :  ?>
-					<option value="43">에볼배팅</option>				
-					<option value="45">에볼정산</option>
 				<?php endif ?> 
 			</select>
 

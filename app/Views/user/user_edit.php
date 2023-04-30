@@ -1,4 +1,4 @@
-<?= $this->extend('header') ?>
+<?= $this->extend('user/header') ?>
 <?= $this->section('content') ?>
   	<!--Sub Navbar-->
 	<div class = "sub-navbar">
@@ -152,25 +152,6 @@
 					<?php } ?>
 				<?php endif?>
 			</div>
-			<!-- <div class="useredit-percent-div">
-				<p>파워사다리:</p> 
-				
-				<label> 배당율(%)</label>
-				<?php if(is_null($objMember)) {  ?>
-				<input type = "number" step="0.1" id="useredit-psbetrate-input-id" value="0" >
-				<?php } else {?>
-				<input type = "number" step="0.1" id="useredit-psbetrate-input-id" value="<?=$objMember->mb_game_ps_ratio?>">
-				<?php } ?>
-
-				<?php if(!$gameper_full) :?>
-					<label> 누르기율(%)</label>
-					<?php if(is_null($objMember)) {  ?>
-					<input type = "number" step="1" id="useredit-psbetpercent-input-id" value="100">
-					<?php } else {?>
-					<input type = "number" step="1" id="useredit-psbetpercent-input-id" value="<?=$objMember->mb_game_ps_percent?>">
-					<?php } ?>
-				<?php endif?>
-			</div> -->
 		<?php endif ?>   
 
     	<?php if(!$bpg_deny) :?>
@@ -355,7 +336,6 @@
 					<?php endif ?>
 					<p style="width:133px">에볼 누르기</p> 
 
-
 					<label> 최소배팅금액</label>
 					<?php if(is_null($objMember)) : ?>
 					<input type = "number" min="0" step="1000" id="useredit-rangemin-input-id" value="0">
@@ -372,16 +352,14 @@
 					
 					<?php if($_ENV['app.ebal'] > 3 ) :?>
 						</div>
-
 						<div class="useredit-percent-div">
-							
 							<p></p> 
 							<?php if(!is_null($objMember) && $objMember->mb_exc_check == 1) :  ?>
 								<input type="checkbox" id="useredit-exc-check-id" style="zoom:140%; margin-top:4px; margin-right:0; width:50px;" checked>
 							<?php else :  ?>
 								<input type="checkbox" id="useredit-exc-check-id" style="zoom:140%; margin-top:4px; margin-right:0; width:50px;" >
 							<?php endif ?>
-							<!-- <label>  </label> -->
+
 							<?php if(is_null($objMember)) :  ?>
 							<input type = "number" min="0" step="1000" id="useredit-exc-input-id" value="0">
 							<?php else :?>
@@ -398,6 +376,11 @@
 					<p>오프라인 유저</p> 
 				<?php endif ?>
 
+			</div>
+
+			<div class="useredit-text-div" style="padding-top:10px">
+				<p style="">메모:</p> 
+				<textarea rows="2" id="useredit-memo-text-id" style="width:510px; resize: vertical;" ><?php if(!is_null($objMember)) : echo $objMember->mb_memo ?><?php endif ?></textarea>					
 			</div>
 
 			<!---->
@@ -432,7 +415,9 @@
 					<p>충환전금액:</p> 
 					<input type = "text" id="useredit-transfer-input-id" value="0" >
 					<label>원</label>
-					<button class="pbresult-money-but" id="money_1">1만원</button>
+				</div>
+				<div class="useredit-text-div">
+					<button class="pbresult-money-but" style="margin-left:180px;" id="money_1">1만원</button>
 					<button class="pbresult-money-but" id="money_2">3만원</button>  
 					<button class="pbresult-money-but" id="money_3">5만원</button>  
 					<button class="pbresult-money-but" id="money_4">10만원</button>  
@@ -443,9 +428,9 @@
 				</div>
 				<div class="useredit-text-div">
 					<p></p> 
-					<button class="pbresult-list-view-but" id="useredit-give-but-id" style="margin-left:280px; margin-right:0px;">지급</button>  
+					<button class="pbresult-list-view-but" id="useredit-give-but-id" style="margin-left:0px; margin-right:0px; margin-top:10px;">지급</button>  
 					<button class="pbresult-list-view-but" id="useredit-collect-but-id"  style="margin-left:5px;">회수</button>  
-					<button class="pbresult-list-view-but" id="useredit-deposit-but-id" style="margin-left:38px; margin-right:0px;">직충전</button>  
+					<button class="pbresult-list-view-but" id="useredit-deposit-but-id" style="margin-left:65px; margin-right:0px;">직충전</button>  
 					<button class="pbresult-list-view-but" id="useredit-withdraw-but-id"  style="margin-left:5px;">직환전</button>  
 				</div>
 
@@ -472,13 +457,7 @@
 					<p>이동금액:</p> 
 					<input type = "text" id="useredit-transfer-input-id" value="0" >
 					<label>원</label>
-					<button class="pbresult-money-but" id="money_1">1만원</button>
-					<button class="pbresult-money-but" id="money_2">3만원</button>  
-					<button class="pbresult-money-but" id="money_3">5만원</button>  
-					<button class="pbresult-money-but" id="money_4">10만원</button>  
-					<button class="pbresult-money-but" id="money_5">50만원</button>  
-					<button class="pbresult-money-but" id="money_6">100만원</button>  
-				
+					
 					<?php if($trnas_en) :  ?>
 						<button class="pbresult-list-view-but" id="useredit-transfer-but-id" style="margin-right:0px;">이동</button>  
 					<?php endif ?>
@@ -487,25 +466,35 @@
 						<button class="pbresult-list-view-but" id="useredit-return-but-id" style="margin-left:5px;">환수</button>  
 					<?php endif ?>
 				</div>
+				<div class="useredit-text-div">
+					<button class="pbresult-money-but" style="margin-left:180px;" id="money_1">1만원</button>
+					<button class="pbresult-money-but" id="money_2">3만원</button>  
+					<button class="pbresult-money-but" id="money_3">5만원</button>  
+					<button class="pbresult-money-but" id="money_4">10만원</button>  
+					<button class="pbresult-money-but" id="money_5">50만원</button>  
+					<button class="pbresult-money-but" id="money_6">100만원</button>  
+				</div>
+
 				<?php endif ?>
 
 			<?php } ?>
 		<?php } ?>
 
 		<?php if(is_null($objMember) || $objMember->mb_level < LEVEL_ADMIN) :  ?>
-			<div class = "useredit-button-group">
-				<button class="useredit-cancel-button" id="useredit-cancel-btn-id">취소</button>
-				<button class="useredit-ok-button"  id="useredit-save-btn-id">저장</button>
+			<div class = "useredit-button-group" style="text-align:center;">
+				<button class="useredit-cancel-button" id="useredit-cancel-btn-id" style="float:none;">닫기</button>
+				<button class="useredit-ok-button"  id="useredit-save-btn-id"  style="float:none;">저장</button>
+			</div>
+		<?php else :  ?>
+			<div class = "useredit-button-group" style="text-align:center;">
+				<button class="useredit-cancel-button"  id="useredit-cancel-btn-id"  style="float:none;">닫기</button>
 			</div>
 		<?php endif ?>
 
 	</div>
 
-
-
 <!--main_navbar.php-->
 </div>
-
 
 <?= $this->renderSection('user-edit-script') ?>
 <?= $this->endSection() ?>

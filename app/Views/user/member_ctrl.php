@@ -233,7 +233,7 @@
 
 							<div class="col-md-12">
 								<div class="row">
-									<div class="col-md-2">상태</div>
+									<div class="col-md-2">상태:</div>
 									<div class="col-md-2">
 										<select id="user_status">
 											<option value="2">대기 </option>
@@ -411,7 +411,14 @@
 								<?php endif ?>
 								</div>
 							</div>
-								
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-2">메모:</div>
+									<div class="col-md-10">
+										<textarea rows="2" id="memo" style="width:100%; resize: vertical;" class="form-control"></textarea>					
+									</div>
+								</div>
+							</div>
 
 							<div class="row">은행정보 :</div>
 							<div class="col-md-12">

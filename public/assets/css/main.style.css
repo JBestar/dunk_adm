@@ -1090,7 +1090,7 @@ Style - powerball
     color: var(--bar-font-color);
     padding: 5px 5px;
     border: none;
-    margin-right: 50px;
+    margin-right: 30px;
 }
 
 .useredit-percent-div label {

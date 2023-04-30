@@ -86,14 +86,36 @@ function stopWorker() {
 
 }
 
-
-
 function requestInfo() { 
-
 	if(mObjUser != null)
     {
         requestMemberInfo();
-    
     }
 }
 
+function popupMemberDetail(fid, title="회원정보"){
+  let popUrl = FURL+"/user/member_detail/"+fid;
+  let w = 1200, h=800;
+  popup(popUrl, title, w, h);
+}
+
+function popupMemberEdit(fid, title="회원정보"){
+  let popUrl = FURL+"/user/member_edit/"+fid;
+  let w = 820, h=800;
+  popup(popUrl, title, w, h);
+}
+
+function popup(url, title, w, h){
+
+  var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+  var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+  var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+  var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+  var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+  var top = ((height / 2) - (h / 2)) + dualScreenTop;
+
+  let popOption = "top="+top+", left="+left+", width="+w+", height="+h+", status=no, menubar=no, toolbar=no, resizable=no";
+  
+  window.open(url, title, popOption);
+}

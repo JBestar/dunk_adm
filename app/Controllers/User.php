@@ -219,8 +219,7 @@ class User extends StdController
 				LEVEL_MIN, 
 				[
 					'objMember' => $objMember, 
-					
-			]);  
+				]);  
 		}
 	}
 }

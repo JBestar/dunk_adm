@@ -1,4 +1,4 @@
-<?= $this->extend('header') ?>
+<?= $this->extend('user/header') ?>
 <?= $this->section('content') ?>
 <link rel="stylesheet" href="<?php echo site_furl('assets/css/app.css?v=1');?>">
 <link rel="stylesheet" href="<?php echo site_furl('assets/css/admin.css?v=1');?>">
@@ -211,7 +211,10 @@
                                         <td>환전비번 </td>
                                         <td><label id="withdraw_password"><?=$objMember->mb_bank_pwd?></label></td>
                                     </tr>
-                                    
+                                    <tr>
+                                        <td>메모 </td>
+                                        <td  colspan='3' style="white-space: pre-line;"><?=$objMember->mb_memo?></td>
+                                    </tr>
                                 </tbody></table>
 
                             </div>

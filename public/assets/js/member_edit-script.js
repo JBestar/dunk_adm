@@ -98,6 +98,10 @@ function readConfigToObject() {
         objMember.mb_state_delete = $("#useredit-offline-check-id").prop('checked') ? 1 : 0;
     } 
 
+    if ($("#useredit-memo-text-id").length > 0){
+        objMember.mb_memo = $("#useredit-memo-text-id").val();
+    } 
+    
     if ($("#useredit-balance-check-id").length > 0){
         objMember.mb_state_view = $("#useredit-balance-check-id").prop('checked') ? 1 : 0;
         let min = $("#useredit-rangemin-input-id").val();
@@ -132,7 +136,8 @@ function addBtnEvent() {
 
 
     $("#useredit-cancel-btn-id").click(function() {
-        window.location.replace( FURL +'/user/member/0');
+        // window.location.replace( FURL +'/user/member/0');
+        window.close();
     });
 
     

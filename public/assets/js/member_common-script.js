@@ -354,9 +354,15 @@ function reqMemSave(objMember, closeDlg = null){
                         closeDlg();
                         requestMember();
                     }
-                    else window.location.replace( FURL +'/user/member/0');
+                    else 
+                        alert("회원정보가 변경되었습니다.");
+                        // window.location.replace( FURL +'/user/member/0');
                 } else if (jResult.status == "logout") {
-                    window.location.replace( FURL +'/');
+                    alert("로그아웃되었습니다. 다시 로그인해주세요");
+                    // window.location.replace( FURL +'/');
+                    if(closeDlg != null)
+                        window.location.reload();
+                    else window.close();
                 } else if (jResult.status == "fail") {
                     if (jResult.error == 2)
                         alert("중복된 아이디입니다.");
@@ -380,7 +386,6 @@ function reqMemSave(objMember, closeDlg = null){
             error: function(request, status, error) {
                 // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
             }
-
         });
     } else if (parseInt(objMember.mb_fid) == 0) {
 
@@ -397,9 +402,14 @@ function reqMemSave(objMember, closeDlg = null){
                         closeDlg();
                         requestMember();
                     }
-                    else window.location.replace( FURL +'/user/member/0');
+                    else {
+                        alert("회원이 등록되었습니다.");
+                    }
                 } else if (jResult.status == "logout") {
-                    window.location.replace( FURL +'/');
+                    alert("로그아웃되었습니다. 다시 로그인해주세요");
+                    if(closeDlg != null)
+                        window.location.reload();
+                    else window.close();
                 } else if (jResult.status == "val_error") {
                     var errorString = '';
                     for (property in jResult.error) {
@@ -447,9 +457,12 @@ function create(objMember, closeDlg){
                         closeDlg();
                         requestMember();
                     }
-                    else window.location.replace( FURL +'/user/member/0');
+                    else alert("회원이 등록되었습니다.");
                 } else if (jResult.status == "logout") {
-                    window.location.replace( FURL +'/');
+                    alert("로그아웃되었습니다. 다시 로그인해주세요");
+                    if(closeDlg != null)
+                        window.location.reload();
+                    else window.close();
                 } else if (jResult.status == "val_error") {
                     var errorString = '';
                     for (property in jResult.error) {
