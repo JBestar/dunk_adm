@@ -71,7 +71,7 @@ function showMember(arrMember, confs) {
                 strBuf += "<button name='" + arrMember[nRow].mb_fid + "' class='blank-btn_" + arrMember[nRow].mb_fid + "' >+10</button>   ";
                 strBuf += "</td> <td>";
             }
-            strBuf += arrMember[nRow].mb_ip_last;
+            strBuf += arrMember[nRow].mb_ip_last.substring(0, 20);
             if (arrMember[nRow].block_state == 1) {
                 strBuf += "<br><br><button name='" + arrMember[nRow].mb_ip_last + "' >차단해제</button>";
             } else

@@ -37,6 +37,8 @@
 <?php endif ?>
 
 <div class="main-container" style="margin-left:0px; padding:0px; min-width:800px;" id="main-container-id">
-
+<div class="loading" style="display: none;">
+	<div class="load lds-ellipsis"></div>
+</div>
 <?php $this->renderSection('content') ?>
 <?= $this->include('footer')?>
