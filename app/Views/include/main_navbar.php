@@ -82,7 +82,7 @@
 					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">홀덤게임:</td>
 					<td>배팅<span id="main-navbar-hlbet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-hlbetearn-id">0 원</span></td>
-					<td>보유알<span id="main-navbar-hlegg-id">0 원</span></td>
+					<td>보유알<span id="main-navbar-hluser-id">0 원</span><span>|</span><span id="main-navbar-hlegg-id">0 원</span></td>
 				</tr>
     			<?php endif ?>  
     			<?php if(!$evol_deny) :?>
@@ -90,7 +90,7 @@
 					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">에볼루션:</td>
 					<td>배팅<span id="main-navbar-evbet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-evbetearn-id">0 원</span></td>
-					<td>보유알<span id="main-navbar-evegg-id">0 원</span></td>
+					<td>보유알<span id="main-navbar-evuser-id">0 원</span><span>|</span><span id="main-navbar-evegg-id">0 원</span></td>
 				</tr>
     			<?php endif ?>   
     			  
@@ -99,13 +99,13 @@
 					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">정품슬롯:</td>
 					<td>배팅<span id="main-navbar-slbet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-slbetearn-id">0 원</span></td>
-					<td>보유알<span id="main-navbar-slegg-id">0 원</span></td>
+					<td>보유알<span id="main-navbar-sluser-id">0 원</span><span>|</span><span id="main-navbar-slegg-id">0 원</span></td>
 				</tr>
 				<tr>
 					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">네츌슬롯:</td>
 					<td>배팅<span id="main-navbar-fslbet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-fslbetearn-id">0 원</span></td>
-					<td>보유알<span id="main-navbar-fslegg-id">0 원</span></td>
+					<td>보유알<span id="main-navbar-fsluser-id">0 원</span><span>|</span><span id="main-navbar-fslegg-id">0 원</span></td>
 				</tr>
     			<?php endif ?>  
 				<?php if(!isEBalMode() && !$cas_deny) :?>
@@ -113,7 +113,7 @@
 					<td style="font-weight: bold; color: #0090ff; font-size: 14px;">카지노:</td>
 					<td>배팅<span id="main-navbar-kgbet-id">0 원</span></td>
 					<td>적중<span id="main-navbar-kgbetearn-id">0 원</span></td>
-					<td>보유알<span id="main-navbar-kgegg-id">0 원</span></td>
+					<td>보유알<span id="main-navbar-kguser-id">0 원</span><span>|</span><span id="main-navbar-kgegg-id">0 원</span></td>
 				</tr>
     			<?php endif ?>  
 				

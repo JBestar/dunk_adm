@@ -506,8 +506,9 @@ class UserApi extends BaseController
                 $strDate = date('Y-m-d');
                 $arrReqData['start'] = $strDate.' 00:00:00';
                 // $arrReqData['end'] = $strDate.' 23:59:00';
+                $eggs = $this->modelMember->calcGameEgg();
 
-                $arrSumData = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0] ];
+                $arrSumData = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0] ];
                 
                 $tmNow = microtime(true) * 1000;
                 // writeLog("empbetinfo");
@@ -582,14 +583,9 @@ class UserApi extends BaseController
                     $arrReqData['type'] = GAME_CASINO_EVOL;
                     if(isEBalMode()){
                         $betModel = new EbalBet_Model();
-                        // $arrReqData['gm_range'] = $this->modelMember->getBetMinId($arrReqData, $betModel->table);
                         $arrSum = $betModel->getBetSumByDay($arrReqData);
                         $arrSumData[1][0] = $arrSum[0];
                         $arrSumData[1][1] = $arrSum[1];
-                        $confId = CONF_API_HPPLAY;
-                        $agConf = $confsiteModel->getConf($confId);
-                        if($agConf != null)
-                            $arrSumData[1][2] = $agConf->conf_active;
                     } else {
                         $betModel = new CsBet_Model();
                         $arrReqData['gm_range'] = $this->modelMember->getBetMinId($arrReqData, $betModel->table);
@@ -597,6 +593,11 @@ class UserApi extends BaseController
                         $arrSum = $betModel->getBetSumByDay($arrReqData, $objConfPb);
                         $arrSumData[1][0] = $arrSum[0];
                         $arrSumData[1][1] = $arrSum[1];
+                        $confId = CONF_API_HPPLAY;
+                        $agConf = $confsiteModel->getConf($confId);
+                        if($agConf != null)
+                            $arrSumData[1][2] = $agConf->conf_active;
+                        $arrSumData[1][3] = $eggs->mb_live_money;
                     }
                 }
                 if(!$siteConfs['slot_deny']){
@@ -606,12 +607,15 @@ class UserApi extends BaseController
 
                         $gameId = GAME_SLOT_THEPLUS;
                         $confId = CONF_API_THEPLUS;
+                        $arrSumData[2][3] = $eggs->mb_slot_money;
                         if($_ENV['app.slot'] == APP_SLOT_KGON){
                             $gameId = GAME_SLOT_KGON;
                             $confId = CONF_API_KGON;
+                            $arrSumData[2][3] = $eggs->mb_kgon_money;
                         } else if($_ENV['app.slot'] == APP_SLOT_STAR){
                             $gameId = GAME_SLOT_STAR;
                             $confId = CONF_API_STAR;
+                            $arrSumData[2][3] = $eggs->mb_hslot_money;
                         }
 
                         $objConfPb = $confgameModel->getByIndex($gameId);
@@ -627,9 +631,11 @@ class UserApi extends BaseController
                     if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_2){
                         $gameId = GAME_SLOT_GSPLAY;
                         $confId = CONF_API_GSPLAY;
+                        $arrSumData[3][3] = $eggs->mb_fslot_money;
                         if($_ENV['app.fslot'] == APP_FSLOT_GOLD){
                             $gameId = GAME_SLOT_GOLD;
                             $confId = CONF_API_GOLD;
+                            $arrSumData[3][3] = $eggs->mb_gslot_money;
                         }
                         $objConfPb = $confgameModel->getByIndex($gameId);
                         $arrSum = $betModel->getBetSumByDay($arrReqData, $objConfPb);
@@ -656,6 +662,8 @@ class UserApi extends BaseController
                     $agConf = $confsiteModel->getConf($confId);
                     if($agConf != null)
                         $arrSumData[4][2] = $agConf->conf_active;
+                    $arrSumData[4][3] = $eggs->mb_kgon_money;
+
                 }
                 if(!$siteConfs['hold_deny']){
                     $betModel = new HlBet_Model();
@@ -667,6 +675,7 @@ class UserApi extends BaseController
 				    $agConf = $confsiteModel->getConf(CONF_API_HOLD);
                     if($agConf != null)
                         $arrSumData[5][2] = $agConf->conf_active;
+                    $arrSumData[5][3] = $eggs->mb_hold_money;
 
                 }
                 // writeLog("empbetinfo end duration = ".(microtime(true) * 1000 - $tmNow));

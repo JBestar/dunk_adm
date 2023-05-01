@@ -1627,7 +1627,7 @@ class Member_Model extends Model
     }
 
     // 게임별 머니
-    public function calcGameEgg($iGame)
+    public function calcGameEgg($iGame=0)
     {
         if($iGame == GAME_CASINO_EVOL){
             $strSQL = 'SELECT SUM(mb_live_money) AS mb_game_money FROM '.$this->table;
@@ -1650,6 +1650,17 @@ class Member_Model extends Model
         } else if($iGame == GAME_HOLD_CMS){
             $strSQL = 'SELECT SUM(mb_hold_money) AS mb_game_money FROM '.$this->table;
             $strSQL .= ' WHERE LENGTH(mb_hold_uid) > 0 ';
+        } else if($iGame == 0) {
+            $strSQL = 'SELECT SUM(CASE WHEN mb_live_id > 0 THEN mb_live_money ELSE 0 END ) AS mb_live_money, ';
+            $strSQL.= 'SUM(CASE WHEN mb_kgon_id > 0 THEN mb_kgon_money ELSE 0 END ) AS mb_kgon_money, ';
+            $strSQL.= 'SUM(CASE WHEN LENGTH(mb_slot_uid) > 0 THEN mb_slot_money ELSE 0 END ) AS mb_slot_money, ';
+            $strSQL.= 'SUM(CASE WHEN mb_fslot_id > 0 THEN mb_fslot_money ELSE 0 END ) AS mb_fslot_money, ';
+            $strSQL.= 'SUM(CASE WHEN LENGTH(mb_gslot_uid) > 0 THEN mb_gslot_money ELSE 0 END ) AS mb_gslot_money, ';
+            $strSQL.= 'SUM(CASE WHEN LENGTH(mb_hslot_token) > 0 THEN mb_hslot_money ELSE 0 END ) AS mb_hslot_money, ';
+            $strSQL.= 'SUM(CASE WHEN LENGTH(mb_hold_uid) > 0 THEN mb_hold_money ELSE 0 END ) AS mb_hold_money ';
+            $strSQL.= ' FROM '.$this->table;
+
+            return $this->db->query($strSQL)->getRow();
         } else return null;
 
         $objResult = $this->db->query($strSQL)->getRow();
