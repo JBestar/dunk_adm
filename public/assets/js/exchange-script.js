@@ -20,7 +20,7 @@ function showMoneyHistory(jsonBetData) {
         strBuf += "<tr><td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td><td>";
-        if(mObjUser && mObjUser.mb_level > LEVEL_ADMIN){
+        if(mObjUser && mObjUser.mb_level >= LEVEL_ADMIN){
             strBuf += "<a onclick='popupMemberUid(\"" + jsonBetData[nRow].money_mb_uid + "\")' class='link-member'>"+ jsonBetData[nRow].money_mb_uid+ "</a>";
         } else 
             strBuf += jsonBetData[nRow].money_mb_uid;
