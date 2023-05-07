@@ -255,6 +255,11 @@
         $table .= '.';
       return $table."mb_money+".$table."mb_live_money+".$table."mb_slot_money+".$table."mb_fslot_money+".$table."mb_kgon_money+".$table."mb_gslot_money+".$table."mb_hslot_money+".$table."mb_hold_money";
     }
+    function allEggSql($table=""){
+      if(strlen($table) > 0)
+        $table .= '.';
+      return $table."mb_live_money+".$table."mb_slot_money+".$table."mb_fslot_money+".$table."mb_kgon_money+".$table."mb_gslot_money+".$table."mb_hslot_money+".$table."mb_hold_money";
+    }
     function allEgg($member){
       $nMoney = 0;
       if(is_null($member))

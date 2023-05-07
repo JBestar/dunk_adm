@@ -27,7 +27,11 @@
 						<td>코인<span id="main-navbar-emp_corate-id">0 % | 0 %</span></td>
 					<?php endif ?>
 				<?php else : ?>
+					<?php if(array_key_exists('app.hold', $_ENV) && $_ENV['app.hold'] == 1) :?>
 					<td>가입<a href="<?php echo site_furl('/user/member/0');?>" id="main-navbar-user_wait-id">0 신청</a></td>
+					<?php else :?>
+					<td>가입<a href="<?php echo site_furl('/user/member_list/0');?>" id="main-navbar-user_wait-id">0 신청</a></td>
+					<?php endif ?>
 				<?php endif ?>
 
 			</tr>

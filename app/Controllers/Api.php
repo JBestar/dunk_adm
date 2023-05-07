@@ -23,6 +23,7 @@ use App\Models\EbalBet_Model;
 use App\Models\Ebalance_Model;
 use App\Models\Eorder_Model;
 use App\Models\EbalLog_Model;
+use App\Models\ConfMsg_Model;
 
 use App\Libraries\ApiCas_Lib;
 use App\Libraries\ApiSlot_Lib;
@@ -2213,7 +2214,89 @@ public function withdrawlist(){
 		}
 	}
 
+	public function getmacro(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrGetData = json_decode($jsonData, true);
+		//var_dump($arrBetData);
+		if(is_login()) {
+			//model
+			$confMsgModel = new ConfMsg_Model();
+			$arrResult = $confMsgModel->search($arrGetData);
+		
+			$objResult = new \StdClass;
+			$objResult->data = $arrResult;			
+			$objResult->status = "success";
+		
+			echo json_encode($objResult);
+		}
+		else{
+		
+			$arrResult['status'] = "logout";
+			echo json_encode($arrResult);	
+		} 		
+	}
 
+	public function getmacrocnt(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrGetData = json_decode($jsonData, true);
+		if(is_login()) {
+			//model
+			$confMsgModel = new ConfMsg_Model();
+			$objCount = $confMsgModel->searchCount($arrGetData);
+			
+			$arrResult['data'] = $objCount;
+			$arrResult['status'] = "success";
+		
+			echo json_encode($arrResult);
+		}
+		else{
+		
+			$arrResult['status'] = "logout";
+			echo json_encode($arrResult);	
+		} 		
+	}
+
+	public function addmacro(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrGetData = json_decode($jsonData, true);
+		if(is_login()) {
+			//model
+			$confMsgModel = new ConfMsg_Model();
+			$arrResult = $confMsgModel->add($arrGetData['memo']);
+		
+			$objResult = new \StdClass;
+			$objResult->status = "success";
+			$objResult->data = $arrResult;
+		
+			echo json_encode($objResult);
+		}
+		else{
+		
+			$arrResult['status'] = "logout";
+			echo json_encode($arrResult);	
+		} 		
+	}
+	
+	public function deletemacro(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrGetData = json_decode($jsonData, true);
+		if(is_login()) {
+			//model
+			$confMsgModel = new ConfMsg_Model();
+			$arrResult = $confMsgModel->delete($arrGetData['conf_id']);
+		
+			$objResult = new \StdClass;
+			$objResult->status = "success";
+			$objResult->data = $arrResult;
+		
+			echo json_encode($objResult);
+		}
+		else{
+		
+			$arrResult['status'] = "logout";
+			echo json_encode($arrResult);	
+		} 		
+	}
 
 }
     

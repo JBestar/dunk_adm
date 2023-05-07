@@ -357,7 +357,6 @@ function reqMemSave(objMember, closeDlg = null){
                     else 
                         window.location.reload();
                         // alert("회원정보가 변경되었습니다.");
-                        // window.location.replace( FURL +'/user/member/0');
                 } else if (jResult.status == "logout") {
                     alert("로그아웃되었습니다. 다시 로그인해주세요");
                     // window.location.replace( FURL +'/');
@@ -553,3 +552,4 @@ function reqSetBlank(objData, beforeCnt) {
     });
 
 }
+

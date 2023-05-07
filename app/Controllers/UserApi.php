@@ -916,12 +916,145 @@ class UserApi extends BaseController
         }
     }
 
-    public function allmember()
+    
+    public function getmembertree()
+    {
+        $jsonData = $_REQUEST['json_'];
+        $arrData = json_decode($jsonData, true);
+
+        if (is_login()) {
+            // model
+			$confsiteModel = new ConfSite_Model();
+
+			$objResult = new \stdClass();
+            $strUid = $this->session->user_id;
+            $objAdmin = $this->modelMember->getInfo($strUid);
+			$mbFid = 0;
+            $arrData['search'] = trim($arrData['search']);
+            if (strlen($arrData['search']) > 0){
+                if($arrData['type'] == 1){
+                    $objUser = $this->modelMember->getByNickname($arrData['search']);
+                } else if($arrData['type'] == 2){
+                    $objUser = $this->modelMember->getInfoByFid($arrData['search']);
+                } else 
+                    $objUser = $this->modelMember->getInfo($arrData['search']);
+                
+                
+                if(is_null($objUser)){
+                    $mbFid = -1;
+                } else {
+                    $arrMem = $this->modelMember->getMemberByEmpFid($objAdmin->mb_fid, $objAdmin->mb_level,  $objAdmin->mb_level, true, $objUser->mb_fid);
+                    if(count($arrMem) < 1)
+                        $mbFid = -1;
+                    else $mbFid = $objUser->mb_fid;
+                }
+                
+            } 
+            
+            if($mbFid >= 0){
+                $arrMember = $this->modelMember->searchMemberTree($objAdmin, $arrData, $mbFid);
+                if (is_null($arrMember)) {
+                    $arrMember = [];
+                }
+                foreach ($arrMember as $objMember) {
+                    $objMember->mb_money_all = allMoney($objMember);
+                    $objEmpInfo = $this->modelMember->find($objMember->mb_emp_fid);
+                    if ($objEmpInfo != null){
+                        $objMember->mb_empname = $objEmpInfo->mb_uid;
+                    }
+                    else {
+                        $objMember->mb_empname = '';
+                    }
+                }
+                
+            } else {
+                $arrMember = [];
+            }
+
+            $confs= $this->getSiteConf($confsiteModel);
+            $confs['emp_level'] = $objAdmin->mb_level; 
+            
+            $objResult->status = 'success';
+            $objResult->confs = $confs;
+            $objResult->data = $arrMember;
+
+            echo json_encode($objResult);
+        } else {
+            $arrResult['status'] = 'logout';
+            echo json_encode($arrResult);
+        }
+    }
+    
+    public function getmemberclass()
+    {
+        $jsonData = $_REQUEST['json_'];
+        $arrData = json_decode($jsonData, true);
+
+        if (is_login()) {
+            // model
+			$confsiteModel = new ConfSite_Model();
+            $confs= $this->getSiteConf($confsiteModel);
+
+			$objResult = new \stdClass();
+            $strUid = $this->session->user_id;
+            $objAdmin = $this->modelMember->getInfo($strUid);
+			$mbFid = 0;
+            $arrData['search'] = trim($arrData['search']);
+            if (strlen($arrData['search']) > 0){
+                if($arrData['type'] == 1){
+                    $objUser = $this->modelMember->getByNickname($arrData['search']);
+                } else if($arrData['type'] == 2){
+                    $objUser = $this->modelMember->getInfoByFid($arrData['search']);
+                } else 
+                    $objUser = $this->modelMember->getInfo($arrData['search']);
+            
+                if(is_null($objUser)){
+                    $mbFid = -1;
+                } else {
+                    $arrMem = $this->modelMember->getMemberByEmpFid($objAdmin->mb_fid, $objAdmin->mb_level,  $objAdmin->mb_level, true, $objUser->mb_fid);
+                    if(count($arrMem) < 1)
+                        $mbFid = -1;
+                    else $mbFid = $objUser->mb_fid;
+                }
+                
+            } 
+            
+            if($mbFid >= 0){
+                $arrMember = $this->modelMember->searchMemberClass($objAdmin, $arrData, $mbFid, $confs);
+                if (is_null($arrMember)) {
+                    $arrMember = [];
+                }
+                foreach ($arrMember as $objMember) {
+                    $objEmpInfo = $this->modelMember->find($objMember->mb_emp_fid);
+                    if ($objEmpInfo != null){
+                        $objMember->mb_empname = $objEmpInfo->mb_uid;
+                    }
+                    else {
+                        $objMember->mb_empname = '';
+                    }
+                }
+                
+            } else {
+                $arrMember = [];
+            }
+
+            $confs['emp_level'] = $objAdmin->mb_level; 
+            
+            $objResult->status = 'success';
+            $objResult->confs = $confs;
+            $objResult->data = $arrMember;
+
+            echo json_encode($objResult);
+        } else {
+            $arrResult['status'] = 'logout';
+            echo json_encode($arrResult);
+        }
+    }
+
+    public function memberIds()
     {
         if (is_login()) {
             // model
-            
-
             $strUid = $this->session->user_id;
             $objUser = $this->modelMember->getInfo($strUid);
 
@@ -934,8 +1067,13 @@ class UserApi extends BaseController
                     $arrMember = [];
                 }
 
+                $ids = [];
+                foreach ($arrMember as $objMember) {
+                    array_push($ids, $objMember->mb_uid);
+                }
+
                 $objResult->status = 'success';
-                $objResult->data = $arrMember;
+                $objResult->data = $ids;
             } else {
                 $objResult->status = 'fail';
             }

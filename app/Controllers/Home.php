@@ -59,6 +59,11 @@ class Home extends StdController
 		$this->load_view_page('home/conf_sound', 'conf_site', LEVEL_ADMIN, $param);	
 	}
 
+	public function conf_message(){
+		
+		$this->load_view_page('home/conf_message', 'conf_site', LEVEL_ADMIN);	
+	}
+
 	public function conf_clean(){
 		$this->load_view_page('home/conf_clean', 'conf_site', LEVEL_ADMIN);	
 	}
@@ -279,4 +284,85 @@ class Home extends StdController
 		$this->load_view_page('home/conf_password', 'conf_password');
 	}
 
+		
+	public function upload()
+	{
+
+		$objResult = new \StdClass;
+		$objResult->status = "fail";
+		$url = "";
+		
+		try
+		{
+			if(count($_FILES) > 0){
+				$iResult = 0;
+
+				$file = reset($_FILES);
+				
+				$file_name = $file['name'];
+				$file_size = $file['size'];
+				$file_tmp = $file['tmp_name'];
+				// $file_type= $file['type'];
+				$arrExt = explode('.', $file_name);
+				$file_ext=strtolower(end($arrExt));
+				// $file_error = $file['error'];
+
+				// writeLog("file_name=".$file_name);
+				// writeLog("file_size=".$file_size);
+				// writeLog("file_tmp=".$file_tmp);
+
+				$errors = "Upload Error!!";
+				
+				$extensions= array("exe", "msi", "cmd", "bat", "vbs", "dll", "com");
+
+				if(strlen($file_name) < 1){
+					$iResult = 2;
+					$errors="File not found";
+				}  else if(in_array($file_ext, $extensions) === true){
+					$iResult = 3;
+					$errors="Extension not allowed";
+				} else if($file_size > 524288000){
+					$iResult = 4;
+					$errors='File size must be exactely 500 MB';
+				} else if($file_size < 1){
+					$iResult = 4;
+					$errors='File size is zero';
+				} else if(empty($file_tmp)){
+					$iResult = 5;
+					$errors='File temporary path is empty';
+				}
+				
+				if($iResult == 0){
+					if(!file_exists(DOWNLOADROOT)){
+						mkdir(DOWNLOADROOT);
+					}
+
+					if(!file_exists(DOWNLOADROOT."image".DIRECTORY_SEPARATOR)){
+						mkdir(DOWNLOADROOT."image".DIRECTORY_SEPARATOR);
+					}
+
+					$settingPath = DOWNLOADROOT."image".DIRECTORY_SEPARATOR;
+
+					$file_name = date("Y-m-d_H-i-s").".".$file_ext;
+					$filePath = $settingPath;
+					$filePath .= $file_name;
+					// writeLog("filePath=".$filePath);
+
+					move_uploaded_file($file_tmp, $filePath);
+					
+					$iResult = 1;	
+					$objResult->status = "success";			
+		
+					$url = BASEURL.$_ENV['app.furl']."/".DOWNLOADDIR."/image/".$file_name;
+				}
+				
+			}
+		}
+		catch (\Exception $e)
+		{
+			$errors = $e->getMessage();
+		}
+		$objResult->url = $url;
+		echo json_encode($objResult);	
+	}
 }

@@ -1,4 +1,35 @@
 $(document).ready(function() {
+    $('#confsite-deposite-text-id, #confsite-urgentnotice-text-id').summernote({
+        // height: 300, // 에디터 높이
+        minHeight: 100, // 최소 높이
+        // maxHeight: null, // 최대 높이
+        focus: false, // 에디터 로딩후 포커스를 맞출지 여부
+        lang: "ko-KR", // 한글 설정
+        placeholder: '', //placeholder 설정
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['insert', ['picture']],
+        ],
+        callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+            onImageUpload : function(files) {
+                uploadSummernoteImageFile(files[0],this);
+            },
+            onPaste: function (e) {
+                var clipboardData = e.originalEvent.clipboardData;
+                if (clipboardData && clipboardData.items && clipboardData.items.length) {
+                    var item = clipboardData.items[0];
+                    if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+                        e.preventDefault();
+                    }
+                }
+            }
+        },
+    });
     $('textarea[name="editordata"]').summernote({
         // height: 300, // 에디터 높이
         minHeight: 100, // 최소 높이
@@ -18,6 +49,9 @@ $(document).ready(function() {
     setNavBarElement();
     addBtnEvent();
     onChangeElement();
+
+
+
 });
 
 function readConfigToObject() {
@@ -148,11 +182,8 @@ function cleanDb(iType) {
         if(!confirm("디비초기화를 하시겠습니까?"))
            return;
     }
-
     requestCleanDb(objData);
-
 }
-
 
 
 function requestCleanDb(objData) {
@@ -170,7 +201,7 @@ function requestCleanDb(objData) {
         success: function(jResult) {
             $(".loading").hide();
             $("#cleanDb-but").attr("disabled", false);
-            console.log(jResult);
+            // console.log(jResult);
             if (jResult.status == "success") {
                 alert("디비정리가 완료되었습니다.!");
                 location.reload();
@@ -185,8 +216,26 @@ function requestCleanDb(objData) {
         error: function(request, status, error) {
             $(".loading").hide();
             $("#cleanDb-but").attr("disabled", false);
-            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
     });
 
+}
+
+function uploadSummernoteImageFile(file, editor) {
+    // console.log(editor);
+    data = new FormData();
+    data.append("file", file);
+    $.ajax({
+        data : data,
+        dataType: "json",
+        type : "POST",
+        url : FURL +"/home/upload",
+        contentType : false,
+        processData : false,
+        success : function(data) {
+            // console.log(data.url);
+            $(editor).summernote('insertImage', data.url);
+        }
+    });
 }

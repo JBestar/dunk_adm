@@ -15,9 +15,23 @@ $(document).ready(function() {
             ['para', ['ul', 'ol', 'paragraph']],
             ['height', ['height']],
             // ['table', ['table']],
-            // ['insert', ['link', 'picture', 'video']],
+            ['insert', ['picture']],
             // ['view', ['fullscreen', 'codeview', 'help']]
-        ]
+        ],
+        callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+            onImageUpload : function(files) {
+                uploadSummernoteImageFile(files[0],this);
+            },
+            onPaste: function (e) {
+                var clipboardData = e.originalEvent.clipboardData;
+                if (clipboardData && clipboardData.items && clipboardData.items.length) {
+                    var item = clipboardData.items[0];
+                    if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+                        e.preventDefault();
+                    }
+                }
+            }
+        },
     });
     addBtnEvent();
 });
@@ -111,4 +125,22 @@ function addBtnEvent() {
         window.location.replace( FURL +'/board/notice');
     });
 
+}
+
+function uploadSummernoteImageFile(file, editor) {
+    // console.log(file);
+    data = new FormData();
+    data.append("file", file);
+    $.ajax({
+        data : data,
+        dataType: "json",
+        type : "POST",
+        url : FURL + "/home/upload",
+        contentType : false,
+        processData : false,
+        success : function(data) {
+            // console.log(data.url);
+            $(editor).summernote('insertImage', data.url);
+        }
+    });
 }

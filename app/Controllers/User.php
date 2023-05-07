@@ -100,7 +100,10 @@ class User extends StdController
 	{
 		if(is_login())
 		{
-			$this->response->redirect($_ENV['app.furl'].'/user/member/0');
+			if(array_key_exists('app.hold', $_ENV) && $_ENV['app.hold'] == 1)
+				$this->response->redirect($_ENV['app.furl'].'/user/member_list/0');
+			else 
+				$this->response->redirect($_ENV['app.furl'].'/user/member/0');
 		}
 		else {
 			$this->response->redirect($_ENV['app.furl'].'/pages/login');
@@ -221,6 +224,22 @@ class User extends StdController
 		}
 		$this->load_view_page(
 			'user/member_ctrl', 
+			'user_ctrl', 
+			LEVEL_ADMIN, 
+			['emp_uid' => $strEmpUid]);
+	}
+
+	function member_class($strEmpFid){
+		if (is_login() === false){
+			return $this->response->redirect($_ENV['app.furl'].'/pages/login');
+		}
+		$objEmp = $this->modelMember->find($strEmpFid);
+		$strEmpUid = "";
+		if ($objEmp != null){
+			$strEmpUid = $objEmp->mb_uid;
+		}
+		$this->load_view_page(
+			'user/member_class', 
 			'user_ctrl', 
 			LEVEL_ADMIN, 
 			['emp_uid' => $strEmpUid]);

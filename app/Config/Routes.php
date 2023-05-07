@@ -74,6 +74,7 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'User::index');
 $routes->get('user/member', 'User::member/0');
+$routes->get('user/member_list', 'User::member_list/0');
 
 /**
  * --------------------------------------------------------------------

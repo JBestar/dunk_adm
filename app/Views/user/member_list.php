@@ -22,6 +22,17 @@
 		width:50px;
 		text-align:center;		
 	}
+	
+	tr.hidden{
+		display: none;
+	}
+	tr button[id^=exp-btn_]{
+		border:none;
+	}
+	tr button.expand{
+		color:blue;
+		/* background:#00ffff; */
+	}
 	</style>
 	<!--Site Setting-->
 	<div class="user-panel">	
@@ -29,60 +40,42 @@
 			<?php if($mb_level >= LEVEL_ADMIN) :  ?>
 				<a href="" onclick="popupMemberEdit(0);" class="user-panel-add-a" >회원 등록</a>
 			<?php endif ?>
-			<label>추천인</label>
-            <input type="text" class="pbresult-text-input" id="userpanel-empid-input-id" value= "<?=$emp_uid ?>">
-			<label>아이디</label>
-            <input type="text" class="pbresult-text-input" id="userpanel-userid-input-id" >
-			
-			<select name="pbresult-level" class="pbresult-number-select" id="userpanel-state-select-id" stype="width:80px">
-				<option value="-1">::전체::</option>
-				<option value="1">승인</option>
-				<option value="0">차단</option>
-				<option value="2">대기</option>
+			<!-- <label>추천인</label>
+            <input type="text" class="pbresult-text-input" id="userpanel-empid-input-id" value= "<?=$emp_uid ?>"> -->
+			<select name="pbresult-level" class="pbresult-number-select" id="userpanel-type-select-id" stype="width:80px">
+				<option value="0">아이디</option>
+				<option value="1">닉네임</option>
+				<option value="2">등록번호</option>
+			</select>
+            <input type="text" class="pbresult-text-input" id="userpanel-userid-input-id" style="width:150px" value= "<?=$emp_uid ?>" >
 
-			</select>
-
-			<select name="pbresult-level" class="pbresult-number-select" id="userpanel-level-select-id">
-				<option value="0">:: Lv::</option>
-				<option value="1"> Lv 1 </option>
-				<option value="2"> Lv 2 </option>
-				<option value="3"> Lv 3 </option>
-				<option value="4"> Lv 4 </option>
-				<option value="5"> Lv 5 </option>
-				<option value="6"> Lv 6 </option>
-				<option value="7"> Lv 7 </option>
-				<option value="8"> Lv 8 </option>
-				<option value="9"> Lv 9 </option>
-				<option value="10"> Lv 10 </option>
-			</select>
-			<select name="pbresult-number" class="pbresult-number-select" id="userpanel-number-select-id">
-				<?php foreach($select_nums as $num=>$select):?>
-					<option value="<?=$num?>" <?=$select?>><?=$num?>개</option>
-				<?php endforeach?>
-			</select>
 			<button class="pbresult-list-view-but" id="userpanel-list-view-but-id">검색</button>  
 		</div>		
 		<Table class="user-table" style="margin-top: 15px;">
 			<thead>
 				<tr>
-					<th>번호</th>
+					<th></th>
+					<th>본사</th>
+					<th>부본사</th>
+					<th>총판</th>
+					<th>매장</th>
+					<th>회원</th>
 					<th>추천인</th>
-					<th>아이디</th>
-					<th>닉네임</th>
 					<th>등록번호</th>
+					<th>닉네임</th>
 					<th>Lv</th>
 					<th>현재금액</th>
 					<th>포인트</th>
-					<?php if ($mb_level >= LEVEL_ADMIN) {?>	
+					<?php if ($mb_level >= LEVEL_ADMIN) :?>	
 						<?php if(!$slot_deny) :?>
 							<th style="width:130px;">공배팅</th>
 						<?php endif ?> 
 					<th>접속IP</th>
-					<?php } ?>
+					<?php endif ?>
 					<th>승인</th>
-					<?php if ($mb_level >= LEVEL_ADMIN) {?>	
+					<?php if ($mb_level >= LEVEL_ADMIN) :?>	
 					<th>게임별설정</th>
-					<?php } ?>
+					<?php endif ?>
 				</tr>
 			</thead>
 			<tbody  id="user-member-table-id">
@@ -114,11 +107,13 @@
 <?php if(array_key_exists("app.produce", $_ENV)) :?>
     <script src="<?php echo site_furl('/assets/js/page.js?t='.time());?>"></script>
     <script src="<?php echo site_furl('/assets/js/member_common-script.js?t='.time());?>"></script>
-    <script src="<?php echo site_furl('/assets/js/member-script.js?t='.time());?>"></script>
+    <script src="<?php echo site_furl('/assets/js/member_util-script.js?t='.time());?>"></script>
+    <script src="<?php echo site_furl('/assets/js/member_list-script.js?t='.time());?>"></script>
 <?php else : ?>
     <script src="<?php echo site_furl('/assets/js/page.js?v=1');?>"></script>
     <script src="<?php echo site_furl('/assets/js/member_common-script.js?v=1');?>"></script>
-    <script src="<?php echo site_furl('/assets/js/member-script.js?v=1');?>"></script>
+    <script src="<?php echo site_furl('/assets/js/member_util-script.js?v=1');?>"></script>
+    <script src="<?php echo site_furl('/assets/js/member_list-script.js?v=1');?>"></script>
 <?php endif ?>
 
 <?= $this->endSection() ?>

@@ -18,8 +18,12 @@ class StdController extends BaseController
 				"10"=> "",
 				"20"=> "",
 				"50"=> "",
-				"100"=> "selected",
+				"100"=> "",
 			];
+			if(array_key_exists('app.hold', $_ENV) && $_ENV['app.hold'] == 1)
+				$arrNum["100"] = "selected";
+			else $arrNum["10"] = "selected";
+
 			$arrData['select_nums'] = $arrNum;
 			
 			$confsiteModel = new ConfSite_Model();

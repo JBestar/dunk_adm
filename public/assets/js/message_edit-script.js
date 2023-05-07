@@ -22,12 +22,64 @@ $(document).ready(function() {
     });
 
     initMessageEdit();
-
+    // $('#notice-content').summernote('code', '<p>This is the content of the editor.</p>');
 });
 
 function initMessageEdit() {
+    CountPerPage = 5;
     addBtnEvent();
+    requestTotalPage();
     requestMembers();
+}
+
+function requestPageInfo() {
+    requestMacro();
+}
+
+var mArrMacro = null;
+function showMacro(arrMacro){
+
+    mArrMacro = arrMacro;
+    let strBuf = "";
+
+    var curPage = getActivePage();
+    var firstIdx = (curPage - 1) * CountPerPage;
+    for(let nRow in arrMacro){
+        strBuf += "<tr><td>";
+        strBuf += "<button onclick='editMacro(" + nRow + ")' ><<</button>";
+        strBuf += "</td><td>";
+        strBuf += arrMacro[nRow].conf_content;
+        strBuf += "</td><tr>";
+    }
+
+    if (strBuf.length < 1) {
+        strBuf = "<tr><td colspan='3'>자료가 없습니다.</td></tr>";
+    }
+    $("#confsite-table-data").html(strBuf);
+
+}
+
+function editMacro(nRow){
+    if(mArrMacro.length < nRow)
+        return;
+
+    let notice = mArrMacro[nRow];
+    if(!notice)
+        return;
+    
+    let notice_type = $("#subnavbar-type-p-id").html();
+        
+    if(notice_type == 0){
+        let code = $("#notice-content").summernote('code');
+        code += notice.conf_content;
+        $("#notice-content").summernote('code', code);
+    } else {
+        let code = $("#custom-answer").summernote('code');
+        code += notice.conf_content;
+        $("#custom-answer").summernote('code', code);
+    }
+
+    // mArrMacro[nRow].conf_content
 }
 
 function readConfigToObject() {
@@ -138,7 +190,7 @@ function requestMembers() {
     $.ajax({
         type: "POST",
         dataType: "json",
-        url: FURL + "/userapi/allmember",
+        url: FURL + "/userapi/memberIds",
         success: function(jResult) {
             //console.log(jResult);
             if (jResult.status == "success") {
@@ -158,13 +210,13 @@ function requestMembers() {
 
 
 
-function showAutoComplete(arrMember) {
+function showAutoComplete(ids) {
     $(function() {
 
         var arrData = new Array();
         arrData[0] = "*";
-        for (nRow in arrMember) {
-            arrData[parseInt(nRow) + 1] = arrMember[nRow].mb_uid;
+        for (nRow in ids) {
+            arrData[parseInt(nRow) + 1] = ids[nRow];
         }
 
         $("#notice-mbuid-input-id").autocomplete({
@@ -175,6 +227,67 @@ function showAutoComplete(arrMember) {
             }
 
         });
+    });
+
+}
+
+
+function requestTotalPage() {
+
+    var jsonData = {
+    };
+
+    jsonData = JSON.stringify(jsonData);
+
+    $.ajax({
+        url: FURL + '/api/getmacrocnt',
+        data: { json_: jsonData },
+        dataType: 'json',
+        type: 'post',
+        success: function(jResult) {
+            // console.log(jResult);
+            if (jResult.status == "success") {
+                TotalCount = jResult.data.count;
+                setFirstPage();
+                requestMacro();
+            }
+        },
+        error: function(request, status, error) {
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+    });
+}
+
+function requestMacro() {
+
+    var nPage = getActivePage();
+
+    var jsonData = {
+        "count": CountPerPage,
+        "page": nPage,
+    };
+
+    jsonData = JSON.stringify(jsonData);
+    $(".loading").show();
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: FURL + "/api/getmacro",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+            $(".loading").hide();
+            if (jResult.status == "success") {
+                showMacro(jResult.data);
+            } else if (jResult.status == "fail") {
+
+            }
+        },
+        error: function(request, status, error) {
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            $(".loading").hide();
+        }
+
     });
 
 }

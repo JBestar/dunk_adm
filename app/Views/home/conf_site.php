@@ -13,6 +13,7 @@
         <?php endif ?>   
         <a href="<?php echo siteFurl().'home/conf_maintain';?>" class="sub-navbar-a">점검설정</a>
 		<a href="<?php echo siteFurl().'home/conf_sound';?>" class="sub-navbar-a" >알람설정</a>
+		<a href="<?php echo siteFurl().'home/conf_message';?>" class="sub-navbar-a" >쪽지매크로</a>
 		<!-- <a href="<?php echo siteFurl().'home/conf_clean';?>" class="sub-navbar-a" >디비정리</a> -->
 
         <?= $this->renderSection('confsite-navbar') ?>

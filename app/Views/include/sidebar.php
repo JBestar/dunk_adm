@@ -48,7 +48,13 @@
     <?php endif  ?>
   
     <?php if($mb_level >= LEVEL_ADMIN) :  ?>
-    <a href="<?php echo siteFurl().'user/member_ctrl/0';?>" class="<?=$user_ctrl?>"><i class="glyphicon glyphicon-cd"></i> 매장전용</a>
+    
+    <?php if(array_key_exists('app.hold', $_ENV) && $_ENV['app.hold'] == 1) :?>
+      <a href="<?php echo siteFurl().'user/member_class/0';?>" class="<?=$user_ctrl?>"><i class="glyphicon glyphicon-cd"></i> 매장전용</a>
+    <?php else:  ?>
+      <a href="<?php echo siteFurl().'user/member_ctrl/0';?>" class="<?=$user_ctrl?>"><i class="glyphicon glyphicon-cd"></i> 매장전용</a>
+    <?php endif  ?>
+
     <a href="<?php echo siteFurl().'user/member_connect';?>" class="<?=$user_log?>"><i class="glyphicon glyphicon-time"></i> 실시간접속</a>
     <a href="<?php echo siteFurl().'user/member_block';?>" class="<?=$user_block?>"><i class="glyphicon glyphicon-ban-circle"></i> 블록아이피</a>
     <?php endif  ?>

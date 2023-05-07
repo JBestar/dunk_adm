@@ -136,7 +136,6 @@ function addBtnEvent() {
 
 
     $("#useredit-cancel-btn-id").click(function() {
-        // window.location.replace( FURL +'/user/member/0');
         window.close();
     });
 
