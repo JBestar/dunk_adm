@@ -1849,7 +1849,7 @@ class Member_Model extends Model
         // $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
         // $strSQL .= ' LIMIT '.$nStartRow.', '.$arrReqData['count'];
         
-        // writeLog($strSQL);
+        writeLog($strSQL);
         
         return $this -> db -> query($strSQL)->getResult();
           

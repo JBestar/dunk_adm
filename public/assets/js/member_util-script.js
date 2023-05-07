@@ -60,7 +60,7 @@ function showMember(arrMember, confs, refresh=true) {
             objMember.mb_state_active = parseInt(objMember.mb_state_active);
             if(objMember.mb_state_active != 2)
                 continue;
-            strBuf += getMemberTr(objMember);
+            strBuf += getMemberTr(objMember, false, true);
         }
     
         if(arrMember.length > 0){

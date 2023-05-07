@@ -25,7 +25,8 @@ class Notice_Model extends Model {
         return $this->where([
             'notice_type' => NOTICE_BOARD,
             'notice_state_delete' => STATE_DISABLE,
-        ])->findAll();
+        ])->orderBy('notice_fid', 'DESC')
+        ->findAll();
     }
 
     public function getNoticeByFid($strNoticeFid){

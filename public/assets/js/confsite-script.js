@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#confsite-deposite-text-id, #confsite-urgentnotice-text-id').summernote({
+    $('textarea[name="editordata"]').summernote({
         // height: 300, // 에디터 높이
         minHeight: 100, // 최소 높이
         // maxHeight: null, // 최대 높이
@@ -30,22 +30,22 @@ $(document).ready(function() {
             }
         },
     });
-    $('textarea[name="editordata"]').summernote({
-        // height: 300, // 에디터 높이
-        minHeight: 100, // 최소 높이
-        // maxHeight: null, // 최대 높이
-        focus: false, // 에디터 로딩후 포커스를 맞출지 여부
-        lang: "ko-KR", // 한글 설정
-        placeholder: '', //placeholder 설정
-        toolbar: [
-            ['style', ['style']],
-            ['font', ['bold', 'underline', 'clear']],
-            ['fontsize', ['fontsize']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']],
-        ]
-    });
+    // $('textarea[name="editordata"]').summernote({
+    //     // height: 300, // 에디터 높이
+    //     minHeight: 100, // 최소 높이
+    //     // maxHeight: null, // 최대 높이
+    //     focus: false, // 에디터 로딩후 포커스를 맞출지 여부
+    //     lang: "ko-KR", // 한글 설정
+    //     placeholder: '', //placeholder 설정
+    //     toolbar: [
+    //         ['style', ['style']],
+    //         ['font', ['bold', 'underline', 'clear']],
+    //         ['fontsize', ['fontsize']],
+    //         ['color', ['color']],
+    //         ['para', ['ul', 'ol', 'paragraph']],
+    //         ['height', ['height']],
+    //     ]
+    // });
     setNavBarElement();
     addBtnEvent();
     onChangeElement();

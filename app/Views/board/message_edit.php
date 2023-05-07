@@ -117,7 +117,7 @@
 					<thead>
 						<tr>
 							<th></th>
-							<th>매크로내용</th>
+							<th>매크로</th>
 						</tr>
 					</thead>
 					<tbody  id="confsite-table-data">

@@ -35,7 +35,7 @@
 
 		</Table>
 
-		<div class="pbresult-list-page-div">
+		<div class="pbresult-list-page-div"  style="width:850px;">
 			
 			<div class="pagination" id="list-page" style="display:none">
 				<button class="list-page-button" id="page-first"  onclick="firstPage()"><<</button>

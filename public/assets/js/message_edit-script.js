@@ -42,11 +42,11 @@ function showMacro(arrMacro){
     mArrMacro = arrMacro;
     let strBuf = "";
 
-    var curPage = getActivePage();
-    var firstIdx = (curPage - 1) * CountPerPage;
+    // var curPage = getActivePage();
+    // var firstIdx = (curPage - 1) * CountPerPage;
     for(let nRow in arrMacro){
         strBuf += "<tr><td>";
-        strBuf += "<button onclick='editMacro(" + nRow + ")' ><<</button>";
+        strBuf += "<button onclick='editMacro(" + nRow + ")' >◀</button>";
         strBuf += "</td><td>";
         strBuf += arrMacro[nRow].conf_content;
         strBuf += "</td><tr>";
@@ -71,15 +71,18 @@ function editMacro(nRow){
         
     if(notice_type == 0){
         let code = $("#notice-content").summernote('code');
+        if(code == "<p><br></p>" )
+            code = "";
         code += notice.conf_content;
         $("#notice-content").summernote('code', code);
     } else {
         let code = $("#custom-answer").summernote('code');
+        if(code == "<p><br></p>" )
+            code = "";
         code += notice.conf_content;
         $("#custom-answer").summernote('code', code);
     }
 
-    // mArrMacro[nRow].conf_content
 }
 
 function readConfigToObject() {
