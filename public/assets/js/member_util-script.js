@@ -26,7 +26,7 @@ function procMember(tdLevel, empId, bShow){
         if(mArrMember[nRow].mb_state_active == 2)
             continue;
 
-        subHtml = procMember(mArrMember[nRow].mb_level-1, mArrMember[nRow].mb_fid, false);
+        subHtml = procMember(mArrMember[nRow].mb_level-1, mArrMember[nRow].mb_fid, true);
         html += getMemberTr(mArrMember[nRow], subHtml.length > 0, bShow);
         html += subHtml;
     }
@@ -80,21 +80,22 @@ function showMember(arrMember, confs, refresh=true) {
 }
 
 function toggle(level, fid){
-    var theButton = document.getElementById("exp-btn_"+fid);
+    let theButton = document.getElementById("exp-btn_"+fid);
     if(!theButton)
         return;
 
-    bChild = false;
-    if (theButton.getAttribute("aria-expanded") == "true" || level == LEVEL_MARKET) {
+    let bChild = false;
+    // if (theButton.getAttribute("aria-expanded") == "true" || level == LEVEL_MARKET) {
         bChild = true;
-    }
+    // }
 
     let strIds = subIds(level-1, fid, bChild);
     // console.log(strIds);
 
-    var trRows = [];
+    let trRows = [];
     let trIds = "";
     let btnIds = "";
+    let btnExps = [];
 
     if(strIds.length > 0){
         let ids = strIds.split(',');
@@ -113,6 +114,7 @@ function toggle(level, fid){
 
         // console.log(trIds);
         trRows = document.querySelectorAll(trIds);
+        btnExps = document.querySelectorAll(btnIds);
     }
 
 
@@ -120,6 +122,12 @@ function toggle(level, fid){
         for (var i = 0; i < trRows.length; i++) {
           trRows[i].classList.remove("hidden");
         }
+        for (var i = 0; i < btnExps.length; i++) {
+            btnExps[i].innerText = "▼";
+            btnExps[i].classList.add("expand");
+            btnExps[i].setAttribute("aria-expanded", "true");
+        }
+
         theButton.innerText = "▼";
         theButton.classList.add("expand");
         theButton.setAttribute("aria-expanded", "true");
@@ -128,7 +136,6 @@ function toggle(level, fid){
           trRows[i].classList.add("hidden");
         }
         // console.log(btnIds);
-        btnExps = document.querySelectorAll(btnIds);
         for (var i = 0; i < btnExps.length; i++) {
             btnExps[i].innerText = "▶";
             btnExps[i].classList.remove("expand");

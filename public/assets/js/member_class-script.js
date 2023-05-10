@@ -17,8 +17,8 @@ function getMemberTr(objMember, bChild = false, bShow=false){
     strBuf += ">";
     strBuf += "<td>";
     if(bChild && objMember.mb_level >= LEVEL_MARKET){
-        strBuf += "<button id='exp-btn_"+objMember.mb_fid+"' aria-expanded='false' onclick='toggle("+objMember.mb_level+", "+objMember.mb_fid+");' >";
-        strBuf += "▶</button>";
+        strBuf += "<button id='exp-btn_"+objMember.mb_fid+"' class='expand' aria-expanded='true' onclick='toggle("+objMember.mb_level+", "+objMember.mb_fid+");' >";
+        strBuf += "▼</button>";
     }
     // strBuf += (mOrder++);
     strBuf += "</td> <td>";

@@ -9,6 +9,8 @@ class Member_Model extends Model
     protected $table = 'member';
     private $chargeTb = 'member_charge';
     protected $exchangeTb = 'member_exchange';
+    protected $noticeTb = 'board_notice';
+    private $historyTb = 'money_history';
     protected $rewardTb = 'bet_reward';
     protected $returnType = 'object'; 
 
@@ -555,7 +557,14 @@ class Member_Model extends Model
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
             $strSQL.=" AND ".getTimeRange("exchange_time_require", $arrReqData, $this->db);
         $strSQL .= " AND exchange_mb_uid IN (SELECT mb_uid from tbmember ) )";
-
+        //지급 회수
+        $strSQL .= " UNION ALL ( SELECT SUM( CASE WHEN money_change_type = '".MONEYCHANGE_GIVE."' THEN ABS(money_amount) ELSE 0 END) AS result_1, ";
+        $strSQL .= " SUM( CASE WHEN money_change_type = '".MONEYCHANGE_WITHDRAW."' THEN ABS(money_amount) ELSE 0 END) AS result_2 FROM ".$this->historyTb;
+        $strSQL .= " WHERE money_mb_fid IN (SELECT mb_fid from tbmember ) ";
+        if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
+            $strSQL.=" AND ".getTimeRange("money_update_time", $arrReqData, $this->db);
+        $strSQL .= " )";
+        // writeLog($strSQL);
         return $strSQL;
     }
 
@@ -1591,27 +1600,50 @@ class Member_Model extends Model
         return $bResult;
     }
 
-    public function getEmpUserCnt($objMember)
+    public function getEmpInfo($objMember, $arrReqData)
     {
-        $arrEmpUserInfo['alluser'] = 0;
-        $arrEmpUserInfo['waituser'] = 0;
-        $arrEmpUserInfo['waitemployee'] = 0;
-        $arrEmpUserInfo['waitagency'] = 0;
-        $arrEmpUserInfo['waitcompany'] = 0;
-
-        if ($objMember->mb_level >= LEVEL_ADMIN) {
+        if ($objMember->mb_level < LEVEL_ADMIN) 
+            return [];
             
-            // 대기중인 회원수
-            $strSQL = ' SELECT  COUNT(*) AS mb_count FROM '.$this->table." WHERE mb_level < '".LEVEL_ADMIN."'";
-            $strSQL .= " AND mb_state_active = '".PERMIT_WAIT."'";
-            $objResult = $this->db->query($strSQL)->getRow();
-            if (!is_null($objResult->mb_count)) {
-                $arrEmpUserInfo['waituser'] = $objResult->mb_count;
-            }
-            
-        }
+        // 대기중인 회원수
+        $strSQL = " SELECT  COUNT(*) AS result_1, 0 AS result_2 FROM ".$this->table;
+            $strSQL .= " WHERE mb_level < '".LEVEL_ADMIN."' AND mb_state_active = '".PERMIT_WAIT."'";
+        //충전대기
+        $strSQL .=" UNION ALL SELECT SUM(CASE WHEN charge_action_state = ".STATE_ACTIVE." THEN 1 ELSE 0 END) AS result_1,  SUM(CASE WHEN charge_action_state = ".STATE_WAIT." THEN 1 ELSE 0 END) AS result_2";
+            $strSQL .=" FROM ".$this->chargeTb." JOIN member ON member_charge.charge_mb_uid = member.mb_uid  WHERE charge_state_delete = '0' ";
+        //환전대기
+        $strSQL .=" UNION ALL SELECT SUM(CASE WHEN exchange_action_state = ".STATE_ACTIVE." THEN 1 ELSE 0 END) AS result_1,  SUM(CASE WHEN exchange_action_state = ".STATE_WAIT." THEN 1 ELSE 0 END) AS result_2";
+            $strSQL .=" FROM ".$this->exchangeTb." JOIN member ON member_exchange.exchange_mb_uid = member.mb_uid  WHERE exchange_state_delete = '0' ";
+        //문의대기
+        $strSQL .=" UNION ALL SELECT  COUNT(*) AS result_1, 0 AS result_2 FROM ".$this->noticeTb;
+        $strSQL .=" WHERE notice_state_delete = '".STATE_DISABLE."' AND notice_type = '".NOTICE_CUSTOMER."' AND notice_read_count = '0' ";
+        //관리자 보유금
+        $strSQL .= " UNION ALL SELECT SUM(".allMoneySql().") AS result_1, SUM(mb_point) AS result_2 FROM ".$this->table;
+        $strSQL .= " WHERE mb_level < ".LEVEL_ADMIN." AND mb_state_active != '".PERMIT_DELETE."' ";
+        //충전금액
+        $strSQL .=" UNION ALL SELECT SUM(charge_money) AS result_1,  0 AS result_2 FROM ".$this->chargeTb;
+        $strSQL.=" WHERE (charge_action_state = '".STATE_VERIFY."' OR charge_action_state = '".STATE_HOT."') ";
+            $strSQL.=" AND charge_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND charge_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59'") ; 
+            $strSQL .= " AND charge_mb_uid NOT IN (SELECT mb_uid FROM ".$this->table." WHERE mb_level >= ".LEVEL_ADMIN.") ";
+        //환전금액
+        $strSQL .=" UNION ALL SELECT SUM(exchange_money) AS result_1,  0 AS result_2 FROM ".$this->exchangeTb;
+        $strSQL.=" WHERE (exchange_action_state = '".STATE_VERIFY."' OR exchange_action_state = '".STATE_HOT."') ";
+        $strSQL.=" AND exchange_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND exchange_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59'") ; 
+        $strSQL .= " AND exchange_mb_uid NOT IN (SELECT mb_uid FROM ".$this->table." WHERE mb_level >= ".LEVEL_ADMIN.") ";
+        //지급 회수
+        $strSQL .= " UNION ALL SELECT SUM( CASE WHEN money_change_type = '".MONEYCHANGE_GIVE."' THEN ABS(money_amount) ELSE 0 END) AS result_1, ";
+        $strSQL .= " SUM( CASE WHEN money_change_type = '".MONEYCHANGE_WITHDRAW."' THEN ABS(money_amount) ELSE 0 END) AS result_2 FROM ".$this->historyTb;
+        $strSQL .= " WHERE money_mb_fid NOT IN (SELECT mb_fid FROM ".$this->table." WHERE mb_level >= ".LEVEL_ADMIN.") ";
+        $strSQL.=" AND money_update_time >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND money_update_time <= ".$this->db->escape($arrReqData['end']." 23:59:59'") ; 
 
-        return $arrEmpUserInfo;
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog($strSQL);
+        $arrResult = $this->db->query($strSQL)->getResult();
+        
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog("getEmpInfo End");
+
+        return $arrResult;
     }
 
     // 관리자 보유금

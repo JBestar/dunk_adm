@@ -202,7 +202,7 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
     $("#main-navbar-newmessage-id").text(strBuf);
 
     var nWaitCnt = 0;
-    nWaitCnt += parseInt(objEmpInfo.waituser);
+    nWaitCnt += parseInt(objEmpInfo.wait_user);
 
     strBuf = nWaitCnt + " 신청";
     $("#main-navbar-user_wait-id").text(strBuf);
@@ -228,6 +228,12 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
 
     strBuf = parseInt(objEmpInfo.emp_money_exchange).toLocaleString() + " 원";
     $("#main-navbar-emp_exchange-id").text(strBuf);
+
+    strBuf = parseInt(objEmpInfo.emp_money_give).toLocaleString() + " 원";
+    $("#main-navbar-emp_give-id").text(strBuf);
+
+    strBuf = parseInt(objEmpInfo.emp_money_withdraw).toLocaleString() + " 원";
+    $("#main-navbar-emp_withdraw-id").text(strBuf);
 
     var bAlarmEnable = $("#main-navbar-alarm-check-id").prop('checked');
     var bAlarm = false;

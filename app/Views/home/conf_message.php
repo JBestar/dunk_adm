@@ -12,21 +12,28 @@
 	<div class="useredit-panel">
 
 		<div style="width:100%; clear:both;">
-			
-			<p style="width:100px; float:left; padding:5px;">매크로내용:</p> 
+			<div class="useredit-text-div">
+				<p style="width:100px; float:left; padding:5px;">매크로제목:</p> 
+				<input type = "text" id="macro-title" style="width:600px; float:left;background-color:white;">
+				<button class="useredit-ok-button" id="notice-save-btn-id">등록</button>
+			</div>
+			<div class="useredit-text-div">
+				<p style="width:100px; float:left; padding:5px;">매크로내용:</p> 
 
-			<form method="post" style="width:600px; float:left;background-color:white;">
-			<textarea id="macro-content" name="editordata"></textarea>
-			</form>	
-			<button class="useredit-ok-button"  id="notice-save-btn-id">등록</button>
+				<form method="post" style="width:600px; float:left;background-color:white;">
+				<textarea id="macro-content" name="editordata"></textarea>
+				</form>	
+				<button class="useredit-ok-button" name="" id="notice-modify-btn-id" style="display:none; background-color:#ffaf3d;">수정</button>
+			</div>
 		</div>
 
 		<Table class="user-table" style="margin-top: 15px; width:850px;">
 			<thead>
 				<tr>
 					<th>번호</th>
+					<th>제목</th>
 					<th>매크로내용</th>
-					<th>삭제</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody  id="confsite-table-data">

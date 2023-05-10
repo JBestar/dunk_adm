@@ -1191,7 +1191,7 @@ public function withdrawlist(){
 					if($arrReqData['type'] == 0)
 						$arrResult = $this->modelMember->calculate($objEmp, $arrReqData, $siteConfs);
 					else $arrResult = $this->modelMember->calculateByGame($objEmp, $arrReqData);
-					if(is_null($arrResult) || count($arrResult) != 7)
+					if(is_null($arrResult) || count($arrResult) != 8)
 						continue;
 					$objCalc['mb_money_all'] = $arrResult[0]->result_1 != null ? $arrResult[0]->result_1 : 0 ;		//관리자보유금;
 					$objCalc['mb_money_single'] = $arrResult[0]->result_2 != null ? $arrResult[0]->result_2 : 0 ;	//관리자보유금;
@@ -1201,11 +1201,13 @@ public function withdrawlist(){
 		            $objCalc['mb_charge'] = $arrResult[3]->result_1 != null ? $arrResult[3]->result_1 : 0 ;         //충전금액합산
 		            $objCalc['mb_exchange'] = $arrResult[4]->result_1 != null ? $arrResult[4]->result_1 : 0;     	//환전금액합산
 		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  				//충환손익
-			        $objCalc['mb_bet_money'] = $arrResult[5]->result_1 != null ? $arrResult[5]->result_1 : 0;		//배팅머니
-					$objCalc['mb_bet_win_money'] = $arrResult[5]->result_2 != null ? $arrResult[5]->result_2 : 0;	//적중머니
+					$objCalc['mb_give'] = $arrResult[5]->result_1 != null ? $arrResult[5]->result_1 : 0 ;         //충전금액합산
+		            $objCalc['mb_withdraw'] = $arrResult[5]->result_2 != null ? $arrResult[5]->result_2 : 0;     	//환전금액합산
+			        $objCalc['mb_bet_money'] = $arrResult[6]->result_1 != null ? $arrResult[6]->result_1 : 0;		//배팅머니
+					$objCalc['mb_bet_win_money'] = $arrResult[6]->result_2 != null ? $arrResult[6]->result_2 : 0;	//적중머니
          			$objCalc['mb_bet_benefit_money'] = $objCalc['mb_bet_money'] - $objCalc['mb_bet_win_money'];  	//배팅손익
-         			$objCalc['mb_rate_all'] =   $arrResult[6]->result_1 != null ? $arrResult[6]->result_1 : 0;		//수수료 합산
-         			$objCalc['mb_rate_single'] =   $arrResult[6]->result_2 != null ? $arrResult[6]->result_2 : 0;	//수수료 개별
+         			$objCalc['mb_rate_all'] =   $arrResult[7]->result_1 != null ? $arrResult[7]->result_1 : 0;		//수수료 합산
+         			$objCalc['mb_rate_single'] =   $arrResult[7]->result_2 != null ? $arrResult[7]->result_2 : 0;	//수수료 개별
          			$objCalc['mb_last_money'] = $objCalc['mb_bet_benefit_money'] - $objCalc['mb_rate_single'] ; 	//최종손익
 
 		            $arrData[] = $objCalc;
@@ -1232,90 +1234,90 @@ public function withdrawlist(){
 	}
 
 
-	//하부회워 정산리력 Ajax로 전송
-	public function calculategame(){ 
-		$jsonData = $_REQUEST['json_'];
-		$arrReqData = json_decode($jsonData, true);
-		// return var_dump($arrReqData);
-		if(is_login()) {
-			//model
+	// //하부회워 정산리력 Ajax로 전송
+	// public function calculategame(){ 
+	// 	$jsonData = $_REQUEST['json_'];
+	// 	$arrReqData = json_decode($jsonData, true);
+	// 	// return var_dump($arrReqData);
+	// 	if(is_login()) {
+	// 		//model
 			
-			$strUid = $this->session->user_id;
-			$objUser = $this->modelMember->getInfo($strUid);
-			$arrResult = array();
-			$arrEmp = array();
-			//회원정보가 없다면
-			$bResult = false;
-			if($arrReqData['mb_fid'] == 0){	
-				if($objUser->mb_level > LEVEL_COMPANY){//관리자이면 부본사정보를 반환
-					$arrEmp = $this->modelMember->getMemberByLevel(LEVEL_COMPANY);
-					$bResult = true;
+	// 		$strUid = $this->session->user_id;
+	// 		$objUser = $this->modelMember->getInfo($strUid);
+	// 		$arrResult = array();
+	// 		$arrEmp = array();
+	// 		//회원정보가 없다면
+	// 		$bResult = false;
+	// 		if($arrReqData['mb_fid'] == 0){	
+	// 			if($objUser->mb_level > LEVEL_COMPANY){//관리자이면 부본사정보를 반환
+	// 				$arrEmp = $this->modelMember->getMemberByLevel(LEVEL_COMPANY);
+	// 				$bResult = true;
 					
-				} else if($objUser->mb_level >= LEVEL_MIN){	// 가입한 성원자정보를 반환
+	// 			} else if($objUser->mb_level >= LEVEL_MIN){	// 가입한 성원자정보를 반환
 					
-					$arrEmp[0] = $objUser;
-					$bResult = true;
-				}
+	// 				$arrEmp[0] = $objUser;
+	// 				$bResult = true;
+	// 			}
 
-			} else {						//요청한 등급이하 정보를 반환
-					$objReqEmp = $this->modelMember->getInfoByFid($arrReqData['mb_fid']);
-					if(!is_null($objReqEmp)){
-						if($objReqEmp->mb_level <= $objUser->mb_level){
-							$arrEmp = $this->modelMember->getMemberByEmpFid($objReqEmp->mb_fid, $objReqEmp->mb_level-1);
-							if(is_null($arrEmp))	$bResult = false;
-							else $bResult = true; 
-						}
-					}
-			}
-			$arrData = array();
+	// 		} else {						//요청한 등급이하 정보를 반환
+	// 				$objReqEmp = $this->modelMember->getInfoByFid($arrReqData['mb_fid']);
+	// 				if(!is_null($objReqEmp)){
+	// 					if($objReqEmp->mb_level <= $objUser->mb_level){
+	// 						$arrEmp = $this->modelMember->getMemberByEmpFid($objReqEmp->mb_fid, $objReqEmp->mb_level-1);
+	// 						if(is_null($arrEmp))	$bResult = false;
+	// 						else $bResult = true; 
+	// 					}
+	// 				}
+	// 		}
+	// 		$arrData = array();
 			
-			if($bResult){
-				$arrReqData['rw_blank'] = $objUser->mb_level >= LEVEL_ADMIN;
+	// 		if($bResult){
+	// 			$arrReqData['rw_blank'] = $objUser->mb_level >= LEVEL_ADMIN;
 
 
-				foreach ($arrEmp as $objEmp) {
-            		$objCalc['mb_fid'] = $objEmp->mb_fid;
-		            $objCalc['mb_uid'] = $objEmp->mb_uid;
-		            $objCalc['mb_nickname'] = $objEmp->mb_nickname;
-		            $objCalc['mb_emp_fid'] = $objEmp->mb_emp_fid;
-		            $objCalc['mb_level'] = $objEmp->mb_level;
-					$arrResult = $this->modelMember->calculateByGame($objEmp, $arrReqData);
-					if(is_null($arrResult) || count($arrResult) != 7)
-						continue;
-					$objCalc['mb_money_all'] = $arrResult[0]->result_1 != null ? $arrResult[0]->result_1 : 0 ;		//관리자보유금;
-					$objCalc['mb_money_single'] = $arrResult[0]->result_2 != null ? $arrResult[0]->result_2 : 0 ;	//관리자보유금;
-					$objCalc['mb_point_all'] = $arrResult[1]->result_1 != null ? $arrResult[1]->result_1 : 0 ;		//관리자보유금;
-					$objCalc['mb_point_single'] = $arrResult[1]->result_2 != null ? $arrResult[1]->result_2 : 0 ;	//관리자보유금;
-					$objCalc['mb_user_cnt'] = $arrResult[2]->result_1 != null ? $arrResult[2]->result_1 : 0 ;		//관리자보유금;
-					$objCalc['mb_charge'] = $arrResult[3]->result_1 != null ? $arrResult[3]->result_1 : 0 ;         //충전금액합산
-					$objCalc['mb_exchange'] = $arrResult[4]->result_1 != null ? $arrResult[4]->result_1 : 0;     	//환전금액합산
-					$objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  				//충환손익
-					$objCalc['mb_bet_money'] = $arrResult[5]->result_1 != null ? $arrResult[5]->result_1 : 0;		//배팅머니
-					$objCalc['mb_bet_win_money'] = $arrResult[5]->result_2 != null ? $arrResult[5]->result_2 : 0;	//적중머니
-					$objCalc['mb_bet_benefit_money'] = $objCalc['mb_bet_money'] - $objCalc['mb_bet_win_money'];  	//배팅손익
-					$objCalc['mb_rate_all'] =   $arrResult[6]->result_1 != null ? $arrResult[6]->result_1 : 0;		//수수료 합산
-					$objCalc['mb_rate_single'] =   $arrResult[6]->result_2 != null ? $arrResult[6]->result_2 : 0;	//수수료 개별
-					$objCalc['mb_last_money'] = $objCalc['mb_bet_benefit_money'] - $objCalc['mb_rate_single'] ; 	//최종손익
+	// 			foreach ($arrEmp as $objEmp) {
+    //         		$objCalc['mb_fid'] = $objEmp->mb_fid;
+	// 	            $objCalc['mb_uid'] = $objEmp->mb_uid;
+	// 	            $objCalc['mb_nickname'] = $objEmp->mb_nickname;
+	// 	            $objCalc['mb_emp_fid'] = $objEmp->mb_emp_fid;
+	// 	            $objCalc['mb_level'] = $objEmp->mb_level;
+	// 				$arrResult = $this->modelMember->calculateByGame($objEmp, $arrReqData);
+	// 				if(is_null($arrResult) || count($arrResult) != 7)
+	// 					continue;
+	// 				$objCalc['mb_money_all'] = $arrResult[0]->result_1 != null ? $arrResult[0]->result_1 : 0 ;		//관리자보유금;
+	// 				$objCalc['mb_money_single'] = $arrResult[0]->result_2 != null ? $arrResult[0]->result_2 : 0 ;	//관리자보유금;
+	// 				$objCalc['mb_point_all'] = $arrResult[1]->result_1 != null ? $arrResult[1]->result_1 : 0 ;		//관리자보유금;
+	// 				$objCalc['mb_point_single'] = $arrResult[1]->result_2 != null ? $arrResult[1]->result_2 : 0 ;	//관리자보유금;
+	// 				$objCalc['mb_user_cnt'] = $arrResult[2]->result_1 != null ? $arrResult[2]->result_1 : 0 ;		//관리자보유금;
+	// 				$objCalc['mb_charge'] = $arrResult[3]->result_1 != null ? $arrResult[3]->result_1 : 0 ;         //충전금액합산
+	// 				$objCalc['mb_exchange'] = $arrResult[4]->result_1 != null ? $arrResult[4]->result_1 : 0;     	//환전금액합산
+	// 				$objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  				//충환손익
+	// 				$objCalc['mb_bet_money'] = $arrResult[5]->result_1 != null ? $arrResult[5]->result_1 : 0;		//배팅머니
+	// 				$objCalc['mb_bet_win_money'] = $arrResult[5]->result_2 != null ? $arrResult[5]->result_2 : 0;	//적중머니
+	// 				$objCalc['mb_bet_benefit_money'] = $objCalc['mb_bet_money'] - $objCalc['mb_bet_win_money'];  	//배팅손익
+	// 				$objCalc['mb_rate_all'] =   $arrResult[6]->result_1 != null ? $arrResult[6]->result_1 : 0;		//수수료 합산
+	// 				$objCalc['mb_rate_single'] =   $arrResult[6]->result_2 != null ? $arrResult[6]->result_2 : 0;	//수수료 개별
+	// 				$objCalc['mb_last_money'] = $objCalc['mb_bet_benefit_money'] - $objCalc['mb_rate_single'] ; 	//최종손익
 	
-		            $arrData[] = $objCalc;
-        		}
-			}
+	// 	            $arrData[] = $objCalc;
+    //     		}
+	// 		}
 
-			$objResult = new \StdClass;			
-			$objResult->data = $arrData;
-			$objResult->level = $objUser->mb_level;
-			$objResult->status = "success";
+	// 		$objResult = new \StdClass;			
+	// 		$objResult->data = $arrData;
+	// 		$objResult->level = $objUser->mb_level;
+	// 		$objResult->status = "success";
 		
-			echo json_encode($objResult);
+	// 		echo json_encode($objResult);
 			
-		}
-		else{
+	// 	}
+	// 	else{
 		
-			$arrResult['status'] = "logout";
+	// 		$arrResult['status'] = "logout";
 
-			echo json_encode($arrResult);	
-		} 		
-	}
+	// 		echo json_encode($arrResult);	
+	// 	} 		
+	// }
 
 
 
@@ -2262,7 +2264,7 @@ public function withdrawlist(){
 		if(is_login()) {
 			//model
 			$confMsgModel = new ConfMsg_Model();
-			$arrResult = $confMsgModel->add($arrGetData['memo']);
+			$arrResult = $confMsgModel->add($arrGetData);
 		
 			$objResult = new \StdClass;
 			$objResult->status = "success";
@@ -2277,6 +2279,27 @@ public function withdrawlist(){
 		} 		
 	}
 	
+	public function modifymacro(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrGetData = json_decode($jsonData, true);
+		if(is_login()) {
+			//model
+			$confMsgModel = new ConfMsg_Model();
+			$arrResult = $confMsgModel->modify($arrGetData['id'], $arrGetData);
+		
+			$objResult = new \StdClass;
+			$objResult->status = "success";
+			$objResult->data = $arrResult;
+		
+			echo json_encode($objResult);
+		}
+		else{
+		
+			$arrResult['status'] = "logout";
+			echo json_encode($arrResult);	
+		} 		
+	}
+
 	public function deletemacro(){ 
 		$jsonData = $_REQUEST['json_'];
 		$arrGetData = json_decode($jsonData, true);

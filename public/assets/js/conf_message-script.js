@@ -32,12 +32,14 @@ function initMessageEdit() {
     addBtnEvent();
 }
 
+var mArrMacro = null;
 function requestPageInfo() {
     requestMacro();
 }
 
 function showMacro(arrMacro){
 
+    mArrMacro = arrMacro;
     let strBuf = "";
 
     var curPage = getActivePage();
@@ -46,8 +48,11 @@ function showMacro(arrMacro){
         strBuf += "<tr><td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td><td>";
+        strBuf += arrMacro[nRow].conf_memo;
+        strBuf += "</td><td>";
         strBuf += arrMacro[nRow].conf_content;
         strBuf += "</td><td>";
+        strBuf += "<button onclick='modifyMacro(" + nRow + ")' >수정</button>";
         strBuf += "<button onclick='deleteMacro(" + arrMacro[nRow].conf_id + ")' >삭제</button>";
         strBuf += "</td><tr>";
     }
@@ -59,14 +64,25 @@ function showMacro(arrMacro){
 
 }
 
+function initPage(){
+    $("#macro-title").val('');
+    $("#macro-content").summernote('code', '');
+    $("#notice-modify-btn-id").hide();
+}
+
 function addBtnEvent() {
 
     $("#notice-save-btn-id").click(function() {
 
         var jsonData = {
-            "memo": $("#macro-content").summernote('code'),
+            "title":$("#macro-title").val(),
+            "content": $("#macro-content").summernote('code'),
         };
-        if(jsonData.memo.length < 1){
+        if(jsonData.title.length < 1){
+            alert("매크로 제목을 입력해주세요");
+            return;
+        }
+        if(jsonData.content.length < 1){
             alert("매크로 내용을 입력해주세요");
             return;
         }
@@ -82,7 +98,51 @@ function addBtnEvent() {
                 // console.log(jResult);
                 // $(".loading").hide();
                 if (jResult.status == "success") {
+                    initPage();
+                    requestTotalPage();
+                    
+                } else if (jResult.status == "fail") {
+    
+                }
+            },
+            error: function(request, status, error) {
+                // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                $(".loading").hide();
+            }
+    
+        });
+    });
+
+    $("#notice-modify-btn-id").click(function() {
+
+        var jsonData = {
+            "id":$("#notice-modify-btn-id").attr("name"),
+            "title":$("#macro-title").val(),
+            "content": $("#macro-content").summernote('code'),
+        };
+        console.log(jsonData);
+        if(jsonData.title.length < 1){
+            alert("매크로 제목을 입력해주세요");
+            return;
+        }
+        if(jsonData.content.length < 1){
+            alert("매크로 내용을 입력해주세요");
+            return;
+        }
+    
+        jsonData = JSON.stringify(jsonData);
+        // $(".loading").show();
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: FURL + "/api/modifymacro",
+            data: { json_: jsonData },
+            success: function(jResult) {
+                // console.log(jResult);
+                // $(".loading").hide();
+                if (jResult.status == "success") {
                     requestMacro();
+                    initPage();
                 } else if (jResult.status == "fail") {
     
                 }
@@ -153,8 +213,9 @@ function requestMacro() {
         }
 
     });
-
 }
+
+
 
 function deleteMacro(fid){
     if(!confirm("삭제하시겠습니까?"))
@@ -185,4 +246,19 @@ function deleteMacro(fid){
         }
 
     });
+}
+
+function modifyMacro(idx){
+
+    if(!mArrMacro || mArrMacro.length <= idx)
+        return 
+
+    let objMacro = mArrMacro[idx];
+    if(!objMacro)
+        return;
+
+    $("#macro-title").val(objMacro.memo);
+    $("#macro-content").summernote('code', objMacro.conf_content);
+    $("#notice-modify-btn-id").show();
+    $("#notice-modify-btn-id").attr("name", objMacro.conf_id);
 }

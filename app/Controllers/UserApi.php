@@ -447,30 +447,30 @@ class UserApi extends BaseController
         if (is_login()) {
             $strUid = $this->session->user_id;
             // model
-            
-            $chargeModel = new Charge_Model();
-            $exchangeModel = new Exchange_Model();
-            $noticeModel = new Notice_Model();
             $confsiteModel = new ConfSite_Model();
 
             $objUser = $this->modelMember->getInfo($strUid);
-
             $objResult = new \stdClass();
             if ($objUser->mb_level >= LEVEL_ADMIN) {
-                $arrEmpInfo = $this->modelMember->getEmpUserCnt($objUser);
-                $arrEmpInfo['wait_charge'] = $chargeModel->getWaitCnt();
-                $arrEmpInfo['moment_charge'] = $chargeModel->getMomentCnt();
-                $arrEmpInfo['wait_exchange'] = $exchangeModel->getWaitCnt();
-                $arrEmpInfo['moment_exchange'] = $exchangeModel->getMomentCnt();
-                $arrEmpInfo['new_message'] = $noticeModel->getNewMessageCnt();
-                $objAdminMoney = $this->modelMember->calcAdminMoney();
-                $arrEmpInfo['emp_money'] = $objAdminMoney->emp_money;
-                $arrEmpInfo['emp_point'] = $objAdminMoney->emp_point;
-
                 $arrReqData['start'] = date('Y-m-d');
                 $arrReqData['end'] = $arrReqData['start'];
-                $arrEmpInfo['emp_money_charge'] = $chargeModel->calcAdminCharge($arrReqData);
-                $arrEmpInfo['emp_money_exchange'] = $exchangeModel->calcAdminExchange($arrReqData);
+
+                $arrEmpInfo = null;
+                $arrResult = $this->modelMember->getEmpInfo($objUser, $arrReqData);
+                if(!is_null($arrResult) && count($arrResult) == 8){
+                    $arrEmpInfo['wait_user'] = $arrResult[0]->result_1 != null ? $arrResult[0]->result_1 : 0 ;		    //대기
+                    $arrEmpInfo['wait_charge'] = $arrResult[1]->result_1 != null ? $arrResult[1]->result_1 : 0 ;		//충전대기
+                    $arrEmpInfo['moment_charge'] = $arrResult[1]->result_2 != null ? $arrResult[1]->result_2 : 0 ;		//충전대기
+                    $arrEmpInfo['wait_exchange'] = $arrResult[2]->result_1 != null ? $arrResult[2]->result_1 : 0 ;		//환전대기
+                    $arrEmpInfo['moment_exchange'] = $arrResult[2]->result_2 != null ? $arrResult[2]->result_2 : 0 ;   //환전대기
+                    $arrEmpInfo['new_message'] = $arrResult[3]->result_1 != null ? $arrResult[3]->result_1 : 0 ;		//문의대기
+                    $arrEmpInfo['emp_money'] = $arrResult[4]->result_1 != null ? $arrResult[4]->result_1 : 0 ;		//보유머니
+                    $arrEmpInfo['emp_money'] = $arrResult[4]->result_2 != null ? $arrResult[4]->result_2 : 0 ;		//포유포인트
+                    $arrEmpInfo['emp_money_charge'] = $arrResult[5]->result_1 != null ? $arrResult[5]->result_1 : 0 ;     //충전금액
+                    $arrEmpInfo['emp_money_exchange'] = $arrResult[6]->result_1 != null ? $arrResult[6]->result_1 : 0 ;		//환전금액
+                    $arrEmpInfo['emp_money_give'] = $arrResult[7]->result_1 != null ? $arrResult[7]->result_1 : 0 ;     //지급
+                    $arrEmpInfo['emp_money_withdraw'] = $arrResult[7]->result_2 != null ? $arrResult[7]->result_2 : 0 ;		//회수
+                }
 
                 $arrSoundInfo = $confsiteModel->getSoundConf();
 

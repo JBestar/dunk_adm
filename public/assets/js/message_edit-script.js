@@ -26,7 +26,7 @@ $(document).ready(function() {
 });
 
 function initMessageEdit() {
-    CountPerPage = 5;
+    CountPerPage = 10;
     addBtnEvent();
     requestTotalPage();
     requestMembers();
@@ -48,7 +48,7 @@ function showMacro(arrMacro){
         strBuf += "<tr><td>";
         strBuf += "<button onclick='editMacro(" + nRow + ")' >◀</button>";
         strBuf += "</td><td>";
-        strBuf += arrMacro[nRow].conf_content;
+        strBuf += arrMacro[nRow].conf_memo;
         strBuf += "</td><tr>";
     }
 
@@ -70,15 +70,16 @@ function editMacro(nRow){
     let notice_type = $("#subnavbar-type-p-id").html();
         
     if(notice_type == 0){
-        let code = $("#notice-content").summernote('code');
-        if(code == "<p><br></p>" )
-            code = "";
+        // let code = $("#notice-content").summernote('code');
+        // if(code == "<p><br></p>" )
+        let code = "";
         code += notice.conf_content;
         $("#notice-content").summernote('code', code);
+        $("#notice-title-input-id").val(notice.conf_memo);
     } else {
-        let code = $("#custom-answer").summernote('code');
-        if(code == "<p><br></p>" )
-            code = "";
+        // let code = $("#custom-answer").summernote('code');
+        // if(code == "<p><br></p>" )
+        let code = "";
         code += notice.conf_content;
         $("#custom-answer").summernote('code', code);
     }

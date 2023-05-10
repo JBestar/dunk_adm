@@ -956,6 +956,7 @@ Style - powerball
     font-weight: bold;
     font-size: 12px;
     box-shadow: -1px -1px 1px 1px #adaeaf inset;
+    word-break: keep-all;
 }
 
 .user-table button:hover:not([disabled]) {
@@ -980,6 +981,7 @@ Style - powerball
     font-weight: bold;
     font-size: 12px;
     box-shadow: -1px -1px 1px 1px #adaeaf inset;
+    word-break: keep-all;
 }
 
 .user-table a:hover {

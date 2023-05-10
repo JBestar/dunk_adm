@@ -113,11 +113,11 @@
 			
 			<div style="float:left;  width:450px;">
 
-				<Table class="user-table" style="margin-top: 15px;">
+				<Table class="user-table" style="margin-top: 80px;">
 					<thead>
 						<tr>
-							<th></th>
-							<th>매크로</th>
+							<th style="width:50px;"></th>
+							<th>매크로제목</th>
 						</tr>
 					</thead>
 					<tbody  id="confsite-table-data">

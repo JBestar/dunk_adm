@@ -12,10 +12,11 @@ class ConfMsg_Model extends Model {
 
     protected $allowedFields = ['conf_id', 'conf_memo', 'conf_content', 'conf_active', 'conf_update']; 
 
-    public function add($memo){
+    public function add($arrData){
         
         $data = [
-            'conf_content' => $memo,
+            'conf_memo' => trim($arrData['title']),
+            'conf_content' => trim($arrData['content']),
             'conf_active' => STATE_ACTIVE,
             'conf_update' => date("Y-m-d H:i:s"),
         ];
@@ -23,6 +24,17 @@ class ConfMsg_Model extends Model {
         return $this->insert($data);
     }
     
+    public function modify($fid, $arrData){
+        
+        $data = [
+            'conf_memo' => trim($arrData['title']),
+            'conf_content' => trim($arrData['content']),
+            'conf_update' => date("Y-m-d H:i:s"),
+        ];
+
+        return $this->update($fid, $data);
+    }
+
 	function deleteByFid($fid){
     	return $this->delete($fid);
     }
