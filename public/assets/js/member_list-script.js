@@ -52,6 +52,8 @@ function getMemberTr(objMember, bChild = false, bShow=false){
     strBuf += "</td> <td id='mp_" + objMember.mb_fid + "'>";
     strBuf += parseFloat(objMember.mb_point).toLocaleString();
     strBuf += "</td> <td>";
+    strBuf += objMember.mb_game_hl_ratio ;
+    strBuf += "</td> <td>";
     if (mConfs.emp_level >= LEVEL_ADMIN) {
         if (!mConfs.slot_deny) {
             strBuf += "<button name='" + objMember.mb_fid + "' class='blank-btn_" + objMember.mb_fid + "' >-</button>   ";
@@ -69,26 +71,21 @@ function getMemberTr(objMember, bChild = false, bShow=false){
         strBuf += "</td> <td>";
         
     }
-    strBuf += "<button name='" + objMember.mb_fid + "'";
-    if (mConfs.emp_level < LEVEL_ADMIN) {
-        strBuf += " disabled = 'true' ";
-    }
-    if (objMember.mb_state_active == 1) {
-        strBuf += " class='button-active'>승인</button>";
-    } else if (objMember.mb_state_active == 2) {
-        strBuf += ">대기</button>";
-    } else {
-        strBuf += ">차단</button>";
-    }
-    
-    strBuf += "<button onclick='popupMemberEdit("+objMember.mb_fid + ", "+objMember.mb_fid+")'>수정</button>";
     if (mConfs.emp_level >= LEVEL_ADMIN) {
+        strBuf += "<button name='" + objMember.mb_fid + "'";
+        if (objMember.mb_state_active == 1) {
+            strBuf += " class='button-active'>승인</button>";
+        } else if (objMember.mb_state_active == 2) {
+            strBuf += ">대기</button>";
+        } else {
+            strBuf += ">차단</button>";
+        }
+        strBuf += "<button onclick='popupMemberEdit("+objMember.mb_fid + ", "+objMember.mb_fid+")'>수정</button>";
+    
         var strEncodeURI = FURL+"/board/message_edit/0/" + objMember.mb_fid;
         strBuf += "<a href='" + strEncodeURI + "' >쪽지</a>";
         strBuf += "<button name='" + objMember.mb_fid + "'>삭제</button>   ";
-    }
 
-    if (mConfs.emp_level >= LEVEL_ADMIN) {
         strBuf += "</td> <td>";
         if(!mConfs.hpg_deny){
             if (objMember.mb_game_pb == 1) {
@@ -144,6 +141,9 @@ function getMemberTr(objMember, bChild = false, bShow=false){
                 strBuf += "<button name='" + objMember.mb_fid + "' >홀덤</button>";
             }
         }
+    } else {
+        strBuf += "<button onclick='showMemGive("+objMember.mb_fid+")'>이동</button>";
+        strBuf += "<button onclick='showMemWithdraw("+objMember.mb_fid+")'>환수</button>";
     }
     strBuf += "</td></tr>";
     return strBuf;
@@ -154,6 +154,21 @@ function addEventListner() {
     $("#userpanel-list-view-but-id").click(function() {
         requestMember();
     });
+    
+    $(document).on("click", function(e){
+        if($("#charge_modal").is(e.target)){
+            closeChargeDlg();
+        }
+    });
+
+    $("#charge_modal .close").click(function() {
+        closeChargeDlg();
+    });
+
+    $("#charge_money").on("propertychange change keyup paste input", function() {
+        calcAmount("#charge_money");
+    });
+     
 }
 
 function requestMember(bRefresh=true) {
@@ -304,6 +319,70 @@ function addBtnEvent() {
     for (i = 0; i < elemTableBtns.length; i++) {
         addButtonElementListener(elemTableBtns[i]);
     }
+
 }
 
 
+function showMemGive(mbFid){
+
+    if(mArrMember == null)
+        return;
+    
+    let member = null;
+    for(objMember of mArrMember){
+        if(objMember.mb_fid == mbFid){
+            member = objMember;
+            break;
+        }
+    }
+    if(member == null)
+        return;
+
+    $("#charge_modal .c_type_forced").text("머니이동");
+    $("#charge_modal .c_type_money").text("이동금액");
+    $("#charge_user_name").val(member.mb_nickname);
+    $("#charge_user_id").val(member.mb_uid);
+    $("#charge_user_fid").val(member.mb_fid);
+    $("#charge_user_money").val(parseFloat(member.mb_money).toLocaleString());
+    $("#charge_money").val('');
+    $("#btn-charge-apply").show();
+    $("#btn-discharge-apply").hide();
+
+    showChargeDlg();
+}
+
+
+function showMemWithdraw(mbFid){
+    if(mArrMember == null)
+        return;
+    
+    let member = null;
+    for(objMember of mArrMember){
+        if(objMember.mb_fid == mbFid){
+            member = objMember;
+            break;
+        }
+    }
+    if(member == null)
+        return;
+
+    $("#charge_modal .c_type_forced").text("머니환수");
+    $("#charge_modal .c_type_money").text("환수금액");
+    $("#charge_user_name").val(member.mb_nickname);
+    $("#charge_user_id").val(member.mb_uid);
+    $("#charge_user_fid").val(member.mb_fid);
+    $("#charge_user_money").val(parseFloat(member.mb_money).toLocaleString());
+    $("#charge_money").val('');
+    $("#btn-charge-apply").hide();
+    $("#btn-discharge-apply").show();
+
+    showChargeDlg();
+}
+
+function closeChargeDlg(){
+    $('#charge_modal').slideUp(100);
+}
+
+function showChargeDlg(){
+    $('#charge_modal').slideDown(200);
+}

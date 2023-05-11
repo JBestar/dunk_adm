@@ -1,5 +1,6 @@
 <?= $this->extend('header') ?>
 <?= $this->section('content') ?>
+<link rel="stylesheet" href="<?php echo site_furl('assets/css/app.css?v=1');?>">
 	
 	<!--Sub Navbar-->
 	<div class = "sub-navbar">
@@ -22,7 +23,10 @@
 		width:50px;
 		text-align:center;		
 	}
-	
+	.modal{
+		background: rgb(0 0 0 / 50%);
+		overflow-y: auto;
+	}
 	tr.hidden{
 		display: none;
 	}
@@ -61,20 +65,21 @@
 					<th>매장</th>
 					<th>회원</th>
 					<th>추천인</th>
-					<th>등록번호</th>
+					<th>등록<span style="word-break: keep-all;">번호</span></th>
 					<th>닉네임</th>
 					<th>Lv</th>
 					<th>현재금액</th>
 					<th>포인트</th>
+					<th>요율<span style="word-break: keep-all;">(%)</span></th>
 					<?php if ($mb_level >= LEVEL_ADMIN) :?>	
 						<?php if(!$slot_deny) :?>
 							<th style="width:130px;">공배팅</th>
 						<?php endif ?> 
-					<th>접속IP</th>
-					<?php endif ?>
-					<th>승인</th>
-					<?php if ($mb_level >= LEVEL_ADMIN) :?>	
-					<th>게임별설정</th>
+						<th>접속IP</th>
+						<th>수정</th>
+						<th>설정</th>
+					<?php else: ?>
+						<th>이동 / 환수</th>
 					<?php endif ?>
 				</tr>
 			</thead>
@@ -115,5 +120,65 @@
     <script src="<?php echo site_furl('/assets/js/member_util-script.js?v=1');?>"></script>
     <script src="<?php echo site_furl('/assets/js/member_list-script.js?v=1');?>"></script>
 <?php endif ?>
+
+<div class="row" style="font-size:12px;">
+	<div id="charge_modal" class="modal fade in" tabindex="-2" role="dialog" aria-hidden="false" style="display: none; padding-right: 17px; color:#333;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h2 class="modal-title"><span class="c_type_forced">강제충전</span></h2>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-4">닉네임 :</div>
+								<div class="col-md-8">
+									<input id="charge_user_name" type="text" placeholder="" class="form-control" disabled="" />
+									<input id="charge_user_id" type="hidden" placeholder="" class="form-control" disabled="" value="" />
+									<input id="charge_user_fid" type="hidden" placeholder="" class="form-control" disabled="" value="" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">금액 :</div>
+								<div class="col-md-8">
+									<input id="charge_user_money" type="text" placeholder="" class="form-control" disabled="" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"><span class="c_type_money">충전금액</span></div>
+								<div class="col-md-8">
+									<input id="charge_money" type="text" placeholder="" class="form-control" />
+								</div>
+							</div>
+							<div class="row">
+								<!-- <div class="col-md-2"></div> -->
+								<div style="text-align:right; padding-right:15px;">
+									<a onclick="reqMemCharge()" class="btn btn-primary btn-charge"><span class="c_type">1만원</span></a>
+									<a onclick="reqMemCharge()" class="btn btn-primary btn-charge"><span class="c_type">5만원</span></a>
+									<a onclick="reqMemCharge()" class="btn btn-primary btn-charge"><span class="c_type">10만원</span></a>
+									<a onclick="reqMemCharge()" class="btn btn-primary btn-charge"><span class="c_type">50만원</span></a>
+									<a onclick="reqMemCharge()" class="btn btn-primary btn-charge"><span class="c_type">100만원</span></a>
+									<a onclick="reqMemCharge()" class="btn btn-primary btn-charge"><span class="c_type">전체</span></a>
+									<a onclick="reqMemCharge()" class="btn btn-primary btn-charge"><span class="c_type">정정</span></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer" style="padding: 10px !important;">
+					<a id="btn-charge-apply" onclick="reqMemCharge()" class="btn btn-primary btn-charge"><span class="c_type">이동</span></a>
+					<a id="btn-discharge-apply" onclick="reqMemDischarge()" class="btn btn-primary btn-discharge"><span class="c_type">환수</span></a>
+					<a data-dismiss="modal" class="btn btn-warning"  onclick="closeChargeDlg();">취소 </a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
 
 <?= $this->endSection() ?>
