@@ -460,7 +460,7 @@ class ConfSite_Model extends Model
     public function getSiteConf(){
         $confIds = [CONF_SITENAME, CONF_GAMEPER_FULL, CONF_BPG_DENY,  CONF_EVOL_DENY, CONF_SLOT_DENY, 
             CONF_CAS_DENY, CONF_EOS5_DENY, CONF_EOS3_DENY, CONF_COIN5_DENY, CONF_COIN3_DENY, 
-            CONF_HPG_DENY, CONF_HOLD_DENY];  
+            CONF_HPG_DENY, CONF_HOLD_DENY, CONF_EVOLFOLLOW];  
         return $this->find($confIds);
     }
 

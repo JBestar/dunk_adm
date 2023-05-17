@@ -129,9 +129,12 @@ class Member_Model extends Model
         else return $this->select($this->getFields)->find($strFid);
     }
     
-    public function getInfo($strId)
+    public function getInfo($strId, $bAll = false)
     {
-        return $this->select($this->getFields)->where('mb_uid', $strId)->first();
+        if($bAll)
+            return $this->where('mb_uid', $strId)->first();
+        else return $this->select($this->getFields)->where('mb_uid', $strId)->first();
+
     }
 
     public function getInfoByUid($strId)
@@ -1346,7 +1349,7 @@ class Member_Model extends Model
 
     public function modifyMember($objMember, $arrData, &$strError, &$query)
     {
-        // 결과 0:오류 1:성공 2:아이디중복 3:추천인 오류 4:파워볼 배당율오류 5:파워사다리 배당율오류 6:키노사다리 배당율 오류, 12 중복닉네임
+        // 결과 0:오류 1:성공 2:아이디중복 3:추천인 오류 4:파워볼 배당율오류 5:파워사다리 배당율오류 6:키노사다리 배당율 오류, 11:따라가기 오류 12 중복닉네임
 
         $objEmployee = null;
         $diffLv = 0;
@@ -1362,6 +1365,14 @@ class Member_Model extends Model
             $diffLv = $objEmployee->mb_level - 1 - $objMember->mb_level;
         } else {
             return 0;
+        }
+
+        if(array_key_exists('mb_follow_ev', $arrData) && strlen($arrData['mb_follow_ev']) > 2){
+            if(substr($arrData['mb_follow_ev'], 0, 2) == "1:"){
+                $objFollow = $this->getInfo(substr($arrData['mb_follow_ev'], 2));
+                if(is_null($objFollow) || $objFollow->mb_state_active == PERMIT_DELETE)
+                    return 11;
+            }
         }
 
         if($objMember->mb_emp_fid != $arrData['mb_emp_fid']){
@@ -1576,6 +1587,8 @@ class Member_Model extends Model
             $this->builder()->set('mb_game_hl', $arrData['mb_game_hl']);
         } elseif (array_key_exists('mb_blank_count', $arrData)) {
             $this->builder()->set('mb_blank_count', $arrData['mb_blank_count']);
+        } elseif (array_key_exists('mb_follow_ev', $arrData)) {
+            $this->builder()->set('mb_follow_ev', $arrData['mb_follow_ev']);
         } else {
             return false;
         }
@@ -1592,9 +1605,14 @@ class Member_Model extends Model
     {
         if (array_key_exists('mb_state_active', $arrData)) {
             $this->builder()->set('mb_state_active', $arrData['mb_state_active']);
+        } else if (array_key_exists('mb_press_ev', $arrData)) {
+            $this->builder()->set('mb_press_ev', $arrData['mb_press_ev']);
         } else return false;
 
-        $this->builder()->whereIn('mb_fid', $arrData['mb_fids']);
+        if(count($arrData['mb_fids']) > 0)
+            $this->builder()->whereIn('mb_fid', $arrData['mb_fids']);
+        else $this->builder()->where('mb_level <', LEVEL_ADMIN);
+
         $bResult = $this->builder()->update();
         $query = $this->db->getLastQuery();
         

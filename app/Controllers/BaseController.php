@@ -87,7 +87,7 @@ class BaseController extends Controller
 		
 		$confs = ['site_name'=>"", "gameper_full"=>false, "bpg_deny"=>false, "evol_deny"=>false, "slot_deny"=>false, 
 			"cas_deny"=>false, "eos5_deny"=>false, "eos3_deny"=>false, "coin5_deny"=>false, "coin3_deny"=>false, 
-			"hpg_deny"=>false, "hold_deny"=>false];
+			"hpg_deny"=>false, "hold_deny"=>false, "follow_en"=>false];
 		$arrConf = $confsiteModel->getSiteConf();  
 		
 		foreach($arrConf as $objConf){
@@ -115,6 +115,8 @@ class BaseController extends Controller
 				case CONF_HPG_DENY:	$confs['hpg_deny'] = $objConf->conf_active == STATE_ACTIVE?true:false;
 					break;
 				case CONF_HOLD_DENY:	$confs['hold_deny'] = $objConf->conf_active == STATE_ACTIVE?true:false;
+					break;
+				case CONF_EVOLFOLLOW:	$confs['follow_en'] = $objConf->conf_active == STATE_ACTIVE?true:false;
 					break;
 				default:break;
 			}

@@ -29,11 +29,16 @@
     <?php endif ?>  
 
       <?php if(array_key_exists('app.ebal', $_ENV) && $_ENV['app.ebal'] > 0) :?>
-        <a href="<?php echo siteFurl().'home/conf_ebal';?>" class="<?=$conf_ebal?>"><i class="glyphicon glyphicon-cd"></i> 에볼밸런스</a>
+        <a href="<?php echo siteFurl().'home/conf_ebal';?>" class="<?=$conf_ebal?>"><i class="glyphicon glyphicon-record"></i> 에볼밸런스</a>
       <?php endif ?>  
     
     <?php } ?>
     <a href="<?php echo siteFurl().'home/conf_password';?>" class="<?=$conf_password?>"><i class="glyphicon glyphicon-lock"></i> 정보변경</a>
+
+    <?php if($follow_en) :  ?>
+      <a href="<?php echo siteFurl().'home/conf_follow';?>" class="<?=$conf_follow?>"><i class="glyphicon glyphicon-screenshot"></i> 따라가기</a>
+    <?php endif ?>
+
   </div>
   
   <button class="main-dropdown-btn <?=$userdropdownbtn?>"><i class="glyphicon glyphicon-user"></i>  회원관리

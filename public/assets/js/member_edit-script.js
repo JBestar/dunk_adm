@@ -296,6 +296,46 @@ function addBtnEvent() {
         requestTrasnfer(jsonData);
     });
 
+    
+    $("#useredit-press-but-id").click(function() {
+        if($("#useredit-press-check-id").length < 1)
+            return;
+        
+        if (!confirm("전체 적용하시겠습니까?"))
+            return;
+
+        let pressEnable = 0;
+        let pressAmount = 0;
+        pressEnable = $("#useredit-press-check-id").prop('checked') ? 1 : 0;
+        pressAmount = $("#useredit-press-input-id").val();
+        if(pressAmount < 0) pressAmount = 0;
+
+        let mb_press_ev = pressEnable + ":" + pressAmount;
+
+        var jsonData = {
+            mb_press_ev:mb_press_ev,
+        }
+        jsonData = JSON.stringify(jsonData);
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: FURL + "/userapi/updatemembers",
+            data: { json_: jsonData },
+            success: function(jResult) {
+                // console.log(jResult);
+                if (jResult.status == "success") {
+                    alert("전체 적용되었습니다.")
+                } else if (jResult.status == "logout") {
+                    window.location.replace( FURL +'/');
+                }
+            },
+            error: function(request, status, error) {
+                $(".loading").hide();
+                // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+
+        });
+    });
 }
 
 

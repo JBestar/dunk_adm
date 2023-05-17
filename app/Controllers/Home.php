@@ -284,6 +284,29 @@ class Home extends StdController
 		$this->load_view_page('home/conf_password', 'conf_password');
 	}
 
+	public function conf_follow(){
+		if (is_login() === false){
+			return $this->response->redirect($_ENV['app.furl'].'/pages/login');
+		}
+		$strUid = $this->session->user_id;
+		$objMember = $this->modelMember->getInfo($strUid, true);
+		$param = [
+			'mb_follow_check' => false,
+			'mb_follow_id' => "",
+		];
+
+		if(!is_null($objMember) && strlen($objMember->mb_follow_ev) > 0){
+
+			$info = explode(":", $objMember->mb_follow_ev);
+			if(count($info) >= 2){
+				$param['mb_follow_check'] = intval($info[0]) == STATE_ACTIVE;
+				$param['mb_follow_id'] = $info[1];
+			}
+			
+		}
+
+		$this->load_view_page('home/conf_follow', 'conf_follow', LEVEL_MIN, $param);
+	}
 		
 	public function upload()
 	{

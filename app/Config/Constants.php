@@ -177,7 +177,7 @@ defined('CONF_EVOLRUN_2')       || define('CONF_EVOLRUN_2', 64);         //에�
 defined('CONF_EVOLSITE_3')      || define('CONF_EVOLSITE_3', 65);         //에볼루션 밸런스 계정3
 defined('CONF_EVOLRUN_3')       || define('CONF_EVOLRUN_3', 66);         //에볼루션 밸런스 상태3
 defined('CONF_EVOLPRESS')       || define('CONF_EVOLPRESS', 67);         //에볼루션 누르기 상태
-defined('CONF_EVOLFOLLOW')       || define('CONF_EVOLFOLLOW', 70);         //에볼루션 따라가기 상태
+defined('CONF_EVOLFOLLOW')      || define('CONF_EVOLFOLLOW', 70);         //에볼루션 따라가기 상태
 
 defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);
 defined('LEVEL_MASTER')        || define('LEVEL_MASTER', 101);

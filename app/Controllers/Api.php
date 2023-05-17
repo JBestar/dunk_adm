@@ -607,6 +607,43 @@ class Api extends BaseController{
 		echo json_encode($arrResult);	
 	}
 
+	//비번 변경  
+	public function change_follow(){
+		$jsonData = $_REQUEST['json_'];
+		$arrData = json_decode($jsonData, true);		
+
+		if(is_login())
+		{
+			
+			$strUid = $this->session->user_id;
+			$objMember = $this->modelMember->getInfo($strUid);
+			$query = "";
+            $objFollow = $this->modelMember->getInfo($arrData['follow_id']);
+			$iResult = 0;
+			if(is_null($objMember)){
+				$iResult = 0;
+			} else if($arrData['follow_check'] == 1 && (is_null($objFollow) || $objFollow->mb_state_active == PERMIT_DELETE) ){
+				$iResult = -1;
+			} else {
+				$arrData['mb_fid'] = $objMember->mb_fid;
+				$arrData['mb_follow_ev'] = $arrData['follow_check'].":".$arrData["follow_id"];
+				$iResult = $this->modelMember->updateMemberByFid($arrData, $query);
+			}
+			$arrResult['status'] = "fail";
+			if($iResult == 1){
+				$this->modelModify->add($this->session->user_id, MOD_MB_STATE, $query, $this->request->getIPAddress());
+				$arrResult['status'] = "success";
+			} else if($iResult == -1)
+				$arrResult['msg'] = "따라가기 아이디가 존재하지 않습니다.";
+			else
+				$arrResult['msg'] = "저장이 실패되었습니다.";
+			
+		}
+		else {
+			$arrResult['status'] = "logout";			
+		}
+		echo json_encode($arrResult);	
+	}
 	//게임설정 보관 
 	public function changealarmstate(){
 		$jsonData = $_REQUEST['json_'];

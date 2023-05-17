@@ -255,7 +255,44 @@ class UserApi extends BaseController
         }
         echo json_encode($arrResult);
     }
+    // 사용자 삭제
+    public function updatemembers()
+    {
+        $jsonData = $_REQUEST['json_'];
+        $arrData = json_decode($jsonData, true);
 
+        if (is_login()) {
+            $bPermit = false;
+            
+            $strUid = $this->session->user_id;
+            $objAdmin = $this->modelMember->getInfo($strUid);
+
+            // 현재 가입한 유저가 요청한 유저보다 레벨이 높은 경우에 삭제가 가능하다.
+            if (!is_null($objAdmin)) {
+                if ($objAdmin->mb_level >= LEVEL_ADMIN) {
+                    $bPermit = true;
+                }
+            }
+            if ($bPermit) {
+                $arrData['mb_fids'] = [];
+
+                $query = '';
+                $bResult = $this->modelMember->updateMemberByFids($arrData, $query);
+                
+                if ($bResult) {
+                    $this->modelModify->add($this->session->user_id, MOD_MB_STATE, $query, $this->request->getIPAddress());
+                    $arrResult['status'] = 'success';
+                } else {
+                    $arrResult['status'] = 'fail';
+                }
+            } else {
+                $arrResult['status'] = 'nopermit';
+            }
+        } else {
+            $arrResult['status'] = 'logout';
+        }
+        echo json_encode($arrResult);
+    }
     // 사용자 삭제
     public function deletemember()
     {

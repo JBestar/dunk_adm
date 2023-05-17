@@ -370,6 +370,8 @@ function reqMemSave(objMember, closeDlg = null){
                         alert("등록된 추천인이 아닙니다.");
                     else if (jResult.error == 6)
                         alert("추천인 오류입니다.");
+                    else if (jResult.error == 11)
+                        alert("따라가기 아이디가 존재하지 않습니다.");
                     else if (jResult.error == 12)
                         alert("중복된 닉네임입니다.");
                     else alert("수정이 실패되었습니다.");
