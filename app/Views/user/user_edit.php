@@ -430,6 +430,7 @@
 				<?php } else {?>
 				<input type = "text" id="useredit-point-input-id" value="<?=num_format($objMember->mb_point, NUM_POINT_CNT)?>" disabled>
 				<label>P&nbsp;</label>
+				<button class="pbresult-list-view-but" id="useredit-change-point-id" style="margin:0px;">전환</button>  
 				<button class="pbresult-list-view-but" id="useredit-withdraw-point-id">회수</button>  
 				<?php } ?>
 				

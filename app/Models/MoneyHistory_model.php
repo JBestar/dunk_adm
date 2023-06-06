@@ -171,6 +171,32 @@ class MoneyHistory_Model extends Model
         
         return $this->builder()->insert();        
     }
+    
+    function registerPointToMoney($objMember, $nPoint, $empId)
+    {
+        if($nPoint == 0)
+            return true;
+
+        try {             
+            $data = [  
+                'money_mb_fid' => $objMember->mb_fid,
+                'money_mb_uid' => $objMember->mb_uid,
+                'money_mb_emp_fid' => $objMember->mb_emp_fid,
+                'money_amount' => $nPoint,
+                'money_before' => allMoney($objMember),
+                'money_after' => allMoney($objMember) + $nPoint,
+                'money_change_type' => POINTCHANGE_EXCHANGE,
+                'money_bet_target'=> $empId,
+                'money_update_time' => date("Y-m-d H:i:s")
+            ];
+
+            return $this->insert($data);
+        } catch (\Exception $e) {  
+            return false;
+        }
+        return false;
+        
+    }
 
     public function getRangeId($arrReqData){
         $range = [-1, -1];

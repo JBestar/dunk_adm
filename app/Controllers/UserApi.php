@@ -1641,14 +1641,22 @@ class UserApi extends BaseController
                         $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
                     }
                     
-                }
-                else if($arrData['type'] == 1){ //포인트회수
+                } else if($arrData['type'] == 1){ //포인트회수
                     $nAmount = 0-$objMember->mb_point;
                     if($nAmount == 0){
                         $objResult->status = 'success';
                     } 
                     else if($this->modelMember->moneyProc($objMember, 0, $nAmount)){
                         $moneyhistoryModel->registerWithdraw($objMember, $objEmp->mb_uid, $nAmount, POINTHANGE_WITHDRAW);
+                        $objResult->status = 'success';
+                    }
+                } else if($arrData['type'] == 2){ //포인트전환
+                    $nAmount = floor($objMember->mb_point);
+                    if($nAmount < 1){
+                        $objResult->status = 'success';
+                    } 
+                    else if($this->modelMember->moneyProc($objMember, $nAmount, 0-$nAmount)){
+                        $moneyhistoryModel->registerPointToMoney($objMember, $nAmount, $objEmp->mb_uid);
                         $objResult->status = 'success';
                     }
                 } else {

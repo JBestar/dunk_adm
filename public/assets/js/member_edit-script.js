@@ -161,7 +161,13 @@ function addBtnEvent() {
 
         requestWithdraw(1)
     });
-        
+
+    $("#useredit-change-point-id").click(function() {
+        if (!confirm("포인트를 머니로 전환하시겠습니까?"))
+            return;
+
+        requestWithdraw(2)
+    });
     $("#useredit-deposit-but-id").click(function() {
         var nAmount = parseFloat($("#useredit-transfer-input-id").val().replace(/,/g, ""));
         if (isNaN(nAmount) || nAmount == "") {
@@ -366,7 +372,7 @@ function requestWithdraw(iType){
             }
         },
         error: function(request, status, error) {
-            $(".loading").hide();
+            // $(".loading").hide();
             // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
 
