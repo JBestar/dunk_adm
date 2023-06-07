@@ -161,6 +161,14 @@ function addEventListner() {
         requestMember();
     });
     
+    $("#userpanel-list-open-but-id").click(function() {
+        togleList(true);
+    });
+
+    $("#userpanel-list-close-but-id").click(function() {
+        togleList(false);
+    });
+
     $(document).on("click", function(e){
         if($("#charge_modal").is(e.target)){
             closeChargeDlg();

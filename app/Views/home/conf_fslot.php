@@ -63,8 +63,6 @@
 			</div>
 		</div>
 
-		<!-- <p class="useredit-seperate-div"></p> -->
-
 		<h4 style="font-size:16px; font-weight:bold;"><i class="glyphicon glyphicon-hand-right"></i> 게임 설정</h4>	
 		<div class="confsite-game-text-div">
 			<p>유저 게임승인:</p> 

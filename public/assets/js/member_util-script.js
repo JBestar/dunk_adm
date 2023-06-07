@@ -194,3 +194,84 @@ function getLevelTd(objMember, subUrl){
         html += td+td+td+td+link;
     return html;
 }
+
+function togleList(open = true){
+
+    if(mArrMember.length < 1)
+        return ;
+
+    let lvTop = parseInt(mArrMember[0].mb_level) ;
+
+    for (let objMember of mArrMember) {
+        if(parseInt(objMember.mb_level) == lvTop){
+            setToggle(lvTop, objMember.mb_fid, open);
+        }
+    }
+
+}
+
+function setToggle(level, fid, open=true){
+    let theButton = document.getElementById("exp-btn_"+fid);
+    if(!theButton)
+        return;
+
+    let bChild = false;
+        bChild = true;
+
+    let strIds = subIds(level-1, fid, bChild);
+    // console.log(strIds);
+
+    let trRows = [];
+    let trIds = "";
+    let btnIds = "";
+    let btnExps = [];
+
+    if(strIds.length > 0){
+        let ids = strIds.split(',');
+
+        for(let idx in ids){
+            if(ids[idx].length == 0)
+                continue;
+
+            if(idx != 0){
+                btnIds+=",";
+                trIds+=",";   
+            }
+            btnIds += "#exp-btn_"+ids[idx];
+            trIds += "#tr_"+ids[idx];
+        }
+
+        // console.log(trIds);
+        trRows = document.querySelectorAll(trIds);
+        btnExps = document.querySelectorAll(btnIds);
+    }
+
+
+    if (open) {
+        for (var i = 0; i < trRows.length; i++) {
+          trRows[i].classList.remove("hidden");
+        }
+        for (var i = 0; i < btnExps.length; i++) {
+            btnExps[i].innerText = "▼";
+            btnExps[i].classList.add("expand");
+            btnExps[i].setAttribute("aria-expanded", "true");
+        }
+
+        theButton.innerText = "▼";
+        theButton.classList.add("expand");
+        theButton.setAttribute("aria-expanded", "true");
+      } else {
+        for (var i = 0; i < trRows.length; i++) {
+          trRows[i].classList.add("hidden");
+        }
+        // console.log(btnIds);
+        for (var i = 0; i < btnExps.length; i++) {
+            btnExps[i].innerText = "▶";
+            btnExps[i].classList.remove("expand");
+            btnExps[i].setAttribute("aria-expanded", "false");
+        }
+        theButton.innerText = "▶";
+        theButton.classList.remove("expand");
+        theButton.setAttribute("aria-expanded", "false");
+      }
+}

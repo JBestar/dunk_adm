@@ -60,6 +60,8 @@
 			</select>
             <input type="text" class="pbresult-text-input" id="userpanel-userid-input-id" value= "<?=$emp_uid?>">
 			<button class="pbresult-list-view-but" id="userpanel-list-view-but-id">검색</button>  
+			<button class="pbresult-list-view-but" id="userpanel-list-open-but-id" style="margin-right:0px;">펼치기</button>  
+			<button class="pbresult-list-view-but" id="userpanel-list-close-but-id">감추기</button>  
 		</div>	
 		<div style="position: relative; overflow: auto; width: 100%;">	
 			<Table class="user-table" style="margin-top: 15px;">

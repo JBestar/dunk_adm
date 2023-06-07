@@ -392,7 +392,7 @@
 
 					<?php endif ?>
 
-				<?php else :?>
+				<?php elseif(!array_key_exists('app.site', $_ENV) || $_ENV['app.site'] == 0 ) :?>
 					<?php if(!is_null($objMember) && $objMember->mb_state_delete == 1) :  ?>
 						<input type="checkbox" id="useredit-offline-check-id" style="zoom:140%; margin-top:4px; width:20px; margin-right:5px; " checked>
 					<?php else :  ?>
