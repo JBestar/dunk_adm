@@ -796,6 +796,11 @@ class Member_Model extends Model
             $strSQL .= $strCond;
         }
 
+        if(!$confs['hold_deny']){
+            $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_holdem ';
+            $strSQL .= $strCond;
+        }
+
         if(!$confs['evol_deny'] || !$confs['cas_deny']){
             if(isEBalMode()){
                 $tbName = "bet_ebal";
