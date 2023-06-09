@@ -231,11 +231,13 @@ function showStatist(data){
 
 function showChargeLog(arrData){
     let tHtml = "";
+    let idx = 0;
     for (nRow in arrData) {
         if(arrData[nRow].charge_action_state != 2 && arrData[nRow].charge_action_state != 5)
             continue;
+        idx ++;
         tHtml += "<tr><td>";
-        tHtml += (parseInt(nRow) + 1);
+        tHtml += idx;
         tHtml += "</td><td>";
         tHtml += parseInt(arrData[nRow].charge_money).toLocaleString();
         tHtml += "</td><td>";
@@ -256,11 +258,13 @@ function showChargeLog(arrData){
 
 function showDischargeLog(arrData){
     let tHtml = "";
+    let idx = 0;
     for (nRow in arrData) {
         if(arrData[nRow].exchange_action_state != 2 && arrData[nRow].exchange_action_state != 5)
             continue;
+        idx ++;
         tHtml += "<tr><td>";
-        tHtml += (parseInt(nRow) + 1);
+        tHtml += idx;
         tHtml += "</td><td>";
         tHtml += parseInt(arrData[nRow].exchange_money).toLocaleString();
         tHtml += "</td><td>";
