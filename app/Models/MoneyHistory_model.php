@@ -238,6 +238,8 @@ class MoneyHistory_Model extends Model
 
         } else {
             $strSql .= "SELECT * FROM ".$this->table;
+            $strSql .="  JOIN ".$this->mMemberTable;           
+            $strSql .=" ON ".$this->table.".money_mb_fid = ".$this->mMemberTable.".mb_fid AND ".$this->mMemberTable.".mb_level <=".$objEmp->mb_level;
         }
 
         $strSql.=" WHERE money_update_time >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND money_update_time <= ".$this->db->escape($arrReqData['end']." 23:59:59") ;
@@ -275,6 +277,9 @@ class MoneyHistory_Model extends Model
             $strSql .="  JOIN (SELECT  * FROM tbmember UNION SELECT ".$strTbColum." FROM ".$this->mMemberTable." where mb_fid='".$objEmp->mb_fid."'";           
             $strSql .=" ) AS mb_table ";
             $strSql .=" ON ".$this->table.".money_mb_fid = mb_table.mb_fid ";
+        } else {
+            $strSql .="  JOIN ".$this->mMemberTable;           
+            $strSql .=" ON ".$this->table.".money_mb_fid = ".$this->mMemberTable.".mb_fid AND ".$this->mMemberTable.".mb_level <=".$objEmp->mb_level;
         }
         
         $strSql.=" WHERE money_update_time >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND money_update_time <= ".$this->db->escape($arrReqData['end']." 23:59:59") ;
