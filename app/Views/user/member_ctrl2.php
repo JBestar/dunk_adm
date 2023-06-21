@@ -1,6 +1,6 @@
 <?= $this->extend('header') ?>
 <?= $this->section('content') ?>
-<link rel="stylesheet" href="<?php echo site_furl('assets/css/app.css?v=2');?>">
+<link rel="stylesheet" href="<?php echo site_furl('assets/css/app.css?v=3');?>">
 	
 	<!--Sub Navbar-->
 	<div class = "sub-navbar">
