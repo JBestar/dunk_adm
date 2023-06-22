@@ -965,9 +965,10 @@ class UserApi extends BaseController
 
 			$objResult = new \stdClass();
             $strUid = $this->session->user_id;
-            $objAdmin = $this->modelMember->getInfo($strUid);
+            $objAdmin = $this->modelMember->getInfoByUid($strUid);
 			$mbFid = 0;
             $arrData['search'] = trim($arrData['search']);
+            $objUser = null;
             if (strlen($arrData['search']) > 0){
                 if($arrData['type'] == 1){
                     $objUser = $this->modelMember->getByNickname($arrData['search']);
@@ -978,24 +979,33 @@ class UserApi extends BaseController
                 } else 
                     $objUser = $this->modelMember->getInfo($arrData['search']);
                 
-                
                 if(is_null($objUser)){
                     $mbFid = -1;
                 } else {
                     $arrMem = $this->modelMember->getMemberByEmpFid($objAdmin->mb_fid, $objAdmin->mb_level,  $objAdmin->mb_level, true, $objUser->mb_fid);
-                    if(count($arrMem) < 1)
-                        $mbFid = -1;
-                    else $mbFid = $objUser->mb_fid;
+                    if(count($arrMem) > 0 || ($objAdmin->mb_level < LEVEL_ADMIN && $objAdmin->mb_fid == $objUser->mb_fid ) )
+                        $mbFid = $objUser->mb_fid;
+                    else $mbFid = -1;
                 }
                 
             } 
             
+            $arrUsers = [];
             if($mbFid >= 0){
+
                 $arrMember = $this->modelMember->searchMemberTree($objAdmin, $arrData, $mbFid);
-                if (is_null($arrMember)) {
+                if(is_null($arrMember))
                     $arrMember = [];
+
+                if($objAdmin->mb_level < LEVEL_ADMIN){
+                    $objAdmin->mb_self = 1;
+                    array_unshift($arrMember, $objAdmin);
                 }
+
                 foreach ($arrMember as $objMember) {
+                    if($objAdmin->mb_level < LEVEL_ADMIN && !is_null($objUser) && $objUser->mb_fid != $objMember->mb_fid)
+                        continue;
+
                     $objMember->mb_money_all = allMoney($objMember);
                     $objMember->mb_point = floor($objMember->mb_point);
                     $objEmpInfo = $this->modelMember->find($objMember->mb_emp_fid);
@@ -1005,18 +1015,17 @@ class UserApi extends BaseController
                     else {
                         $objMember->mb_empname = '';
                     }
+                    array_push($arrUsers, $objMember);
                 }
                 
-            } else {
-                $arrMember = [];
-            }
+            } 
 
             $confs= $this->getSiteConf($confsiteModel);
             $confs['emp_level'] = $objAdmin->mb_level; 
             
             $objResult->status = 'success';
             $objResult->confs = $confs;
-            $objResult->data = $arrMember;
+            $objResult->data = $arrUsers;
 
             echo json_encode($objResult);
         } else {

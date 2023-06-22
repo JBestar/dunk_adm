@@ -28,7 +28,7 @@ const LEVEL_EMPLOYEE = 97;
 const LEVEL_MARKET = 96;
 const LEVEL_MIN = 1;
 
-function getMemberLevelString(nLevel, bNeed=false) {
+function getMemberLevelString(nLevel, bNeed=true) {
     if(mLevelType !== undefined && mLevelType == 1){
         if (nLevel >= LEVEL_ADMIN)
             return "관리자";
@@ -42,41 +42,36 @@ function getMemberLevelString(nLevel, bNeed=false) {
             return "매장";
         else 
             return "회원";
-            // return (LEVEL_MARKET-nLevel)+"레벨";
     } else if(mLevelType !== undefined && mLevelType == 2){
         if (nLevel >= LEVEL_ADMIN)
              return "관리자";
         else
             return (LEVEL_ADMIN-nLevel)+"레벨";
     } else if(mLevelType !== undefined && mLevelType == 3){
-        if(bNeed){
+        if (nLevel >= LEVEL_ADMIN)
+            return "관리자";
+        else return null;
+    } else if(mLevelType !== undefined && mLevelType == 4){
+        if(mObjUser && mObjUser.mb_level >= LEVEL_ADMIN){
             if (nLevel >= LEVEL_ADMIN)
                 return "관리자";
             else if (nLevel == LEVEL_COMPANY)
-                return "부본";
+                return "파트너1";
             else if (nLevel == LEVEL_AGENCY)
-                return "총판";
+                return "파트너2";
             else if (nLevel == LEVEL_EMPLOYEE)
-                return "매장";
+                return "파트너3";
+            else if (nLevel == LEVEL_MARKET)
+                return "파트너4";
+            else 
+                return "파트너5";    
         } else {
             if (nLevel >= LEVEL_ADMIN)
                 return "관리자";
-            else return null;
-        }
-    } else if(mLevelType !== undefined && mLevelType == 4){
-        if (nLevel >= LEVEL_ADMIN)
-            return "관리자";
-        else if (nLevel == LEVEL_COMPANY)
-            return "파트너1";
-        else if (nLevel == LEVEL_AGENCY)
-            return "파트너2";
-        else if (nLevel == LEVEL_EMPLOYEE)
-            return "파트너3";
-        else if (nLevel == LEVEL_MARKET)
-            return "파트너4";
-        else 
-            return "파트너5";
-        
+            else if (bNeed)
+                return "파트너";
+        } 
+        return null;
     } else {
         if (nLevel >= LEVEL_ADMIN)
             return "관리자";

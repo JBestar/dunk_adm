@@ -21,10 +21,10 @@ function memberLoop() {
 
 function showMember(arrMember, confs) {
 
-    var strBuf = "";
-    var curPage = getActivePage();
-    var firstIdx = (curPage - 1) * CountPerPage;
-    for (var nRow in arrMember) {
+    let strBuf = "", strLevel = "";
+    let curPage = getActivePage();
+    let firstIdx = (curPage - 1) * CountPerPage;
+    for (let nRow in arrMember) {
         strBuf += "<tr id ='" + arrMember[nRow].mb_fid + "'";
         if (arrMember[nRow].mb_color != null)
             strBuf += "bgcolor='" + arrMember[nRow].mb_color + "' ";
@@ -43,8 +43,9 @@ function showMember(arrMember, confs) {
         strBuf += arrMember[nRow].mb_fid;
         strBuf += "' class='link-member'>"
         strBuf += arrMember[nRow].mb_uid;
-        if (getMemberLevelString(arrMember[nRow].mb_level) != null)
-            strBuf += " | " + getMemberLevelString(arrMember[nRow].mb_level);
+        strLevel = getMemberLevelString(arrMember[nRow].mb_level);
+        if (strLevel != null)
+            strBuf += " | " + strLevel;
         strBuf += "</a>";
 
         strBuf += "</td> <td>";

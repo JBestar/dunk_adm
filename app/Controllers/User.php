@@ -94,7 +94,7 @@ class User extends StdController
 		
 		if (!$bPermit){
 			// $this->response->redirect( $_ENV['app.furl'].'/pages/nopermit');
-			print "<script language=javascript> alert('존재하지 않는 회원입니다.'); self.close(); </script>";
+			print "<script language=javascript> alert('접근권한이 없습니다.'); self.close(); </script>";
 		}
 		else {
 			$follow_en = false;
@@ -254,13 +254,17 @@ class User extends StdController
 				 }
 					 
 			}
+			$viewPath = 'user/member_list2'; 
+			if($objAdmin->mb_level >= LEVEL_ADMIN){
+				$viewPath = 'user/member_list'; 
+			}
 			$objEmp = $this->modelMember->find($empFid);
 			$empUid = "";
 			if ($objEmp != null){
 				$empUid = $objEmp->mb_uid;
 			}
 			$this->load_view_page(
-				'user/member_list', 
+				$viewPath, 
 				'user_member', 
 				LEVEL_MIN, 
 				['emp_uid' => $empUid, 'adm_fid' => $admFid]);

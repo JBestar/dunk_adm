@@ -9,9 +9,9 @@ $(document).ready(function() {
 
 function showCalcualte(arrCalcData, empLv) {
 
-    var strBuf = "";
-    var colorLv = 0;
-    var elemDataTbBody = document.getElementById("calculate-table-tbody-id");
+    let strBuf = "", strLevel = "";
+    let colorLv = 0;
+    let elemDataTbBody = document.getElementById("calculate-table-tbody-id");
     let tAmt = 0, tAmt2 = 0;
     let sumChg = 0, sumExg = 0, sumGiv = 0, sumWit = 0, sumMon = 0, sumPot = 0, sumBet = 0, sumWin = 0, sumRat = 0, sumLast = 0;
     for (nRow in arrCalcData) {
@@ -28,8 +28,9 @@ function showCalcualte(arrCalcData, empLv) {
         strBuf += "<p hidden>" + arrCalcData[nRow].mb_level + "</p>";
         strBuf += "</td><td>";
         strBuf += arrCalcData[nRow].mb_uid; //
-        if (getMemberLevelString(arrCalcData[nRow].mb_level) != null)
-            strBuf += " | " + getMemberLevelString(arrCalcData[nRow].mb_level);
+        strLevel = getMemberLevelString(arrCalcData[nRow].mb_level, false); 
+        if (strLevel != null)
+            strBuf += " | " + strLevel;
         strBuf += "</td><td>";
         strBuf += arrCalcData[nRow].mb_nickname; //
         strBuf += "</td><td>";
@@ -186,7 +187,7 @@ function rowEventHander() {
 function addRow(nTbRow, arrCalcData, level) {
     var elemDataTb = document.getElementById("calculate-table-tbody-id");
 
-    var strBuf = "";
+    var strBuf = "", strLevel = "";
     var colorLv = 0;
     for (nRow in arrCalcData) {
 
@@ -208,8 +209,9 @@ function addRow(nTbRow, arrCalcData, level) {
 
         var elemCell1 = elemNewRow.insertCell(1);
         elemCell1.innerHTML = arrCalcData[nRow].mb_uid; //
-        if (getMemberLevelString(arrCalcData[nRow].mb_level) != null)
-            elemCell1.innerHTML +=  " | " + getMemberLevelString(arrCalcData[nRow].mb_level);
+        strLevel = getMemberLevelString(arrCalcData[nRow].mb_level, false); 
+        if (strLevel != null)
+            elemCell1.innerHTML +=  " | " + strLevel;
 
         var elemCell2 = elemNewRow.insertCell(2);
         elemCell2.innerHTML = arrCalcData[nRow].mb_nickname; //

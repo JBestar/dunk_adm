@@ -57,7 +57,7 @@ function requestWaitToPermit(elemBut, jsData) {
 
 function requestUpdateMember(jsData) {
 
-    var jsonData = JSON.stringify(jsData);
+    let jsonData = JSON.stringify(jsData);
 
     $.ajax({
         type: "POST",
@@ -91,7 +91,7 @@ function requestDeleteMember(jsData) {
     
     if (!confirm("하부회원까지 모두 삭제됩니다.\r\n그래도 계속하시겠습니까?"))
         return;
-    var jsonData = JSON.stringify(jsData);
+    let jsonData = JSON.stringify(jsData);
 
     $.ajax({
         type: "POST",
@@ -124,7 +124,7 @@ function requestDeleteMember(jsData) {
 
 function requestAddBlock(jsData) {
 
-    var jsonData = JSON.stringify(jsData);
+    let jsonData = JSON.stringify(jsData);
 
     $.ajax({
         type: "POST",
@@ -156,7 +156,7 @@ function requestAddBlock(jsData) {
 
 function requestLogoutMember(jsData) {
 
-    var jsonData = JSON.stringify(jsData);
+    let jsonData = JSON.stringify(jsData);
 
     $.ajax({
         type: "POST",
@@ -188,7 +188,7 @@ function requestLogoutMember(jsData) {
 
 
 function refreshEgg(mbFid, elBtn) {
-    var jsonData = { "mb_fid": mbFid };
+    let jsonData = { "mb_fid": mbFid };
     jsonData = JSON.stringify(jsonData);
     $(elBtn).addClass("refresh");
 
@@ -226,7 +226,7 @@ function refreshEgg(mbFid, elBtn) {
 
 function collectEgg(elem, mbFid) {
     
-    var jsonData = { "mb_fid": mbFid };
+    let jsonData = { "mb_fid": mbFid };
     jsonData = JSON.stringify(jsonData);
     $(".loading").show();
 
@@ -376,7 +376,7 @@ function reqMemSave(objMember, closeDlg = null){
                         alert("중복된 닉네임입니다.");
                     else alert("수정이 실패되었습니다.");
                 } else if (jResult.status == "val_error") {
-                    var errString = '';
+                    let errString = '';
                     for (property in jResult.error) {
                         errString += `${jResult.error[property]}\n`;
                     }
@@ -385,7 +385,7 @@ function reqMemSave(objMember, closeDlg = null){
                     if(jResult.error > LEVEL_COMPANY){
                         alert("추천인을 변경할수 없습니다.");
                     } else 
-                        alert(getMemberLevelString(jResult.error)+"이상 회원을 추천인으로 해주세요.");
+                        alert("입력하신 회원은 추천인으로 지정하실수 없습니다.");
                 } else if (jResult.status == "ratio_error") {
                     alert(jResult.error);
                 } else if (jResult.status == "employee_error") {
@@ -420,7 +420,7 @@ function reqMemSave(objMember, closeDlg = null){
                         window.location.reload();
                     else window.close();
                 } else if (jResult.status == "val_error") {
-                    var errorString = '';
+                    let errorString = '';
                     for (property in jResult.error) {
                         errorString += `${jResult.error[property]}\n`;
                     }
@@ -473,7 +473,7 @@ function create(objMember, closeDlg){
                         window.location.reload();
                     else window.close();
                 } else if (jResult.status == "val_error") {
-                    var errorString = '';
+                    let errorString = '';
                     for (property in jResult.error) {
                         errorString += `${jResult.error[property]}\n`;
                     }
@@ -516,7 +516,7 @@ function countBlank(fid, chgCnt){
     }
     $("#blank_"+fid).val(blankCnt);
 
-    var objData = { "mb_fid": fid, "mb_blank_count": blankCnt };
+    let objData = { "mb_fid": fid, "mb_blank_count": blankCnt };
     reqSetBlank(objData, curCnt);
 }
 
@@ -524,7 +524,7 @@ function countBlank(fid, chgCnt){
 function reqSetBlank(objData, beforeCnt) {
     $(".blank-btn_"+objData.mb_fid).attr("disabled", true);
 
-    var jsonData = JSON.stringify(objData);
+    let jsonData = JSON.stringify(objData);
 
     $.ajax({
         type: "POST",

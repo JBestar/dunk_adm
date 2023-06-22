@@ -128,12 +128,9 @@ function showMemberInfo(objUser) {
     if (objUser == undefined || objUser == null)
         return;
 
-    var strBuf = "";
-    if (getMemberLevelString(objUser.mb_level) != null)
-        strBuf = getMemberLevelString(objUser.mb_level);
-    else
+    let strBuf = getMemberLevelString(objUser.mb_level);
+    if (strBuf == null)
         strBuf = "";
-
     $("#main-navbar-level-id").text(strBuf);
     $("#main-navbar-emp-div-id").text(objUser.mb_nickname);
 

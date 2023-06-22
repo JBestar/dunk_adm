@@ -139,7 +139,7 @@ class Member_Model extends Model
 
     public function getInfoByUid($strId)
     {
-        $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_nickname', 
+        $fields = ['mb_fid', 'mb_uid', 'mb_level', 'mb_emp_fid', 'mb_nickname', 
             'mb_money', 'mb_point', 'mb_money_charge', 'mb_money_exchange', 'mb_grade', 
             'mb_state_active', 'mb_state_delete', 'mb_state_alarm', 'mb_state_view',
             'mb_game_pb_ratio', 'mb_game_pb2_ratio','mb_game_ps_ratio', 'mb_game_bb_ratio', 'mb_game_bb2_ratio', 'mb_game_bs_ratio', 'mb_game_cs_ratio', 

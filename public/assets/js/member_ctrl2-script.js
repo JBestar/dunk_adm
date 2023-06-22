@@ -19,10 +19,10 @@ function showMember(arrMember, confs) {
     mArrMember = arrMember;
     mConfs = confs;
 
-    var strBuf = "";
-    var curPage = getActivePage();
-    var firstIdx = (curPage - 1) * CountPerPage;
-    for (var nRow in arrMember) {
+    let strBuf = "", strLevel = "";
+    let curPage = getActivePage();
+    let firstIdx = (curPage - 1) * CountPerPage;
+    for (let nRow in arrMember) {
         strBuf += "<tr id ='" + arrMember[nRow].mb_fid + "'";
         if (arrMember[nRow].mb_color != null)
             strBuf += "bgcolor='" + arrMember[nRow].mb_color + "' ";
@@ -37,8 +37,9 @@ function showMember(arrMember, confs) {
             strBuf += "<br>(오프라인)";    
         }
         strBuf += "</td> <td>";
-        if (getMemberLevelString(arrMember[nRow].mb_level, true) != null)
-            strBuf += getMemberLevelString(arrMember[nRow].mb_level, true);
+        strLevel = getMemberLevelString(arrMember[nRow].mb_level); 
+        if (strLevel != null)
+            strBuf += strLevel;
         strBuf += "</td> <td>";
         strBuf += "<a href='"+FURL+"/user/member_list2/";
         strBuf += arrMember[nRow].mb_emp_fid;
@@ -689,12 +690,16 @@ function exportTableToExcel(filename = ''){
 
     // Specify file name
     filename = filename?filename+'.xlsx':'excel_data.xlsx';
-    
-    var data = [];
+
+    let strLevel = "";
+    let data = [];
     let info = ['아이디', '닉네임', '비밀번호', '등급', '추천인', '등록번호', 'Lv', '보유금액', '포인트', '연락처', '은행명', '예금주', '계좌번호', '출금비번']
     data.push(info);
     for(objMember of mArrMember){
-        info = [objMember.mb_uid, objMember.mb_nickname, objMember.mb_pwd,  getMemberLevelString(objMember.mb_level, true), objMember.mb_empname,
+        strLevel = getMemberLevelString(objMember.mb_level);
+        if(strLevel == null)
+            strLevel = "";
+        info = [objMember.mb_uid, objMember.mb_nickname, objMember.mb_pwd,  strLevel, objMember.mb_empname,
             objMember.mb_fid, objMember.mb_grade, Math.floor(objMember.mb_money).toLocaleString(), Math.floor(objMember.mb_point).toLocaleString(), 
             objMember.mb_phone, objMember.mb_bank_name, objMember.mb_bank_own, objMember.mb_bank_num, objMember.mb_bank_pwd, ];
         data.push(info);
@@ -702,7 +707,7 @@ function exportTableToExcel(filename = ''){
 
     // console.log(data);
     // (C2) CREATE NEW EXCEL "FILE"
-    var workbook = XLSX.utils.book_new(),
+    let workbook = XLSX.utils.book_new(),
         worksheet = XLSX.utils.aoa_to_sheet(data);
     workbook.SheetNames.push("First");
     workbook.Sheets["First"] = worksheet;

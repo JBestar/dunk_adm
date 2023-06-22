@@ -19,10 +19,10 @@ function showMember(arrMember, confs) {
     mArrMember = arrMember;
     mConfs = confs;
 
-    var strBuf = "";
-    var curPage = getActivePage();
-    var firstIdx = (curPage - 1) * CountPerPage;
-    for (var nRow in arrMember) {
+    let strBuf = "", strLevel = "";
+    let curPage = getActivePage();
+    let firstIdx = (curPage - 1) * CountPerPage;
+    for (let nRow in arrMember) {
         strBuf += "<tr id ='" + arrMember[nRow].mb_fid + "'";
         if (arrMember[nRow].mb_color != null)
             strBuf += "bgcolor='" + arrMember[nRow].mb_color + "' ";
@@ -30,8 +30,9 @@ function showMember(arrMember, confs) {
         strBuf += "<td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td> <td>";
-        if (getMemberLevelString(arrMember[nRow].mb_level, true) != null)
-            strBuf += getMemberLevelString(arrMember[nRow].mb_level, true);
+        strLevel = getMemberLevelString(arrMember[nRow].mb_level); 
+        if (strLevel != null)
+            strBuf += strLevel;
         strBuf += "</td> <td>";
         strBuf += "<a href='"+FURL+"/user/member_ctrl/";
         strBuf += arrMember[nRow].mb_emp_fid;
