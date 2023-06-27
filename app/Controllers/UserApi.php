@@ -457,6 +457,7 @@ class UserApi extends BaseController
                 if($objUser->mb_level < LEVEL_ADMIN){
                     $this->modelMember->calcTransfer($objUser);
                     $objUser->mb_money_all = allMoney($objUser);
+                    $objUser->mb_point = floor($objUser->mb_point);
                 }
                 else{
 				    $objSess = $this->modelSess->getBySess($sess_id);
