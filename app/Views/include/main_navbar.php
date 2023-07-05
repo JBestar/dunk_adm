@@ -144,15 +144,16 @@
 
 		<div class="main-navbar-user-div">
 			<div>
-
+				<?php if(!array_key_exists('app.hold', $_ENV) || $_ENV['app.hold'] == 0 || $mb_level < LEVEL_ADMIN) :?>
 				<label class="switch">
 					<input class="switch-input" type="checkbox" id="main-navbar-alarm-check-id" />
 					<span class="switch-label" data-on="켜기" data-off="끄기"></span>
 					<span class="switch-handle"></span>
 				</label>
 				<p> <i class="glyphicon glyphicon-bell"></i></p>
-
+				<?php endif ?>  
 			</div>
+
 			<div style="text-align: center; cursor: pointer;" id="main-navbar-emp-div-id"></div>
 			<div style="text-align: center; width:150px" id="main-navbar-ip-div-id"></div>
 		</div>

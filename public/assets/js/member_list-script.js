@@ -205,7 +205,7 @@ function requestMember(bRefresh=true) {
             $(".loading").hide();
             // console.log(jResult);
             if (jResult.status == "success") {
-                showMember(jResult.data, jResult.confs, bRefresh);
+                showMember(jResult.data, jResult.confs, bRefresh, jResult.tree);
             } else if (jResult.status == "fail") {
 
             }

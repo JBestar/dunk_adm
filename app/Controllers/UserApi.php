@@ -973,12 +973,16 @@ class UserApi extends BaseController
             if (strlen($arrData['search']) > 0){
                 if($arrData['type'] == 1){
                     $objUser = $this->modelMember->getByNickname($arrData['search']);
+                    // $arrData['mb_nickname'] = $arrData['search'];
                 } else if($arrData['type'] == 2){
                     $objUser = $this->modelMember->getInfoByFid($arrData['search']);
                 } else if($arrData['type'] == 3){
                     $objUser = $this->modelMember->getByBankOwner($arrData['search']);
-                } else 
+                    // $arrData['mb_bank_own'] = $arrData['search'];
+                } else {
                     $objUser = $this->modelMember->getInfo($arrData['search']);
+                    // $arrData['mb_uid'] = $arrData['search'];
+                }
                 
                 if(is_null($objUser)){
                     $mbFid = -1;
@@ -991,8 +995,10 @@ class UserApi extends BaseController
                 
             } 
             
+            $bTree = false;
             $arrUsers = [];
             if($mbFid >= 0){
+                $bTree = true;
 
                 $arrMember = $this->modelMember->searchMemberTree($objAdmin, $arrData, $mbFid);
                 if(is_null($arrMember))
@@ -1019,7 +1025,41 @@ class UserApi extends BaseController
                     array_push($arrUsers, $objMember);
                 }
                 
-            } 
+            } else if(strlen($arrData['search']) > 0){
+                $empFid = 0;
+                $arrData['mb_uid'] = "";
+                $arrData['mb_grade'] = "";
+                $arrData['mb_state'] = -1;
+                $arrData['page'] = 1;
+                $arrData['count'] = 1000;
+                if($arrData['type'] == 1){
+                    $arrData['mb_nickname'] = $arrData['search'];
+                } else if($arrData['type'] == 2){
+                    $arrData['mb_fid'] = $arrData['search'];
+                } else if($arrData['type'] == 3){
+                    $arrData['mb_bank_own'] = $arrData['search'];
+                } else {
+                    $objUser = $this->modelMember->getInfo($arrData['search']);
+                    $arrData['mb_uid'] = $arrData['search'];
+                }
+
+                $arrMember = $this->modelMember->searchMemberByEmpFid($objAdmin, $arrData, $empFid);
+                if (is_null($arrMember)) {
+                    $arrMember = [];
+                }
+                foreach ($arrMember as $objMember) {
+                    $objMember->mb_money_all = allMoney($objMember);
+                    $objMember->mb_point = floor($objMember->mb_point);
+                    $objEmpInfo = $this->modelMember->find($objMember->mb_emp_fid);
+                    if ($objEmpInfo != null){
+                        $objMember->mb_empname = $objEmpInfo->mb_uid;
+                    }
+                    else {
+                        $objMember->mb_empname = '';
+                    }
+                    array_push($arrUsers, $objMember);
+                }
+            }
 
             $confs= $this->getSiteConf($confsiteModel);
             $confs['emp_level'] = $objAdmin->mb_level; 
@@ -1027,6 +1067,8 @@ class UserApi extends BaseController
             $objResult->status = 'success';
             $objResult->confs = $confs;
             $objResult->data = $arrUsers;
+            $objResult->tree = $bTree;
+
 
             echo json_encode($objResult);
         } else {

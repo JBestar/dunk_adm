@@ -97,9 +97,12 @@ function requestBetInfo() {
 
 function requestAlarmState() {
 
-    var blarmState = document.getElementById("main-navbar-alarm-check-id").checked;
+    if($("#main-navbar-alarm-check-id").length == 0)
+        return;
 
-    var jsData = { "mb_state_alarm": blarmState ? 1 : 0 }
+    var alarmState = $("#main-navbar-alarm-check-id").prop('checked') ? 1 : 0;
+
+    var jsData = { "mb_state_alarm": alarmState }
     var jsonData = JSON.stringify(jsData);
     $.ajax({
         type: "POST",
@@ -186,7 +189,8 @@ function showMemberInfo(objUser) {
         $("#main-navbar-ip-div-id").text(objUser.mb_ip_login);
     }
 
-    document.getElementById("main-navbar-alarm-check-id").checked = objUser.mb_state_alarm == 1 ? true : false;
+    if($("#main-navbar-alarm-check-id").length > 0)
+        document.getElementById("main-navbar-alarm-check-id").checked = objUser.mb_state_alarm == 1 ? true : false;
 
 }
 
@@ -232,9 +236,11 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
     strBuf = parseInt(objEmpInfo.emp_money_withdraw).toLocaleString() + " 원";
     $("#main-navbar-emp_withdraw-id").text(strBuf);
 
-    var bAlarmEnable = $("#main-navbar-alarm-check-id").prop('checked');
-    var bAlarm = false;
-    var nVolume = 1;
+    let bAlarmEnable = true
+    if($("#main-navbar-alarm-check-id").length > 0)
+        bAlarmEnable = $("#main-navbar-alarm-check-id").prop('checked');
+    let bAlarm = false;
+    let nVolume = 1;
     if (nWaitCnt > 0) {
         $("#main-navbar-user_wait-id").addClass("flicker");
         if(bAlarmEnable){
@@ -342,10 +348,8 @@ function mainNavbarLoop() {
 function addNavbarButtonEvent() {
 
 
-    var elemAlarmCheck = document.getElementById("main-navbar-alarm-check-id");
-
-    elemAlarmCheck.addEventListener("click", function() {
-        if (!elemAlarmCheck.checked) {
+    $("#main-navbar-alarm-check-id").click(function() {
+        if (!this.checked) {
             mAudio.pause();
         }
         requestAlarmState();
