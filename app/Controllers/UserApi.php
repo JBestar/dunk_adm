@@ -1023,7 +1023,7 @@ class UserApi extends BaseController
                     array_push($arrUsers, $objMember);
                 }
                 
-            } else if($mbFid = -2){
+            } else if($mbFid == -2){
                 $empFid = 0;
                 $arrData['mb_uid'] = "";
                 $arrData['mb_grade'] = "";
