@@ -224,7 +224,7 @@ class CsBet_Model extends Model
             $strSql.=" AND company_amount = 0 ";
         }
 
-        writeLog($strSql);
+        // writeLog($strSql);
 
         $query = $this -> db -> query($strSql);
         $result = $query -> getRow();

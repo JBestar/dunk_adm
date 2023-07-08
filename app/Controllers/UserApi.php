@@ -690,6 +690,7 @@ class UserApi extends BaseController
                     $betModel = new CsBet_Model();
 
                     $objConfPb = $confgameModel->getByIndex(GAME_CASINO_KGON);
+                    $arrReqData['gm_range'] = $this->modelMember->getBetMinId($arrReqData, $betModel->table);
                     $arrSum = $betModel->getBetSumByDay($arrReqData, $objConfPb);
                     $arrSumData[4][0] = $arrSum[0];
                     $arrSumData[4][1] = $arrSum[1];
