@@ -317,8 +317,11 @@
 				$checkOk = false;
 
       if($checkOk)
-        $checkOk = preg_match("/^[A-Za-z0-9]*[\W]+[A-Za-z0-9]*$/", $userPw);
-        return $checkOk;
+        $checkOk = preg_match("/^[A-Za-z0-9\{\}\[\]\/?.,;:|\)\*~`!\^\-_\+<>@\#\$%&\\\=\(\'\"]{8,20}/", $userPw); //^[a-zA-Z\\d`~!@#$%^&*()-_=+]{8,20}$
+      
+      if($checkOk)
+        $checkOk = preg_match("/[\{\}\[\]\/?.,;:|\)\*~`!\^\-_\+<>@\#\$%&\\\=\(\'\"]+/", $userPw); //^[a-zA-Z\\d`~!@#$%^&*()-_=+]{8,20}$
+      return $checkOk;
     }
     
     function num_format($numVal,$afterPoint=2,$minAfterPoint=0,$thousandSep=",",$decPoint="."){
