@@ -44,7 +44,11 @@ function readConfigToObject() {
     jsonData.notice_type = 1;
     jsonData.notice_state_active = $("#notice-state-check-id").prop('checked') ? 1 : 0;
     jsonData.notice_title = $("#notice-title-input-id").val();
+    if($("#notice-title_cn-input-id").length > 0)
+        jsonData.notice_title_cn = $("#notice-title_cn-input-id").val();
     jsonData.notice_content = $("#notice-content").summernote('code');
+    if($("#notice-content_cn").length > 0)
+        jsonData.notice_content_cn = $("#notice-content_cn").summernote('code');
 
     return jsonData;
 
@@ -123,6 +127,26 @@ function addBtnEvent() {
 
     $("#notice-cancel-btn-id").click(function() {
         window.location.replace( FURL +'/board/notice');
+    });
+
+    $("#notice-lang-select-id").change(function() {
+        let lang = $(this).val();
+        if(lang == "cn"){
+            $("#notice-title-input-id").hide();
+            $("#notice-title_cn-input-id").show();
+
+            $("#notice-form").hide();
+            $("#notice-form_cn").show();
+            
+        } else{
+
+            $("#notice-title-input-id").show();
+            $("#notice-title_cn-input-id").hide();
+
+            $("#notice-form").show();
+            $("#notice-form_cn").hide();
+        }
+
     });
 
 }

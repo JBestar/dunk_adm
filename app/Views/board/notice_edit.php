@@ -29,21 +29,44 @@
 			<input type="checkbox" id="notice-state-check-id" style="width: 20px; padding-top: 5px;" checked name="public">
 			<?php } ?>
 			<label for="public">공개</label>
+			<?php if (array_key_exists('app.lang', $_ENV) && $_ENV['app.lang'] > 0) : ?>
+				<div style="float:right; width:50%;">
+					<label style="float:left; margin-left:100px;">언어별 설정</label>
+					<select name="lang" id="notice-lang-select-id" style="margin-left:5px; text-align:center; width:100px; padding:3px;">
+						<option value="ko" > 한국어 </option>
+						<option value="cn" > 중국어 </option>
+					</select>
+				</div>
+			<?php endif ?>
 		</div>
 		<div class="useredit-text-div">
 			<p>공지사항제목:</p> 
-			<?php if(is_null($objNotice) || is_null($objNotice->notice_title)) {  ?>	
+			<?php if(is_null($objNotice)) :  ?>	
 			<input type = "text" id="notice-title-input-id" style="width:60%;">
-			<?php } else {?>
+			<?php else :?>
 			<input type = "text" id="notice-title-input-id" value="<?=$objNotice->notice_title?>" style="width:60%;">
-			<?php } ?>
+			<?php endif ?>
+
+			<?php if (array_key_exists('app.lang', $_ENV) && $_ENV['app.lang'] > 0) : ?>
+				<?php if(is_null($objNotice)) :  ?>	
+				<input type = "text" id="notice-title_cn-input-id" style="width:60%; display:none;">
+				<?php else :?>
+				<input type = "text" id="notice-title_cn-input-id" value="<?=$objNotice->notice_title_cn?>" style="width:60%; display:none;">
+				<?php endif ?>
+			<?php endif ?>
+
 		</div>
 
 		<div style="width:100%; clear:both;">
 			<p style="width:180px; float:left; padding:5px;">공지사항내용:</p> 
-			<form method="post" style="width:60%; float:left;background-color:white;">
-			<textarea id="notice-content" name="editordata"><?php if(!is_null($objNotice)) {  ?><?=$objNotice->notice_content?><?php } ?></textarea>
+			<form method="post" id="notice-form" style="width:60%; float:left;background-color:white;">
+				<textarea id="notice-content" name="editordata"><?php if(!is_null($objNotice)) : ?><?=$objNotice->notice_content?><?php endif ?></textarea>
 			</form>	
+			<?php if (array_key_exists('app.lang', $_ENV) && $_ENV['app.lang'] > 0) : ?>
+				<form method="post" id="notice-form_cn" style="width:60%; float:left;background-color:white; display:none;">
+					<textarea id="notice-content_cn" name="editordata"><?php if(!is_null($objNotice)) : ?><?=$objNotice->notice_content_cn?><?php endif ?></textarea>
+				</form>
+			<?php endif ?>
 		</div>
 		<div class = "useredit-button-group">
 			<button class="useredit-cancel-button" id="notice-cancel-btn-id">취소</button>

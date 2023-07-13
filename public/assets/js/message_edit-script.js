@@ -74,8 +74,15 @@ function editMacro(nRow){
         // if(code == "<p><br></p>" )
         let code = "";
         code += notice.conf_content;
-        $("#notice-content").summernote('code', code);
-        $("#notice-title-input-id").val(notice.conf_memo);
+        console.log($("#notice-title-input-id").css("display"));
+        if($("#notice-title-input-id").css("display") != "none"){
+            $("#notice-content").summernote('code', code);
+            $("#notice-title-input-id").val(notice.conf_memo);
+        } else{
+            $("#notice-content_cn").summernote('code', code);
+            $("#notice-title_cn-input-id").val(notice.conf_memo);
+        }
+        
     } else {
         // let code = $("#custom-answer").summernote('code');
         // if(code == "<p><br></p>" )
@@ -93,12 +100,16 @@ function readConfigToObject() {
     jsonData.notice_type = $("#subnavbar-type-p-id").html();
     jsonData.notice_state_active = $("#notice-state-check-id").prop('checked') ? 1 : 0;
     jsonData.notice_title = $("#notice-title-input-id").val();
+    if($("#notice-title_cn-input-id").length > 0)
+        jsonData.notice_title_cn = $("#notice-title_cn-input-id").val();
     jsonData.notice_content = "";
     if($("#notice-content").length > 0){
         jsonData.notice_content = $("#notice-content").summernote('code');
     } else {
         jsonData.notice_content = $("#custom-content").text();
     }
+    if($("#notice-content_cn").length > 0)
+        jsonData.notice_content_cn = $("#notice-content_cn").summernote('code');
     jsonData.notice_answer = "";
     if ($("#custom-answer").length > 0) {
         jsonData.notice_answer = $("#custom-answer").summernote('code');
@@ -186,6 +197,25 @@ function addBtnEvent() {
         window.location.replace( FURL +'/board/message');
     });
 
+    $("#notice-lang-select-id").change(function() {
+        let lang = $(this).val();
+        if(lang == "cn"){
+            $("#notice-title-input-id").hide();
+            $("#notice-title_cn-input-id").show();
+
+            $("#notice-form").hide();
+            $("#notice-form_cn").show();
+            
+        } else{
+
+            $("#notice-title-input-id").show();
+            $("#notice-title_cn-input-id").hide();
+
+            $("#notice-form").show();
+            $("#notice-form_cn").hide();
+        }
+
+    });
 
 }
 

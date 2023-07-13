@@ -263,6 +263,9 @@ class ConfSite_Model extends Model
         $updateData['conf_id'] = CONF_NOTICE_MAIN;
         $updateData['conf_content'] = $arrData['mainnotice'];
         $updateData['conf_active'] = $arrData['mainnotice_ok'];
+        if(array_key_exists('mainnotice_cn', $arrData)){
+            $updateData['conf_content_cn'] = $arrData['mainnotice_cn'];
+        }
         $arrBatch[] = $updateData;
         
     
@@ -283,6 +286,9 @@ class ConfSite_Model extends Model
         $updateData['conf_content'] = $arrData['depositenotice'];
         $updateData['conf_active'] = $arrData['depositenotice_ok'];
         $updateData['conf_idx'] = $arrData['depositenotice_color'];
+        if(array_key_exists('depositenotice_cn', $arrData)){
+            $updateData['conf_content_cn'] = $arrData['depositenotice_cn'];
+        }
         $arrBatch[] = $updateData;
 
         $updateData = array();
@@ -290,6 +296,9 @@ class ConfSite_Model extends Model
         $updateData['conf_content'] = $arrData['urgentnotice'];
         $updateData['conf_active'] = $arrData['urgentnotice_ok'];
         $updateData['conf_idx'] = $arrData['urgentnotice_color'];
+        if(array_key_exists('urgentnotice_cn', $arrData)){
+            $updateData['conf_content_cn'] = $arrData['urgentnotice_cn'];
+        }
         $arrBatch[] = $updateData;
     
         if(array_key_exists('chargemanual', $arrData)){
@@ -319,6 +328,9 @@ class ConfSite_Model extends Model
         $updateData = array();
         $updateData['conf_id'] = CONF_CHARGEMACRO;
         $updateData['conf_content'] = $arrData['bankmacro'];
+        if(array_key_exists('bankmacro_cn', $arrData)){
+            $updateData['conf_content_cn'] = $arrData['bankmacro_cn'];
+        }
         $arrBatch[] = $updateData;
         
         $updateData = array();

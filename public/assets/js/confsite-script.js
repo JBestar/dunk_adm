@@ -73,11 +73,17 @@ function readConfigToObject() {
     }
     
     jsonData.mainnotice = $("#confsite-mainnotice-text-id").val();
+    if($("#confsite-mainnotice_cn-text-id").length > 0)
+        jsonData.mainnotice_cn = $("#confsite-mainnotice_cn-text-id").val();
     jsonData.mainnotice_ok = $("#confsite-mainnotice-check-id").prop('checked') ? 1 : 0;
     jsonData.depositenotice = $("#confsite-deposite-text-id").summernote('code');
+    if($("#confsite-deposite_cn-id").length > 0)
+        jsonData.depositenotice_cn = $("#confsite-deposite_cn-text-id").summernote('code');
     jsonData.depositenotice_ok = $("#confsite-deposite-check-id").prop('checked') ? 1 : 0;
     jsonData.depositenotice_color = $("#confsite-deposite-color-id").val();
     jsonData.urgentnotice = $("#confsite-urgentnotice-text-id").summernote('code');
+    if($("#confsite-urgentnotice_cn-id").length > 0)
+        jsonData.urgentnotice_cn = $("#confsite-urgentnotice_cn-text-id").summernote('code');
     jsonData.urgentnotice_ok = $("#confsite-urgentnotice-check-id").prop('checked') ? 1 : 0;
     jsonData.urgentnotice_color = $("#confsite-urgentnotice-color-id").val();
     if($("#confsite-chargemanual-text-id").length > 0){
@@ -85,6 +91,8 @@ function readConfigToObject() {
         jsonData.discharmanual = $("#confsite-discharmanual-text-id").summernote('code');
     }
     jsonData.bankmacro = $("#confsite-bankmacro-text-id").summernote('code');
+    if($("#confsite-bankmacro_cn-id").length > 0)
+        jsonData.bankmacro_cn = $("#confsite-bankmacro_cn-text-id").summernote('code');
     jsonData.multilog_ok = $("#confsite-multilog-check-id").prop('checked') ? 1 : 0;
     jsonData.trans_deny = $("#confsite-transdeny-check-id").prop('checked') ? 0 : 1;
     jsonData.return_deny = $("#confsite-returndeny-check-id").prop('checked') ? 0 : 1;
@@ -158,16 +166,47 @@ function addBtnEvent() {
         onChangeElement();
     });
     
-    // $("#confsite-deposite-color-id").change(function() {
-    //     $("#confsite-deposite-id").css("background-color", $(this).val());
-    // });
-    
     $('#confsite-deposite-color-id').on('input', function() {
         $("#confsite-deposite-id").css("background-color", $(this).val());
+        if($("#confsite-deposite_cn-id").length > 0)
+            $("#confsite-deposite_cn-id").css("background-color", $(this).val());
     });
 
     $("#confsite-urgentnotice-color-id").on('input', function() {
         $("#confsite-urgentnotice-id").css("background-color", $(this).val());
+        if($("#confsite-urgentnotice_cn-id").length > 0)
+            $("#confsite-urgentnotice_cn-id").css("background-color", $(this).val());
+    });
+    
+    $("#confsite-lang-select-id").change(function() {
+        let lang = $(this).val();
+        if(lang == "cn"){
+            $("#confsite-mainnotice-text-id").hide();
+            $("#confsite-mainnotice_cn-text-id").show();
+
+            $("#confsite-deposite-id").hide();
+            $("#confsite-deposite_cn-id").show();
+            
+            $("#confsite-urgentnotice-id").hide();
+            $("#confsite-urgentnotice_cn-id").show();
+
+            $("#confsite-bankmacro-id").hide();
+            $("#confsite-bankmacro_cn-id").show();
+        } else{
+
+            $("#confsite-mainnotice-text-id").show();
+            $("#confsite-mainnotice_cn-text-id").hide();
+
+            $("#confsite-deposite-id").show();
+            $("#confsite-deposite_cn-id").hide();
+            
+            $("#confsite-urgentnotice-id").show();
+            $("#confsite-urgentnotice_cn-id").hide();
+
+            $("#confsite-bankmacro-id").show();
+            $("#confsite-bankmacro_cn-id").hide();
+        }
+
     });
 }
 

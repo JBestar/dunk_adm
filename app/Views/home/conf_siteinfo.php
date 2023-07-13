@@ -16,23 +16,24 @@
 
 <?= $this->section('confsite-content') ?>
 
+	<?php if (array_key_exists('app.lang', $_ENV) && $_ENV['app.lang'] > 0) : ?>
+		<h4>
+			<i class="glyphicon glyphicon-hand-right"></i> 언어별 설정			
+			<select name="lang" id="confsite-lang-select-id" style="margin-left:30px; text-align:center; width:100px; padding:3px;">
+				<option value="ko" > 한국어 </option>
+				<option value="cn" > 중국어 </option>
+			</select>
+		</h4>
+	<?php endif ?>
 	<!---->
 	<h4><i class="glyphicon glyphicon-hand-right"></i> 사이트설정</h4>
 	<div class="confsite-site-text-div">
 		<p>사이트명:</p>
-		<?php if(is_null($arrConfig)) {  ?>
-		<input type="text" id="confsite-sitename-input-id">
-		<?php } else {?>
 		<input type="text" id="confsite-sitename-input-id" value="<?=$arrConfig[CONF_SITENAME-1]->conf_content?>">
-		<?php } ?>
 	</div>
 	<div class="confsite-site-text-div">
 		<p>도메인명:</p>
-		<?php if(is_null($arrConfig)) {  ?>
-		<input type="text" id="confsite-domainname-input-id">
-		<?php } else {?>
 		<input type="text" id="confsite-domainname-input-id" value="<?=$arrConfig[CONF_DOMAIN-1]->conf_content?>">
-		<?php } ?>
 	</div>
 	<div class="confsite-site-text-div">
 		<?php if(intval($arrConfig[CONF_API_VACC-1]->conf_active) == STATE_ACTIVE) :  ?>
@@ -47,14 +48,14 @@
 		<?php endif ?>
 	</div>
 
-	<?php if(count($arrConfig) >= CONF_CHARGE_URL && $arrConfig[CONF_CHARGE_URL-1]->conf_active == 1) :  ?>
+	<?php if($arrConfig[CONF_CHARGE_URL-1]->conf_active == 1) :  ?>
 	<div class="confsite-site-text-div">
 		<p>충전주소:</p>
 		<input type="text" style="width:20%;" id="confsite-chargeurl-input-id" value="<?=$arrConfig[CONF_CHARGE_URL-1]->conf_content?>">
 	</div>
 	<?php endif ?>
 
-	<?php if(count($arrConfig) >= CONF_TELE_ID && $arrConfig[CONF_TELE_ID-1]->conf_active == 1) :  ?>
+	<?php if($arrConfig[CONF_TELE_ID-1]->conf_active == 1) :  ?>
 	<div class="confsite-site-text-div">
 		<p>텔레아이디:</p>
 		<input type="text" style="width:20%;" id="confsite-teleid-input-id" value="<?=$arrConfig[CONF_TELE_ID-1]->conf_content?>">
@@ -63,7 +64,7 @@
 
 	<h4><i class="glyphicon glyphicon-hand-right"></i> 공지사항 </h4>
 	<div class="confsite-site-check-div">
-		<?php if(is_null($arrConfig) || $arrConfig[CONF_NOTICE_MAIN-1]->conf_active != 1) : ?>
+		<?php if($arrConfig[CONF_NOTICE_MAIN-1]->conf_active != 1) : ?>
 		<input type="checkbox" id="confsite-mainnotice-check-id">
 		<?php else :?>
 		<input type="checkbox" id="confsite-mainnotice-check-id" checked>				
@@ -72,10 +73,14 @@
 		<label for="confsite-mainnotice-check-id"> 회원로그인시 메인공지사항</label>			
 	</div>
 	<div class="confsite-site-text-div">
-		<textarea rows="" id="confsite-mainnotice-text-id"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_NOTICE_MAIN-1]->conf_content?><?php } ?></textarea>					
+		<textarea rows="" id="confsite-mainnotice-text-id"><?=$arrConfig[CONF_NOTICE_MAIN-1]->conf_content?></textarea>	
+		<?php if (array_key_exists('app.lang', $_ENV) && $_ENV['app.lang'] > 0) : ?>
+			<textarea rows="" id="confsite-mainnotice_cn-text-id" style="display:none;"><?=$arrConfig[CONF_NOTICE_MAIN-1]->conf_content_cn?></textarea>					
+		<?php endif ?>
+
 	</div>
 	<div class="confsite-site-check-div" style="margin-top:15px">
-		<?php if (is_null($arrConfig) || $arrConfig[CONF_NOTICE_BANK-1]->conf_active != 1) : ?>
+		<?php if ($arrConfig[CONF_NOTICE_BANK-1]->conf_active != 1) : ?>
 		<input type="checkbox" id="confsite-deposite-check-id">
 		<?php else :?>
 		<input type="checkbox" id="confsite-deposite-check-id" checked>
@@ -102,12 +107,21 @@
 		<?php else :?>
 			<form method="post" id="confsite-deposite-id" style="width:80%; margin-left:20px; background-color:#2A2A2A;">
 		<?php endif ?>
-			<textarea id="confsite-deposite-text-id" name="editordata"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_NOTICE_BANK-1]->conf_content?><?php } ?></textarea>
+			<textarea id="confsite-deposite-text-id" name="editordata"><?=$arrConfig[CONF_NOTICE_BANK-1]->conf_content?></textarea>
 		</form>
+		<?php if (array_key_exists('app.lang', $_ENV) && $_ENV['app.lang'] > 0) : ?>
+			<?php if (strlen($arrConfig[CONF_NOTICE_BANK-1]->conf_idx) > 3) : ?>
+				<form method="post" id="confsite-deposite_cn-id" style="display:none; width:80%; margin-left:20px; background-color:<?php echo $arrConfig[CONF_NOTICE_BANK-1]->conf_idx; ?>;">
+			<?php else :?>
+				<form method="post" id="confsite-deposite_cn-id" style="display:none; width:80%; margin-left:20px; background-color:#2A2A2A;">
+			<?php endif ?>
+					<textarea id="confsite-deposite_cn-text-id" name="editordata"><?=$arrConfig[CONF_NOTICE_BANK-1]->conf_content_cn?></textarea>					
+				</form>
+		<?php endif ?>
 	</div>
 	
 	<div class="confsite-site-check-div">
-		<?php if (is_null($arrConfig) || $arrConfig[CONF_NOTICE_URGENT-1]->conf_active != 1) : ?>
+		<?php if ($arrConfig[CONF_NOTICE_URGENT-1]->conf_active != 1) : ?>
 			<input type="checkbox" id="confsite-urgentnotice-check-id">
 		<?php else :?>
 			<input type="checkbox" id="confsite-urgentnotice-check-id" checked>
@@ -128,8 +142,19 @@
 		<?php else :?>
 			<form method="post"  id="confsite-urgentnotice-id" style="width:80%; margin-left:20px; background-color:#2A2A2A;">
 		<?php endif ?>
-			<textarea id="confsite-urgentnotice-text-id" name="editordata"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_NOTICE_URGENT-1]->conf_content?><?php } ?></textarea>
+			<textarea id="confsite-urgentnotice-text-id" name="editordata"><?=$arrConfig[CONF_NOTICE_URGENT-1]->conf_content?></textarea>
 		</form>
+
+		<?php if (array_key_exists('app.lang', $_ENV) && $_ENV['app.lang'] > 0) : ?>
+			<?php if (strlen($arrConfig[CONF_NOTICE_URGENT-1]->conf_idx) > 3) : ?>
+				<form method="post"  id="confsite-urgentnotice_cn-id" style="display:none; width:80%; margin-left:20px; background-color:<?php echo $arrConfig[CONF_NOTICE_URGENT-1]->conf_idx; ?>;">
+			<?php else :?>
+				<form method="post"  id="confsite-urgentnotice_cn-id" style="display:none; width:80%; margin-left:20px; background-color:#2A2A2A;">
+			<?php endif ?>
+				<textarea id="confsite-urgentnotice_cn-text-id" name="editordata"><?=$arrConfig[CONF_NOTICE_URGENT-1]->conf_content_cn?></textarea>					
+			</form>
+		<?php endif ?>
+
 	</div>
 	
 	<?php if(!array_key_exists('app.site', $_ENV) || $_ENV['app.site'] == 0 ) :?>
@@ -139,7 +164,7 @@
 	</div>
 	<div class="width:100%; clear:both; ">
 		<form method="post" style="width:80%; margin-left:20px; background-color:white;">
-			<textarea id="confsite-chargemanual-text-id" name="editordata"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_CHARGE_MANUAL-1]->conf_content?><?php } ?></textarea>
+			<textarea id="confsite-chargemanual-text-id" name="editordata"><?=$arrConfig[CONF_CHARGE_MANUAL-1]->conf_content?></textarea>
 		</form>
 	</div>
 	<div class="confsite-site-check-div">
@@ -147,7 +172,7 @@
 	</div>
 	<div class="width:100%; clear:both; ">
 		<form method="post" style="width:80%; margin-left:20px; background-color:white;">
-			<textarea id="confsite-discharmanual-text-id" name="editordata"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_DISCHA_MANUAL-1]->conf_content?><?php } ?></textarea>
+			<textarea id="confsite-discharmanual-text-id" name="editordata"><?=$arrConfig[CONF_DISCHA_MANUAL-1]->conf_content?></textarea>
 		</form>
 	</div>
 	<?php endif ?>
@@ -155,13 +180,18 @@
 	<!---->
 	<h4><i class="glyphicon glyphicon-hand-right"></i> 계좌문의 매크로</h4>
 	<div class="width:100%; clear:both; ">
-		<form method="post" style="width:80%; margin-left:20px; background-color:white;">
-			<textarea id="confsite-bankmacro-text-id" name="editordata"><?php if(!is_null($arrConfig)) {  ?><?=$arrConfig[CONF_CHARGEMACRO-1]->conf_content?><?php } ?></textarea>
+		<form method="post" id="confsite-bankmacro-id" style="width:80%; margin-left:20px; background-color:white;">
+			<textarea id="confsite-bankmacro-text-id" name="editordata"><?=$arrConfig[CONF_CHARGEMACRO-1]->conf_content?></textarea>
 		</form>
+		<?php if (array_key_exists('app.lang', $_ENV) && $_ENV['app.lang'] > 0) : ?>
+			<form method="post" id="confsite-bankmacro_cn-id" style="width:80%; margin-left:20px; background-color:white; display:none;">
+				<textarea id="confsite-bankmacro_cn-text-id" name="editordata"><?=$arrConfig[CONF_CHARGEMACRO-1]->conf_content_cn?></textarea>					
+			</form>
+		<?php endif ?>
 	</div>
 	<h4><i class="glyphicon glyphicon-hand-right"></i> 회원이용정책</h4>
 	<div class="confsite-site-check-div">
-		<?php if (is_null($arrConfig) || $arrConfig[CONF_MULTI_LOGIN-1]->conf_active != 1) : ?>
+		<?php if ($arrConfig[CONF_MULTI_LOGIN-1]->conf_active != 1) : ?>
 			<input type="checkbox" id="confsite-multilog-check-id">
 		<?php else :?>
 			<input type="checkbox" id="confsite-multilog-check-id" checked>
@@ -169,7 +199,7 @@
 		<label for="confsite-multilog-check-id"> 중복로그인 허용</label>
 	</div>
 	<div class="confsite-site-check-div">
-		<?php if (is_null($arrConfig) || $arrConfig[CONF_TRANS_DENY-1]->conf_active == 1) : ?>
+		<?php if ($arrConfig[CONF_TRANS_DENY-1]->conf_active == 1) : ?>
 			<input type="checkbox" id="confsite-transdeny-check-id">
 		<?php else :?>
 			<input type="checkbox" id="confsite-transdeny-check-id" checked>
@@ -177,7 +207,7 @@
 		<label for="confsite-transdeny-check-id"> 하부회원 머니이동 허용</label>
 	</div>
 	<div class="confsite-site-check-div" style="padding-left:50px;">
-		<?php if (is_null($arrConfig) || $arrConfig[CONF_TRANS_LV1-1]->conf_active != 1) : ?>
+		<?php if ($arrConfig[CONF_TRANS_LV1-1]->conf_active != 1) : ?>
 			<input type="checkbox" id="confsite-translv1-check-id">
 		<?php else :?>
 			<input type="checkbox" id="confsite-translv1-check-id" checked>
@@ -185,7 +215,7 @@
 		<label for="confsite-translv1-check-id"> 1단계만 허용</label>
 	</div>
 	<div class="confsite-site-check-div">
-		<?php if (is_null($arrConfig) || $arrConfig[CONF_RETURN_DENY-1]->conf_active == 1) : ?>
+		<?php if ($arrConfig[CONF_RETURN_DENY-1]->conf_active == 1) : ?>
 			<input type="checkbox" id="confsite-returndeny-check-id" >
 		<?php else :?>
 			<input type="checkbox" id="confsite-returndeny-check-id" checked>
@@ -193,7 +223,7 @@
 		<label for="confsite-returndeny-check-id"> 하부회원 머니환수 허용</label>
 	</div>
 	<div class="confsite-site-check-div" style="padding-left:50px;">
-		<?php if (is_null($arrConfig) || $arrConfig[CONF_RETURN_LV1-1]->conf_active != 1) : ?>
+		<?php if ($arrConfig[CONF_RETURN_LV1-1]->conf_active != 1) : ?>
 			<input type="checkbox" id="confsite-returnlv1-check-id">
 		<?php else :?>
 			<input type="checkbox" id="confsite-returnlv1-check-id" checked>

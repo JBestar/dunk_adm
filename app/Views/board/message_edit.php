@@ -47,39 +47,61 @@
 		<div style="float:left; width:700px; ">
 				<div class="useredit-text-div">
 					<p >발송자아이디:</p>
-					<label for="notice-mbuid-input-id">전체는 '*'로 입력하세요</label>
-					<?php if(is_null($objNotice)) {  ?>
-					<input type = "text" id="notice-mbuid-input-id" style="width:250px;" value="<?=$strUserId ?>">
-					<?php } else {?>
-					<input type = "text" id="notice-mbuid-input-id" style="width:250px;" value="<?=$objNotice->notice_mb_uid?>" disabled>
-					<?php } ?>
+					<?php if(is_null($objNotice)) :  ?>
+						<label for="notice-mbuid-input-id">전체는 '*'로 입력하세요</label>
+						<input type = "text" id="notice-mbuid-input-id" style="width:250px;" value="<?=$strUserId ?>">
+					<?php else :?>
+						<input type = "text" id="notice-mbuid-input-id" style="width:250px;" value="<?=$objNotice->notice_mb_uid?>" disabled>
+					<?php endif ?>
 				</div>
 				<!---->
 				<div class="useredit-text-div">
 					<p>발송(대기):</p>
-					<?php if(is_null($objNotice)) {  ?>
+					<?php if(is_null($objNotice)) :  ?>
 					<input type="checkbox" id="notice-state-check-id" name="public" checked>
-					<?php } else if($objNotice->notice_type == 3) {  ?>	
+					<?php elseif($objNotice->notice_type == 3) :  ?>	
 					<input type="checkbox" id="notice-state-check-id" name="public" checked>
-					<?php } else if($objNotice->notice_state_active == 0) {  ?>	
+					<?php elseif($objNotice->notice_state_active == 0) :  ?>	
 					<input type="checkbox" id="notice-state-check-id" name="public">
-					<?php } else {?>
+					<?php else :?>
 					<input type="checkbox" id="notice-state-check-id" checked name="public">
-					<?php } ?>
+					<?php endif ?>
 					<label for="public" style="font-size:14px;">발송</label>
+
+					<?php if(is_null($objNotice) || $objNotice->notice_type==0) : ?>
+						<?php if (array_key_exists('app.lang', $_ENV) && $_ENV['app.lang'] > 0) : ?>
+							<div style="float:right; width:50%;">
+								<label style="float:left; margin-left:115px;">언어별 설정</label>
+								<select name="lang" id="notice-lang-select-id" style="margin-left:5px; text-align:center; width:100px; padding:3px;">
+									<option value="ko" > 한국어 </option>
+									<option value="cn" > 중국어 </option>
+								</select>
+							</div>
+						<?php endif ?>
+					<?php endif ?>
 				</div>
 				<div class="useredit-text-div">
 					<p>제목:</p>
-					
-					<?php if(is_null($objNotice) || is_null($objNotice->notice_title)) {  ?>	
+					<?php if(is_null($objNotice)) :  ?>	
 					<input type = "text" id="notice-title-input-id" style="width:550px;">
-					<?php } else {?>
+					<?php else :?>
 					<input type = "text" id="notice-title-input-id" value="<?=$objNotice->notice_title?>" style="width:550px;">
-					<?php } ?>
+					<?php endif ?>
+
+					<?php if(is_null($objNotice) || $objNotice->notice_type==0) : ?>
+						<?php if (array_key_exists('app.lang', $_ENV) && $_ENV['app.lang'] > 0) : ?>
+							<?php if(is_null($objNotice)) :  ?>	
+							<input type = "text" id="notice-title_cn-input-id" style="width:550px; display:none;">
+							<?php else :?>
+							<input type = "text" id="notice-title_cn-input-id" value="<?=$objNotice->notice_title_cn?>" style="width:550px; display:none;">
+							<?php endif ?>
+						<?php endif ?>
+					<?php endif ?>
+
 				</div>
 
 				
-			<?php if(!is_null($objNotice) && $objNotice->notice_type == 3) {  ?>
+			<?php if(!is_null($objNotice) && $objNotice->notice_type == 3) :  ?>
 				<div class="useredit-text-div">
 					<p>문의내용:</p> 
 					<div class="content" id="custom-content" style="white-space: pre-wrap; width:550px; background-color:white; padding:5px;" ><?=$objNotice->notice_content?></div>	
@@ -88,25 +110,30 @@
 				<div style="width:100%; clear:both;">
 					<p style="width:100px; float:left; padding:5px;">회답내용:</p> 
 					<form method="post" style="width:550px; float:left;background-color:white;">
-					<textarea id="custom-answer" name="editordata"><?php if(!is_null($objNotice)) {  ?><?=$objNotice->notice_answer?><?php } ?></textarea>
+					<textarea id="custom-answer" name="editordata"><?php if(!is_null($objNotice)) : ?><?=$objNotice->notice_answer?><?php endif ?></textarea>
 					</form>	
 				</div>
-			<?php } else {?>
+			<?php else :?>
 				<div style="width:100%; clear:both;">
 					<p style="width:100px; float:left; padding:5px;">쪽지내용:</p> 
-					<form method="post" style="width:550px;float:left;background-color:white;">
-					<textarea id="notice-content" name="editordata"><?php if(!is_null($objNotice)) {  ?><?=$objNotice->notice_content?><?php } ?></textarea>
+					<form method="post" id="notice-form" style="width:550px;float:left;background-color:white;">
+						<textarea id="notice-content" name="editordata"><?php if(!is_null($objNotice)) : ?><?=$objNotice->notice_content?><?php endif ?></textarea>
 					</form>	
+					<?php if (array_key_exists('app.lang', $_ENV) && $_ENV['app.lang'] > 0) : ?>
+						<form method="post" id="notice-form_cn" style="width:550px;float:left;background-color:white;display:none;">
+							<textarea id="notice-content_cn" name="editordata"><?php if(!is_null($objNotice)) : ?><?=$objNotice->notice_content_cn?><?php endif ?></textarea>
+						</form>
+					<?php endif ?>
 				</div>
-			<?php } ?>
+			<?php endif ?>
 
 				<div class = "useredit-button-group" style="padding-left:100px">
 					<button class="useredit-cancel-button" id="notice-cancel-btn-id">취소</button>
-					<?php if(is_null($objNotice) || $objNotice->notice_type==0) {  ?>
+					<?php if(is_null($objNotice) || $objNotice->notice_type==0) :  ?>
 					<button class="useredit-ok-button"  id="notice-save-btn-id">발송</button>			
-					<?php } else {?>
+					<?php else :?>
 					<button class="useredit-ok-button"  id="notice-save-btn-id">회답</button>
-					<?php } ?>
+					<?php endif ?>
 					
 				</div>
 			</div>
