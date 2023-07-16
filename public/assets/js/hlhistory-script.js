@@ -260,8 +260,8 @@ function pbhitoryLoop() {
 
     requestBetHistory();
     let tmCount = 60000; 
-    // if(mObjUser && mObjUser.mb_level >= LEVEL_ADMIN+2)
-    //     tmCount = 10000;
+    if(mObjUser && mObjUser.mb_level >= LEVEL_ADMIN)
+        tmCount = 20000;
 
     // 1초뒤에 다시 실행
     setTimeout(function() {
