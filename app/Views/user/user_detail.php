@@ -81,9 +81,9 @@
 				<td>비밀번호(8~20자, 특수문자 한개 이상) </td>
 				<td>
 					<?php if(is_null($objMember)) {  ?>	
-					<input type = "text" id="useredit-pwd-input-id" class="english_s">
+					<input type = "text" id="useredit-pwd-input-id" class="">
 					<?php } else {?>
-					<input type = "text" id="useredit-pwd-input-id" class="english_s" value="<?=$objMember->mb_pwd?>" >
+					<input type = "text" id="useredit-pwd-input-id" class="" value="<?=$objMember->mb_pwd?>" >
 					<?php } ?>
 				</td>
 				<td>핸드폰번호(-없이 숫자만입력) </td>

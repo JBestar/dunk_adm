@@ -190,7 +190,7 @@
 								<div class="row">
 									<div class="col-md-2">비밀번호 :</div>
 									<div class="col-md-4">
-										<input id="user_password" type="text" placeholder="" class="form-control english_s" />
+										<input id="user_password" type="text" placeholder="" class="form-control" />
 									</div>
 									<div class="col-md-2">연락처 :</div>
 									<div class="col-md-4">

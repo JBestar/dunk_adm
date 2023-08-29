@@ -48,9 +48,9 @@
 		<div class="useredit-text-div">
 			<p>비밀번호:</p> 
 			<?php if(is_null($objMember)) {  ?>	
-			<input type = "text" id="useredit-pwd-input-id" class="english_s">
+			<input type = "text" id="useredit-pwd-input-id" class="">
 			<?php } else {?>
-			<input type = "text" id="useredit-pwd-input-id" class="english_s" value="<?=$objMember->mb_pwd?>" >
+			<input type = "text" id="useredit-pwd-input-id" class="" value="<?=$objMember->mb_pwd?>" >
 			<?php } ?>
 			<label>(8~20자, 특수문자 한개 이상)</label>
 		</div>
