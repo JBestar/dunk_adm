@@ -586,45 +586,53 @@ class Member_Model extends Model
         //배팅금액
         $strSQL .= ' UNION ALL ( SELECT SUM(bet_money) AS result_1, SUM(bet_win_money) AS result_2 ';
         $strSQL .= '  FROM ( SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_slot';
-        $strSQL .= " WHERE bet_fid >= ".$arrReqData['slot_range'][0]." AND bet_fid <= ".$arrReqData['slot_range'][1];
+        // $strSQL .= " WHERE bet_fid >= ".$arrReqData['slot_range'][0]." AND bet_fid <= ".$arrReqData['slot_range'][1];
+        $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
         $strSQL .= $strWhereMem;
 
         if(!$confs['hpg_deny']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_happyball ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['hpb_range'][0]." AND bet_fid <= ".$arrReqData['hpb_range'][1];
+            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['hpb_range'][0]." AND bet_fid <= ".$arrReqData['hpb_range'][1];
+            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
             $strSQL .= $strWhereMem." )";
         }
         if(!$confs['bpg_deny']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleball ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['bpb_range'][0]." AND bet_fid <= ".$arrReqData['bpb_range'][1];
+            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['bpb_range'][0]." AND bet_fid <= ".$arrReqData['bpb_range'][1];
+            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
             $strSQL .= $strWhereMem." )";
 
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleladder ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['bps_range'][0]." AND bet_fid <= ".$arrReqData['bps_range'][1];
+            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['bps_range'][0]." AND bet_fid <= ".$arrReqData['bps_range'][1];
+            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
             $strSQL .= $strWhereMem." )";
         }
 
         if(!$confs['eos5_deny']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_eos5ball ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['eos5_range'][0]." AND bet_fid <= ".$arrReqData['eos5_range'][1];
+            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['eos5_range'][0]." AND bet_fid <= ".$arrReqData['eos5_range'][1];
+            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
             $strSQL .= $strWhereMem." )";
         }
 
         if(!$confs['eos3_deny']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_eos3ball ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['eos3_range'][0]." AND bet_fid <= ".$arrReqData['eos3_range'][1];
+            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['eos3_range'][0]." AND bet_fid <= ".$arrReqData['eos3_range'][1];
+            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
             $strSQL .= $strWhereMem." )";
         }
 
         if(!$confs['coin5_deny']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_coin5ball ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['coin5_range'][0]." AND bet_fid <= ".$arrReqData['coin5_range'][1];
+            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['coin5_range'][0]." AND bet_fid <= ".$arrReqData['coin5_range'][1];
+            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
             $strSQL .= $strWhereMem." )";
         }
 
         if(!$confs['coin3_deny']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_coin3ball ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['coin3_range'][0]." AND bet_fid <= ".$arrReqData['coin3_range'][1];
+            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['coin3_range'][0]." AND bet_fid <= ".$arrReqData['coin3_range'][1];
+            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
             $strSQL .= $strWhereMem." )";
         }
 
@@ -639,21 +647,24 @@ class Member_Model extends Model
                 $strWhere2 = " bet_money <> bet_win_money ";
             }
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM '.$tbName;
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['cas_range'][0]." AND bet_fid <= ".$arrReqData['cas_range'][1];
+            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['cas_range'][0]." AND bet_fid <= ".$arrReqData['cas_range'][1];
+            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
             $strSQL .= " AND ".$strWhere2." AND company_amount = 0 ";  //sum without Tie
             $strSQL .= $strWhereMem2." )";
         }
         
         if(!$confs['hold_deny']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_holdem ';
-            $strSQL .= " WHERE bet_fid >= ".$arrReqData['hold_range'][0]." AND bet_fid <= ".$arrReqData['hold_range'][1];
+            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['hold_range'][0]." AND bet_fid <= ".$arrReqData['hold_range'][1];
+            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
             $strSQL .= $strWhereMem." AND bet_state = 0 )";
         }
         $strSQL .= " ) AS bet_table ) ";
         //적립포인트
         $strSQL .= " UNION ALL ( SELECT SUM(rw_point) AS result_1, ";
         $strSQL .= " SUM(CASE WHEN rw_mb_fid = ".$objEmp->mb_fid." THEN rw_point ELSE 0 END) AS result_2 FROM ".$this->rewardTb;
-        $strSQL .= " WHERE rw_fid >= ".$arrReqData['rw_range'][0]." AND rw_fid <= ".$arrReqData['rw_range'][1];
+        $strSQL .= " WHERE ".getTimeRange("rw_time", $arrReqData, $this->db);
+        // $strSQL .= " WHERE rw_fid >= ".$arrReqData['rw_range'][0]." AND rw_fid <= ".$arrReqData['rw_range'][1];
         if($arrReqData['rw_blank']){
             $strSQL.=" AND rw_state = '0' ";
         }
@@ -1734,18 +1745,18 @@ class Member_Model extends Model
         //충전금액
         $strSQL .=" UNION ALL SELECT SUM(charge_money) AS result_1,  0 AS result_2 FROM ".$this->chargeTb;
         $strSQL.=" WHERE (charge_action_state = '".STATE_VERIFY."' OR charge_action_state = '".STATE_HOT."') ";
-            $strSQL.=" AND charge_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND charge_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59'") ; 
+            $strSQL.=" AND charge_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND charge_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
             $strSQL .= " AND charge_mb_uid NOT IN (SELECT mb_uid FROM ".$this->table." WHERE mb_level >= ".LEVEL_ADMIN.") ";
         //환전금액
         $strSQL .=" UNION ALL SELECT SUM(exchange_money) AS result_1,  0 AS result_2 FROM ".$this->exchangeTb;
         $strSQL.=" WHERE (exchange_action_state = '".STATE_VERIFY."' OR exchange_action_state = '".STATE_HOT."') ";
-        $strSQL.=" AND exchange_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND exchange_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59'") ; 
+        $strSQL.=" AND exchange_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND exchange_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
         $strSQL .= " AND exchange_mb_uid NOT IN (SELECT mb_uid FROM ".$this->table." WHERE mb_level >= ".LEVEL_ADMIN.") ";
         //지급 회수
         $strSQL .= " UNION ALL SELECT SUM( CASE WHEN money_change_type = '".MONEYCHANGE_GIVE."' THEN ABS(money_amount) ELSE 0 END) AS result_1, ";
         $strSQL .= " SUM( CASE WHEN money_change_type = '".MONEYCHANGE_WITHDRAW."' THEN ABS(money_amount) ELSE 0 END) AS result_2 FROM ".$this->historyTb;
         $strSQL .= " WHERE money_mb_fid NOT IN (SELECT mb_fid FROM ".$this->table." WHERE mb_level >= ".LEVEL_ADMIN.") ";
-        $strSQL.=" AND money_update_time >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND money_update_time <= ".$this->db->escape($arrReqData['end']." 23:59:59'") ; 
+        $strSQL.=" AND money_update_time >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND money_update_time <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
 
         if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
             writeLog($strSQL);

@@ -1390,9 +1390,10 @@ class Api extends BaseController{
 				if($arrReqData['type'] == 0){
 					$confsiteModel = new ConfSite_Model();
 					$siteConfs = $this->getSiteConf($confsiteModel);
-					$this->modelMember->allGameRange($arrReqData, $siteConfs);
-				} else 
-					// $this->modelMember->gameRange($arrReqData);
+					// $this->modelMember->allGameRange($arrReqData, $siteConfs);
+				} 
+				//else 
+				// 	$this->modelMember->gameRange($arrReqData);
 
 				foreach ($arrEmp as $objEmp) {
             		$objCalc['mb_fid'] = $objEmp->mb_fid;

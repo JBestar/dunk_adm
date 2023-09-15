@@ -46,7 +46,7 @@
   </button>
   <div class="main-dropdown-container" <?=$userdropdown?>>
 
-    <?php if(array_key_exists('app.hold', $_ENV) && $_ENV['app.hold'] == 1) :?>
+    <?php if(array_key_exists('app.tree', $_ENV) && $_ENV['app.tree'] == 1) :?>
       <a href="<?php echo siteFurl().'user/member_list/0';?>" class="<?=$user_member?>"><i class="glyphicon glyphicon-cd"></i> 회원관리</a>
       <?php if($mb_level >= LEVEL_ADMIN) :  ?>
         <a href="<?php echo siteFurl().'user/member_list2/0';?>" class="<?=$user_ctrl2?>"><i class="glyphicon glyphicon-cd"></i> 회원관리Ⅱ</a>
@@ -57,14 +57,14 @@
   
     <?php if($mb_level >= LEVEL_ADMIN) :  ?>
     
-    <?php if(array_key_exists('app.hold', $_ENV) && $_ENV['app.hold'] == 1) :?>
+    <?php if(array_key_exists('app.tree', $_ENV) && $_ENV['app.tree'] == 1) :?>
       <a href="<?php echo siteFurl().'user/member_class/0';?>" class="<?=$user_ctrl?>"><i class="glyphicon glyphicon-cd"></i> 매장전용</a>
     <?php else:  ?>
       <a href="<?php echo siteFurl().'user/member_ctrl/0';?>" class="<?=$user_ctrl?>"><i class="glyphicon glyphicon-cd"></i> 매장전용</a>
     <?php endif  ?>
 
     <a href="<?php echo siteFurl().'user/member_connect';?>" class="<?=$user_log?>"><i class="glyphicon glyphicon-time"></i> 실시간접속</a>
-    <?php if(array_key_exists('app.hold', $_ENV) && $_ENV['app.hold'] == 1) :?>
+    <?php if(array_key_exists('app.tree', $_ENV) && $_ENV['app.tree'] == 1) :?>
       <a href="<?php echo siteFurl().'user/member_ip';?>" class="<?=$user_ip?>"><i class="glyphicon glyphicon-info-sign"></i> 아이피관리</a>
     <?php endif  ?>
     <a href="<?php echo siteFurl().'user/member_block';?>" class="<?=$user_block?>"><i class="glyphicon glyphicon-ban-circle"></i> 블록아이피</a>

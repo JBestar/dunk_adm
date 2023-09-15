@@ -231,7 +231,7 @@
 		<label for="confsite-returnlv1-check-id"> 1단계만 허용</label>
 	</div>
 
-	<?php if(array_key_exists('app.hold', $_ENV) && $_ENV['app.hold'] == 1) :  ?>
+	<?php if(array_key_exists('app.tree', $_ENV) && $_ENV['app.tree'] == 1) :  ?>
 	<h4><i class="glyphicon glyphicon-hand-right"></i> 은행이용정책</h4>
 	<div class="confsite-site-check-div">
 		<?php if (count( explode("#", trim($arrConfig[CONF_CHARGE_MANUAL-1]->conf_idx)) ) >= 2 ) : ?>

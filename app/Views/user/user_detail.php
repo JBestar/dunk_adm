@@ -146,16 +146,45 @@
 					<input type="color" value="<?php echo $objMember->mb_color; ?>" id="useredit-color-input-id">
 					<?php } ?>
 				</td>
-				<?php if(!$hold_deny) :?>
-				<td>홀덤 배당율(%) </td>
 				<td>
-					<?php if(is_null($objMember)) {  ?>
-					<input type = "number" step="0.1" id="useredit-hlbetrate-input-id" value="0" >
-					<?php } else {?>
-					<input type = "number" step="0.1" id="useredit-hlbetrate-input-id" value="<?=$objMember->mb_game_hl_ratio?>">
-					<?php } ?>
+					<?php if(!$hold_deny) :?>
+					홀덤 배당율(%)<br> <br>
+					<?php endif ?> 
+					<?php if(!$evol_deny || !$cas_deny) :?>
+					카지노 배당율(%)<br> <br>
+					<?php endif ?> 
+					<?php if(!$slot_deny) :?>
+					슬롯 배당율(%)<br>
+					<?php endif ?> 
 				</td>
-				<?php endif ?> 
+				<td>
+					<?php if(!$hold_deny) :?>
+						<?php if(is_null($objMember)) :  ?>
+						<input type = "number" step="0.1" id="useredit-hlbetrate-input-id" value="0" >
+						<?php else :?>
+						<input type = "number" step="0.1" id="useredit-hlbetrate-input-id" value="<?=$objMember->mb_game_hl_ratio?>">
+						<?php endif ?>
+						<br>
+					<?php endif ?> 
+
+					<?php if(!$evol_deny || !$cas_deny) :?>
+						<?php if(is_null($objMember)) :  ?>
+						<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="0" >
+						<?php else :?>
+						<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="<?=$objMember->mb_game_cs_ratio?>">
+						<?php endif ?>
+						<br>
+					<?php endif ?>
+
+					<?php if(!$slot_deny) :?>
+						<?php if(is_null($objMember)) :  ?>
+						<input type = "number" step="0.1" id="useredit-slbetrate-input-id" value="0" >
+						<?php else :?>
+						<input type = "number" step="0.1" id="useredit-slbetrate-input-id" value="<?=$objMember->mb_game_sl_ratio?>">
+						<?php endif ?>
+					<?php endif ?>
+
+				</td>
 			</tr>
 			<?php endif?>
 

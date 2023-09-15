@@ -100,7 +100,7 @@ class User extends StdController
 			$follow_en = false;
 			$press_en = 0;
 
-			if($objAdmin->mb_level >= LEVEL_ADMIN && array_key_exists('app.hold', $_ENV) && $_ENV['app.hold'] == 1 ){
+			if($objAdmin->mb_level >= LEVEL_ADMIN && array_key_exists('app.tree', $_ENV) && $_ENV['app.tree'] == 1 ){
 				$url = 'user/user_detail'; 
 
 				if(!is_null($objMember)){
@@ -167,7 +167,9 @@ class User extends StdController
 					$this->response->redirect($_ENV['app.furl'].'/user/member_list/0');
 				else print "<script language=javascript> self.close(); </script>";
 			}
-			else 
+			if(array_key_exists('app.tree', $_ENV) && $_ENV['app.tree'] == 1){
+				$this->response->redirect($_ENV['app.furl'].'/user/member_list/0');
+			} else 
 				$this->response->redirect($_ENV['app.furl'].'/user/member/0');
 		}
 		else {

@@ -20,7 +20,7 @@ class StdController extends BaseController
 				"50"=> "",
 				"100"=> "",
 			];
-			if(array_key_exists('app.hold', $_ENV) && $_ENV['app.hold'] == 1)
+			if(array_key_exists('app.tree', $_ENV) && $_ENV['app.tree'] == 1)
 				$arrNum["100"] = "selected";
 			else $arrNum["10"] = "selected";
 
