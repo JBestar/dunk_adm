@@ -1434,6 +1434,7 @@ class Api extends BaseController{
 			$objResult->data = $arrData;
 			$objResult->level = $objUser->mb_level;
 			$objResult->status = "success";
+			$objResult->tree = array_key_exists('app.tree', $_ENV) && $_ENV['app.tree'] == 1;
 		
 			echo json_encode($objResult);
 			
