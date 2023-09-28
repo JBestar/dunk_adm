@@ -273,6 +273,7 @@ function requestBetHistory() {
         "mode": -10,
         "state":state,
         "type":type,
+        "game":mGameId,
     };
     jsonData = JSON.stringify(jsonData);
     $(".loading").show();
@@ -326,6 +327,7 @@ function requestTotalPage(bReqPage = true) {
         "mode": -10,
         "state":state,
         "type":type,
+        "game":mGameId,
     };
     jsonData = JSON.stringify(jsonData);
 

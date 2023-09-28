@@ -289,7 +289,7 @@
 				<?php endif?>
 			</div>
 		<?php endif ?>   
-		<?php if(!$evol_deny || !$cas_deny) :?>
+		<?php if(isEBalMode() || !$evol_deny || !$cas_deny) :?>
 			<div class="useredit-percent-div">
 				<p>카지노:</p>			 
 				<label> 배당율(%)</label>
@@ -382,13 +382,27 @@
 								<input type="checkbox" id="useredit-follow-check-id" style="zoom:140%; margin-top:4px; margin-right:0; width:20px;" >
 							<?php endif ?>
 							<p style="width:133px">에볼 따라가기</p> 
-
 							<label style="text-align:right; width:89px;"> 아이디</label>
 							<?php if(is_null($objMember)) : ?>
 							<input type = "text" id="useredit-follow-input-id" value="">
 							<?php else :?>
 							<input type = "text" id="useredit-follow-input-id" value="<?=$objMember->mb_follow_id?>">
 							<?php endif ?>
+
+							<label style="text-align:right; width:89px;"> 금액(%)</label>
+							<select type="text" id="useredit-follow-percent-id" style="padding: 5px 5px; border: none; width:150px;">
+							<?php if (is_null($objMember)) : ?>
+								<option value="30">30%</option>
+								<option value="50">50%</option>
+								<option value="70">70%</option>
+								<option value="100" selected>100%</option>
+							<?php else :?>
+								<option value="30" <?=$objMember->mb_follow_percent==30?'selected':''?> >30%</option>
+								<option value="50" <?=$objMember->mb_follow_percent==50?'selected':''?> >50%</option>
+								<option value="70" <?=$objMember->mb_follow_percent==70?'selected':''?> >70%</option>
+								<option value="100" <?=$objMember->mb_follow_percent==100?'selected':''?> >100%</option>
+							<?php endif?>
+							</select>
 
 					<?php endif ?>
 				<?php else: ?>

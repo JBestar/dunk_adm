@@ -119,14 +119,13 @@ class Bet extends StdController {
 	public function cshistory(){
 		$modelCasprd = new CasPrd_Model();
 		$arrPrd = [];
-		$modelCasprd->gets();
 
 		$confsiteModel = new ConfSite_Model();
 		$confs = $this->getSiteConf($confsiteModel);
 		if(!$confs["evol_deny"]){
 			$arrPrd +=  $modelCasprd->gets(GAME_CASINO_EVOL);
 		}
-		if(!isEBalMode() && !$confs["cas_deny"]){
+		if(!$confs["cas_deny"]){
 			$gameId = GAME_CASINO_KGON;
 			if($_ENV['app.casino'] == APP_CASINO_STAR)
 				$gameId = GAME_CASINO_STAR;
@@ -145,6 +144,22 @@ class Bet extends StdController {
 		$this->load_view_page('bet/cshistory', 'bet_history', 0, $param);
 	}
 	
+	public function evhistory(){
+		$modelCasprd = new CasPrd_Model();
+		$arrPrd = [];
+
+		$confsiteModel = new ConfSite_Model();
+		$confs = $this->getSiteConf($confsiteModel);
+		$arrPrd +=  $modelCasprd->gets(GAME_CASINO_EVOL);
+
+		$param = [
+			'prds' => $arrPrd,
+			'game_name' => "에볼루션",
+			'game_id' => GAME_AUTO_EVOL,
+		];
+		$this->load_view_page('bet/cshistory', 'bet_history', 0, $param);
+	}
+
 	public function ebalhistory(){
 		$confsiteModel = new ConfSite_Model();
 
@@ -180,11 +195,12 @@ class Bet extends StdController {
 
 		$param = [
 			'game_name' => "배팅내역",
-			'game_id' => GAME_CASINO_EVOL,
+			'game_id' => GAME_AUTO_EVOL,
 			'evpress' => $confsiteModel->getEvpressState(),
 		];
 		$this->load_view_page('ebal/ebethistory', 'conf_ebal', LEVEL_ADMIN, $param);
 	}
+
 
 	public function bbhistory(){
 		
@@ -334,6 +350,14 @@ class Bet extends StdController {
 		$param = [
 			'game_name' => "카지노",
 			'game_id' => GAME_CASINO_EVOL,
+		];
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
+	}
+
+	public function evcalculate(){
+		$param = [
+			'game_name' => "에볼루션",
+			'game_id' => GAME_AUTO_EVOL,
 		];
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}

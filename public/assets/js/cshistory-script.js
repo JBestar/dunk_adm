@@ -151,7 +151,8 @@ function requestBetHistory() {
         "end": dtEnd,
         "emp": strEmp,
         "user": strUser,
-        "mode": nMode
+        "mode": nMode,
+        "game": mGameId
     };
     jsonData = JSON.stringify(jsonData);
     $(".loading").show();
@@ -195,7 +196,8 @@ function requestTotalPage(bReqPage = true) {
         "end": dtEnd,
         "emp": strEmp,
         "user": strUser,
-        "mode": nMode
+        "mode": nMode,
+        "game": mGameId
     };
     jsonData = JSON.stringify(jsonData);
 

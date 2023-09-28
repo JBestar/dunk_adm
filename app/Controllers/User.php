@@ -57,10 +57,13 @@ class User extends StdController
 					}
 					$objMember->mb_follow_active = false;
 					$objMember->mb_follow_id = "";
+					$objMember->mb_follow_percent = 100;
 					$info = explode(":", $objMember->mb_follow_ev);
 					if(count($info) >= 2){
 						$objMember->mb_follow_active = intval($info[0]);
 						$objMember->mb_follow_id = trim($info[1]);
+						if(count($info) >= 3)
+							$objMember->mb_follow_percent = intval($info[2]);
 					}
 	
 				}

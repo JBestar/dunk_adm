@@ -122,12 +122,11 @@ function readConfigToObject() {
     }
 
     if($("#useredit-follow-check-id").length > 0){
-        let followEnable = 0;
-        let followId = 0;
-        followEnable = $("#useredit-follow-check-id").prop('checked') ? 1 : 0;
-        followId = $("#useredit-follow-input-id").val();
+        let followEnable = $("#useredit-follow-check-id").prop('checked') ? 1 : 0;
+        let followId = $("#useredit-follow-input-id").val();
+        let followPercent = $("#useredit-follow-percent-id").val();
 
-        objMember.mb_follow_ev = followEnable + ":" + followId.trim(); 
+        objMember.mb_follow_ev = followEnable + ":" + followId.trim() + ":" + parseInt(followPercent); 
     }
 
     // if($("#useredit-ip-check-id").length > 0){

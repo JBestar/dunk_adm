@@ -76,7 +76,7 @@
 
 <!--main_navbar.php-main-container-->
 </div>
-
+<script> var mGameId = <?=$game_id?>; </script>
 <?php if(array_key_exists("app.produce", $_ENV)) :?>
     <script src="<?php echo site_furl('/assets/js/page.js?t='.time());?>"></script>
     <script src="<?php echo site_furl('/assets/js/ebethistory-script.js?t='.time());?>"></script>

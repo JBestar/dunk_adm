@@ -128,7 +128,7 @@ class EbalBet_Model extends Model
             return $result;
         }
 
-        $gameId = GAME_CASINO_EVOL;
+        $gameId = GAME_AUTO_EVOL;
 
         $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_live_id ";
         $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_nickname, r.mb_live_id ";

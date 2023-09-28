@@ -20,7 +20,7 @@
 					<?php if(!$hold_deny) :?>
 						<td>홀덤<span id="main-navbar-emp_hlrate-id">0 %</span></td>
 					<?php endif ?> 
-					<?php if(!$evol_deny || !$cas_deny) :?>
+					<?php if(isEBalMode() || !$evol_deny || !$cas_deny) :?>
 						<td>카지노<span id="main-navbar-emp_evrate-id">0 %</span></td>
 					<?php endif ?>
 					<?php if(!$coin5_deny || !$coin3_deny) :?>
@@ -71,7 +71,7 @@
 
 		<?php if($mb_level >= LEVEL_ADMIN) :  ?>
 			
-			<?php if(!$evol_deny || !$cas_deny || !$slot_deny || !$hold_deny) :?>
+			<?php if(isEBalMode() || !$evol_deny || !$cas_deny || !$slot_deny || !$hold_deny) :?>
 			<Table class="main-navbar-betinfo-table" style="margin-left:20px; ">
 				<?php if(!$hold_deny) :?>
 				<tr>
@@ -83,7 +83,7 @@
     			<?php endif ?>  
 
 
-					<?php if(!$evol_deny) :?>
+					<?php if(isEBalMode()) :?>
 					<tr>
 						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">에볼루션:</td>
 						<td>배팅<span id="main-navbar-evbet-id">0 원</span></td>
@@ -93,20 +93,24 @@
 					<?php endif ?>   
 					
 					<?php if(!$slot_deny) :?>
-					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">정품슬롯:</td>
-						<td>배팅<span id="main-navbar-slbet-id">0 원</span></td>
-						<td>적중<span id="main-navbar-slbetearn-id">0 원</span></td>
-						<td>보유알<span id="main-navbar-sluser-id">0 원</span><span>|</span><span id="main-navbar-slegg-id">0 원</span></td>
-					</tr>
-					<tr>
-						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">네츌슬롯:</td>
-						<td>배팅<span id="main-navbar-fslbet-id">0 원</span></td>
-						<td>적중<span id="main-navbar-fslbetearn-id">0 원</span></td>
-						<td>보유알<span id="main-navbar-fsluser-id">0 원</span><span>|</span><span id="main-navbar-fslegg-id">0 원</span></td>
-					</tr>
+						<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_3) :?>
+						<tr>
+							<td style="font-weight: bold; color: #0090ff; font-size: 14px;">정품슬롯:</td>
+							<td>배팅<span id="main-navbar-slbet-id">0 원</span></td>
+							<td>적중<span id="main-navbar-slbetearn-id">0 원</span></td>
+							<td>보유알<span id="main-navbar-sluser-id">0 원</span><span>|</span><span id="main-navbar-slegg-id">0 원</span></td>
+						</tr>
+						<?php endif ?>
+						<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_2) :?>
+						<tr>
+							<td style="font-weight: bold; color: #0090ff; font-size: 14px;">네츌슬롯:</td>
+							<td>배팅<span id="main-navbar-fslbet-id">0 원</span></td>
+							<td>적중<span id="main-navbar-fslbetearn-id">0 원</span></td>
+							<td>보유알<span id="main-navbar-fsluser-id">0 원</span><span>|</span><span id="main-navbar-fslegg-id">0 원</span></td>
+						</tr>
+						<?php endif ?>  
 					<?php endif ?>  
-					<?php if(!isEBalMode() && !$cas_deny) :?>
+					<?php if(!$evol_deny || !$cas_deny) :?>
 					<tr>
 						<td style="font-weight: bold; color: #0090ff; font-size: 14px;">카지노:</td>
 						<td>배팅<span id="main-navbar-kgbet-id">0 원</span></td>

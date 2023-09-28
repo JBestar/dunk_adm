@@ -13,8 +13,18 @@
 		<p style="width:200px;">승인</p>
 	</div>
 
+	<div class="confsite-password-text-div" style="margin-top:20px;">
+		<p>따라가기 아이디:</p> <input type="text" id="confsite-follow-input-id" style="width:150px;" value="<?= $mb_follow_id?>">
+	</div>
+
 	<div class="confsite-password-text-div" style="margin-top:20px">
-		<p>따라가기 아이디:</p> <input type="text" id="confsite-follow-input-id" value="<?= $mb_follow_id?>">
+		<p>따라가기 금액(%):</p> 
+		<select type="text" id="confsite-follow-percent-id" style="padding: 5px 5px; border: none; width:150px;">
+			<option value="30" <?=$mb_follow_percent==30?'selected':''?> >30%</option>
+			<option value="50" <?=$mb_follow_percent==50?'selected':''?> >50%</option>
+			<option value="70" <?=$mb_follow_percent==70?'selected':''?> >70%</option>
+			<option value="100" <?=$mb_follow_percent==100?'selected':''?> >100%</option>
+		</select>
 	</div>
 
 	<div class="confsite-button-group">

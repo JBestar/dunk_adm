@@ -626,7 +626,7 @@ class Api extends BaseController{
 				$iResult = -1;
 			} else {
 				$arrData['mb_fid'] = $objMember->mb_fid;
-				$arrData['mb_follow_ev'] = $arrData['follow_check'].":".$arrData["follow_id"];
+				$arrData['mb_follow_ev'] = $arrData['follow_check'].":".$arrData["follow_id"].":".$arrData["follow_percent"];
 				$iResult = $this->modelMember->updateMemberByFid($arrData, $query);
 			}
 			$arrResult['status'] = "fail";
@@ -1583,8 +1583,6 @@ class Api extends BaseController{
 		} 		
 	}
 
-
-
 	//배팅리력결과를 Ajax로 전송
 	public function csbetlist(){ 
 		$jsonData = $_REQUEST['json_'];
@@ -1595,8 +1593,7 @@ class Api extends BaseController{
 			$tmNow = microtime(true) * 1000;
 
 			//model
-			if(isEBalMode()){
-				
+			if(array_key_exists('game', $arrGetData) && $arrGetData['game'] == GAME_AUTO_EVOL && isEBalMode()){
 				$csbetModel = new EbalBet_Model();
 				if(strlen($arrGetData['user']) > 0){
 					$objUser = $this->modelMember->getInfo(trim($arrGetData['user']));
@@ -1646,7 +1643,7 @@ class Api extends BaseController{
 			// writeLog("csbetlistcnt");
 			$tmNow = microtime(true) * 1000;
 			//model
-			if(isEBalMode()){
+			if(array_key_exists('game', $arrGetData) && $arrGetData['game'] == GAME_AUTO_EVOL && isEBalMode()){
 				$csbetModel = new EbalBet_Model();
 				if(strlen($arrGetData['user']) > 0){
 					$objUser = $this->modelMember->getInfo(trim($arrGetData['user']));

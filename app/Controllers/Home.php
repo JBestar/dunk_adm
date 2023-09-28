@@ -295,6 +295,7 @@ class Home extends StdController
 		$param = [
 			'mb_follow_check' => false,
 			'mb_follow_id' => "",
+			'mb_follow_percent' => 100,
 		];
 
 		if(!is_null($objMember) && strlen($objMember->mb_follow_ev) > 0){
@@ -303,6 +304,8 @@ class Home extends StdController
 			if(count($info) >= 2){
 				$param['mb_follow_check'] = intval($info[0]) == STATE_ACTIVE;
 				$param['mb_follow_id'] = $info[1];
+				if(count($info) >= 3)
+					$param['mb_follow_percent'] = intval($info[2]);
 			}
 			
 		}

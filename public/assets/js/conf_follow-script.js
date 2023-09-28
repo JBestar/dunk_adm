@@ -9,12 +9,13 @@ function addBtnEvent() {
 
         let follow_check = $("#confsite-follow-check-id").prop('checked') ? 1 : 0;
         let follow_id = $("#confsite-follow-input-id").val().trim();
+        let follow_percent = $("#confsite-follow-percent-id").val()
         if(follow_check == 1 && follow_id.length < 1 ){
             alert("따라가기 아이디를 입력해주세요");
             return;
         }
 
-        var jsonData = {follow_check:follow_check, follow_id:follow_id};
+        var jsonData = {follow_check:follow_check, follow_id:follow_id, follow_percent:follow_percent};
 
         if (!confirm("저장하시겠습니까?"))
             return;

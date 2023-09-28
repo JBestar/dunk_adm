@@ -25,6 +25,9 @@
 		<?php if(!$coin3_deny) :?>
 			<a href="<?php echo site_furl('bet/c3history');?>" class="sub-navbar-a" >코인3분</a>
 		<?php endif ?>  
+		<?php if(isEBalMode()) :?>
+			<a href="<?php echo site_furl('bet/evhistory');?>" class="sub-navbar-a" >에볼루션</a>
+			<?php endif ?> 
 		<?php if(!$evol_deny || !$cas_deny) :?>
 			<a href="<?php echo site_furl('bet/cshistory');?>" class="sub-navbar-a" >카지노</a>
 		<?php endif ?>

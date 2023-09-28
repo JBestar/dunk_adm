@@ -148,7 +148,7 @@
 					<?php if(!$hold_deny) :?>
 					홀덤 배당율(%)<br> <br>
 					<?php endif ?> 
-					<?php if(!$evol_deny || !$cas_deny) :?>
+					<?php if(isEBalMode() || !$evol_deny || !$cas_deny) :?>
 					카지노 배당율(%)<br> <br>
 					<?php endif ?> 
 					<?php if(!$slot_deny) :?>
@@ -165,7 +165,7 @@
 						<br>
 					<?php endif ?> 
 
-					<?php if(!$evol_deny || !$cas_deny) :?>
+					<?php if(isEBalMode() || !$evol_deny || !$cas_deny) :?>
 						<?php if(is_null($objMember)) :  ?>
 						<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="0" >
 						<?php else :?>
@@ -254,7 +254,8 @@
 						<?php endif ?>
 					</td>
 					<td>
-					따라가기 아이디
+					따라가기 아이디<br>
+					따라가기금액(%)
 					</td>
 					<td>
 						<?php if(is_null($objMember)) : ?>
@@ -262,6 +263,19 @@
 						<?php else :?>
 						<input type = "text" id="useredit-follow-input-id" value="<?=$objMember->mb_follow_id?>">
 						<?php endif ?>
+						<select type="text" id="useredit-follow-percent-id">
+							<?php if (is_null($objMember)) : ?>
+								<option value="30">30%</option>
+								<option value="50">50%</option>
+								<option value="70">70%</option>
+								<option value="100" selected>100%</option>
+							<?php else :?>
+								<option value="30" <?=$objMember->mb_follow_percent==30?'selected':''?> >30%</option>
+								<option value="50" <?=$objMember->mb_follow_percent==50?'selected':''?> >50%</option>
+								<option value="70" <?=$objMember->mb_follow_percent==70?'selected':''?> >70%</option>
+								<option value="100" <?=$objMember->mb_follow_percent==100?'selected':''?> >100%</option>
+							<?php endif?>
+						</select>
 					</td>
 				</tr>
 				<?php endif ?>

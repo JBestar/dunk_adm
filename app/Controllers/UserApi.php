@@ -666,7 +666,7 @@ class UserApi extends BaseController
                     // writeLog("coin3_enable");
 
                 }
-                if(!$siteConfs['evol_deny']){
+                if(isEBalMode() || !$siteConfs['evol_deny']){
 
                     $arrReqData['type'] = GAME_CASINO_EVOL;
                     if(isEBalMode()){
@@ -736,7 +736,7 @@ class UserApi extends BaseController
                     }
                     // writeLog("slot_deny");
                 }
-                if(!isEBalMode() && !$siteConfs['cas_deny']){
+                if(!$siteConfs['cas_deny']){
                     $betModel = new CsBet_Model();
 
                     $objConfPb = $confgameModel->getByIndex(GAME_CASINO_KGON);
