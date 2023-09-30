@@ -10,6 +10,8 @@ class StdController extends BaseController
 	{
 		if(is_login())
 		{
+            $this->sess_action();                
+
 			$arrData = getSidebarLinkArray();
 			$arrData['confdropdownbtn'] = " main-dropdown-active-btn";
 			$arrData['confdropdown'] = "style='display:block'";

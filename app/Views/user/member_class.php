@@ -51,7 +51,7 @@
 	<div class="user-panel">	
 		<div>
 			<?php if($mb_level >= LEVEL_ADMIN) {  ?>
-			<a href="javascript:showMemCreate();" class="user-panel-add-a" >회원 등록</a>
+			<a href="javascript:popupMemberEdit(0);" class="user-panel-add-a" >회원 등록</a>
 			<?php } ?>
 			<!-- <label>추천인</label>
             <input type="text" class="pbresult-text-input" id="userpanel-empid-input-id" value= "<?=$emp_uid?>"> -->
@@ -99,8 +99,6 @@
 						<th>등록날짜</th>
 						<th>최근접속</th>
 						<th>수정</th>
-						<th>삭제</th>
-						<th>상태</th>
 						<?php if(!$slot_deny) :?>
 							<th>공배팅</th>
 						<?php endif ?> 

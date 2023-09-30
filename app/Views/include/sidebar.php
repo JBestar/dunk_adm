@@ -6,7 +6,13 @@
   <div class="main-dropdown-container" <?=$confdropdown?> >
     <?php if($mb_level >= LEVEL_ADMIN) {  ?>
     <a href="<?php echo siteFurl().'home/conf_site';?>" class="<?=$conf_site?>"><i class="glyphicon glyphicon-cog"></i>  본사설정</a>
-    <?php if(!$hpg_deny) :?>
+    <?php if(!$cas_deny) :?>
+      <a href="<?php echo siteFurl().'home/conf_casino';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
+    <?php elseif(!$evol_deny) :?>
+      <a href="<?php echo siteFurl().'home/conf_evol';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
+    <?php elseif(!$slot_deny) :?>
+      <a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
+    <?php elseif(!$hpg_deny) :?>
       <a href="<?php echo siteFurl().'home/conf_powerball';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
     <?php elseif(!$bpg_deny) :?>
       <a href="<?php echo siteFurl().'home/conf_bogleball';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
@@ -18,12 +24,6 @@
       <a href="<?php echo siteFurl().'home/conf_coin5ball';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
     <?php elseif(!$coin3_deny) :?>
       <a href="<?php echo siteFurl().'home/conf_coin3ball';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
-    <?php elseif(!$evol_deny) :?>
-      <a href="<?php echo siteFurl().'home/conf_evol';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
-    <?php elseif(!$cas_deny) :?>
-      <a href="<?php echo siteFurl().'home/conf_casino';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
-    <?php elseif(!$slot_deny) :?>
-      <a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
     <?php elseif(!$hold_deny) :?>
       <a href="<?php echo siteFurl().'home/conf_hold';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
     <?php endif ?>  
@@ -141,6 +141,8 @@
 
     <?php if(!$hold_deny) :?>
     <a href="<?php echo siteFurl().'bet/hlhistory';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>
+    <?php elseif(!$evol_deny || !$cas_deny) :?>
+    <a href="<?php echo siteFurl().'bet/cshistory';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>
     <?php elseif(!$hpg_deny) :?>
     <a href="<?php echo siteFurl().'bet/pbhistory';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>
     <?php elseif(!$bpg_deny) :?>
@@ -153,8 +155,6 @@
     <a href="<?php echo siteFurl().'bet/c5history';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>
     <?php elseif(!$coin3_deny) :?>
     <a href="<?php echo siteFurl().'bet/c3history';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>
-    <?php elseif(!$evol_deny || !$cas_deny) :?>
-    <a href="<?php echo siteFurl().'bet/cshistory';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>
     <?php elseif(!$slot_deny) :?>
     <a href="<?php echo siteFurl().'bet/slhistory';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>
     <?php endif ?>

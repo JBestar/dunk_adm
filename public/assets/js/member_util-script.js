@@ -34,7 +34,7 @@ function procMember(tdLevel, empId, bShow){
 }
 
 
-function showMember(arrMember, confs, refresh=true, bTree=true) {
+function showMember(arrMember, confs, refresh=true) {
 
     if(!refresh && arrMember.length == mArrMember.length){
         mArrMember = arrMember;
@@ -57,12 +57,12 @@ function showMember(arrMember, confs, refresh=true, bTree=true) {
         var strBuf = "";
         for (let objMember of mArrMember) {
             objMember.mb_state_active = parseInt(objMember.mb_state_active);
-            if(objMember.mb_state_active == 2 || !bTree){
+            if(objMember.mb_state_active == 2 || !confs.tree){
                 strBuf += getMemberTr(objMember, false, true);
             }
         }
     
-        if(bTree && arrMember.length > 0){
+        if(confs.tree && arrMember.length > 0){
             let lvTop = parseInt(arrMember[0].mb_level) ;
             let empId = parseInt(arrMember[0].mb_emp_fid) ;
             strBuf += procMember(lvTop, empId, true);

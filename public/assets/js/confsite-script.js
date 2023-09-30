@@ -117,6 +117,9 @@ function readConfigToObject() {
         jsonData.bank_rest += "#"+$("#confsite-bankend-input-id").val();
     }
 
+    if($("#confsite-autoapps-check-id").length > 0){
+        jsonData.autoapps = $("#confsite-autoapps-check-id").prop('checked') ? 1 : 0;
+    }
     return jsonData;
 
 }

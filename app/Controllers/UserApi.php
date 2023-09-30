@@ -965,7 +965,7 @@ class UserApi extends BaseController
 
 			$objResult = new \stdClass();
             $strUid = $this->session->user_id;
-            $objUser = $this->modelMember->getInfo($strUid);
+            $objAdmin = $this->modelMember->getInfo($strUid);
 			$empFid = 0;
             if (strlen($arrData['mb_emp_uid']) > 0){
                 $objEmp = $this->modelMember->getInfo($arrData['mb_emp_uid']);
@@ -974,7 +974,7 @@ class UserApi extends BaseController
                 } else $empFid = -1;
             } 
             
-            if($empFid >= 0 && $objUser->mb_level >= LEVEL_ADMIN){
+            if($empFid >= 0 && $objAdmin->mb_level >= LEVEL_ADMIN){
                 $arrMember = $this->modelMember->searchUserByLevel($arrData, $empFid, $confs);
                 if (is_null($arrMember)) {
                     $arrMember = [];
@@ -993,7 +993,11 @@ class UserApi extends BaseController
                 $arrMember = [];
             }
             
-            $confs['emp_level'] = $objUser->mb_level; 
+            $confs['emp_level'] = $objAdmin->mb_level; 
+            $bDelete = true;
+            if(array_key_exists('app.delete_level', $_ENV) && $objAdmin->mb_level < $_ENV['app.delete_level'])
+                $bDelete = false;
+            $confs['delete'] = $bDelete;
             $objResult->status = 'success';
             $objResult->confs = $confs;
             $objResult->data = $arrMember;
@@ -1111,12 +1115,15 @@ class UserApi extends BaseController
 
             $confs= $this->getSiteConf($confsiteModel);
             $confs['emp_level'] = $objAdmin->mb_level; 
-            
+            $confs['tree'] = $bTree;
+            $bDelete = true;
+            if(array_key_exists('app.delete_level', $_ENV) && $objAdmin->mb_level < $_ENV['app.delete_level'])
+                $bDelete = false;
+            $confs['delete'] = $bDelete;
+
             $objResult->status = 'success';
             $objResult->confs = $confs;
             $objResult->data = $arrUsers;
-            $objResult->tree = $bTree;
-
 
             echo json_encode($objResult);
         } else {
@@ -1222,11 +1229,15 @@ class UserApi extends BaseController
             }
 
             $confs['emp_level'] = $objAdmin->mb_level; 
+            $confs['tree'] = $bTree;
+            $bDelete = true;
+            if(array_key_exists('app.delete_level', $_ENV) && $objAdmin->mb_level < $_ENV['app.delete_level'])
+                $bDelete = false;
+            $confs['delete'] = $bDelete;
             
             $objResult->status = 'success';
             $objResult->confs = $confs;
             $objResult->data = $arrMember;
-            $objResult->tree = $bTree;
 
             echo json_encode($objResult);
         } else {

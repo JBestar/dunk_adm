@@ -131,6 +131,15 @@ class BaseController extends Controller
 		$this->session->destroy();
 	}
 
+	protected function sess_action(){
+		if(array_key_exists('app.sess_act', $_ENV) && $_ENV['app.sess_act'] == 1){
+			$sess_id = $this->session->session_id;
+			$this->modelSess->updateAction($sess_id);
+			if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+				writeLog("[sess_action] sess_id=".$sess_id);
+		}
+	}
+	
 	protected function allEgg(&$objMember){
 		$confsiteModel = new ConfSite_Model();
 		$confs = $this->getSiteConf($confsiteModel);

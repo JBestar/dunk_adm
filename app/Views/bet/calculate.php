@@ -10,6 +10,27 @@
 			<?php if(!$hold_deny) :?>
 			<a href="<?php echo site_furl('bet/hlcalculate');?>" class="sub-navbar-a" >홀덤</a>
 			<?php endif ?> 
+			<?php if(!$evol_deny || !$cas_deny) :?>
+			<a href="<?php echo site_furl('bet/cscalculate');?>" class="sub-navbar-a" >카지노</a>
+			<?php endif ?>   
+			<?php if(isEBalMode()) :?>
+			<a href="<?php echo site_furl('bet/evcalculate');?>" class="sub-navbar-a" >에볼루션</a>
+			<?php endif ?> 
+			<?php if(!$slot_deny) :?>
+				<?php if($mb_level >= LEVEL_ADMIN) :  ?>
+					<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_3) :?>
+						<a href="<?php echo site_furl('bet/xslcalculate');?>" class="sub-navbar-a" >정품슬롯</a>
+					<?php endif ?>
+					<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_2) :?>
+						<a href="<?php echo site_furl('bet/fslcalculate');?>" class="sub-navbar-a" >네츄럴슬롯</a>
+					<?php endif ?>
+					<?php if($_ENV['app.type'] == APP_TYPE_1) :?>
+						<a href="<?php echo site_furl('bet/slcalculate');?>" class="sub-navbar-a" >슬롯</a>
+					<?php endif ?>
+				<?php else: ?>
+					<a href="<?php echo site_furl('bet/slcalculate');?>" class="sub-navbar-a" >슬롯</a>
+				<?php endif ?>
+			<?php endif ?>   
 			<?php if(!$hpg_deny) :?>
 				<a href="<?php echo site_furl('bet/pbcalculate');?>" class="sub-navbar-a" >해피볼</a>
 			<?php endif ?>  
@@ -29,28 +50,6 @@
 			<?php if(!$coin3_deny) :?>
 				<a href="<?php echo site_furl('bet/c3calculate');?>" class="sub-navbar-a" >코인3분</a>
 			<?php endif ?>
-			<?php if(isEBalMode()) :?>
-			<a href="<?php echo site_furl('bet/evcalculate');?>" class="sub-navbar-a" >에볼루션</a>
-			<?php endif ?> 
-			<?php if(!$evol_deny || !$cas_deny) :?>
-			<a href="<?php echo site_furl('bet/cscalculate');?>" class="sub-navbar-a" >카지노</a>
-			<?php endif ?>   
-			<?php if(!$slot_deny) :?>
-				<?php if($mb_level >= LEVEL_ADMIN) :  ?>
-					<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_3) :?>
-						<a href="<?php echo site_furl('bet/xslcalculate');?>" class="sub-navbar-a" >정품슬롯</a>
-					<?php endif ?>
-					<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_2) :?>
-						<a href="<?php echo site_furl('bet/fslcalculate');?>" class="sub-navbar-a" >네츄럴슬롯</a>
-					<?php endif ?>
-					<?php if($_ENV['app.type'] == APP_TYPE_1) :?>
-						<a href="<?php echo site_furl('bet/slcalculate');?>" class="sub-navbar-a" >슬롯</a>
-					<?php endif ?>
-				<?php else: ?>
-					<a href="<?php echo site_furl('bet/slcalculate');?>" class="sub-navbar-a" >슬롯</a>
-				<?php endif ?>
-			<?php endif ?>   
-
 	</div>
 
 	<div class="bet-panel">

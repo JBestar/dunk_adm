@@ -15,7 +15,6 @@ function requestPageInfo() {
 
 function showMember(arrMember, confs) {
 
-
     mArrMember = arrMember;
     mConfs = confs;
 
@@ -30,9 +29,9 @@ function showMember(arrMember, confs) {
         strBuf += "<td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td> <td>";
-        strBuf += "<a onclick='showMemEdit(" + arrMember[nRow].mb_fid + ")' class='link-member'>"+ arrMember[nRow].mb_uid+ "</a>";
+        strBuf += "<a onclick='popupMemberEdit(" + arrMember[nRow].mb_fid + ", "+arrMember[nRow].mb_fid+ ")' class='link-member'>"+ arrMember[nRow].mb_uid+ "</a>";
         strBuf += "</td> <td>";
-        strBuf += "<a onclick='showMemEdit(" + arrMember[nRow].mb_fid + ")' class='link-member'>"+ arrMember[nRow].mb_nickname+ "</a>";
+        strBuf += "<a onclick='popupMemberEdit(" + arrMember[nRow].mb_fid + ", "+arrMember[nRow].mb_fid+ ")' class='link-member'>"+ arrMember[nRow].mb_nickname+ "</a>";
         if(arrMember[nRow].mb_state_delete > 0){
             strBuf += "<br>(오프라인)";    
         }
@@ -87,13 +86,6 @@ function showMember(arrMember, confs) {
         // strBuf += "</td> <td>";
         // strBuf += "<button name='" + nRow + "' data-fid='" + arrMember[nRow].mb_fid + "' >환전</button>";
         strBuf += "</td> <td>";
-        strBuf += "<button name='" + nRow + "' data-fid='" + arrMember[nRow].mb_fid + "' >수정</button>";
-        strBuf += "</td> <td>";
-        if (arrMember[nRow].mb_state_active == 4)
-            strBuf += "<button name='" + arrMember[nRow].mb_fid + "' data-nickname='"+arrMember[nRow].mb_nickname+"'>회복</button>   ";
-        else 
-            strBuf += "<button name='" + arrMember[nRow].mb_fid + "'>삭제</button>   ";
-        strBuf += "</td> <td>";
         strBuf += "<button name='" + arrMember[nRow].mb_fid + "'";
         if (confs.emp_level < LEVEL_ADMIN) {
             strBuf += " disabled = 'true' ";
@@ -107,6 +99,14 @@ function showMember(arrMember, confs) {
         } else {
             strBuf += ">차단</button>";
         }
+        strBuf += "<button onclick='popupMemberEdit("+arrMember[nRow].mb_fid + ", "+arrMember[nRow].mb_fid+")'>수정</button>";
+        if(confs.delete == 1){
+            if (arrMember[nRow].mb_state_active == 4)
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "' data-nickname='"+arrMember[nRow].mb_nickname+"'>회복</button>   ";
+            else 
+                strBuf += "<button name='" + arrMember[nRow].mb_fid + "'>삭제</button>   ";
+        }
+        
         strBuf += "</td></tr>";
     }
 
@@ -322,9 +322,9 @@ function addButtonElementListener(buttonElement) {
             showMemCharge($(this).data('fid'));
         } else if (tHtml.search("환전") >= 0) {
             showMemDischarge($(this).data('fid'));
-        } else if (tHtml.search("수정") >= 0) {
+        } /*else if (tHtml.search("수정") >= 0) {
             showMemEdit($(this).data('fid'));
-        } else if (tHtml.search("강제아웃") >= 0) {
+        }*/ else if (tHtml.search("강제아웃") >= 0) {
             let nickname  = $(this).data('nickname');
             if (!confirm(nickname+" 회원을 강제아웃 시키겠습니까?"))
                 return;

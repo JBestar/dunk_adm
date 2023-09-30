@@ -50,7 +50,7 @@
   </div>
 </div>
 <style>
-		.user-table a.link-member {
+		.user-table a.link-member, .bet-table a.link-member {
 			color: blue;
 			border: none;
 			background-color: transparent;
@@ -59,7 +59,7 @@
             cursor:pointer;
 		}
 
-		.user-table a.link-member:hover {
+		.user-table a.link-member:hover, .bet-table a.link-member:hover {
 			text-decoration: underline;
 			color: blue;
 		}

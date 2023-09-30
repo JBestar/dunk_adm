@@ -115,8 +115,6 @@
 						<th class="sort-by">등록날짜</th>
 						<th class="sort-by">최근접속</th>
 						<th>수정</th>
-						<th>삭제</th>
-						<th>상태</th>
 					</tr>
 				</thead>
 				<tbody  id="user-member-table-id">

@@ -372,6 +372,13 @@ class ConfSite_Model extends Model
             $arrBatch[] = $updateData;
         }
 
+        if(array_key_exists('autoapps', $arrData)){
+            $updateData = array();
+            $updateData['conf_id'] = CONF_AUTOAPPS;
+            $updateData['conf_idx'] = $arrData['autoapps'];
+            $arrBatch[] = $updateData;
+        }
+
         return  $this->builder()->updateBatch($arrBatch, 'conf_id');
 
     }

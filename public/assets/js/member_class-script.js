@@ -22,14 +22,14 @@ function getMemberTr(objMember, bChild = false, bShow=false){
     }
     // strBuf += (mOrder++);
     strBuf += "</td> <td>";
-    strBuf += getLevelTd(objMember, "showMemEdit"); //"/user/member_class/"
+    strBuf += getLevelTd(objMember, "popupMemberEdit"); //"/user/member_class/"
     strBuf += "</td> <td>";
     if(objMember.mb_empname !== undefined && objMember.mb_empname.length > 0)
         strBuf += "<a href='"+FURL+"/user/member_class/"+objMember.mb_emp_fid+"' class='link-member'>"+objMember.mb_empname+"</a>";
     strBuf += "</td> <td>";
     strBuf += objMember.mb_fid;
     strBuf += "</td> <td>";
-    strBuf += "<a onclick='showMemEdit(" + objMember.mb_fid + ")' class='link-member'>"+ objMember.mb_nickname+ "</a>";
+    strBuf += "<a onclick='popupMemberEdit(" + + objMember.mb_fid + ", "+objMember.mb_fid + ")' class='link-member'>"+ objMember.mb_nickname+ "</a>";
     if(objMember.mb_state_delete > 0){
         strBuf += "<br>(오프라인)";    
     }
@@ -74,10 +74,6 @@ function getMemberTr(objMember, bChild = false, bShow=false){
     strBuf += "</td> <td>";
     strBuf += objMember.mb_time_last;
     strBuf += "</td> <td>";
-    strBuf += "<button name='" + objMember.mb_fid + "' data-fid='" + objMember.mb_fid + "' >수정</button>";
-    strBuf += "</td> <td>";
-    strBuf += "<button name='" + objMember.mb_fid + "'>삭제</button>   ";
-    strBuf += "</td> <td>";
     strBuf += "<button name='" + objMember.mb_fid + "'";
     if (mConfs.emp_level < LEVEL_ADMIN) {
         strBuf += " disabled = 'true' ";
@@ -89,7 +85,9 @@ function getMemberTr(objMember, bChild = false, bShow=false){
     } else {
         strBuf += ">차단</button>";
     }
-    
+    strBuf += "<button onclick='popupMemberEdit("+objMember.mb_fid + ", "+objMember.mb_fid+")'>수정</button>";
+    if(mConfs.delete == 1)
+        strBuf += "<button name='" + objMember.mb_fid + "'>삭제</button>   ";
     if (!mConfs.slot_deny) {
         strBuf += "</td> <td>";
         strBuf += "<button name='" + objMember.mb_fid + "' class='blank-btn_" + objMember.mb_fid + "' >-</button>   ";
@@ -165,7 +163,7 @@ function requestMember() {
             $(".loading").hide();
             // console.log(jResult);
             if (jResult.status == "success") {
-                showMember(jResult.data, jResult.confs, true, jResult.tree);
+                showMember(jResult.data, jResult.confs, true);
             } else if (jResult.status == "fail") {
 
             }
@@ -199,9 +197,9 @@ function addButtonElementListener(buttonElement) {
             showMemCharge($(this).data('fid'));
         } else if (tHtml.search("환전") >= 0) {
             showMemDischarge($(this).data('fid'));
-        } else if (tHtml.search("수정") >= 0) {
+        } /*else if (tHtml.search("수정") >= 0) {
             showMemEdit($(this).data('fid'));
-        } else if (tHtml.search("강제아웃") >= 0) {
+        } */ else if (tHtml.search("강제아웃") >= 0) {
             let nickname  = $(this).data('nickname');
             if (!confirm(nickname+" 회원을 강제아웃 시키겠습니까?"))
                 return;

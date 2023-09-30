@@ -262,6 +262,17 @@
 	</div>
 	<?php endif ?>
 
+	<?php if(isEBalMode()) :?>
+	<h4><i class="glyphicon glyphicon-hand-right"></i> 유저페이지 설정</h4>
+	<div class="confsite-site-check-div">
+		<?php if ($arrConfig[CONF_AUTOAPPS-1]->conf_idx != 1) : ?>
+			<input type="checkbox" id="confsite-autoapps-check-id">
+		<?php else :?>
+			<input type="checkbox" id="confsite-autoapps-check-id" checked>
+		<?php endif ?>
+		<label for="confsite-multilog-check-id"> 오토앱 메뉴 보이기</label>
+	</div>
+	<?php endif ?>
 
 	<div class="confsite-button-group">
 		<button class="confsite-cancel-button" id="confsite-cancel-btn-id">취소</button>

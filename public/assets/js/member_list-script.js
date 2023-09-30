@@ -90,7 +90,8 @@ function getMemberTr(objMember, bChild = false, bShow=false){
     
         var strEncodeURI = FURL+"/board/message_edit/0/" + objMember.mb_fid;
         strBuf += "<a href='" + strEncodeURI + "' >쪽지</a>";
-        strBuf += "<button name='" + objMember.mb_fid + "'>삭제</button>   ";
+        if(mConfs.delete)
+            strBuf += "<button name='" + objMember.mb_fid + "'>삭제</button>   ";
 
         strBuf += "</td> <td>";
         if(!mConfs.hpg_deny){
@@ -207,7 +208,7 @@ function requestMember(bRefresh=true) {
             $(".loading").hide();
             // console.log(jResult);
             if (jResult.status == "success") {
-                showMember(jResult.data, jResult.confs, bRefresh, jResult.tree);
+                showMember(jResult.data, jResult.confs, bRefresh);
             } else if (jResult.status == "fail") {
 
             }

@@ -20,7 +20,7 @@ class Home extends StdController
 	
 	public function conf_site(){
 		$confsiteModel = new ConfSite_Model();
-		$arrConfig = $confsiteModel->where('conf_id < '.CONF_QNA_DENY)->findAll();		
+		$arrConfig = $confsiteModel->where('conf_id <= '.CONF_AUTOAPPS)->findAll();		
 		$this->load_view_page('home/conf_siteinfo', 'conf_site', LEVEL_ADMIN, ['arrConfig' => $arrConfig]);	
 	}
 

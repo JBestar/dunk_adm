@@ -295,6 +295,7 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
+            $this->sess_action();                
 			$bPermit = false;
 			
 			$strUid = $this->session->user_id;
@@ -361,6 +362,7 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
+            $this->sess_action();                
 			$bPermit = false;
 			
 			$strUid = $this->session->user_id;
@@ -461,6 +463,7 @@ class Api extends BaseController{
 		$arrData = json_decode($jsonData, true);		
 		if(is_login())
 		{
+            $this->sess_action();                
 			
 			$confsiteModel = new ConfSite_Model();
 			$strUid = $this->session->user_id;
@@ -509,6 +512,7 @@ class Api extends BaseController{
 		$arrData = json_decode($jsonData, true);		
 		if(is_login())
 		{
+            $this->sess_action();                
 			
 			$confsiteModel = new ConfSite_Model();
 			$strUid = $this->session->user_id;
@@ -555,6 +559,7 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
+            $this->sess_action();                
 			
 			$confsiteModel = new ConfSite_Model();
 			$strUid = $this->session->user_id;
@@ -580,6 +585,7 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
+            $this->sess_action();                
 			
 			$strUid = $this->session->user_id;
 			$query = "";
@@ -614,6 +620,7 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
+            $this->sess_action();                
 			
 			$strUid = $this->session->user_id;
 			$objMember = $this->modelMember->getInfo($strUid);
@@ -651,6 +658,7 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
+            $this->sess_action();                
 			
 			$strUid = $this->session->user_id;
 			$iResult = $this->modelMember->changeAlarmState($strUid, $arrData);
@@ -713,6 +721,7 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
+            $this->sess_action();                
 			$strUid = $this->session->user_id;
 			$chargeModel = new Charge_Model();
 			
@@ -792,6 +801,7 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
+            $this->sess_action();                
 			$strUid = $this->session->user_id;
 			$chargeModel = new Charge_Model();
 			
@@ -923,6 +933,7 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
+            $this->sess_action();                
 			$strUid = $this->session->user_id;
 			$exchangeModel = new Exchange_Model();
 			
@@ -994,6 +1005,7 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
+            $this->sess_action();                
 			$strUid = $this->session->user_id;
 			$exchangeModel = new Exchange_Model();
 			
@@ -1082,6 +1094,7 @@ class Api extends BaseController{
 		
 		if(is_login())
 		{
+            $this->sess_action();                
 			$bPermit = false;
 			$noticeModel = new Notice_Model();
 			
@@ -1119,6 +1132,7 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
+            $this->sess_action();                
 			$bPermit = false;
 			$noticeModel = new Notice_Model();
 			
@@ -1156,6 +1170,7 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
+            $this->sess_action();                
 			$bPermit = false;
 			$noticeModel = new Notice_Model();
 			
@@ -1215,9 +1230,9 @@ class Api extends BaseController{
 		$arrGetData = json_decode($jsonData, true);
 		//var_dump($arrBetData);
 		if(is_login()) {
+            $this->sess_action();                
 			//model
 			$moneyhistoryModel = new MoneyHistory_Model();
-			
 			
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
@@ -1287,6 +1302,7 @@ class Api extends BaseController{
 		$arrGetData = json_decode($jsonData, true);
 		if(is_login()) {
 			
+            $this->sess_action();                
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
 			
@@ -1353,6 +1369,7 @@ class Api extends BaseController{
 		$arrReqData = json_decode($jsonData, true);
 
 		if(is_login()) {
+            $this->sess_action();                
 			//model
 			$strUid = $this->session->user_id;
 			$objUser = $this->modelMember->getInfo($strUid);
@@ -1541,6 +1558,7 @@ class Api extends BaseController{
 		$arrGetData = json_decode($jsonData, true);
 		//var_dump($arrBetData);
 		if(is_login()) {
+            $this->sess_action();                
 			//model
 			$noticeModel = new Notice_Model();
 			$arrResult = $noticeModel->searchMessage($arrGetData);
@@ -1690,6 +1708,7 @@ class Api extends BaseController{
 		$arrGetData = json_decode($jsonData, true);
 
 		if(is_login()) {
+            $this->sess_action();                
 			//model
 			$ebetModel = new Ebalance_Model();
 			
@@ -1754,6 +1773,7 @@ class Api extends BaseController{
 	public function eorderlist(){ 
 
 		if(is_login()) {
+            $this->sess_action();                
 			//model
 			$eorderModel = new Eorder_Model();
 			$confsiteModel = new ConfSite_Model();
@@ -1914,6 +1934,7 @@ class Api extends BaseController{
 		$arrGetData = json_decode($jsonData, true);
 
 		if(is_login()) {
+            $this->sess_action();                
 			//model
 			$hlbetModel = new HlBet_Model();
 			$confsiteModel = new ConfSite_Model();
@@ -2209,6 +2230,7 @@ class Api extends BaseController{
 
 		$objResult = new \StdClass;
 		if(is_login()) {
+            $this->sess_action();                
 			//model
 			$casprdModel = new CasPrd_Model();
 			
@@ -2258,6 +2280,7 @@ class Api extends BaseController{
 
 		$objResult = new \StdClass;
 		if(is_login()) {
+            $this->sess_action();                
 			//model
 			$confsiteModel = new ConfSite_Model();
 			
@@ -2283,6 +2306,7 @@ class Api extends BaseController{
 
 		$objResult = new \StdClass;
 		if(is_login()) {
+            $this->sess_action();                
 			//model
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
@@ -2474,6 +2498,7 @@ class Api extends BaseController{
 		$jsonData = $_REQUEST['json_'];
 		$arrGetData = json_decode($jsonData, true);
 		if(is_login()) {
+            $this->sess_action();                
 			//model
 			$confMsgModel = new ConfMsg_Model();
 			$arrResult = $confMsgModel->add($arrGetData);
@@ -2495,6 +2520,7 @@ class Api extends BaseController{
 		$jsonData = $_REQUEST['json_'];
 		$arrGetData = json_decode($jsonData, true);
 		if(is_login()) {
+            $this->sess_action();                
 			//model
 			$confMsgModel = new ConfMsg_Model();
 			$arrResult = $confMsgModel->modify($arrGetData['id'], $arrGetData);
@@ -2516,6 +2542,7 @@ class Api extends BaseController{
 		$jsonData = $_REQUEST['json_'];
 		$arrGetData = json_decode($jsonData, true);
 		if(is_login()) {
+            $this->sess_action();                
 			//model
 			$confMsgModel = new ConfMsg_Model();
 			$arrResult = $confMsgModel->delete($arrGetData['conf_id']);

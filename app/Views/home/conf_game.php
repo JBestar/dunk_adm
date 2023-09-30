@@ -3,6 +3,23 @@
 	  <!--Sub Navbar-->
 	<div class = "sub-navbar" value="<?= $this->renderSection('confgame-active') ?>">
 		<p><i class="glyphicon glyphicon-play-circle"></i> 게임설정</p>
+		<?php if(!$cas_deny) :?>
+			<a href="<?php echo siteFurl().'home/conf_casino';?>" class="sub-navbar-a" >정품카지노</a>
+		<?php endif ?>
+		<?php if(!$evol_deny ) :?>
+			<a href="<?php echo siteFurl().'home/conf_evol';?>" class="sub-navbar-a " >에볼루션</a>
+		<?php endif ?>   
+		<?php if(!$slot_deny) :?>
+			<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_3) :?>
+				<a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="sub-navbar-a">정품슬롯</a>
+			<?php endif ?>
+			<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_2) :?>
+				<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a">네츄럴슬롯</a>
+			<?php endif ?>
+		<?php endif ?>  
+		<?php if(!$hold_deny) :?>
+			<a href="<?php echo siteFurl().'home/conf_hold';?>" class="sub-navbar-a" >홀덤</a>
+		<?php endif ?>
 		<?php if(!$hpg_deny) :?>
 			<a href="<?php echo siteFurl().'home/conf_powerball';?>" class="sub-navbar-a" >해피볼</a>
 		<?php endif ?>   
@@ -22,23 +39,7 @@
 		<?php if(!$coin3_deny) :?>
 			<a href="<?php echo site_furl('home/conf_coin3ball');?>" class="sub-navbar-a" >코인3분</a>
    		<?php endif ?>  
-		<?php if(!$evol_deny ) :?>
-			<a href="<?php echo siteFurl().'home/conf_evol';?>" class="sub-navbar-a " >에볼루션</a>
-		<?php endif ?>   
-		<?php if(!$cas_deny) :?>
-			<a href="<?php echo siteFurl().'home/conf_casino';?>" class="sub-navbar-a" >정품카지노</a>
-		<?php endif ?>
-		<?php if(!$slot_deny) :?>
-			<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_3) :?>
-				<a href="<?php echo siteFurl().'home/conf_slot_1';?>" class="sub-navbar-a">정품슬롯</a>
-			<?php endif ?>
-			<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_2) :?>
-				<a href="<?php echo siteFurl().'home/conf_slot_2';?>" class="sub-navbar-a">네츄럴슬롯</a>
-			<?php endif ?>
-		<?php endif ?>  
-		<?php if(!$hold_deny) :?>
-			<a href="<?php echo siteFurl().'home/conf_hold';?>" class="sub-navbar-a" >홀덤</a>
-		<?php endif ?> 
+		 
 	</div>
 	<!--Site Setting-->
 	<div class="confsite-game-panel"  id="<?=$game_id?>">
