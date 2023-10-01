@@ -306,6 +306,8 @@ class UserApi extends BaseController
             if (!is_null($objAdmin) && !is_null($objReqUser)) {
                 if ($objAdmin->mb_level >= LEVEL_ADMIN) {
                     $bPermit = true;
+                    if(array_key_exists('app.delete_level', $_ENV) && $objAdmin->mb_level < $_ENV['app.delete_level'])
+                        $bPermit = false;
                 }
             }
             if ($bPermit) {
