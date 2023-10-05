@@ -899,7 +899,7 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
-			if(array_key_exists('auto', $arrGetData) && !$arrGetData['auto']){
+			if(array_key_exists('auto', $arrReqData) && !$arrReqData['auto']){
 				$this->sess_action();                
 			}
 			$exchangeModel = new Exchange_Model();
