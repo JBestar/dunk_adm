@@ -909,7 +909,7 @@ class UserApi extends BaseController
             // model
 			$confsiteModel = new ConfSite_Model();
 
-			if(array_key_exists('auto', $arrGetData) && !$arrGetData['auto']){
+			if(array_key_exists('auto', $arrData) && !$arrData['auto']){
 				$this->sess_action();                
 			}
 			$objResult = new \stdClass();
