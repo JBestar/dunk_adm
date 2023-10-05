@@ -129,6 +129,15 @@ function readConfigToObject() {
         objMember.mb_follow_ev = followEnable + ":" + followId.trim() + ":" + parseInt(followPercent); 
     }
 
+    let elApps = $("input[name=useredit-auto-apps]");
+    if(elApps.length > 0){
+        let data = '';
+        for(var i=0; i<elApps.length; i++){
+            let act = $(elApps[i]).prop('checked') ? 1 : 0;
+            data+=`${act}#`;
+        }
+        objMember.mb_autoapps = data;
+    }
     // if($("#useredit-ip-check-id").length > 0){
     //     objMember.mb_state_view = $("#useredit-ip-check-id").prop('checked') ? 1 : 0;
     // }

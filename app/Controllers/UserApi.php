@@ -17,6 +17,7 @@ use App\Models\EbalLog_Model;
 use App\Models\MoneyHistory_Model;
 use App\Models\SessLog_Model;
 use App\Models\Block_Model;
+use App\Models\MemConf_Model;
 
 use App\Libraries\ApiCas_Lib;
 use App\Libraries\ApiSlot_Lib;
@@ -103,7 +104,7 @@ class UserApi extends BaseController
                         $ebalLogModel->register($data);
                     }
 
-                    $arrResult['status'] = 'success';
+                    $arrResult['status'] = STATUS_SUCCESS;
                 } elseif ( $iResult == 4 || $iResult == 5 ) {
                     $arrResult['status'] = 'ratio_error';
                     $arrResult['error'] = $strError;
@@ -111,14 +112,14 @@ class UserApi extends BaseController
                     $arrResult['status'] = 'val_error';
                     $arrResult['error'] = $strError;
                 } else {
-                    $arrResult['status'] = 'fail';
+                    $arrResult['status'] = STATUS_FAIL;
                     $arrResult['error'] = $iResult;
                 }
             } else {
-                $arrResult['status'] = 'nopermit';
+                $arrResult['status'] = STATUS_NOPERMIT;
             }
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
         }
         echo json_encode($arrResult);
     }
@@ -187,6 +188,25 @@ class UserApi extends BaseController
                                 $ebalLogModel->register($data);
                             }
                         }
+
+                        if(isEBalMode() && array_key_exists('mb_autoapps', $arrData) ){
+                            $memConfModel = new MemConf_Model();
+                            $memConf = $memConfModel->getByMember($objReqUser->mb_fid);
+                            if(!is_null($memConf) ){
+                                $data =[
+                                    'conf_str_1' => $arrData['mb_autoapps'],
+                                ];
+                                $memConfModel->update($memConf, $data);
+                            } else {
+                                $data =[
+                                    'conf_mb_fid' => $objReqUser->mb_fid,
+                                    'conf_mb_uid' => $objReqUser->mb_uid,
+                                    'conf_str_1' => $arrData['mb_autoapps'],
+                                ];
+                                $memConfModel->register($data);
+                            }
+                        }
+
                     }
 
                 } else {
@@ -195,7 +215,7 @@ class UserApi extends BaseController
 
                 if ($iResult == 1) {
 				    $this->modelModify->add($this->session->user_id, MOD_MB_INFO, $query, $this->request->getIPAddress());
-                    $arrResult['status'] = 'success';
+                    $arrResult['status'] = STATUS_SUCCESS;
                 } elseif ( $iResult == 4 || $iResult == 5 ) {
                     $arrResult['status'] = 'ratio_error';
                     $arrResult['error'] = $strError;
@@ -206,14 +226,14 @@ class UserApi extends BaseController
                     $arrResult['status'] = 'val_error';
                     $arrResult['error'] = $strError;
                 } else {
-                    $arrResult['status'] = 'fail';
+                    $arrResult['status'] = STATUS_FAIL;
                     $arrResult['error'] = $iResult;
                 }
             } else {
-                $arrResult['status'] = 'nopermit';
+                $arrResult['status'] = STATUS_NOPERMIT;
             }
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
         }
         echo json_encode($arrResult);
     }
@@ -241,15 +261,15 @@ class UserApi extends BaseController
                 $bResult = $this->modelMember->updateMemberByFid($arrData, $query);
                 if ($bResult) {
                     $this->modelModify->add($this->session->user_id, MOD_MB_STATE, $query, $this->request->getIPAddress());
-                    $arrResult['status'] = 'success';
+                    $arrResult['status'] = STATUS_SUCCESS;
                 } else {
-                    $arrResult['status'] = 'fail';
+                    $arrResult['status'] = STATUS_FAIL;
                 }
             } else {
-                $arrResult['status'] = 'nopermit';
+                $arrResult['status'] = STATUS_NOPERMIT;
             }
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
         }
         echo json_encode($arrResult);
     }
@@ -278,15 +298,15 @@ class UserApi extends BaseController
                 
                 if ($bResult) {
                     $this->modelModify->add($this->session->user_id, MOD_MB_STATE, $query, $this->request->getIPAddress());
-                    $arrResult['status'] = 'success';
+                    $arrResult['status'] = STATUS_SUCCESS;
                 } else {
-                    $arrResult['status'] = 'fail';
+                    $arrResult['status'] = STATUS_FAIL;
                 }
             } else {
-                $arrResult['status'] = 'nopermit';
+                $arrResult['status'] = STATUS_NOPERMIT;
             }
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
         }
         echo json_encode($arrResult);
     }
@@ -322,15 +342,15 @@ class UserApi extends BaseController
                 
                 if ($bResult) {
                     $this->modelModify->add($this->session->user_id, MOD_MB_STATE, $query, $this->request->getIPAddress());
-                    $arrResult['status'] = 'success';
+                    $arrResult['status'] = STATUS_SUCCESS;
                 } else {
-                    $arrResult['status'] = 'fail';
+                    $arrResult['status'] = STATUS_FAIL;
                 }
             } else {
-                $arrResult['status'] = 'nopermit';
+                $arrResult['status'] = STATUS_NOPERMIT;
             }
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
         }
         echo json_encode($arrResult);
     }
@@ -364,15 +384,15 @@ class UserApi extends BaseController
                 $bResult = $this->modelSess->deleteByMember($objReqUser->mb_fid);
                 
                 if ($bResult) {
-                    $arrResult['status'] = 'success';
+                    $arrResult['status'] = STATUS_SUCCESS;
                 } else {
-                    $arrResult['status'] = 'fail';
+                    $arrResult['status'] = STATUS_FAIL;
                 }
             } else {
-                $arrResult['status'] = 'nopermit';
+                $arrResult['status'] = STATUS_NOPERMIT;
             }
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
         }
         echo json_encode($arrResult);
     }
@@ -410,17 +430,17 @@ class UserApi extends BaseController
                 if ($bResult) {
                     $this->modelModify->add($this->session->user_id, MOD_MB_STATE, $query, $this->request->getIPAddress());
 
-                    $arrResult['status'] = 'success';
+                    $arrResult['status'] = STATUS_SUCCESS;
                 } elseif (0 == $iCreated) {
                     $arrResult['status'] = 'usererror';
                 } else {
-                    $arrResult['status'] = 'fail';
+                    $arrResult['status'] = STATUS_FAIL;
                 }
             } else {
-                $arrResult['status'] = 'nopermit';
+                $arrResult['status'] = STATUS_NOPERMIT;
             }
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
         }
         echo json_encode($arrResult);
     }
@@ -459,19 +479,19 @@ class UserApi extends BaseController
                 if ($bResult) {
                     $this->modelModify->add($this->session->user_id, MOD_MB_STATE, $query, $this->request->getIPAddress());
 
-                    $arrResult['status'] = 'success';
+                    $arrResult['status'] = STATUS_SUCCESS;
                 } else {
-                    $arrResult['status'] = 'fail';
+                    $arrResult['status'] = STATUS_FAIL;
                 }
             } else if (!is_null($objReqUser) && $objReqUser->mb_state_active != PERMIT_DELETE) {
-                $arrResult['status'] = 'success';
+                $arrResult['status'] = STATUS_SUCCESS;
             } else if (!is_null($objEmp) && $objEmp->mb_state_active == PERMIT_DELETE) {
                 $arrResult['status'] = 'usererror';
             } else {
-                $arrResult['status'] = 'nopermit';
+                $arrResult['status'] = STATUS_NOPERMIT;
             }
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
         }
         echo json_encode($arrResult);
     }
@@ -486,6 +506,7 @@ class UserApi extends BaseController
             $objUser = $this->modelMember->getInfoByUid($strUid);
             $sess_id = $this->session->session_id;
 			$this->modelSess->deleteLast();
+			$sess = $this->modelSess->getBySess($sess_id);
 
             $objResult = new \stdClass();
 
@@ -498,10 +519,26 @@ class UserApi extends BaseController
 				$bPermit = false;
             else if( !$this->modelMember->isPermitMember($objUser) )
 				$bPermit = false;
-            else if( is_null($this->modelSess->getBySess($sess_id)) ){
+            else if( is_null($sess) ){
                 writeLog("[assets] session = null (".$sess_id.")");
 				$bPermit = false;
-            }
+            } else if(array_key_exists('app.sess_act', $_ENV) && $_ENV['app.sess_act'] == 1){
+                $objConf = $modelConfsite->find(CONF_DELAY_PLAY);
+				$delayOut = 0;
+				$arrInfo = explode('#', $objConf->conf_idx);
+				if(count($arrInfo) >= 2){
+					if($objUser->mb_level < LEVEL_ADMIN)
+						$delayOut = intval($arrInfo[0]);
+					else
+						$delayOut = intval($arrInfo[1]);
+				}
+
+				if($delayOut > 0 && diffDt(date('Y-m-d H:i:s'), $sess->sess_action) > $delayOut * 60){
+					$bPermit = false;
+					writeLog("[check_session] session_action = ".$sess->sess_action." (".$sess_id.")");
+				}
+                
+			}
             
             if ($bPermit) {
         		// writeLog("[assets] ".$strUid." (".$sess_id.")");
@@ -517,16 +554,16 @@ class UserApi extends BaseController
                         $objUser->mb_ip_login = $objSess->sess_ip;
                 }
                 $objResult->data = $objUser;
-                $objResult->status = 'success';
+                $objResult->status = STATUS_SUCCESS;
             } else {
                 writeLog("[assets] logout (".$sess_id.")");
 				$this->sess_destroy();
-                $objResult->status = 'logout';
+                $objResult->status = STATUS_LOGOUT;
             }
 
             echo json_encode($objResult);
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
             echo json_encode($arrResult);
         }
     }
@@ -566,14 +603,14 @@ class UserApi extends BaseController
 
                 $objResult->data = $arrEmpInfo;
                 $objResult->sound = $arrSoundInfo;
-                $objResult->status = 'success';
+                $objResult->status = STATUS_SUCCESS;
             } else {
-                $objResult->status = 'fail';
+                $objResult->status = STATUS_FAIL;
             }
 
             echo json_encode($objResult);
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
             echo json_encode($arrResult);
         }
     }
@@ -772,14 +809,14 @@ class UserApi extends BaseController
                 // writeLog("empbetinfo end duration = ".(microtime(true) * 1000 - $tmNow));
 
                 $objResult->data = $arrSumData;
-                $objResult->status = 'success';
+                $objResult->status = STATUS_SUCCESS;
             } else {
-                $objResult->status = 'fail';
+                $objResult->status = STATUS_FAIL;
             }
 
             echo json_encode($objResult);
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
             echo json_encode($arrResult);
         }
     }
@@ -818,14 +855,14 @@ class UserApi extends BaseController
                 $arrInfo['win_today'] = $arrBet['bet_win_money'];
 
                 $objResult->data = $arrInfo;
-                $objResult->status = 'success';
+                $objResult->status = STATUS_SUCCESS;
             } else {
-                $objResult->status = 'fail';
+                $objResult->status = STATUS_FAIL;
             }
 
             echo json_encode($objResult);
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
             echo json_encode($arrResult);
         }
     }
@@ -851,14 +888,14 @@ class UserApi extends BaseController
                 $arrReqData['end'] = $arrReqData['start'];
                 $objResult->date = $arrReqData['start'];
                 $objResult->data = $this->modelMember->statistUserBet($arrReqData, $siteConfs);
-                $objResult->status = 'success';
+                $objResult->status = STATUS_SUCCESS;
             } else {
-                $objResult->status = 'fail';
+                $objResult->status = STATUS_FAIL;
             }
 
             echo json_encode($objResult);
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
             echo json_encode($arrResult);
         }
     }
@@ -872,6 +909,9 @@ class UserApi extends BaseController
             // model
 			$confsiteModel = new ConfSite_Model();
 
+			if(array_key_exists('auto', $arrGetData) && !$arrGetData['auto']){
+				$this->sess_action();                
+			}
 			$objResult = new \stdClass();
             $strUid = $this->session->user_id;
             $objUser = $this->modelMember->getInfo($strUid);
@@ -906,13 +946,13 @@ class UserApi extends BaseController
             $confs= $this->getSiteConf($confsiteModel);
             $confs['emp_level'] = $objUser->mb_level; 
             
-            $objResult->status = 'success';
+            $objResult->status = STATUS_SUCCESS;
             $objResult->confs = $confs;
             $objResult->data = $arrMember;
 
             echo json_encode($objResult);
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
             echo json_encode($arrResult);
         }
     }
@@ -937,18 +977,18 @@ class UserApi extends BaseController
             } 
             if($empFid >= 0){
                 $objCount = $this->modelMember->searchCountByEmpFid($objUser, $arrData, $empFid);
-                $objResult->status = 'success';
+                $objResult->status = STATUS_SUCCESS;
                 $objResult->data = $objCount;
             } else {
                 $objCount = new \stdClass();
                 $objCount->count = 0;
-                $objResult->status = 'success';
+                $objResult->status = STATUS_SUCCESS;
                 $objResult->data = $objCount;
             }
 			
             echo json_encode($objResult);
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
             echo json_encode($arrResult);
         }
     }
@@ -962,6 +1002,10 @@ class UserApi extends BaseController
         if (is_login()) {
             // model
             
+			if(array_key_exists('auto', $arrData) && !$arrData['auto']){
+				$this->sess_action();                
+			}
+
 			$confsiteModel = new ConfSite_Model();
             $confs = $this->getSiteConf($confsiteModel);
 
@@ -1000,13 +1044,13 @@ class UserApi extends BaseController
             if(array_key_exists('app.delete_level', $_ENV) && $objAdmin->mb_level < $_ENV['app.delete_level'])
                 $bDelete = false;
             $confs['delete'] = $bDelete;
-            $objResult->status = 'success';
+            $objResult->status = STATUS_SUCCESS;
             $objResult->confs = $confs;
             $objResult->data = $arrMember;
 
             echo json_encode($objResult);
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
             echo json_encode($arrResult);
         }
     }
@@ -1021,6 +1065,9 @@ class UserApi extends BaseController
             // model
 			$confsiteModel = new ConfSite_Model();
 
+			if(array_key_exists('auto', $arrData) && !$arrData['auto']){
+				$this->sess_action();                
+			}
 			$objResult = new \stdClass();
             $strUid = $this->session->user_id;
             $objAdmin = $this->modelMember->getInfoByUid($strUid);
@@ -1123,13 +1170,13 @@ class UserApi extends BaseController
                 $bDelete = false;
             $confs['delete'] = $bDelete;
 
-            $objResult->status = 'success';
+            $objResult->status = STATUS_SUCCESS;
             $objResult->confs = $confs;
             $objResult->data = $arrUsers;
 
             echo json_encode($objResult);
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
             echo json_encode($arrResult);
         }
     }
@@ -1237,13 +1284,13 @@ class UserApi extends BaseController
                 $bDelete = false;
             $confs['delete'] = $bDelete;
             
-            $objResult->status = 'success';
+            $objResult->status = STATUS_SUCCESS;
             $objResult->confs = $confs;
             $objResult->data = $arrMember;
 
             echo json_encode($objResult);
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
             echo json_encode($arrResult);
         }
     }
@@ -1269,15 +1316,15 @@ class UserApi extends BaseController
                     array_push($ids, $objMember->mb_uid);
                 }
 
-                $objResult->status = 'success';
+                $objResult->status = STATUS_SUCCESS;
                 $objResult->data = $ids;
             } else {
-                $objResult->status = 'fail';
+                $objResult->status = STATUS_FAIL;
             }
 
             echo json_encode($objResult);
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
             echo json_encode($arrResult);
         }
     }
@@ -1347,6 +1394,9 @@ class UserApi extends BaseController
 
             if($objUser->mb_level  >= LEVEL_ADMIN) {
 
+                if(array_key_exists('auto', $arrReqData) && !$arrReqData['auto']){
+                    $this->sess_action();                
+                }
                 $arrData = $this->modelSess->search($arrReqData, $objUser->mb_level);
                     
                 $arrResult['data'] = $arrData;
@@ -1462,15 +1512,15 @@ class UserApi extends BaseController
                 $bResult = $modelBlock->saveByIp($arrData);
 
                 if ($bResult) {
-                    $arrResult['status'] = 'success';
+                    $arrResult['status'] = STATUS_SUCCESS;
                 } else {
-                    $arrResult['status'] = 'fail';
+                    $arrResult['status'] = STATUS_FAIL;
                 }
             } else {
-                $arrResult['status'] = 'nopermit';
+                $arrResult['status'] = STATUS_NOPERMIT;
             }
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
         }
         echo json_encode($arrResult);
     }
@@ -1493,15 +1543,15 @@ class UserApi extends BaseController
                 $bResult = $modelBlock->updateByFid($arrData);
 
                 if ($bResult) {
-                    $arrResult['status'] = 'success';
+                    $arrResult['status'] = STATUS_SUCCESS;
                 } else {
-                    $arrResult['status'] = 'fail';
+                    $arrResult['status'] = STATUS_FAIL;
                 }
             } else {
-                $arrResult['status'] = 'nopermit';
+                $arrResult['status'] = STATUS_NOPERMIT;
             }
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
         }
         echo json_encode($arrResult);
     }
@@ -1524,15 +1574,15 @@ class UserApi extends BaseController
                 $bResult = $modelBlock->deleteByFid($arrData['block_fid']);
 
                 if ($bResult) {
-                    $arrResult['status'] = 'success';
+                    $arrResult['status'] = STATUS_SUCCESS;
                 } else {
-                    $arrResult['status'] = 'fail';
+                    $arrResult['status'] = STATUS_FAIL;
                 }
             } else {
-                $arrResult['status'] = 'nopermit';
+                $arrResult['status'] = STATUS_NOPERMIT;
             }
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
         }
         echo json_encode($arrResult);
     }
@@ -1556,12 +1606,12 @@ class UserApi extends BaseController
             $objResult = new \stdClass();
 
             if(is_null($objMember) || is_null($objEmp)){
-                $objResult->status = 'fail';
+                $objResult->status = STATUS_FAIL;
             } else if($arrData['amount'] <= 0 ){
-                $objResult->status = 'fail';
+                $objResult->status = STATUS_FAIL;
                 $objResult->msg = '금액을 정확히 입력해주세요.';
             } else if($objEmp->mb_level >= LEVEL_ADMIN) {
-                $objResult->status = 'fail';
+                $objResult->status = STATUS_FAIL;
                 
                 if($arrData['type'] == 0 || $arrData['type'] == 4){          //Deposit or Payment
                     $iResult = 1;
@@ -1594,10 +1644,10 @@ class UserApi extends BaseController
                                 $iChangeType = MONEYCHANGE_GIVE;
                             
                             $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, $arrData['amount'], $iChangeType);
-                            $objResult->status = 'success';
+                            $objResult->status = STATUS_SUCCESS;
                         }
                     } else if($iResult == 2) {
-                        $objResult->status = 'fail';
+                        $objResult->status = STATUS_FAIL;
                         $objResult->msg = '회원이 게임플레이중이므로 충전 하실수 없습니다. '.intval(($_ENV['mem.delay_play']-diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet))/60+1)."분후 다시 시도해주세요.";
                     }
                 } else if($arrData['type'] == 1 || $arrData['type'] == 5){           //Withdraw OR 
@@ -1642,13 +1692,13 @@ class UserApi extends BaseController
                             } else $iChangeType = MONEYCHANGE_WITHDRAW;
                             
                             $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], $iChangeType);
-                            $objResult->status = 'success';
+                            $objResult->status = STATUS_SUCCESS;
                         }
                     } else if($iResult == 2) {
-                        $objResult->status = 'fail';
+                        $objResult->status = STATUS_FAIL;
                         $objResult->msg = '회원이 게임플레이중이므로 환전 하실수 없습니다. '.intval(($_ENV['mem.delay_play']-diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet))/60+1)."분후 다시 시도해주세요.";
                     } else {
-                        $objResult->status = 'fail';
+                        $objResult->status = STATUS_FAIL;
                         $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
 
                     }
@@ -1671,13 +1721,13 @@ class UserApi extends BaseController
                         if($arrData['amount'] > 0 && $this->modelMember->moneyProc($objMember, 0-$arrData['amount'], $arrData['amount']))
                         {
                             $moneyhistoryModel->registerPointToMoney($objMember, 0-$arrData['amount'], $objEmp->mb_uid, MONEYCHANGE_CONVERT);
-                            $objResult->status = 'success';
+                            $objResult->status = STATUS_SUCCESS;
                         }
                     } else if($iResult == 2) {
-                        $objResult->status = 'fail';
+                        $objResult->status = STATUS_FAIL;
                         $objResult->msg = '회원이 게임플레이중이므로 환전 하실수 없습니다. '.intval(($_ENV['mem.delay_play']-diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet))/60+1)."분후 다시 시도해주세요.";
                     } else {
-                        $objResult->status = 'fail';
+                        $objResult->status = STATUS_FAIL;
                         $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
 
                     }
@@ -1691,10 +1741,10 @@ class UserApi extends BaseController
                 if(count($arrEmp) > 0)
                     $objChMember = reset($arrEmp);
 
-                $objResult->status = 'fail';
+                $objResult->status = STATUS_FAIL;
                 
                 if(is_null($objChMember)){
-                    $objResult->status = 'fail';
+                    $objResult->status = STATUS_FAIL;
                 }else if($arrData['type'] == 2){                      //이송
                     
                     if($_ENV['mem.trans_deny']){
@@ -1719,13 +1769,13 @@ class UserApi extends BaseController
     
                                 $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, 0-$arrData['amount'], MONEYCHANGE_TRANS_DEC);
                                 $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, $arrData['amount'], MONEYCHANGE_TRANS_INC);
-                                $objResult->status = 'success';
+                                $objResult->status = STATUS_SUCCESS;
                             } 
                         } else if($iResult == 2) {
-                            $objResult->status = 'fail';
+                            $objResult->status = STATUS_FAIL;
                             $objResult->msg = '회원이 게임플레이중이므로 이동 하실수 없습니다. '.intval(($_ENV['mem.delay_play']-diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet))/60+1)."분후 다시 시도해주세요.";
                         } else {
-                            $objResult->status = 'fail';
+                            $objResult->status = STATUS_FAIL;
                             $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
                         }
                     }
@@ -1755,13 +1805,13 @@ class UserApi extends BaseController
 
                                 $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, $arrData['amount'], MONEYCHANGE_EXCHANGE_INC);
                                 $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], MONEYCHANGE_EXCHANGE_DEC);
-                                $objResult->status = 'success';
+                                $objResult->status = STATUS_SUCCESS;
                             } 
                         } else if($iResult == 2) {
-                            $objResult->status = 'fail';
+                            $objResult->status = STATUS_FAIL;
                             $objResult->msg = '회원이 게임플레이중이므로 환수 하실수 없습니다. '.intval(($_ENV['mem.delay_play']-diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet))/60+1)."분후 다시 시도해주세요.";
                         } else {
-                            $objResult->status = 'fail';
+                            $objResult->status = STATUS_FAIL;
                             $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
                         }
                     }
@@ -1771,7 +1821,7 @@ class UserApi extends BaseController
 
             echo json_encode($objResult);
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
             echo json_encode($arrResult);
         }
     }
@@ -1796,9 +1846,9 @@ class UserApi extends BaseController
             $objResult = new \stdClass();
 
             if(is_null($objMember) || is_null($objEmp)){
-                $objResult->status = 'fail';
+                $objResult->status = STATUS_FAIL;
             } else if($objEmp->mb_level < LEVEL_ADMIN) {
-                $objResult->status = 'fail';
+                $objResult->status = STATUS_FAIL;
             } else {
                 if($arrData['type'] == 0){              //collect all money
                     if($_ENV['mem.delay_play'] > 0 && $_ENV['mem.withdeny_play'] && diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
@@ -1810,46 +1860,46 @@ class UserApi extends BaseController
                     if($iResult == 1){
                         $nAmount = 0-$objMember->mb_money;
                         if($nAmount == 0){
-                            $objResult->status = 'success';
+                            $objResult->status = STATUS_SUCCESS;
                         } else if( $this->modelMember->moneyProc($objMember, $nAmount)){
                             $moneyhistoryModel->registerWithdraw($objMember, $objEmp->mb_uid, $nAmount, MONEYCHANGE_WITHDRAW);
-                            $objResult->status = 'success';
+                            $objResult->status = STATUS_SUCCESS;
                         }
                     } else if($iResult == 2) {
-                        $objResult->status = 'fail';
+                        $objResult->status = STATUS_FAIL;
                         $objResult->msg = '회원이 게임플레이중이므로 회수 하실수 없습니다. '.intval(($_ENV['mem.delay_play']-diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet))/60+1)."분후 다시 시도해주세요.";
                     } else {
-                        $objResult->status = 'fail';
+                        $objResult->status = STATUS_FAIL;
                         $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
                     }
                     
                 } else if($arrData['type'] == 1){ //포인트회수
                     $nAmount = 0-$objMember->mb_point;
                     if($nAmount == 0){
-                        $objResult->status = 'success';
+                        $objResult->status = STATUS_SUCCESS;
                     } 
                     else if($this->modelMember->moneyProc($objMember, 0, $nAmount)){
                         $moneyhistoryModel->registerWithdraw($objMember, $objEmp->mb_uid, $nAmount, POINTHANGE_WITHDRAW);
-                        $objResult->status = 'success';
+                        $objResult->status = STATUS_SUCCESS;
                     }
                 } else if($arrData['type'] == 2){ //포인트전환
                     $nAmount = floor($objMember->mb_point);
                     if($nAmount < 1){
-                        $objResult->status = 'success';
+                        $objResult->status = STATUS_SUCCESS;
                     } 
                     else if($this->modelMember->moneyProc($objMember, $nAmount, 0-$nAmount)){
                         $moneyhistoryModel->registerPointToMoney($objMember, $nAmount, $objEmp->mb_uid, POINTCHANGE_EXCHANGE);
-                        $objResult->status = 'success';
+                        $objResult->status = STATUS_SUCCESS;
                     }
                 } else {
-                    $objResult->status = 'fail';
+                    $objResult->status = STATUS_FAIL;
                 }
 
             } 
 
             echo json_encode($objResult);
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
             echo json_encode($arrResult);
         }
     }
@@ -1862,7 +1912,7 @@ class UserApi extends BaseController
             $objEmp = $this->modelMember->getInfo($strUid);
 
             if(is_null($objEmp) || $objEmp->mb_level < LEVEL_ADMIN){
-                $arrResult['status'] = 'fail';
+                $arrResult['status'] = STATUS_FAIL;
             } else{
                 $arrInfo = [
                     'ip_addr'  => $objEmp->mb_ip_join,
@@ -1872,11 +1922,11 @@ class UserApi extends BaseController
                     'egg' => allEgg($objEmp),
                 ];
                 $arrResult['data'] = $arrInfo;
-                $arrResult['status'] = 'success';
+                $arrResult['status'] = STATUS_SUCCESS;
             }
 
         } else {
-            $arrResult['status'] = 'logout';
+            $arrResult['status'] = STATUS_LOGOUT;
             
         }
         echo json_encode($arrResult);

@@ -7,7 +7,7 @@ $(document).ready(function() {
 });
 
 function pageLoop() {
-    requestPageInfo();
+    requestWithdrawList(true);
     // 1초뒤에 다시 실행
     setTimeout(function() {
         pageLoop();
@@ -194,14 +194,21 @@ function addButtonEvent() {
 
 }
 
-function requestWithdrawList() {
+function requestWithdrawList(auto = true) {
 
     var strUid = document.getElementById("withdraw-userid-input-id").value;
     var dtStart = document.getElementById("withdraw-datestart-input-id").value;
     var dtEnd = document.getElementById("withdraw-dateend-input-id").value;
     var nPage = getActivePage();
 
-    var jsonData = { "count": CountPerPage, "page": nPage, "mb_uid": strUid, "start": dtStart, "end": dtEnd };
+    var jsonData = { 
+        "count": CountPerPage, 
+        "page": nPage, 
+        "mb_uid": strUid, 
+        "start": dtStart, 
+        "end": dtEnd,
+        "auto":auto, 
+    };
     jsonData = JSON.stringify(jsonData);
     $(".loading").show();
 

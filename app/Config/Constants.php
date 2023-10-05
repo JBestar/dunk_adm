@@ -217,6 +217,7 @@ defined('RESULT_EMP_ERROR')    || define('RESULT_EMP_ERROR', 8);
 defined('STATUS_SUCCESS')      || define('STATUS_SUCCESS', 'success');
 defined('STATUS_FAIL')         || define('STATUS_FAIL', 'fail');
 defined('STATUS_LOGOUT')       || define('STATUS_LOGOUT', 'logout');
+defined('STATUS_NOPERMIT')     || define('STATUS_NOPERMIT', 'nopermit');
 
 defined('TM_OFFSET')    	   || define('TM_OFFSET', 20);
 

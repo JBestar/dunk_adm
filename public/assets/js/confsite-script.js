@@ -118,7 +118,30 @@ function readConfigToObject() {
     }
 
     if($("#confsite-autoapps-check-id").length > 0){
-        jsonData.autoapps = $("#confsite-autoapps-check-id").prop('checked') ? 1 : 0;
+        jsonData.autoapps_check = $("#confsite-autoapps-check-id").prop('checked') ? 1 : 0;
+        let elApps = $("input[name=auto-apps]");
+        let data = '';
+        for(var i=0; i<elApps.length; i++){
+            let ename = $(elApps[i]).data("ename");
+            let name = $(elApps[i]).data("name");
+            let path = $(elApps[i]).data("path");
+            let act = $(elApps[i]).prop('checked') ? 1 : 0;
+            data+=`${ename}#${name}#${path}#${act};`
+        }
+        jsonData.autoapps_data = data;
+    }
+
+    if($("#confsite-userout-input-id").length > 0){
+        let delayUser = parseInt($("#confsite-userout-input-id").val());
+        if(delayUser < 0)
+            delayUser = 0;
+
+        let delayAdmin = parseInt($("#confsite-adminout-input-id").val());
+        if(delayAdmin < 0)
+            delayAdmin = 0;
+
+        jsonData.logout_delay = delayUser+"#"+delayAdmin;
+
     }
     return jsonData;
 
@@ -128,10 +151,10 @@ function addBtnEvent() {
 
     $("#confsite-ok-btn-id").click(function() {
 
+        var jsonData = readConfigToObject();
         if (!confirm("저장하시겠습니까?"))
             return;
 
-        var jsonData = readConfigToObject();
         jsonData = JSON.stringify(jsonData);
 
         $.ajax({
@@ -220,7 +243,11 @@ function onChangeElement(){
     checked = $("#confsite-returndeny-check-id").prop('checked');
     $("#confsite-returnlv1-check-id").prop('disabled', !checked);
 
-
+    if($("#confsite-autoapps-check-id").length > 0){
+        checked = $("#confsite-autoapps-check-id").prop('checked');
+        $("input[name=auto-apps]").prop('disabled', !checked);
+    }
+    
 }
 
 function cleanDb(iType) {

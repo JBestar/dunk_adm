@@ -8,7 +8,7 @@ $(document).ready(function() {
 
 
 function pageLoop() {
-    requestPageInfo();
+    requestDepositList(true);
     // 1초뒤에 다시 실행
     setTimeout(function() {
         pageLoop();
@@ -191,14 +191,21 @@ function addButtonEvent() {
 
 
 
-function requestDepositList() {
+function requestDepositList(auto=false) {
 
     var strUid = $("#deposit-userid-input-id").val();
     var dtStart = $("#deposit-datestart-input-id").val();
     var dtEnd = $("#deposit-dateend-input-id").val();
     var nPage = getActivePage();
 
-    var jsonData = { "count": CountPerPage, "page": nPage, "mb_uid": strUid, "start": dtStart, "end": dtEnd };
+    var jsonData = { 
+        "count": CountPerPage, 
+        "page": nPage, 
+        "mb_uid": strUid, 
+        "start": dtStart, 
+        "end": dtEnd,
+        "auto":auto
+    };
     jsonData = JSON.stringify(jsonData);
 
 

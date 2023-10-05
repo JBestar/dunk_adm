@@ -231,6 +231,25 @@
 		<label for="confsite-returnlv1-check-id"> 1단계만 허용</label>
 	</div>
 
+	<?php if(array_key_exists('app.tree', $_ENV) && $_ENV['app.tree'] == 1) {
+		 $arrInfo = explode('#', $arrConfig[CONF_DELAY_PLAY-1]->conf_idx);
+		 if(count($arrInfo) < 2){
+			$arrInfo[0] = 0;
+			$arrInfo[1] = 0;
+		 }
+		?>
+		<div class="confsite-site-check-div">
+			<label> &nbsp;&nbsp;유저&nbsp;&nbsp; </label>
+			<input type="number" style="width:75px; margin-left:10px;" placeholder="" id="confsite-userout-input-id" value="<?=$arrInfo[0]?>">
+			<label> 분후 자동로그아웃</label>
+		</div>
+		<div class="confsite-site-check-div">
+			<label> 관리자 </label>
+			<input type="number" style="width:75px; margin-left:10px;" placeholder="" id="confsite-adminout-input-id" value="<?=$arrInfo[1]?>">
+			<label> 분후 자동로그아웃</label>
+		</div>
+	<?php } ?>
+
 	<?php if(array_key_exists('app.tree', $_ENV) && $_ENV['app.tree'] == 1) :  ?>
 	<h4><i class="glyphicon glyphicon-hand-right"></i> 은행이용정책</h4>
 	<div class="confsite-site-check-div">
@@ -265,13 +284,29 @@
 	<?php if(isEBalMode()) :?>
 	<h4><i class="glyphicon glyphicon-hand-right"></i> 유저페이지 설정</h4>
 	<div class="confsite-site-check-div">
-		<?php if ($arrConfig[CONF_AUTOAPPS-1]->conf_idx != 1) : ?>
-			<input type="checkbox" id="confsite-autoapps-check-id">
-		<?php else :?>
-			<input type="checkbox" id="confsite-autoapps-check-id" checked>
-		<?php endif ?>
+		<input type="checkbox" id="confsite-autoapps-check-id" <?=$arrConfig[CONF_AUTOAPPS-1]->conf_idx==1?'checked':''?> onchange="onChangeElement();">
 		<label for="confsite-multilog-check-id"> 오토앱 메뉴 보이기</label>
 	</div>
+		<?php $arrInfo = explode(';', $arrConfig[CONF_AUTOAPPS-1]->conf_content);
+		foreach($arrInfo as $objInfo){
+			$info = explode('#', $objInfo);
+			if(count($info) < 2)
+				continue;
+			$app = new \stdClass();
+			$app->ename = $info[0];
+			$app->name = $info[1];
+			$app->path = $info[2];
+			$app->act = 1;
+			if(count($info) > 3){
+				$app->act = intval($info[3]);
+			}
+			?>
+
+		<div class="confsite-site-check-div" style="padding-left:50px;">
+			<input type="checkbox" name="auto-apps"  data-ename="<?=$app->ename?>" data-name="<?=$app->name?>" data-path="<?=$app->path?>" <?=$app->act==1?'checked':''?> >
+			<label > <?=$app->name?> 승인</label>
+		</div>
+		<?php } ?>
 	<?php endif ?>
 
 	<div class="confsite-button-group">

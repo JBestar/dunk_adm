@@ -14,6 +14,7 @@
 				<th>번호</th>
 				<th>분류</th>
 				<th>공개</th>
+				<th>공지타입</th>
 				<th>제목</th>
 				<th>등록일</th>
 				<th>등록자</th>
@@ -36,6 +37,13 @@
 					<button name="<?=$obNotice->notice_fid?>" class="button-active">공개</button>
 					<?php } else {?>
 					<button name="<?=$obNotice->notice_fid?>" >비공개</button>
+					<?php } ?>
+				</td>
+				<td>
+					<?php if($obNotice->notice_read_count > 0) {  ?>
+					<button name="<?=$obNotice->notice_fid?>" class="button-active <?=$obNotice->notice_state_active==1?'popup':''?>">팝업</button>
+					<?php } else {?>
+					<button name="<?=$obNotice->notice_fid?>" >일반</button>
 					<?php } ?>
 				</td>
 				<td><?=$obNotice->notice_title?></td>

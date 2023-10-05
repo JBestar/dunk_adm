@@ -282,6 +282,17 @@
 
 			<?php endif ?>
 
+			<?php if(isEBalMode() && !is_null($objMember) && array_key_exists('app.sess_act', $_ENV) && $_ENV['app.sess_act'] == 1) :?>
+				<tr>
+					<td>오토앱 승인</td>
+					<td colspan="3">
+					<?php foreach($objMember->mb_autoapps as $app) { ?>
+						<input type="checkbox" name="useredit-auto-apps" style="zoom:100%; width:20px; height:20px; min-width:20px;" <?=$app->act==1?'checked':''?> >
+						<span style="margin-right:20px; position:relative; top:-5px;"><?=$app->name?></span>
+					<?php } ?>
+					</td>
+				</tr>
+			<?php endif ?>
 			<tr>
 				<td>오프라인 유저 </td>
 				<td>

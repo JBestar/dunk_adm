@@ -11,7 +11,7 @@ function requestPageInfo() {
 }
 
 function hitoryLoop() {
-    requestPageInfo();
+    requestMember(true);
     // 120초뒤에 다시 실행
     setTimeout(function() {
         hitoryLoop();
@@ -109,7 +109,7 @@ function addEventListner() {
 
 
 
-function requestMember() {
+function requestMember(auto=false) {
 
     var nPage = getActivePage();
     var strUid = $("#userpanel-userid-input-id").val();
@@ -122,6 +122,7 @@ function requestMember() {
         "page": nPage,
         "mb_uid": strUid,
         "type":type,
+        "auto":auto
     };
 
     jsonData = JSON.stringify(jsonData);

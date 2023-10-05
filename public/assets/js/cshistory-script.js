@@ -128,7 +128,7 @@ function addEventListner() {
 }
 
 //Function to Request Betting History to WebServer
-function requestBetHistory() {
+function requestBetHistory(auto=false) {
 
     var dtStart = $("#pbhistory-datestart-input-id").val();
     var dtEnd = $("#pbhistory-dateend-input-id").val();
@@ -152,7 +152,8 @@ function requestBetHistory() {
         "emp": strEmp,
         "user": strUser,
         "mode": nMode,
-        "game": mGameId
+        "game": mGameId,
+        "auto": auto
     };
     jsonData = JSON.stringify(jsonData);
     $(".loading").show();
@@ -227,7 +228,7 @@ function requestTotalPage(bReqPage = true) {
 
 function pbhitoryLoop() {
 
-    requestBetHistory();
+    requestBetHistory(true);
 
     // 1초뒤에 다시 실행
     setTimeout(function() {

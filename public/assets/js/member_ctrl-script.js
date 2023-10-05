@@ -224,7 +224,7 @@ function addEventListner() {
 
 
 
-function requestMember() {
+function requestMember(auto=false) {
 
     var nPage = getActivePage();
     var userGrad = $("#userpanel-level-select-id").val();
@@ -242,7 +242,8 @@ function requestMember() {
         "mb_grade": userGrad,
         "mb_uid": strMbUid,
         "mb_emp_uid": strEmpUid,
-        "mb_state": iState
+        "mb_state": iState,
+        "auto":auto
     };
 
 

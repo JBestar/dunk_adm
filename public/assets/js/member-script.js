@@ -12,7 +12,7 @@ function requestPageInfo() {
 }
 
 function memberLoop() {
-    requestMember();
+    requestMember(true);
     // 60초뒤에 다시 실행
     setTimeout(function() {
         memberLoop();
@@ -190,7 +190,7 @@ function addEventListner() {
 
 
 
-function requestMember() {
+function requestMember(auto=false) {
 
     var nPage = getActivePage();
     var userGrad = $("#userpanel-level-select-id").val();
@@ -206,7 +206,8 @@ function requestMember() {
         "mb_grade": userGrad,
         "mb_uid": strMbUid,
         "mb_emp_uid": strEmpUid,
-        "mb_state": iState
+        "mb_state": iState,
+        "auto":auto,
     };
 
 

@@ -32,6 +32,23 @@ function addBtnEvent() {
           "notice_state_active": 1
         };
         requestUpdateNotice(jsonData);
+      } else if (this.innerHTML == "팝업") {
+        var jsonData = {
+          "notice_fid": this.name,
+          "notice_read_count": 0
+        };
+        requestUpdateNotice(jsonData);
+      } else if (this.innerHTML == "일반") {
+        if($("#notice-table-id .popup").length > 3){
+          alert("공개된 팝업공지는 최대 4개까지 설정가능합니다.");
+          return;
+        }
+
+        var jsonData = {
+          "notice_fid": this.name,
+          "notice_read_count": 1
+        };
+        requestUpdateNotice(jsonData);
       }
     });
   }
@@ -52,11 +69,9 @@ function requestUpdateNotice(jsData) {
     },
     success: function (jResult) {
       //console.log(jResult);
-
       if (jResult.status == "success") {
         window.location.replace( FURL +'/board/notice');
       } else if (jResult.status == "fail") {
-
       }
     },
     error: function (request, status, error) {

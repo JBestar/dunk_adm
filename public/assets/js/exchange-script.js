@@ -180,13 +180,12 @@ function requestTotalPage() {
 }
 
 
-function exchangeLoop() {
+// function exchangeLoop() {
 
-    requestMoneyHistory();
+//     requestMoneyHistory();
 
-    // 1초뒤에 다시 실행
-    setTimeout(function() {
-        exchangeLoop();
-    }, 300000);
+//     setTimeout(function() {
+//         exchangeLoop();
+//     }, 300000);
 
-}
+// }

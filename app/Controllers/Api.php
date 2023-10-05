@@ -682,6 +682,9 @@ class Api extends BaseController{
 		if(is_login())
 		{
 			
+			if(array_key_exists('auto', $arrReqData) && !$arrReqData['auto']){
+				$this->sess_action();                
+			}
 			$chargeModel = new Charge_Model();
 			$strUid = $this->session->user_id;
 
@@ -896,6 +899,9 @@ class Api extends BaseController{
 
 		if(is_login())
 		{
+			if(array_key_exists('auto', $arrGetData) && !$arrGetData['auto']){
+				$this->sess_action();                
+			}
 			$exchangeModel = new Exchange_Model();
 			$arrData = $exchangeModel->search($arrReqData);
 			$nTotal = $exchangeModel->calcAdminExchange($arrReqData);
@@ -1609,6 +1615,10 @@ class Api extends BaseController{
 		if(is_login()) {
 			// writeLog("csbetlist");
 			$tmNow = microtime(true) * 1000;
+
+			if(array_key_exists('auto', $arrGetData) && !$arrGetData['auto']){
+				$this->sess_action();                
+			}
 
 			//model
 			if(array_key_exists('game', $arrGetData) && $arrGetData['game'] == GAME_AUTO_EVOL && isEBalMode()){

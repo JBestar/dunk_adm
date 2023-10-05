@@ -195,6 +195,7 @@ function requestMember(bRefresh=true) {
         "search": search,
         "type":type,
         "mode":mode,
+        "auto":!bRefresh,
     };
 
     jsonData = JSON.stringify(jsonData);

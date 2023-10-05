@@ -208,7 +208,7 @@ function addEventListner() {
 
 
 
-function requestMember() {
+function requestMember(auto=false) {
 
     var nPage = getActivePage();
     var strMbUid = $("#userpanel-userid-input-id").val();
@@ -225,7 +225,8 @@ function requestMember() {
         "mb_grade": 0,
         "mb_uid": strMbUid,
         "mb_emp_uid": strEmpUid,
-        "mb_state": iState
+        "mb_state": iState,
+        "auto":auto
     };
 
 

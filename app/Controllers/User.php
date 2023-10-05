@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\ConfSite_Model;
 use App\Models\Charge_Model;
 use App\Models\Exchange_Model;
+use App\Models\MemConf_Model;
 
 class User extends StdController
 {
@@ -140,6 +141,33 @@ class User extends StdController
 
 					if($objMember->mb_level >= LEVEL_ADMIN)
 						$objMember->mb_ip_join = "";
+
+					if(isEBalMode() && array_key_exists('app.sess_act', $_ENV) && $_ENV['app.sess_act'] == 1){
+						$memConfModel = new MemConf_Model();
+						$memConf = $memConfModel->getByMember($objMember->mb_fid);
+						$arrMemInfo = [];
+						if(!is_null($memConf) ){
+							$arrMemInfo = explode('#', $memConf->conf_str_1);
+						}
+
+						$confAutoapp = $confsiteModel->getConf(CONF_AUTOAPPS);
+						$objMember->mb_autoapps = [];
+						$arrInfo = explode(';', $confAutoapp->conf_content);
+						$i=0;
+						foreach($arrInfo as $objInfo){
+							$info = explode('#', $objInfo);
+							if(count($info) < 2)
+								continue;
+							$app = new \stdClass();
+							$app->ename = $info[0];
+							$app->name = $info[1];
+							$app->act = 0;
+							if(count($arrMemInfo) > $i)
+								$app->act = intval($arrMemInfo[$i]);
+							$i++;
+							array_push($objMember->mb_autoapps, $app);
+						}
+					}
 				}
 			} 
 

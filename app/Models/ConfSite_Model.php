@@ -372,13 +372,20 @@ class ConfSite_Model extends Model
             $arrBatch[] = $updateData;
         }
 
-        if(array_key_exists('autoapps', $arrData)){
+        if(array_key_exists('autoapps_check', $arrData)){
             $updateData = array();
             $updateData['conf_id'] = CONF_AUTOAPPS;
-            $updateData['conf_idx'] = $arrData['autoapps'];
+            $updateData['conf_content'] = $arrData['autoapps_data'];
+            $updateData['conf_idx'] = $arrData['autoapps_check'];
             $arrBatch[] = $updateData;
         }
 
+        if(array_key_exists('logout_delay', $arrData)){
+            $updateData = array();
+            $updateData['conf_id'] = CONF_DELAY_PLAY;
+            $updateData['conf_idx'] = $arrData['logout_delay'];
+            $arrBatch[] = $updateData;
+        }
         return  $this->builder()->updateBatch($arrBatch, 'conf_id');
 
     }
