@@ -16,7 +16,7 @@
 	</div>
 	<!--Site Setting-->
 	<div class="useredit-panel">
-		<table style="width: 100%; min-height:500px; " class="table table-bordered table-black user_info">
+		<table style="width: 100%;" class="table table-bordered table-black user_info">
 			<thead>
 				<tr>
 					<th>번호</th>
