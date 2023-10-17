@@ -2194,7 +2194,7 @@ class Member_Model extends Model
           
     }
     
-    public function getEmpMemberByFid($fid)
+    public function getEmpMemberByFid($fid, $order = "DESC")
     {
         $strTbColum = " ".implode(", ", $this->getFields);
         $strTbRColum = " r.".implode(", r.", $this->getFields);
@@ -2205,7 +2205,7 @@ class Member_Model extends Model
         $strSQL .= ' INNER JOIN tbmember ON r.mb_fid = tbmember.mb_emp_fid )';
         $strSQL .= ' SELECT * FROM tbmember ';
         
-        $strSQL .=  " ORDER BY mb_level DESC ";
+        $strSQL .=  " ORDER BY mb_level ".$order;
         return $this->db->query($strSQL)->getResult();
     }
 

@@ -114,7 +114,7 @@ class User extends StdController
 					}
 				}
 			}
-			
+			$emps = [];
 			if($objAdmin->mb_level >= LEVEL_ADMIN && array_key_exists('app.tree', $_ENV) && $_ENV['app.tree'] == 1 ){
 				$url = 'user/user_detail'; 
 
@@ -141,6 +141,19 @@ class User extends StdController
 
 					if($objMember->mb_level >= LEVEL_ADMIN)
 						$objMember->mb_ip_join = "";
+
+					if(array_key_exists('app.sess_act', $_ENV) && $_ENV['app.sess_act'] == 1){
+						$arrEmp = $this->modelMember->getEmpMemberByFid($objMember->mb_fid, "ASC");
+						foreach($arrEmp as $objEmp){
+							if($objEmp->mb_uid !== $objMember->mb_uid){
+								$emp = new \stdClass();
+								$emp->mb_uid = $objEmp->mb_uid;
+								$emp->mb_nickname = $objEmp->mb_nickname;
+								$emp->mb_fid = $objEmp->mb_fid;
+								array_push($emps, $emp);
+							}
+						}
+					}
 
 					if(isEBalMode() && array_key_exists('app.sess_act', $_ENV) && $_ENV['app.sess_act'] == 1){
 						$memConfModel = new MemConf_Model();
@@ -181,6 +194,7 @@ class User extends StdController
 					'return_en' => $bReturn,
 					'follow_en' => $follow_en,
 					'press_en' => $press_en,
+					'emps' => $emps,
 				]
 			);  
 		}

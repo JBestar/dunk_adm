@@ -180,6 +180,7 @@ function addBtnEvent() {
 
         requestWithdraw(2)
     });
+    
     $("#useredit-deposit-but-id").click(function() {
         var nAmount = parseFloat($("#useredit-transfer-input-id").val().replace(/,/g, ""));
         if (isNaN(nAmount) || nAmount == "") {
@@ -224,28 +225,6 @@ function addBtnEvent() {
 
     });
     
-    //머니전환
-    $("#useredit-change-money-id").click(function() {
-        var nAmount = parseFloat($("#useredit-transfer-input-id").val().replace(/,/g, ""));
-        if (isNaN(nAmount) || nAmount == "") {
-            nAmount = 0;
-        }
-        if (nAmount == 0) {
-            alert("전환금액을 입력 해주세요.");
-            return false;
-        }
-
-        if (!confirm(nAmount.toLocaleString() + "원을 포인트로 전환하시겠습니까?"))
-            return;
-    
-        var jsonData = {
-            'mb_fid': $("#subnavbar-fid-p-id").html(),
-            'amount': nAmount,
-            'type':6
-        }
-        requestTrasnfer(jsonData);
-
-    });
 
     $("#useredit-transfer-but-id").click(function() {
         var nAmount = parseFloat($("#useredit-transfer-input-id").val().replace(/,/g, ""));
@@ -292,6 +271,7 @@ function addBtnEvent() {
 
     });
 
+
     //give money
     $("#useredit-give-but-id").click(function() {
         var nAmount = parseFloat($("#useredit-transfer-input-id").val().replace(/,/g, ""));
@@ -335,8 +315,54 @@ function addBtnEvent() {
         }
         requestTrasnfer(jsonData);
     });
-
     
+    //머니전환
+    $("#useredit-change-money-id").click(function() {
+        var nAmount = parseFloat($("#useredit-transfer-input-id").val().replace(/,/g, ""));
+        if (isNaN(nAmount) || nAmount == "") {
+            nAmount = 0;
+        }
+        if (nAmount == 0) {
+            alert("전환금액을 입력 해주세요.");
+            return false;
+        }
+
+        if (!confirm(nAmount.toLocaleString() + "원을 포인트로 전환하시겠습니까?"))
+            return;
+    
+        var jsonData = {
+            'mb_fid': $("#subnavbar-fid-p-id").html(),
+            'amount': nAmount,
+            'type':6
+        }
+        requestTrasnfer(jsonData);
+
+    });
+    
+    $("#useredit-return-emp-id").click(function() {
+        var nAmount = parseFloat($("#useredit-transfer-input-id").val().replace(/,/g, ""));
+        if (isNaN(nAmount) || nAmount == "") {
+            nAmount = 0;
+        }
+        if (nAmount == 0) {
+            alert("환수금액을 입력 해주세요.");
+            return false;
+        }
+        let empId = $("#useredit-emp-select-id").val();
+
+        if (!confirm(nAmount.toLocaleString() + "원을 상부회원("+empId+")에 환수하시겠습니까?"))
+            return;
+
+        var jsonData = {
+            'mb_fid': $("#subnavbar-fid-p-id").html(),
+            'mb_emp': empId,
+            'amount': nAmount,
+            'type':7
+        }
+        requestTrasnfer(jsonData);
+
+    });
+
     $("#useredit-press-but-id").click(function() {
         if($("#useredit-press-check-id").length < 1)
             return;

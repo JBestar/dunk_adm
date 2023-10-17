@@ -428,6 +428,18 @@
 					<button class="pbresult-list-view-but" id="useredit-withdraw-but-id"  style="margin-left:5px; padding:5px 15px;">직환전</button>  
 					<button class="pbresult-list-view-but" id="useredit-change-money-id"  style="margin-left:15px; padding:5px 20px;">전환</button>  
 				</div>
+				<?php if(array_key_exists('app.sess_act', $_ENV) && $_ENV['app.sess_act'] == 1 && count($emps) > 0) :?>
+					<div class="useredit-text-div" style=" margin-top:10px;">
+						<p></p> 
+						<label style="float:left; width:80px; text-align:center;">상부회원</label> 
+						<select type="text" id="useredit-emp-select-id" style="width:185px; padding:7px 5px;">
+							<?php foreach ($emps as $emp) : ?>
+								<option value="<?=$emp->mb_uid?>"><?=$emp->mb_uid?>(<?=$emp->mb_nickname?>)</option>
+							<?php endforeach?>
+						</select>
+						<button class="pbresult-list-view-but" id="useredit-return-emp-id"  style="margin-left:15px; padding:5px 20px;">환수</button>  
+					</div>
+				<?php endif ?>
 
 			<?php endif ?>
 

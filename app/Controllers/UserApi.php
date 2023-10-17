@@ -1796,7 +1796,50 @@ class UserApi extends BaseController
 
                     }
 
-                } 
+                }  else if($arrData['type'] == 7){               //환수
+
+                    $iResult = 3;
+                    $objEmp = null;
+                    if(array_key_exists('mb_emp', $arrData)) {
+                        
+                        $arrEmp = $this->modelMember->getEmpMemberByFid($objMember->mb_fid);
+						foreach($arrEmp as $objUser){
+							if($objUser->mb_uid === $arrData['mb_emp']) {
+                                $objEmp = $objUser;
+                                $iResult = 1;
+                                break;
+                            }
+						}
+                    }
+
+                    if($iResult == 1 && $arrData['amount'] > $objMember->mb_money){
+                        if($_ENV['mem.delay_play'] > 0 && $_ENV['mem.withdeny_play'] && diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
+                            $iResult = 2;
+                        } 
+                        else $iResult = $this->alltoGame($objMember);
+                    } 
+
+                    if($iResult == 1){
+                        if($arrData['amount'] > $objMember->mb_money){
+                            $arrData['amount'] = $objMember->mb_money;
+                        }
+                        if($arrData['amount'] > 0 && $this->modelMember->trasferMoney($objMember, $objEmp, $arrData['amount'])){
+
+                            $moneyhistoryModel->registerTransfer($objEmp, $objMember->mb_uid, $arrData['amount'], MONEYCHANGE_EXCHANGE_INC);
+                            $moneyhistoryModel->registerTransfer($objMember, $objEmp->mb_uid, 0-$arrData['amount'], MONEYCHANGE_EXCHANGE_DEC);
+                            $objResult->status = STATUS_SUCCESS;
+                        } 
+                    } else if($iResult == 2) {
+                        $objResult->status = STATUS_FAIL;
+                        $objResult->msg = '회원이 게임플레이중이므로 환수 하실수 없습니다. '.intval(($_ENV['mem.delay_play']-diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet))/60+1)."분후 다시 시도해주세요.";
+                    } else if($iResult == 3) {
+                        $objResult->status = STATUS_FAIL;
+                        $objResult->msg = '거절되었습니다.';
+                    } else {
+                        $objResult->status = STATUS_FAIL;
+                        $objResult->msg = '게임서버가 응답하지 않습니다. 잠시후 다시 시도해주세요..';
+                    }
+                }
                  
             } else {
                 
