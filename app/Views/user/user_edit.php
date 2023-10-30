@@ -338,16 +338,16 @@
 
 					<label> 최소배팅금액</label>
 					<?php if(is_null($objMember)) : ?>
-					<input type = "number" min="0" step="1000" id="useredit-rangemin-input-id" value="0">
+						<input type = "text" id="useredit-rangemin-input-id" value="0">
 					<?php else :?>
-					<input type = "number" min="0" step="1000" id="useredit-rangemin-input-id" value="<?=$objMember->mb_range_min?>">
+						<input type = "text" id="useredit-rangemin-input-id" value="<?=number_format($objMember->mb_range_min)?>" >
 					<?php endif ?>
 
 					<label> 최대배팅금액</label>
 					<?php if(is_null($objMember)) :  ?>
-					<input type = "number" min="0" step="1000" id="useredit-rangemax-input-id" value="0">
+						<input type = "text" id="useredit-rangemax-input-id" value="0">
 					<?php else :?>
-					<input type = "number" min="0" step="1000" id="useredit-rangemax-input-id" value="<?=$objMember->mb_range_max?>">
+						<input type = "text" id="useredit-rangemax-input-id" value="<?=number_format($objMember->mb_range_max)?>" >
 					<?php endif ?>
 					
 					<?php if($press_en > 0 ) :?>
@@ -361,9 +361,9 @@
 							<?php endif ?>
 
 							<?php if(is_null($objMember)) :  ?>
-							<input type = "number" min="0" step="1000" id="useredit-press-input-id" value="0" style="margin-right:5px">
+								<input type = "text" id="useredit-press-input-id" value="0" style="margin-right:5px">
 							<?php else :?>
-							<input type = "number" min="0" step="1000" id="useredit-press-input-id" value="<?=$objMember->mb_press_amount?>" style="margin-right:5px">
+								<input type = "text" id="useredit-press-input-id" value="<?=number_format($objMember->mb_press_amount)?>" style="margin-right:5px">
 							<?php endif ?>
 
 							<?php if($press_en == 2 || $press_en == 4 || $press_en == 5 ) :?>

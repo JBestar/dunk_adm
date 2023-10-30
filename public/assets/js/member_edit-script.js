@@ -102,8 +102,8 @@ function readConfigToObject() {
     
     if ($("#useredit-balance-check-id").length > 0){
         objMember.mb_state_view = $("#useredit-balance-check-id").prop('checked') ? 1 : 0;
-        let min = $("#useredit-rangemin-input-id").val();
-        let max = $("#useredit-rangemax-input-id").val();
+        let min = parseInt($("#useredit-rangemin-input-id").val().replace(/,/g, ""));
+        let max = parseInt($("#useredit-rangemax-input-id").val().replace(/,/g, ""));
 
         if(min < 0) min = 0;
         if(max < 0) max = 0;
@@ -115,7 +115,7 @@ function readConfigToObject() {
         let pressEnable = 0;
         let pressAmount = 0;
         pressEnable = $("#useredit-press-check-id").prop('checked') ? 1 : 0;
-        pressAmount = $("#useredit-press-input-id").val();
+        pressAmount = parseInt($("#useredit-press-input-id").val().replace(/,/g, ""));
         if(pressAmount < 0) pressAmount = 0;
 
         objMember.mb_press_ev = pressEnable + ":" + pressAmount; 
@@ -138,9 +138,10 @@ function readConfigToObject() {
         }
         objMember.mb_autoapps = data;
     }
-    // if($("#useredit-ip-check-id").length > 0){
-    //     objMember.mb_state_view = $("#useredit-ip-check-id").prop('checked') ? 1 : 0;
-    // }
+    if($("#useredit-charge-bankname-id").length > 0){
+        objMember.mb_charge_info = $("#useredit-charge-bankname-id").val().trim()+"#"+
+            $("#useredit-charge-bankaccount-id").val().trim()+"#"+$("#useredit-charge-bankserial-id").val().trim();
+    }
     return objMember;
 
 }
@@ -373,7 +374,7 @@ function addBtnEvent() {
         let pressEnable = 0;
         let pressAmount = 0;
         pressEnable = $("#useredit-press-check-id").prop('checked') ? 1 : 0;
-        pressAmount = $("#useredit-press-input-id").val();
+        pressAmount = parseInt($("#useredit-press-input-id").val().replace(/,/g, ""));
         if(pressAmount < 0) pressAmount = 0;
 
         let mb_press_ev = pressEnable + ":" + pressAmount;
@@ -450,6 +451,25 @@ $(function() {
     $("#useredit-point-input-id").on("propertychange change keyup paste input", function() {
         calcAmount("#useredit-point-input-id");
     });
+    
+    if($("#useredit-rangemin-input-id").length > 0){
+        $("#useredit-rangemin-input-id").on("propertychange change keyup paste input", function() {
+            calcAmount("#useredit-rangemin-input-id");
+        });
+    }
+    
+    if($("#useredit-rangemax-input-id").length > 0){
+        $("#useredit-rangemax-input-id").on("propertychange change keyup paste input", function() {
+            calcAmount("#useredit-rangemax-input-id");
+        });
+    }
+    
+    if($("#useredit-press-input-id").length > 0){
+        $("#useredit-press-input-id").on("propertychange change keyup paste input", function() {
+            calcAmount("#useredit-press-input-id");
+        });
+    }
+
     // 1만원
     $("#money_1").on("click", function(e) {
         e.preventDefault();

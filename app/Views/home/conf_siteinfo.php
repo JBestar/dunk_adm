@@ -46,6 +46,9 @@
 			<input type="text" style="width:25%; margin-right:1px;" placeholder="예금주" id="confsite-bankown-input-id" value="<?=explode("#", trim($arrConfig[CONF_CHARGEINFO-1]->conf_content))[1]?>">
 			<input type="text" style="width:25%; " placeholder="계좌번호" id="confsite-banknum-input-id" value="<?=explode("#", trim($arrConfig[CONF_CHARGEINFO-1]->conf_content))[2]?>">
 		<?php endif ?>
+		<?php if(array_key_exists('app.sess_act', $_ENV) && $_ENV['app.sess_act'] == 1) :?>
+			<button class="confsite-cancel-button" style="margin-left:5px; padding:3px 10px; " id="confsite-charge-reset-id">리셋</button>
+		<?php endif ?>
 	</div>
 
 	<?php if($arrConfig[CONF_CHARGE_URL-1]->conf_active == 1) :  ?>

@@ -52,7 +52,10 @@ class MemConf_Model extends Model
     }
     
     public function updateData($conf, $data){
-        return $this->update($conf->conf_fid, $data);
+
+        if(!is_null($conf))
+            return $this->update($conf->conf_fid, $data);
+        else return $this->set($data)->update();
     }
 
 }

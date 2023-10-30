@@ -107,7 +107,7 @@
 			<div>
 				<p>계정타입:</p> 
 				<input type="checkbox" id="confev-signal-check-id" style="zoom:120%; margin-top:5px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호값용</label>
-				<input type="checkbox" id="confev-multiroom-check-id" style="zoom:120%; margin-top:5px; margin-left:30px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 멀티방</label>
+				<!-- <input type="checkbox" id="confev-multiroom-check-id" style="zoom:120%; margin-top:5px; margin-left:30px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 멀티방</label> -->
 			</div>
 		</div>
 		
@@ -159,7 +159,7 @@
 			<div>
 				<p>계정타입:</p> 
 				<input type="checkbox" id="confev-signal-check-id2" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호값용</label>
-				<input type="checkbox" id="confev-multiroom-check-id2" style="zoom:120%; margin-top:5px; margin-left:30px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 멀티방</label>
+				<!-- <input type="checkbox" id="confev-multiroom-check-id2" style="zoom:120%; margin-top:5px; margin-left:30px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 멀티방</label> -->
 			</div>
 		</div>
 		<!-- 보험계정 3 -->
@@ -210,7 +210,7 @@
 			<div>
 				<p>계정타입:</p> 
 				<input type="checkbox" id="confev-signal-check-id3" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호값용</label>
-				<input type="checkbox" id="confev-multiroom-check-id3" style="zoom:120%; margin-top:5px; margin-left:30px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 멀티방</label>
+				<!-- <input type="checkbox" id="confev-multiroom-check-id3" style="zoom:120%; margin-top:5px; margin-left:30px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 멀티방</label> -->
 			</div>
 		</div>
 		<?php endif ?>

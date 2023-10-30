@@ -128,7 +128,9 @@ function addBtnEvent() {
         objData.is_signal = 0;
         if($("#confev-signal-check-id").length > 0)
             objData.is_signal = $("#confev-signal-check-id").prop('checked') ? 1 : 0;
-        objData.multiroom = $("#confev-multiroom-check-id").prop('checked') ? 1 : 0;
+        if($("#confev-multiroom-check-id").length > 0)
+            objData.multiroom = $("#confev-multiroom-check-id").prop('checked') ? 1 : 0;
+        else objData.multiroom = 0;
 
         if($("#confev-betsite-input-id2").length > 0){
             objData.betmode_ev = $("#confev-betmode-select-id").val();
@@ -140,7 +142,9 @@ function addBtnEvent() {
             objData.type_ev2 = $("#confev-bettype-select-id2").val();
             objData.con_ev2 = $("#confev-conbet-check-id2").prop('checked') ? 1 : 0;
             objData.is_signal2 = $("#confev-signal-check-id2").prop('checked') ? 1 : 0;
-            objData.multiroom2 = $("#confev-multiroom-check-id2").prop('checked') ? 1 : 0;
+            if($("#confev-multiroom-check-id2").length > 0)
+                objData.multiroom2 = $("#confev-multiroom-check-id2").prop('checked') ? 1 : 0;
+            else objData.multiroom2 = 0;
 
             objData.site_ev3 = $("#confev-betsite-input-id3").val().trim();
             objData.userid_ev3 = $("#confev-userid-input-id3").val().trim();
@@ -149,7 +153,9 @@ function addBtnEvent() {
             objData.type_ev3 = $("#confev-bettype-select-id3").val();
             objData.con_ev3 = $("#confev-conbet-check-id3").prop('checked') ? 1 : 0;
             objData.is_signal3 = $("#confev-signal-check-id3").prop('checked') ? 1 : 0;
-            objData.multiroom3 = $("#confev-multiroom-check-id3").prop('checked') ? 1 : 0;
+            if($("#confev-multiroom-check-id3").length > 0)
+                objData.multiroom3 = $("#confev-multiroom-check-id3").prop('checked') ? 1 : 0;
+            else objData.multiroom3 = 0;
 
             if(objData.site_ev.length > 0 && objData.userid_ev.length> 0 && objData.site_ev === objData.site_ev2 && objData.userid_ev == objData.userid_ev2){
                 showAlert("보험계정1과 보험계정2를 다르게 입력해주세요", 0);

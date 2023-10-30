@@ -184,6 +184,31 @@ function addBtnEvent() {
         window.location.reload();
     });
 
+    $("#confsite-charge-reset-id").click(function() {
+        if (!confirm("회원 입금통장들을 전부 리셋하시겠습니까?"))
+            return;
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: FURL + "/userapi/resetchargeinfo",
+            success: function(jResult) {
+                // console.log(jResult);
+                if (jResult.status == "success") {
+                    showAlert("리셋되었습니다.");
+                } else if (jResult.status == "logout") {
+                    window.location.replace( FURL +'/');
+                } else if (jResult.status == "fail") {
+                    showAlert("조작이 실패되었습니다.", 0);
+                }
+            },
+            error: function(request, status, error) {
+                // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            }
+
+        });
+    });
+
     $("#confsite-transdeny-check-id").change(function() {
         onChangeElement();
     });
@@ -191,7 +216,7 @@ function addBtnEvent() {
     $("#confsite-returndeny-check-id").change(function() {
         onChangeElement();
     });
-    
+
     $('#confsite-deposite-color-id').on('input', function() {
         $("#confsite-deposite-id").css("background-color", $(this).val());
         if($("#confsite-deposite_cn-id").length > 0)

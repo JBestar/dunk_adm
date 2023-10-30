@@ -204,15 +204,15 @@
 				</td>
 				<td>
 					<?php if(is_null($objMember)) : ?>
-						<input type = "number" min="0" step="1000" id="useredit-rangemin-input-id" value="0">
+						<input type = "text" id="useredit-rangemin-input-id" value="0">
 					<?php else :?>
-						<input type = "number" min="0" step="1000" id="useredit-rangemin-input-id" value="<?=$objMember->mb_range_min?>">
+						<input type = "text" id="useredit-rangemin-input-id" value="<?=number_format($objMember->mb_range_min)?>" >
 					<?php endif ?>
 
 					<?php if(is_null($objMember)) :  ?>
-						<input type = "number" min="0" step="1000" id="useredit-rangemax-input-id" value="0">
+						<input type = "text" id="useredit-rangemax-input-id" value="0">
 					<?php else :?>
-						<input type = "number" min="0" step="1000" id="useredit-rangemax-input-id" value="<?=$objMember->mb_range_max?>">
+						<input type = "text" id="useredit-rangemax-input-id" value="<?=number_format($objMember->mb_range_max)?>" >
 					<?php endif ?>
 				</td>
 			</tr>
@@ -227,9 +227,9 @@
 					</td>
 					<td colspan="2">
 						<?php if(is_null($objMember)) :  ?>
-						<input type = "number" min="0" step="1000" id="useredit-press-input-id" value="0" style="margin-right:5px">
+						<input type = "text" id="useredit-press-input-id" value="0" style="margin-right:5px">
 						<?php else :?>
-						<input type = "number" min="0" step="1000" id="useredit-press-input-id" value="<?=$objMember->mb_press_amount?>" style="margin-right:5px">
+						<input type = "text" id="useredit-press-input-id" value="<?=number_format($objMember->mb_press_amount)?>" style="margin-right:5px">
 						<?php endif ?>
 						<?php if($press_en == 2 || $press_en == 4 || $press_en == 5 ) :?>
 							<label>이하</label>
@@ -286,6 +286,14 @@
 						<input type="checkbox" name="useredit-auto-apps" style="zoom:100%; width:20px; height:20px; min-width:20px;" <?=$app->act==1?'checked':''?> >
 						<span style="margin-right:20px; position:relative; top:-5px;"><?=$app->name?></span>
 					<?php } ?>
+					</td>
+				</tr>
+				<tr>
+					<td>입금통장</td>
+					<td colspan="3">
+						<input type="text" id="useredit-charge-bankname-id" placeholder="은행명" value="<?=$objMember->mb_charge_info[0]?>" style="width:100px;">
+						<input type="text" id="useredit-charge-bankaccount-id" placeholder="예금주" value="<?=$objMember->mb_charge_info[1]?>" style="width:100px;">
+						<input type="text" id="useredit-charge-bankserial-id" placeholder="계좌번호" value="<?=$objMember->mb_charge_info[2]?>" style="width:100px;">
 					</td>
 				</tr>
 			<?php endif ?>

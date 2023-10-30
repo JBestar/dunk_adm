@@ -158,16 +158,18 @@ class User extends StdController
 					if(isEBalMode() && array_key_exists('app.sess_act', $_ENV) && $_ENV['app.sess_act'] == 1){
 						$memConfModel = new MemConf_Model();
 						$memConf = $memConfModel->getByMember($objMember->mb_fid);
-						$arrMemInfo = [];
+						$arrAppInfo = [];
+						$arrChargeInfo = [];
 						if(!is_null($memConf) ){
-							$arrMemInfo = explode('#', $memConf->conf_str_1);
+							$arrAppInfo = explode('#', $memConf->conf_str_1);
+							$arrChargeInfo = explode('#', $memConf->conf_str_5);
 						}
 
 						$confAutoapp = $confsiteModel->getConf(CONF_AUTOAPPS);
 						$objMember->mb_autoapps = [];
-						$arrInfo = explode(';', $confAutoapp->conf_content);
+						$arrAutoApp = explode(';', $confAutoapp->conf_content);
 						$i=0;
-						foreach($arrInfo as $objInfo){
+						foreach($arrAutoApp as $objInfo){
 							$info = explode('#', $objInfo);
 							if(count($info) < 2)
 								continue;
@@ -175,11 +177,16 @@ class User extends StdController
 							$app->ename = $info[0];
 							$app->name = $info[1];
 							$app->act = 0;
-							if(count($arrMemInfo) > $i)
-								$app->act = intval($arrMemInfo[$i]);
+							if(count($arrAppInfo) > $i)
+								$app->act = intval($arrAppInfo[$i]);
 							$i++;
 							array_push($objMember->mb_autoapps, $app);
 						}
+
+						if(count($arrChargeInfo) < 3)
+							$arrChargeInfo = ['', '', ''];
+						$objMember->mb_charge_info = $arrChargeInfo;
+
 					}
 				}
 			} 
