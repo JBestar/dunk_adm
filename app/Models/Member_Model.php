@@ -10,7 +10,7 @@ class Member_Model extends Model
     private $chargeTb = 'member_charge';
     protected $exchangeTb = 'member_exchange';
     protected $noticeTb = 'board_notice';
-    private $historyTb = 'money_history';
+    private $historyTb = 'money_history_st';
     protected $rewardTb = 'bet_reward_st';
     protected $returnType = 'object'; 
 
@@ -569,11 +569,11 @@ class Member_Model extends Model
             $strSQL.=" AND ".getTimeRange("exchange_time_require", $arrReqData, $this->db);
         $strSQL .= " AND exchange_mb_uid IN (SELECT mb_uid from tbmember ) )";
         //지급 회수
-        $strSQL .= " UNION ALL ( SELECT SUM( CASE WHEN money_change_type = '".MONEYCHANGE_GIVE."' THEN ABS(money_amount) ELSE 0 END) AS result_1, ";
-        $strSQL .= " SUM( CASE WHEN money_change_type = '".MONEYCHANGE_WITHDRAW."' THEN ABS(money_amount) ELSE 0 END) AS result_2 FROM ".$this->historyTb;
+        $strSQL .= " UNION ALL ( SELECT SUM(money_give) AS result_1, ";
+        $strSQL .= " SUM(money_withdraw) AS result_2 FROM ".$this->historyTb;
         $strSQL .= " WHERE money_mb_fid IN (SELECT mb_fid from tbmember ) ";
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 )
-            $strSQL.=" AND ".getTimeRange("money_update_time", $arrReqData, $this->db);
+            $strSQL.=" AND ".getStatRange('money_start', 'money_end', $arrReqData, $this->db);
         $strSQL .= " )";
         // writeLog($strSQL);
         return $strSQL;
@@ -1781,10 +1781,10 @@ class Member_Model extends Model
         $strSQL.=" AND exchange_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND exchange_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
         $strSQL .= " AND exchange_mb_uid NOT IN (SELECT mb_uid FROM ".$this->table." WHERE mb_level >= ".LEVEL_ADMIN.") ";
         //지급 회수
-        $strSQL .= " UNION ALL SELECT SUM( CASE WHEN money_change_type = '".MONEYCHANGE_GIVE."' THEN ABS(money_amount) ELSE 0 END) AS result_1, ";
-        $strSQL .= " SUM( CASE WHEN money_change_type = '".MONEYCHANGE_WITHDRAW."' THEN ABS(money_amount) ELSE 0 END) AS result_2 FROM ".$this->historyTb;
+        $strSQL .= " UNION ALL SELECT SUM( money_give) AS result_1, ";
+        $strSQL .= " SUM( money_withdraw) AS result_2 FROM ".$this->historyTb;
         $strSQL .= " WHERE money_mb_fid NOT IN (SELECT mb_fid FROM ".$this->table." WHERE mb_level >= ".LEVEL_ADMIN.") ";
-        $strSQL.=" AND money_update_time >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND money_update_time <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
+        $strSQL.=" AND money_start >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND money_end <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
 
         if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
             writeLog($strSQL);
