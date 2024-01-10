@@ -257,14 +257,14 @@
 									</div>
 								</div>
 							</div>
-					<?php if(!$hpg_deny) :?>
+					<?php if(!$pbg_deny || !$bpg_deny || !$eos5_deny || !$eos3_deny || !$rand5_deny || !$rand3_deny) :?>
 							<div class="col-md-12">
 								<div class="row">
-									<div class="col-md-2">해피볼 단폴 배당율 (%)</div>
+									<div class="col-md-2">미니게임 단폴 배당율 (%)</div>
 									<div class="col-md-2">
 										<input type="number" id="pb_ratio" step="0.01" class="form-control" value="0.00" min="0" />
 									</div>
-									<div class="col-md-2">해피볼 조합 배당율 (%)</div>
+									<div class="col-md-2">미니게임 조합 배당율 (%)</div>
 									<div class="col-md-2">
 										<input type="number" id="pb2_ratio" step="0.01" class="form-control" value="0.00" min="0" />
 									</div>
@@ -273,120 +273,14 @@
 						<?php if(!$gameper_full) :?>
 							<div class="col-md-12">
 								<div class="row">
-									<div class="col-md-2">해피볼 단폴 누름율 (%)</div>
+									<div class="col-md-2">미니게임 단폴 누름율 (%)</div>
 									<div class="col-md-2">
 										<input type="number" id="pb_percent" class="form-control" value="100" min="0" />
 									</div>
-									<div class="col-md-2">해피볼 조합 누름율 (%)</div>
+									<div class="col-md-2">미니게임 조합 누름율 (%)</div>
 									<div class="col-md-2">
 										<input type="number" id="pb2_percent" class="form-control" value="100" min="0" />
 									</div>
-								</div>
-							</div>
-						<?php endif ?>
-					<?php endif ?>
-					<?php if(!$bpg_deny) :?>
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-2">보글볼 단폴 배당율 (%)</div>
-									<div class="col-md-2">
-										<input type="number" id="bb_ratio" step="0.01" class="form-control" value="0.00" min="0" />
-									</div>
-									
-									<div class="col-md-2">보글볼 조합 배당율 (%)</div>
-									<div class="col-md-2">
-										<input type="number" id="bb2_ratio" step="0.01" class="form-control" value="0.00" min="0" />
-									</div>
-
-									<div class="col-md-2">보글사다리 배당율 (%)</div>
-									<div class="col-md-2">
-										<input type="number" id="bs_ratio" step="0.01" class="form-control" value="0.00" min="0" />
-									</div>
-
-								</div>
-							</div>
-						<?php if(!$gameper_full) :?>
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-2">보글볼 단폴 누름율 (%)</div>
-									<div class="col-md-2">
-										<input type="number" id="bb_percent" class="form-control" value="100" min="0" />
-									</div>
-									
-									<div class="col-md-2">보글볼 조합 누름율 (%)</div>
-									<div class="col-md-2">
-										<input type="number" id="bb2_percent" class="form-control" value="100" min="0" />
-									</div>
-								
-									<div class="col-md-2">보글사다리 누름율 (%)</div>
-									<div class="col-md-2">
-										<input type="number" id="bs_percent" class="form-control" value="100" min="0" />
-									</div>
-									
-								</div>
-							</div>
-						<?php endif ?>
-					<?php endif ?>
-					<?php if(!$eos5_deny || !$eos3_deny) :?>
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-2">EOS 단폴 배당율 (%)</div>
-									<div class="col-md-2">
-										<input type="number" id="eo_ratio" step="0.01" class="form-control" value="0.00" min="0" />
-									</div>
-									
-									<div class="col-md-2">EOS 조합 배당율 (%)</div>
-									<div class="col-md-2">
-										<input type="number" id="eo2_ratio" step="0.01" class="form-control" value="0.00" min="0" />
-									</div>
-
-								</div>
-							</div>
-						<?php if(!$gameper_full) :?>
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-2">EOS 단폴 누름율 (%)</div>
-									<div class="col-md-2">
-										<input type="number" id="eo_percent" class="form-control" value="100" min="0" />
-									</div>
-									
-									<div class="col-md-2">EOS 조합 누름율 (%)</div>
-									<div class="col-md-2">
-										<input type="number" id="eo2_percent" class="form-control" value="100" min="0" />
-									</div>
-																	
-								</div>
-							</div>
-						<?php endif ?>
-					<?php endif ?>
-					<?php if(!$coin5_deny || !$coin3_deny) :?>
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-2">코인 단폴 배당율 (%)</div>
-									<div class="col-md-2">
-										<input type="number" id="co_ratio" step="0.01" class="form-control" value="0.00" min="0" />
-									</div>
-									
-									<div class="col-md-2">코인 조합 배당율 (%)</div>
-									<div class="col-md-2">
-										<input type="number" id="co2_ratio" step="0.01" class="form-control" value="0.00" min="0" />
-									</div>
-
-								</div>
-							</div>
-						<?php if(!$gameper_full) :?>
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-2">코인 단폴 누름율 (%)</div>
-									<div class="col-md-2">
-										<input type="number" id="co_percent" class="form-control" value="100" min="0" />
-									</div>
-									
-									<div class="col-md-2">코인 조합 누름율 (%)</div>
-									<div class="col-md-2">
-										<input type="number" id="co2_percent" class="form-control" value="100" min="0" />
-									</div>
-																	
 								</div>
 							</div>
 						<?php endif ?>

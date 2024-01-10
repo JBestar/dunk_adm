@@ -6,9 +6,10 @@ use CodeIgniter\Model;
 
 class PbRound_Model extends Model
 {
-    protected $table = 'round_powerball';
+    protected $table = 'round_pball';
     protected $returnType = 'object'; 
     protected $allowedFields = [
+        'round_game',
         'round_date',
         'round_num',
         'round_time',
@@ -18,29 +19,16 @@ class PbRound_Model extends Model
         'round_result_3',
         'round_result_4',
         'round_result_5',
+        'round_result_6',
         'round_power',
         'round_normal',
     ];
     protected $primaryKey = 'round_fid';
-    private $mGameId =  GAME_POWER_BALL;
 
-    public function setType($gameId){
-        $this->mGameId = $gameId;
-        switch($gameId){
-            case GAME_POWER_BALL:   $this->table = 'round_powerball';   break;
-            case GAME_BOGLE_BALL:   $this->table = 'round_bogleball';   break;
-            case GAME_EOS5_BALL:    $this->table = 'round_eos5ball';    break;
-            case GAME_EOS3_BALL:    $this->table = 'round_eos3ball';    break;
-            case GAME_COIN5_BALL:   $this->table = 'round_coin5ball';   break;
-            case GAME_COIN3_BALL:   $this->table = 'round_coin3ball';   break;
-            case GAME_HAPPY_BALL:   $this->table = 'round_happyball';   break;
-            default: break;
-        }
-    }
     
     public function gets($nCount)
     {
-        $strSql = 'SELECT round_fid, round_date, round_num, round_time, round_state, round_result_1, round_result_2, round_result_3, round_result_4, round_result_5, round_power, round_normal  FROM '.$this->table.' ORDER BY round_time DESC LIMIT 0, '.$nCount;
+        $strSql = 'SELECT * FROM '.$this->table.' ORDER BY round_time DESC LIMIT 0, '.$nCount;
         $query = $this->db->query($strSql);
         $result = $query->getResult();
         
@@ -53,13 +41,13 @@ class PbRound_Model extends Model
         return $this->where(['round_fid' => $nRoundFid])->first();
     }
 
-    public function getByDate($strDate, $nRoundNo)
+    public function getByDate($game, $strDate, $nRoundNo)
     {
         if (strlen($strDate) < 1 || $nRoundNo < 1) {
             return null;
         }
 
-        return $this->where(['round_num' => $nRoundNo, 'round_date' => $strDate])->first();
+        return $this->where(['round_game' => $game, 'round_num' => $nRoundNo, 'round_date' => $strDate])->first();
     }
 
     public function register($arrReqData)
@@ -72,7 +60,7 @@ class PbRound_Model extends Model
             return 2;
         }
 
-        if($this->mGameId == GAME_POWER_BALL){
+        if($arrReqData['game'] == GAME_PBG_BALL){
             $objRound = $this->get($arrReqData['round_fid']);
             if(!is_null($objRound))
                return 2;
@@ -93,10 +81,16 @@ class PbRound_Model extends Model
         $this->builder()->set('round_result_1', $arrReqData['round_result_1']);
         $this->builder()->set('round_result_2', $arrReqData['round_result_2']);
         $this->builder()->set('round_result_3', $arrReqData['round_result_3']);
-        $this->builder()->set('round_result_4', $arrReqData['round_result_4']);
-        $this->builder()->set('round_result_5', $arrReqData['round_result_5']);
-        $this->builder()->set('round_power', $arrReqData['round_power']);
-        $this->builder()->set('round_normal', $arrReqData['round_normal']);
+        if(array_key_exists('round_result_4', $arrReqData))
+            $this->builder()->set('round_result_4', $arrReqData['round_result_4']);
+        if(array_key_exists('round_result_5', $arrReqData))
+            $this->builder()->set('round_result_5', $arrReqData['round_result_5']);
+        if(array_key_exists('round_result_6', $arrReqData))
+            $this->builder()->set('round_result_6', $arrReqData['round_result_6']);
+        if(array_key_exists('round_power', $arrReqData))
+            $this->builder()->set('round_power', $arrReqData['round_power']);
+        if(array_key_exists('round_normal', $arrReqData))
+            $this->builder()->set('round_normal', $arrReqData['round_normal']);
 
         $bResult = $this->builder()->insert();
 
@@ -109,10 +103,16 @@ class PbRound_Model extends Model
         $this->builder()->set('round_result_1', $arrReqData['round_result_1']);
         $this->builder()->set('round_result_2', $arrReqData['round_result_2']);
         $this->builder()->set('round_result_3', $arrReqData['round_result_3']);
-        $this->builder()->set('round_result_4', $arrReqData['round_result_4']);
-        $this->builder()->set('round_result_5', $arrReqData['round_result_5']);
-        $this->builder()->set('round_power', $arrReqData['round_power']);
-        $this->builder()->set('round_normal', $arrReqData['round_normal']);
+        if(array_key_exists('round_result_4', $arrReqData))
+            $this->builder()->set('round_result_4', $arrReqData['round_result_4']);
+        if(array_key_exists('round_result_5', $arrReqData))
+            $this->builder()->set('round_result_5', $arrReqData['round_result_5']);
+        if(array_key_exists('round_result_6', $arrReqData))
+            $this->builder()->set('round_result_6', $arrReqData['round_result_6']);
+        if(array_key_exists('round_power', $arrReqData))
+            $this->builder()->set('round_power', $arrReqData['round_power']);
+        if(array_key_exists('round_normal', $arrReqData))
+            $this->builder()->set('round_normal', $arrReqData['round_normal']);
 
         $this->builder()->where('round_fid', $arrReqData['round_fid']);
 
@@ -121,18 +121,13 @@ class PbRound_Model extends Model
 
     public function search($arrReqData)
     {
-        $strSql = 'SELECT round_fid, round_date, round_num, round_time, round_state, round_result_1, round_result_2, round_result_3, round_result_4, round_result_5, round_power, round_normal  FROM '.$this->table;
-        $bWhere = false;
+        $strSql = 'SELECT * FROM '.$this->table;
+        $strSql .= " WHERE round_game = ".$this->db->escape($arrReqData['game']);
         if (strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
-            $bWhere = true;
-            $strSql .= " WHERE round_date >= ".$this->db->escape($arrReqData['start'])." AND round_date <= ".$this->db->escape($arrReqData['end']);
+            $strSql .= " AND round_date >= ".$this->db->escape($arrReqData['start'])." AND round_date <= ".$this->db->escape($arrReqData['end']);
         }
         if (strlen($arrReqData['round']) > 0) {
-            if ($bWhere) {
-                $strSql .= " AND round_num = ".$this->db->escape($arrReqData['round']);
-            } else {
-                $strSql .= " WHERE round_num = ".$this->db->escape($arrReqData['round']);
-            }
+            $strSql .= " AND round_num = ".$this->db->escape($arrReqData['round']);
         }
         $nStartRow = ($arrReqData['page'] - 1) * $arrReqData['count'];
         $strSql .= ' ORDER BY round_time DESC LIMIT '.$nStartRow.', '.$arrReqData['count'];
@@ -146,21 +141,35 @@ class PbRound_Model extends Model
     public function searchCount($arrReqData)
     {
         $strSql = 'SELECT count(*) as count  FROM '.$this->table;
-        $bWhere = false;
+        $strSql .= " WHERE round_game = ".$this->db->escape($arrReqData['game']);
         if (strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
-            $bWhere = true;
-            $strSql .= " WHERE round_date >= ".$this->db->escape($arrReqData['start'])." AND round_date <= ".$this->db->escape($arrReqData['end']);
+            $strSql .= " AND round_date >= ".$this->db->escape($arrReqData['start'])." AND round_date <= ".$this->db->escape($arrReqData['end']);
         }
         if (strlen($arrReqData['round']) > 0) {
-            if ($bWhere) {
-                $strSql .= " AND round_num = ".$this->db->escape($arrReqData['round']);
-            } else {
-                $strSql .= " WHERE round_num = ".$this->db->escape($arrReqData['round']);
-            }
+            $strSql .= " AND round_num = ".$this->db->escape($arrReqData['round']);
         }
         $query = $this->db->query($strSql);
         $result = $query->getRow();
 
         return $result;
+    }
+
+    public function searchList($reqData){
+        
+        $where = "round_game = ".$this->db->escape($reqData['game']);
+        if(array_key_exists('date', $reqData) ){
+            $where.= " AND round_date = ".$this->db->escape($reqData['date']);
+        }
+        
+        $page = $reqData['page'];
+        $count = $reqData['count'];
+        
+        if($page < 1)
+            return NULL;
+        if($count < 1)
+            return NULL;
+        return $this->where($where)
+                    ->orderBy('round_time', 'DESC')
+                    ->findAll($count, $count*($page-1)); 
     }
 }

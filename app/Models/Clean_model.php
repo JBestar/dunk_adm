@@ -24,31 +24,13 @@ class Clean_Model extends Model {
         $strSql = " DELETE FROM bet_reward_st WHERE rw_end < '".$strDate."' ";
         $this -> db -> query($strSql);
 
-        $strSql = " DELETE FROM bet_happyball WHERE bet_time < '".$strDate."' ";
+        $strSql = " DELETE FROM bet_reward_mn WHERE rw_time < '".$strDate."' ";
+        $this -> db -> query($strSql);
+        
+        $strSql = " DELETE FROM bet_reward_mn_st WHERE rw_end < '".$strDate."' ";
         $this -> db -> query($strSql);
 
         $strSql = " DELETE FROM bet_powerball WHERE bet_time < '".$strDate."' ";
-        $this -> db -> query($strSql);
-        
-        $strSql = " DELETE FROM bet_powerladder WHERE bet_time < '".$strDate."' ";
-        $this -> db -> query($strSql);
-        
-        $strSql = " DELETE FROM bet_bogleball WHERE bet_time < '".$strDate."' ";
-        $this -> db -> query($strSql);
-        
-        $strSql = " DELETE FROM bet_bogleladder WHERE bet_time < '".$strDate."' ";
-        $this -> db -> query($strSql);
-        
-        $strSql = " DELETE FROM bet_eos5ball WHERE bet_time < '".$strDate."' ";
-        $this -> db -> query($strSql);
-        
-        $strSql = " DELETE FROM bet_eos3ball WHERE bet_time < '".$strDate."' ";
-        $this -> db -> query($strSql);
-        
-        $strSql = " DELETE FROM bet_coin5ball WHERE bet_time < '".$strDate."' ";
-        $this -> db -> query($strSql);
-        
-        $strSql = " DELETE FROM bet_coin3ball WHERE bet_time < '".$strDate."' ";
         $this -> db -> query($strSql);
         
         $strSql = " DELETE FROM bet_ebal WHERE bet_time < '".$strDate."' ";
@@ -70,17 +52,11 @@ class Clean_Model extends Model {
         $this->db->query("TRUNCATE bet_casino");
         $this->db->query("TRUNCATE bet_balance");
         $this->db->query("TRUNCATE bet_powerball");
-        $this->db->query("TRUNCATE bet_happyball");
         $this->db->query("TRUNCATE bet_holdem");
-        $this->db->query("TRUNCATE bet_powerladder");
-        $this->db->query("TRUNCATE bet_bogleball");
-        $this->db->query("TRUNCATE bet_bogleladder");
-        $this->db->query("TRUNCATE bet_eos5ball");
-        $this->db->query("TRUNCATE bet_eos3ball");
-        $this->db->query("TRUNCATE bet_coin5ball");
-        $this->db->query("TRUNCATE bet_coin3ball");
         $this->db->query("TRUNCATE bet_reward");
         $this->db->query("TRUNCATE bet_reward_st");
+        $this->db->query("TRUNCATE bet_reward_mn");
+        $this->db->query("TRUNCATE bet_reward_mn_st");
         $this->db->query("TRUNCATE bet_follow");
         $this->db->query("TRUNCATE block_list");
         $this->db->query("TRUNCATE log_modify");
@@ -103,21 +79,6 @@ class Clean_Model extends Model {
         $strSql = " DELETE FROM round_powerball WHERE round_date < '".$strDate."' ";
         $this -> db -> query($strSql);
 
-        $strSql = " DELETE FROM round_powerladder WHERE round_date < '".$strDate."' ";
-        $this -> db -> query($strSql);
-
-        $strSql = " DELETE FROM round_bogleball WHERE round_date < '".$strDate."' ";
-        $this -> db -> query($strSql);
-
-        $strSql = " DELETE FROM round_bogleladder WHERE round_date < '".$strDate."' ";
-        $this -> db -> query($strSql);
-
-        $strSql = " DELETE FROM round_eos5ball WHERE round_date < '".$strDate."' ";
-        $this -> db -> query($strSql);
-        
-        $strSql = " DELETE FROM round_eos3ball WHERE round_date < '".$strDate."' ";
-        $this -> db -> query($strSql);
-
         $strSql = " DELETE FROM board_notice WHERE notice_type != '".NOTICE_BOARD."' ";
         $this -> db -> query($strSql);
 
@@ -136,11 +97,14 @@ class Clean_Model extends Model {
             $this->db->query("TRUNCATE bet_balance");
             $this->db->query("TRUNCATE bet_reward");
             $this->db->query("TRUNCATE bet_reward_st");
+            $this->db->query("TRUNCATE bet_reward_mn");
+            $this->db->query("TRUNCATE bet_reward_mn_st");
             $this->db->query("TRUNCATE money_history");
             $this->db->query("TRUNCATE money_history_st");
             $this->db->query("TRUNCATE bet_casino");
             $this->db->query("TRUNCATE bet_slot");
             $this->db->query("TRUNCATE bet_holdem");
+            $this->db->query("TRUNCATE bet_powerball");
         } else if(strlen($date) > 0) {
 
             $partName = "P_".str_replace("-", "", $date)."_000000";
@@ -155,6 +119,9 @@ class Clean_Model extends Model {
             $table = "bet_reward";
             $this->dropPartitions($table, $partName);
 
+            $table = "bet_reward_mn";
+            $this->dropPartitions($table, $partName);
+
             $table = "money_history";
             $this->dropPartitions($table, $partName);
 
@@ -167,9 +134,15 @@ class Clean_Model extends Model {
             $table = "bet_holdem";
             $this->dropPartitions($table, $partName);
 
+            $table = "bet_powerball";
+            $this->dropPartitions($table, $partName);
+
             $strSql = " DELETE FROM bet_reward_st WHERE rw_end < '".$date."' ";
             $this -> db -> query($strSql);
             
+            $strSql = " DELETE FROM bet_reward_mn_st WHERE rw_end < '".$date."' ";
+            $this -> db -> query($strSql);
+
             $strSql = " DELETE FROM bet_ebal_st WHERE bet_end < '".$date."' ";
             $this -> db -> query($strSql);
             

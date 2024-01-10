@@ -12,7 +12,7 @@
     <?php endif ?>
 	<!-- Bootstrap 3.3.7 -->
   	<link rel="stylesheet" href="<?php echo site_furl('assets/bootstrap/css/bootstrap.min.css');?>">
-	<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=19');?>">
+	<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=20');?>">
 
 	<!-- JQuery 1.12.1 -->
 	<link rel="stylesheet" href="<?php echo site_furl('assets/js/jquery-ui-1.12.1.min.css'); ?>">
@@ -32,13 +32,12 @@
         <?php endif ?>
     </script>
 
-    <script src="<?php echo site_furl('assets/js/common.js?t=').time(); ?>"></script>
+    <script src="<?php echo site_furl('assets/js/common.js?v=1');?>"></script>
+	<script src="<?php echo site_furl('assets/js/worker.js?v=1');?>"></script>
 
     <?php if(array_key_exists("app.produce", $_ENV)) :?>
-        <script src="<?php echo site_furl('assets/js/worker.js?t='.time());?>"></script>
         <script src="<?php echo site_furl('assets/js/main-script.js?t='.time());?>"></script>
     <?php else : ?>
-        <script src="<?php echo site_furl('assets/js/worker.js?v=1');?>"></script>
         <script src="<?php echo site_furl('assets/js/main-script.js?v=1');?>"></script>
     <?php endif ?>
 

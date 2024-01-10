@@ -141,9 +141,9 @@ defined('CONF_SLOT_DENY')       || define('CONF_SLOT_DENY', 29);
 defined('CONF_CAS_DENY')        || define('CONF_CAS_DENY', 31);
 defined('CONF_EOS5_DENY')       || define('CONF_EOS5_DENY', 32);
 defined('CONF_EOS3_DENY')       || define('CONF_EOS3_DENY', 33);
-defined('CONF_HPG_DENY')        || define('CONF_HPG_DENY', 34);
-defined('CONF_COIN5_DENY')      || define('CONF_COIN5_DENY', 45);
-defined('CONF_COIN3_DENY')      || define('CONF_COIN3_DENY', 46);
+defined('CONF_PBG_DENY')        || define('CONF_PBG_DENY', 34);
+defined('CONF_RAND5_DENY')      || define('CONF_RAND5_DENY', 45);
+defined('CONF_RAND3_DENY')      || define('CONF_RAND3_DENY', 46);
 defined('CONF_HOLD_DENY')       || define('CONF_HOLD_DENY', 69);
 
 defined('CONF_BET_CANCEL')      || define('CONF_BET_CANCEL', 35);
@@ -178,6 +178,8 @@ defined('CONF_EVOLSITE_3')      || define('CONF_EVOLSITE_3', 65);         //에�
 defined('CONF_EVOLRUN_3')       || define('CONF_EVOLRUN_3', 66);         //에볼루션 밸런스 상태3
 defined('CONF_EVOLPRESS')       || define('CONF_EVOLPRESS', 67);         //에볼루션 누르기 상태
 defined('CONF_EVOLFOLLOW')      || define('CONF_EVOLFOLLOW', 70);         //에볼루션 따라가기 상태
+defined('CONF_EVP_DENY')       || define('CONF_EVP_DENY', 74); //Evo Powerball
+defined('CONF_SPK_DENY')       || define('CONF_SPK_DENY', 75); //Speed Keno
 
 defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);
 defined('LEVEL_MASTER')        || define('LEVEL_MASTER', 101);
@@ -201,7 +203,8 @@ defined('STATE_HOT')          || define('STATE_HOT', 5);
 //permit state
 defined('PERMIT_CANCEL')       || define('PERMIT_CANCEL', 0);
 defined('PERMIT_OK')           || define('PERMIT_OK', 1);
-defined('PERMIT_WAIT')         || define('PERMIT_WAIT', 2);
+defined('PERMIT_REQ')         || define('PERMIT_REQ', 2);
+defined('PERMIT_WAIT')         || define('PERMIT_WAIT', 3);
 defined('PERMIT_DELETE')       || define('PERMIT_DELETE', 4);
 
 //
@@ -219,7 +222,7 @@ defined('STATUS_FAIL')         || define('STATUS_FAIL', 'fail');
 defined('STATUS_LOGOUT')       || define('STATUS_LOGOUT', 'logout');
 defined('STATUS_NOPERMIT')     || define('STATUS_NOPERMIT', 'nopermit');
 
-defined('TM_OFFSET')    	   || define('TM_OFFSET', 20);
+defined('TM_OFFSET')    	   || define('TM_OFFSET', 0);
 
 defined('SESS_TYPE_SITE')       || define('SESS_TYPE_SITE', 0);
 defined('SESS_TYPE_APP')       || define('SESS_TYPE_APP', 1);
@@ -230,8 +233,8 @@ defined('LOG_FILE')             || define('LOG_FILE', ROOTPATH."logs".DIRECTORY_
 defined('CURL_TIMEOUT_MIN')       || define('CURL_TIMEOUT_MIN', 5);
 defined('CURL_TIMEOUT_MAX')       || define('CURL_TIMEOUT_MAX', 100);
 //game type
-defined('GAME_POWER_BALL')     || define('GAME_POWER_BALL', 1);
-defined('GAME_POWER_LADDER')   || define('GAME_POWER_LADDER', 2);
+defined('GAME_PBG_BALL')       || define('GAME_PBG_BALL', 1);
+defined('GAME_EVOL_BALL')      || define('GAME_EVOL_BALL', 2);
 defined('GAME_CASINO_KGON')    || define('GAME_CASINO_KGON', 3);
 defined('GAME_CASINO_EVOL')    || define('GAME_CASINO_EVOL', 4);
 defined('GAME_BOGLE_BALL')     || define('GAME_BOGLE_BALL', 5);
@@ -241,10 +244,10 @@ defined('GAME_SLOT_GSPLAY')    || define('GAME_SLOT_GSPLAY', 8);
 defined('GAME_SLOT_ALL')       || define('GAME_SLOT_ALL', 78);
 defined('GAME_EOS5_BALL')      || define('GAME_EOS5_BALL', 9);
 defined('GAME_EOS3_BALL')      || define('GAME_EOS3_BALL', 10);
-defined('GAME_COIN5_BALL')     || define('GAME_COIN5_BALL', 11);
-defined('GAME_COIN3_BALL')     || define('GAME_COIN3_BALL', 12);
+defined('GAME_RAND5_BALL')     || define('GAME_RAND5_BALL', 11);
+defined('GAME_RAND3_BALL')     || define('GAME_RAND3_BALL', 12);
 defined('GAME_SLOT_GOLD')      || define('GAME_SLOT_GOLD', 13);
-defined('GAME_HAPPY_BALL')     || define('GAME_HAPPY_BALL', 14);
+defined('GAME_SPKN_BALL')      || define('GAME_SPKN_BALL', 14);
 defined('GAME_SLOT_KGON')      || define('GAME_SLOT_KGON', 15);  //KGON slot
 defined('GAME_SLOT_STAR')      || define('GAME_SLOT_STAR', 16);  //STAR slot
 defined('GAME_CASINO_STAR')    || define('GAME_CASINO_STAR', 17);  //STAR casino
@@ -263,20 +266,20 @@ defined('DELAY_PLAYING')         || define('DELAY_PLAYING', 120); //게임 플�
 defined('MONEYCHANGE_CHARGE')    || define('MONEYCHANGE_CHARGE', 1);   
 defined('MONEYCHANGE_EXCHANGE')  || define('MONEYCHANGE_EXCHANGE', 2); 
 defined('POINTCHANGE_EXCHANGE')  || define('POINTCHANGE_EXCHANGE', 3); 
-defined('MONEYCHANGE_BET_PB')    || define('MONEYCHANGE_BET_PB', 4);
+defined('MONEYCHANGE_BET_PB')    || define('MONEYCHANGE_BET_PB', 4); //PBG
 defined('MONEYCHANGE_DENY_PB')   || define('MONEYCHANGE_DENY_PB', 5);
 defined('MONEYCHANGE_WIN_PB')    || define('MONEYCHANGE_WIN_PB', 6);
-defined('MONEYCHANGE_BET_PS')    || define('MONEYCHANGE_BET_PS', 7);
-defined('MONEYCHANGE_DENY_PS')   || define('MONEYCHANGE_DENY_PS', 8);
-defined('MONEYCHANGE_WIN_PS')    || define('MONEYCHANGE_WIN_PS', 9);
-defined('MONEYCHANGE_BET_KS')    || define('MONEYCHANGE_BET_KS', 10);
-defined('MONEYCHANGE_DENY_KS')   || define('MONEYCHANGE_DENY_KS', 11);
-defined('MONEYCHANGE_WIN_KS')    || define('MONEYCHANGE_WIN_KS', 12);
-defined('MONEYCHANGE_BET_BB')    || define('MONEYCHANGE_BET_BB', 13);
-defined('MONEYCHANGE_DENY_BB')   || define('MONEYCHANGE_DENY_BB', 14);
+defined('MONEYCHANGE_BET_EB')    || define('MONEYCHANGE_BET_EB', 7); //EVO 
+defined('MONEYCHANGE_DENY_EB')    || define('MONEYCHANGE_DENY_EB', 8);
+defined('MONEYCHANGE_WIN_EB')    || define('MONEYCHANGE_WIN_EB', 9);
+defined('MONEYCHANGE_BET_SK')    || define('MONEYCHANGE_BET_SK', 10); //Speed Keno
+defined('MONEYCHANGE_DENY_SK')    || define('MONEYCHANGE_DENY_SK', 11);
+defined('MONEYCHANGE_WIN_SK')    || define('MONEYCHANGE_WIN_SK', 12);
+defined('MONEYCHANGE_BET_BB')    || define('MONEYCHANGE_BET_BB', 13); //Boggle
+defined('MONEYCHANGE_DENY_BB')    || define('MONEYCHANGE_DENY_BB', 14);
 defined('MONEYCHANGE_WIN_BB')    || define('MONEYCHANGE_WIN_BB', 15);
-defined('MONEYCHANGE_BET_BS')    || define('MONEYCHANGE_BET_BS', 16);
-defined('MONEYCHANGE_DENY_BS')   || define('MONEYCHANGE_DENY_BS', 17);
+defined('MONEYCHANGE_BET_BS')    || define('MONEYCHANGE_BET_BS', 16); //Boggle 
+defined('MONEYCHANGE_DENY_BS')    || define('MONEYCHANGE_DENY_BS', 17);
 defined('MONEYCHANGE_WIN_BS')    || define('MONEYCHANGE_WIN_BS', 18);
 
 defined('MONEYCHANGE_TRANS_DEC')   || define('MONEYCHANGE_TRANS_DEC', 19);     //하부이송
@@ -300,12 +303,12 @@ defined('MONEYCHANGE_WIN_EO5')    || define('MONEYCHANGE_WIN_EO5', 33);
 defined('MONEYCHANGE_BET_EO3')    || define('MONEYCHANGE_BET_EO3', 34);
 defined('MONEYCHANGE_DENY_EO3')   || define('MONEYCHANGE_DENY_EO3', 35);
 defined('MONEYCHANGE_WIN_EO3')    || define('MONEYCHANGE_WIN_EO3', 36);
-defined('MONEYCHANGE_BET_CO5')    || define('MONEYCHANGE_BET_CO5', 37);
-defined('MONEYCHANGE_DENY_CO5')   || define('MONEYCHANGE_DENY_CO5', 38);
-defined('MONEYCHANGE_WIN_CO5')    || define('MONEYCHANGE_WIN_CO5', 39);
-defined('MONEYCHANGE_BET_CO3')    || define('MONEYCHANGE_BET_CO3', 40);
-defined('MONEYCHANGE_DENY_CO3')   || define('MONEYCHANGE_DENY_CO3', 41);
-defined('MONEYCHANGE_WIN_CO3')    || define('MONEYCHANGE_WIN_CO3', 42);
+defined('MONEYCHANGE_BET_RD5')    || define('MONEYCHANGE_BET_RD5', 37);
+defined('MONEYCHANGE_DENY_RD5')   || define('MONEYCHANGE_DENY_RD5', 38);
+defined('MONEYCHANGE_WIN_RD5')    || define('MONEYCHANGE_WIN_RD5', 39);
+defined('MONEYCHANGE_BET_RD3')    || define('MONEYCHANGE_BET_RD3', 40);
+defined('MONEYCHANGE_DENY_RD3')   || define('MONEYCHANGE_DENY_RD3', 41);
+defined('MONEYCHANGE_WIN_RD3')    || define('MONEYCHANGE_WIN_RD3', 42);
 defined('MONEYCHANGE_BET_EBAL')   || define('MONEYCHANGE_BET_EBAL', 43);
 defined('MONEYCHANGE_DENY_EBAL')  || define('MONEYCHANGE_DENY_EBAL', 44);
 defined('MONEYCHANGE_WIN_EBAL')   || define('MONEYCHANGE_WIN_EBAL', 45);

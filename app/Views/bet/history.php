@@ -27,8 +27,14 @@
 				<a href="<?php echo site_furl('bet/slhistory');?>" class="sub-navbar-a" >슬롯</a>
 			<?php endif ?>
 		<?php endif ?>   
-		<?php if(!$hpg_deny) :?>
-			<a href="<?php echo site_furl('bet/pbhistory');?>" class="sub-navbar-a" >해피볼</a>
+		<?php if(!$pbg_deny) :?>
+			<a href="<?php echo site_furl('bet/pbhistory');?>" class="sub-navbar-a" >PBG</a>
+		<?php endif ?>
+		<?php if(!$evp_deny) :?>
+			<a href="<?php echo site_furl('bet/ephistory');?>" class="sub-navbar-a" >에볼파워볼</a>
+		<?php endif ?>  
+		<?php if(!$spk_deny) :?>
+			<a href="<?php echo site_furl('bet/skhistory');?>" class="sub-navbar-a" >스피드키노</a>
 		<?php endif ?>  
 		<?php if(!$bpg_deny) :?>
 			<a href="<?php echo site_furl('bet/bbhistory');?>" class="sub-navbar-a" >보글볼</a>
@@ -40,11 +46,11 @@
 		<?php if(!$eos3_deny) :?>
 			<a href="<?php echo site_furl('bet/e3history');?>" class="sub-navbar-a" >EOS3분</a>
 		<?php endif ?>  
-		<?php if(!$coin5_deny) :?>
-			<a href="<?php echo site_furl('bet/c5history');?>" class="sub-navbar-a" >코인5분</a>
+		<?php if(!$rand5_deny) :?>
+			<a href="<?php echo site_furl('bet/r5history');?>" class="sub-navbar-a" >랜덤5분</a>
 		<?php endif ?>  
-		<?php if(!$coin3_deny) :?>
-			<a href="<?php echo site_furl('bet/c3history');?>" class="sub-navbar-a" >코인3분</a>
+		<?php if(!$rand3_deny) :?>
+			<a href="<?php echo site_furl('bet/r3history');?>" class="sub-navbar-a" >랜덤3분</a>
 		<?php endif ?> 
 	</div>
 

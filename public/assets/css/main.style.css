@@ -971,6 +971,10 @@ Style - powerball
     color: var(--span-font-color);
 }
 
+.user-table .button-req {
+    color: #00d936;
+}
+
 .user-table a {
     background-color: var(--main-bg-color);
     padding: 7px 10px;

@@ -56,7 +56,6 @@
 							<span style="font-size:14px; margin-left:10px; position:relative; top:4px; ">닉네임:
 								<a onclick="popupMemberUid('<?=$senderId?>')" style="color:blue; font-size:16px; cursor:pointer; margin-top:3px;"> <?=$senderName?></a>
 							</span>
-							<!-- <button style="margin-left:3px; padding:3px 15px;" onclick="popupMemberUid('<?=$senderId?>')">회원정보</button> -->
 						<?php endif ?>
 
 					<?php endif ?>

@@ -58,100 +58,6 @@ class Api extends BaseController{
 		// writeLog($_SERVER['HTTP_HOST']); //veda.com:82
 	}
 
-
-	/*
-    //관리자 로그인
-	public function login(){ 
-		$jsonData = $_REQUEST['json_'];
-		$arrLoginData = json_decode($jsonData, true);
-		$ip = $this->request->getIPAddress();
-		//model
-		$modelBlock = new Block_Model();
-		$modelConfsite = new ConfSite_Model();
-		$modelSessTry = new SessTry_Model();
-
-        $iResult = 0;
-
-		$user_id = "";
-		$user_pw = ""; 
-		if(array_key_exists('username', $arrLoginData) && array_key_exists('password', $arrLoginData)){
-			$user_id = trim($arrLoginData['username']);
-			$user_pw = trim($arrLoginData['password']);
-		} 
-
-		$sessTry = $modelSessTry->getByIp($ip);
-		$iTry = 5;
-		if(!is_null($sessTry)){
-			$iTry = time() - strtotime($sessTry->log_time);
-		}
-
-		$member = null;
-		if(strlen($user_id) > 0 && strlen($user_pw) > 0){
-			$member = $this->modelMember->login($user_id, $user_pw);
-		}
-
-		if($iTry < 3){
-			$iResult = 0;
-		}
-		else if(is_null($member)){
-			$iResult = 0;
-			$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_FAIL);
-		} else if($member->mb_level < LEVEL_ADMIN && !is_null($modelBlock->getByIp($ip, true))){
-			$iResult = 2;
-			$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_IPBLOCK);
-		} else if($member->mb_level == LEVEL_ADMIN && $member->mb_state_view == STATE_ACTIVE &&
-			$member->mb_ip_join !== $ip){
-			$iResult = 3;
-			$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_IPDENIED);
-		} else if($member->mb_level < LEVEL_ADMIN && $modelConfsite->IsMaintain()){
-			$iResult = 4;
-			$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_MAINTAIN);
-		}  else if(!$this->modelMember->isPermitMember((object)$member)){
-			$iResult = 3;
-			$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_IDBLOCK);
-		}
-		else
-        {
-			$this->modelSess->deleteLast();
-
-			$sessId = $this->session->session_id;
-			$sess = $this->modelSess->getByUid($member->mb_uid);
-
-			if($member->mb_level < LEVEL_ADMIN && !$modelConfsite->IsMultiLogin() && !is_null($sess) && $sess->sess_id != $sessId ){
-				$iResult = 4;
-				$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_LOGINING);
-            } else if ($member->mb_state_active == STATE_ACTIVE){
-                $sessData = [
-                    'user_id' => $member->mb_uid, 
-                    'logged_in' => TRUE, 
-                ];
-				$this->session->set($sessData);
-				$member->mb_ip_last = $ip;
-				$this->modelMember->updateLogin($member);
-                $iResult = 1;
-				
-				$this->modelSess->add($member, $sessId);
-				$modelSessLog = new SessLog_Model();
-				$modelSessLog->add($member);
-				$modelSessTry->add($user_id, $user_pw, $ip, TRYLOG_SUCCESS);
-
-            }
-        }   
-		//결과값 
- 		if($iResult == 1){	
-			$arrData = ['redirect' => '/'];
-
-			$arrResult['data'] = $arrData;
-			$arrResult['status'] = "success";
-		}
-		else{
-			$arrResult['data'] = $iResult;
-			$arrResult['status'] = "fail";
-
-		}
-        return $this->response->setJSON($arrResult);
-	}
-	*/
 	public function logout()
 	{
 		$sess_id = $this->session->session_id;
@@ -445,11 +351,23 @@ class Api extends BaseController{
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 
 				$arrResult['data'] = $confsiteModel->getEvolSite();
-				$arrReqData['type'] = 1;
+				$arrReqData['type'] = SESS_TYPE_APP;
 				$arrReqData['mb_uid'] = "";
-				$sessUser =  $this->modelSess->searchCount($arrReqData, $objAdmin->mb_level);
-				if(!is_null($sessUser->count)) 
-					$arrResult['data'][0][14] = $sessUser->count;  
+				$arrReqData['page'] = 1;
+				$arrReqData['count'] = 1000;
+				$arrSess =  $this->modelSess->search($arrReqData, $objAdmin->mb_level);
+				$arrResult['data'][0][14] = count($arrSess); 
+				$cntFollow = 0;
+				$followers = $this->modelMember->searchFollowers();
+                foreach($followers as $follower){
+					foreach($arrSess as $sess){
+						if(strpos($follower->mb_follow_ev, "1:".$sess->sess_mb_uid) === 0){
+							$cntFollow ++;
+							break;
+						}
+					}
+				}
+				$arrResult['data'][0][16] = $cntFollow;  
 				$arrResult['status'] = "success";
 			} else $arrResult['status'] = "nopermit";
 
@@ -1648,7 +1566,6 @@ class Api extends BaseController{
 						$arrGetData['user'] = $objUser->mb_fid;
 					else $arrGetData['user'] = 0;
 				}
-				// $arrGetData['rw_range'] = $this->modelMember->getRwMinId($arrGetData); 
 			} else {
 				$csbetModel = new CsBet_Model();
 				$arrGetData['type'] = GAME_CASINO_EVOL;
@@ -2238,6 +2155,8 @@ class Api extends BaseController{
 			} else {
 				$objResult->status = "success";
 				$objResult->data = $casprdModel->searchCount($arrReqData);
+				if($arrReqData['cat'] == GAME_CASINO_KGON)
+					$objResult->ranges = getRangeKeys();
 			}
 		
 		}
@@ -2508,6 +2427,27 @@ class Api extends BaseController{
 		} 		
 	}
 
+	public function updateDomain(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrGetData = json_decode($jsonData, true);
+		if(is_login()) {
+            $this->sess_action();                
+			//model
+			$domainModel = new Domain_Model();
+			$arrResult = $domainModel->updateInfo($arrGetData['conf_id'], $arrGetData);
+		
+			$objResult = new \StdClass;
+			$objResult->status = "success";
+			$objResult->data = $arrResult;
+		
+			echo json_encode($objResult);
+		}
+		else{
+		
+			$arrResult['status'] = "logout";
+			echo json_encode($arrResult);	
+		} 		
+	}
 	//DB 정리
 	public function cleanDb(){ 
 		$jsonData = $_REQUEST['json_'];

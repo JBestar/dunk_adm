@@ -32,8 +32,8 @@ class EbalBetSt_Model extends Model
 
     function getBetAccount($objEmp, $arrReqData){
         
-        if(array_key_exists("state", $arrReqData) && $arrReqData['state'] > 0)
-            return null;
+        // if(array_key_exists("state", $arrReqData) && $arrReqData['state'] > 0)
+        //     return null;
         if(is_null($objEmp)){
             return null;
         }
@@ -62,19 +62,26 @@ class EbalBetSt_Model extends Model
         //총배팅금, 적중금
         $arrSum = array();
         
-        if(array_key_exists('type', $arrReqData) && intval($arrReqData['type']) == 1){               //only balance betting
-            $strSql .= " SELECT SUM(bet_balance) AS bet_money_sum, SUM(bet_win_balance) AS win_money_sum, ";
-            $strSql .= " SUM(bet_loss_balance) AS loss_money_sum, ";
-            $strSql .= " SUM(CASE WHEN bet_win_balance > 0 THEN bet_win_balance-bet_balance ELSE 0 END) AS benefit_money_sum ";
-        } else if(array_key_exists('type', $arrReqData) && intval($arrReqData['type']) == 0){        //only press betting
-            $strSql .= " SELECT SUM(bet_money-bet_balance) AS bet_money_sum, SUM(bet_win_money-bet_win_balance) AS win_money_sum, ";
-            $strSql .= " SUM(bet_loss_money-bet_loss_balance) AS loss_money_sum, ";
-            $strSql .= " SUM(bet_prof_money-bet_prof_balance) AS benefit_money_sum ";
-        } else {                                            //all betting
-            $strSql .= " SELECT SUM(bet_money) AS bet_money_sum, SUM(bet_win_money) AS win_money_sum, ";
-            $strSql .= " SUM(bet_loss_money) AS loss_money_sum, ";
-            $strSql .= " SUM(bet_prof_money) AS benefit_money_sum ";
-        }
+        if(array_key_exists("state", $arrReqData) && $arrReqData['state'] == 1){ //proc 
+            $strSql .= " SELECT SUM(bet_proc_money) AS bet_money_sum, SUM(bet_proc_win) AS win_money_sum ";
+        } else if(array_key_exists("state", $arrReqData) && $arrReqData['state'] == 2){ //no proc 
+            $strSql .= " SELECT SUM(bet_nproc_money) AS bet_money_sum ";
+        } else {
+            if(array_key_exists('type', $arrReqData) && intval($arrReqData['type']) == 1){               //only balance betting
+                $strSql .= " SELECT SUM(bet_balance) AS bet_money_sum, SUM(bet_win_balance) AS win_money_sum, ";
+                $strSql .= " SUM(bet_loss_balance) AS loss_money_sum, ";
+                $strSql .= " SUM(CASE WHEN bet_win_balance > 0 THEN bet_win_balance-bet_balance ELSE 0 END) AS benefit_money_sum ";
+            } else if(array_key_exists('type', $arrReqData) && intval($arrReqData['type']) == 0){        //only press betting
+                $strSql .= " SELECT SUM(bet_money-bet_balance) AS bet_money_sum, SUM(bet_win_money-bet_win_balance) AS win_money_sum, ";
+                $strSql .= " SUM(bet_loss_money-bet_loss_balance) AS loss_money_sum, ";
+                $strSql .= " SUM(bet_prof_money-bet_prof_balance) AS benefit_money_sum ";
+            } else {                                            //all betting
+                $strSql .= " SELECT SUM(bet_money) AS bet_money_sum, SUM(bet_win_money) AS win_money_sum, ";
+                $strSql .= " SUM(bet_loss_money) AS loss_money_sum, ";
+                $strSql .= " SUM(bet_prof_money) AS benefit_money_sum ";
+            }
+        } 
+        
 
         $strSql .= " FROM ".$this->table;
         $strSql .= $strCondition;
@@ -85,28 +92,35 @@ class EbalBetSt_Model extends Model
             writeLog("EbalBetSt>> account End");
 
         $nSum = 0;
-        if(!is_null($objResult->bet_money_sum)) {
-            $nSum = $objResult->bet_money_sum;
+        if(property_exists($objResult, 'bet_money_sum')) {
+            if(!is_null($objResult->bet_money_sum)) {
+                $nSum = $objResult->bet_money_sum;
+            }
+            $arrSum[0] = $nSum;
         }
-        $arrSum[0] = $nSum;
-        $nSum = 0;
-        if(!is_null($objResult->win_money_sum)) {
-            $nSum = $objResult->win_money_sum;
+        if(property_exists($objResult, 'win_money_sum')) {
+            $nSum = 0;
+            if(!is_null($objResult->win_money_sum)) {
+                $nSum = $objResult->win_money_sum;
+            }
+            $arrSum[1] = $nSum;
         }
-        $arrSum[1] = $nSum;
         //총미적중금
-        $nSum = 0;
-        if(!is_null($objResult->loss_money_sum)) {
-            $nSum = $objResult->loss_money_sum;
+        if(property_exists($objResult, 'loss_money_sum')) {
+            $nSum = 0;
+            if(!is_null($objResult->loss_money_sum)) {
+                $nSum = $objResult->loss_money_sum;
+            }
+            $arrSum[2] = $nSum;
         }
-        $arrSum[2] = $nSum;
         //총당첨금
-        $nSum = 0;
-        if(!is_null($objResult->benefit_money_sum)) {
-            $nSum = $objResult->benefit_money_sum;
-        }
-        $arrSum[3] = $nSum;
-        
+        if(property_exists($objResult, 'benefit_money_sum')) {
+            $nSum = 0;
+            if(!is_null($objResult->benefit_money_sum)) {
+                $nSum = $objResult->benefit_money_sum;
+            }
+            $arrSum[3] = $nSum;
+        }        
         
         return $arrSum;
     }

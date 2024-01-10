@@ -14,18 +14,12 @@
 
 				<?php if($mb_level < LEVEL_ADMIN) :  ?>
 					<td>충전금액<span id="main-navbar-emp_charge-id">0 원</span></td>
-					<?php if(!$bpg_deny) :?>
-						<td>보글볼<span id="main-navbar-emp_bbrate-id">0 % | 0 %</span></td>
-					<?php endif ?>  
-					<?php if(!$hold_deny) :?>
-						<td>홀덤<span id="main-navbar-emp_hlrate-id">0 %</span></td>
-					<?php endif ?> 
 					<?php if(isEBalMode() || !$evol_deny || !$cas_deny) :?>
 						<td>카지노<span id="main-navbar-emp_evrate-id">0 %</span></td>
 					<?php endif ?>
-					<?php if(!$coin5_deny || !$coin3_deny) :?>
-						<td>코인<span id="main-navbar-emp_corate-id">0 % | 0 %</span></td>
-					<?php endif ?>
+					<?php if(!$pbg_deny || !$bpg_deny || !$rand5_deny || !$rand3_deny || !$eos5_deny || !$eos3_deny) :?>
+						<td>미니게임<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
+					<?php endif ?>  
 				<?php else : ?>
 					<?php if(array_key_exists('app.tree', $_ENV) && $_ENV['app.tree'] == 1) :?>
 					<td>가입<a href="<?php echo site_furl('/user/member_list/0');?>" id="main-navbar-user_wait-id">0 신청</a></td>
@@ -39,18 +33,12 @@
 				<td>보유포인트<span id="main-navbar-emp_point-id">0 P </span></td>
 				<?php if($mb_level < LEVEL_ADMIN) :  ?>
 					<td>환전금액<span id="main-navbar-emp_exchange-id">0 원</span></td>
-					<?php if(!$bpg_deny) :?>
-						<td>보글사다리<span id="main-navbar-emp_bsrate-id">0 % </span></td>
-					<?php endif ?>
 					<?php if(!$slot_deny) :?>
 						<td>슬롯<span id="main-navbar-emp_slrate-id">0 %</span></td>
 					<?php endif ?> 
-					<?php if(!$eos5_deny || !$eos3_deny) :?>
-						<td>EOS<span id="main-navbar-emp_eorate-id">0 % | 0 %</span></td>
-					<?php endif ?>     
-					<?php if(!$hpg_deny) :?>
-						<td>해피볼<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
-					<?php endif ?>
+					<?php if(!$hold_deny) :?>
+						<td>홀덤<span id="main-navbar-emp_hlrate-id">0 %</span></td>
+					<?php endif ?> 
 				<?php else : ?>
 					<td>문의<a href="<?php echo site_furl('/board/message');?>" id="main-navbar-newmessage-id">0 신청</a></td>
 				<?php endif ?>
@@ -120,7 +108,7 @@
 					<?php endif ?>  
 					
 					<?php if(array_key_exists('app.site', $_ENV) && $_ENV['app.site'] == 2 ) :?>
-						<?php if(!$bpg_deny || !$hpg_deny || !$eos5_deny || !$eos3_deny || !$coin5_deny || !$coin3_deny) :?>
+						<?php if(!$bpg_deny || !$pbg_deny || !$eos5_deny || !$eos3_deny || !$rand5_deny || !$rand3_deny) :?>
 							<tr>
 								<td style="font-weight: bold; color: #0090ff; font-size: 14px;">미니게임:</td>
 								<td style="vertical-align:top;">배팅<span id="main-navbar-minibet-id">0 원</span></td>
@@ -133,7 +121,7 @@
 			<?php endif ?>     
 			
 				<?php if(!array_key_exists('app.site', $_ENV) || $_ENV['app.site'] != 2 ) :?>
-					<?php if(!$bpg_deny || !$hpg_deny || !$eos5_deny || !$eos3_deny || !$coin5_deny || !$coin3_deny) :?>
+					<?php if(!$bpg_deny || !$pbg_deny || !$eos5_deny || !$eos3_deny || !$rand5_deny || !$rand3_deny) :?>
 						<Table class="main-navbar-betinfo-table" style="">
 							<tr>
 								<td style="font-weight: bold; color: #0090ff; font-size: 14px; vertical-align:top;">미니게임:</td>

@@ -82,6 +82,8 @@ function getMemberTr(objMember, bChild = false, bShow=false){
         if (objMember.mb_state_active == 1) {
             strBuf += " class='button-active'>승인</button>";
         } else if (objMember.mb_state_active == 2) {
+            strBuf += " class='button-req'>신청</button>";
+        } else if (objMember.mb_state_active == 3) {
             strBuf += ">대기</button>";
         } else {
             strBuf += ">차단</button>";
@@ -94,11 +96,25 @@ function getMemberTr(objMember, bChild = false, bShow=false){
             strBuf += "<button name='" + objMember.mb_fid + "'>삭제</button>   ";
 
         strBuf += "</td> <td>";
-        if(!mConfs.hpg_deny){
+        if(!mConfs.pbg_deny){
             if (objMember.mb_game_pb == 1) {
-                strBuf += "<button name='" + objMember.mb_fid + "'  class='button-active'>해피볼</button>";
+                strBuf += "<button name='" + objMember.mb_fid + "'  class='button-active'>PBG</button>";
             } else {
-                strBuf += "<button name='" + objMember.mb_fid + "' >해피볼</button>";
+                strBuf += "<button name='" + objMember.mb_fid + "' >PBG</button>";
+            }
+        }
+        if(!mConfs.evp_deny){
+            if (objMember.mb_game_ps == 1) {
+                strBuf += "<button name='" + objMember.mb_fid + "'  class='button-active'>에볼파</button>";
+            } else {
+                strBuf += "<button name='" + objMember.mb_fid + "' >에볼파</button>";
+            }
+        }
+        if(!mConfs.spk_deny){
+            if (objMember.mb_game_ks == 1) {
+                strBuf += "<button name='" + objMember.mb_fid + "'  class='button-active'>키노</button>";
+            } else {
+                strBuf += "<button name='" + objMember.mb_fid + "' >키노</button>";
             }
         }
         if(!mConfs.bpg_deny){
@@ -120,11 +136,11 @@ function getMemberTr(objMember, bChild = false, bShow=false){
                 strBuf += "<button name='" + objMember.mb_fid + "' >EOS</button>";
             }
         }
-        if(!mConfs.coin5_deny || !mConfs.coin3_deny){
+        if(!mConfs.rand5_deny || !mConfs.rand3_deny){
             if (objMember.mb_game_co == 1) {
-                strBuf += "<button name='" + objMember.mb_fid + "'  class='button-active'>코인</button>";
+                strBuf += "<button name='" + objMember.mb_fid + "'  class='button-active'>랜덤파워</button>";
             } else {
-                strBuf += "<button name='" + objMember.mb_fid + "' >코인</button>";
+                strBuf += "<button name='" + objMember.mb_fid + "' >랜덤파워</button>";
             }
         }
         if(!mConfs.evol_deny || !mConfs.cas_deny){
@@ -242,22 +258,31 @@ function addButtonElementListener(buttonElement) {
         } else if (this.innerHTML.search("차단") >= 0) {
             jsonData = { "mb_fid": this.name, "mb_state_active": 1 };
             requestUpdateMember(jsonData);
+        } else if (this.innerHTML.search("신청") >= 0) {
+            jsonData = { "mb_fid": this.name, "mb_state_active": 3 };
+            requestWaitToPermit(this, jsonData);
         } else if (this.innerHTML.search("대기") >= 0) {
             jsonData = { "mb_fid": this.name, "mb_state_active": 1 };
             requestWaitToPermit(this, jsonData);
-        } else if (this.innerHTML == "해피볼") {
+        } else if (this.innerHTML == "PBG") {
             if (this.className.search("button-active") >= 0) {
                 jsonData = { "mb_fid": this.name, "mb_game_pb": 0 };
             } else {
                 jsonData = { "mb_fid": this.name, "mb_game_pb": 1 };
             }
             requestUpdateMember(jsonData);
-        } else if (this.innerHTML.search("파사달") >= 0) {
-
+        } else if (this.innerHTML.search("에볼파") >= 0) {
             if (this.className.search("button-active") >= 0) {
                 jsonData = { "mb_fid": this.name, "mb_game_ps": 0 };
             } else {
                 jsonData = { "mb_fid": this.name, "mb_game_ps": 1 };
+            }
+            requestUpdateMember(jsonData);
+        } else if (this.innerHTML.search("키노") >= 0) {
+            if (this.className.search("button-active") >= 0) {
+                jsonData = { "mb_fid": this.name, "mb_game_ks": 0 };
+            } else {
+                jsonData = { "mb_fid": this.name, "mb_game_ks": 1 };
             }
             requestUpdateMember(jsonData);
         } else if (this.innerHTML.search("보글볼") >= 0) {
@@ -274,7 +299,7 @@ function addButtonElementListener(buttonElement) {
                 jsonData = { "mb_fid": this.name, "mb_game_bs": 1 };
             }
             requestUpdateMember(jsonData);
-        } else if (this.innerHTML.search("코인") >= 0) {
+        } else if (this.innerHTML.search("랜덤") >= 0) {
             if (this.className.search("button-active") >= 0) {
                 jsonData = { "mb_fid": this.name, "mb_game_co": 0 };
             } else {

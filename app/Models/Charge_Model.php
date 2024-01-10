@@ -99,7 +99,7 @@ class Charge_Model extends Model
         $strSQL = "SELECT SUM(charge_money) AS charge_sum FROM ".$this->table;
         $strSQL.=" WHERE (charge_action_state = '".STATE_VERIFY."' OR charge_action_state = '".STATE_HOT."') ";
         if(array_key_exists('start', $arrReqData) && strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
-            $strSQL.=" AND charge_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND charge_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59'") ; 
+            $strSQL.=" AND charge_time_require >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND charge_time_require <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
         }
         if(array_key_exists('mb_uid', $arrReqData) && strlen($arrReqData['mb_uid']) > 0){
             $strSQL.=" AND charge_mb_uid = ".$this->db->escape($arrReqData['mb_uid']);
@@ -110,7 +110,44 @@ class Charge_Model extends Model
         if(is_null($objResult->charge_sum)) return 0;
         else return  $objResult->charge_sum;        
     }  
+    //유저충전금 통계
+    function calcUserChargeStat($uid){
 
+        $strSel = "SELECT SUM(charge_money) AS charge_sum FROM ".$this->table; 
+        
+        $strCon=" WHERE (charge_action_state = '".STATE_VERIFY."' OR charge_action_state = '".STATE_HOT."') ";
+        $strCon.=" AND charge_mb_uid = ".$this->db->escape($uid);
+
+        $tmNow = time();
+        $strToday = date( 'Y-m-d', $tmNow );
+
+        //Yesterday
+        $tmYesterday = strtotime("-24 hours", $tmNow);
+        $arrReqData['start'] = date("Y-m-d", $tmYesterday);
+        $arrReqData['end'] = $arrReqData['start'];
+        $strSQL = $strSel.$strCon;  
+        $strSQL.= " AND ".getTimeRange("charge_time_require", $arrReqData, $this->db);
+        //Today
+        $arrReqData['start'] = $strToday;
+        $strSQL.= " UNION ALL ".$strSel.$strCon;  
+        $strSQL.=" AND charge_time_require >= '".$arrReqData['start']."'";
+        //Week
+        $tmWeek = strtotime("-6 days", $tmNow);
+        $arrReqData['start'] = date("Y-m-d", $tmWeek);
+        $strSQL.= " UNION ALL ".$strSel.$strCon;  
+        $strSQL.=" AND charge_time_require >= '".$arrReqData['start']."'";
+        //Month
+        $arrReqData['start'] = date('Y-m')."-01";
+        $strSQL.= " UNION ALL ".$strSel.$strCon;  
+        $strSQL.=" AND charge_time_require >= '".$arrReqData['start']."'";
+        //Total
+        $strSQL.= " UNION ALL ".$strSel.$strCon;  
+
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog($strSQL);
+
+        return $this->db->query($strSQL)->getResult();       
+    }  
     //충전금액 (하부포함)
     function calcChargeMoney($objEmp, $arrReqData){
 

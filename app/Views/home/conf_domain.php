@@ -16,8 +16,8 @@
             <tr>
                 <th>번호</th>
                 <th>도메인</th>
-                <!-- <th>상태</th> -->
                 <th>설정</th>
+                <th>삭제</th>
             </tr>
         </thead>
         <tbody  id="confsite-table-data">

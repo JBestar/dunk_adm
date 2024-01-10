@@ -7,6 +7,7 @@
 		<p><i class="glyphicon glyphicon-user"></i> 회원관리</p>
 		<?php if($mb_level >= LEVEL_MASTER && $adm_fid > 0) :  ?>
 			<a onclick="popupMemberEdit(<?=$adm_fid?>);" class="user-panel-add-a" style="margin-left:5px; cursor:pointer;">관리자정보</a>
+			<a onclick="requestAutoStop();" class="user-panel-add-a" style="margin-left:5px; cursor:pointer;">자동차단</a>
 		<?php endif ?>
 	</div>
 	<style>

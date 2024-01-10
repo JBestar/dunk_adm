@@ -185,6 +185,8 @@ function readConfigToObject() {
         jsonData.game_ratio_24 = $("#confpb-ratio24-input-id").val();
         jsonData.game_ratio_25 = $("#confpb-ratio25-input-id").val();
         jsonData.game_ratio_26 = $("#confpb-ratio26-input-id").val();
+    }    
+    if($("#confpb-ratio21-input-id").length > 0){
         jsonData.game_ratio_27 = $("#confpb-ratio27-input-id").val();
         jsonData.game_ratio_28 = $("#confpb-ratio28-input-id").val();
         jsonData.game_ratio_29 = $("#confpb-ratio29-input-id").val();

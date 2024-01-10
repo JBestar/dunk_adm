@@ -93,6 +93,8 @@ function showMember(arrMember, confs) {
         if (arrMember[nRow].mb_state_active == 1) {
             strBuf += " class='button-active'>승인</button>";
         } else if (arrMember[nRow].mb_state_active == 2) {
+            strBuf += " class='button-req'>신청</button>";
+        } else if (arrMember[nRow].mb_state_active == 3) {
             strBuf += ">대기</button>";
         } else if (arrMember[nRow].mb_state_active == 4) {
             strBuf += "style='color:red;' disabled >삭제</button>";
@@ -317,6 +319,9 @@ function addButtonElementListener(buttonElement) {
                 return;
             var jsonData = { "mb_fid": this.name, "mb_state_active": 1 };
             requestDeleteRestore(this, jsonData);
+        } else if (tHtml.search("신청") >= 0) {
+            var jsonData = { "mb_fid": this.name, "mb_state_active": 3 };
+            requestWaitToPermit(this, jsonData);
         } else if (tHtml.search("대기") >= 0) {
             var jsonData = { "mb_fid": this.name, "mb_state_active": 1 };
             requestWaitToPermit(this, jsonData);
@@ -527,29 +532,13 @@ function showMemEdit(mbFid){
     $("#memo").val(member.mb_memo);
     $("#pb_ratio").val(member.mb_game_pb_ratio);
     $("#pb2_ratio").val(member.mb_game_pb2_ratio);
-    $("#ps_ratio").val(member.mb_game_ps_ratio);
-    $("#bb_ratio").val(member.mb_game_bb_ratio);
-    $("#bb2_ratio").val(member.mb_game_bb2_ratio);
-    $("#bs_ratio").val(member.mb_game_bs_ratio);
     $("#cs_ratio").val(member.mb_game_cs_ratio);
     $("#sl_ratio").val(member.mb_game_sl_ratio);
-    $("#eo_ratio").val(member.mb_game_eo_ratio);
-    $("#eo2_ratio").val(member.mb_game_eo2_ratio);
-    $("#co_ratio").val(member.mb_game_co_ratio);
-    $("#co2_ratio").val(member.mb_game_co2_ratio);
     $("#hl_ratio").val(member.mb_game_hl_ratio);
 
     $("#pb_percent").val(member.mb_game_pb_percent);
     $("#pb2_percent").val(member.mb_game_pb2_percent);
-    $("#ps_percent").val(member.mb_game_ps_percent);
-    $("#bb_percent").val(member.mb_game_bb_percent);
-    $("#bb2_percent").val(member.mb_game_bb2_percent);
-    $("#bs_percent").val(member.mb_game_bs_percent);
-    $("#eo_percent").val(member.mb_game_eo_percent);
-    $("#eo2_percent").val(member.mb_game_eo2_percent);
-    $("#co_percent").val(member.mb_game_co_percent);
-    $("#co2_percent").val(member.mb_game_co2_percent);
-
+    
     $("#bank_name").val(member.mb_bank_name);
     $("#bank_owner").val(member.mb_bank_own);
     // $("#bank_owner").attr("disabled", true);
@@ -590,31 +579,6 @@ function initMemEditDlg(){
 
     $("#pb_ratio").val("0.00");
     $("#pb2_ratio").val("0.00");
-    $("#ps_ratio").val("0.00");
-
-    $("#pb_percent").val("100");
-    $("#pb2_percent").val("100");
-    $("#ps_percent").val("100");
-
-    $("#bb_ratio").val("0.00");
-    $("#bb2_ratio").val("0.00");
-    $("#bs_ratio").val("0.00");
-    
-    $("#bb_percent").val("100");
-    $("#bb2_percent").val("100");
-    $("#bs_percent").val("100");
-    
-    $("#eo_ratio").val("0.00");
-    $("#eo2_ratio").val("0.00");
-    
-    $("#eo_percent").val("100");
-    $("#eo2_percent").val("100");
-
-    $("#co_ratio").val("0.00");
-    $("#co2_ratio").val("0.00");
-    
-    $("#co_percent").val("100");
-    $("#co2_percent").val("100");
 
     $("#cs_ratio").val("0.00");
     $("#sl_ratio").val("0.00");
@@ -622,13 +586,10 @@ function initMemEditDlg(){
     $("#memo").val('');
     $("#bank_name").val('');
     $("#bank_owner").val('');
-    // $("#bank_owner").attr("disabled", false);
     $("#bank_number").val('');
-    // $("#bank_number").attr("disabled", false);
     $("#bank_password").val('');
 
 }
-
 
 function readConfigToObject() {
 
@@ -653,47 +614,13 @@ function readConfigToObject() {
     if($("#pb_ratio").length > 0){
         objMember.mb_game_pb_ratio = $("#pb_ratio").val();
         objMember.mb_game_pb2_ratio = $("#pb2_ratio").val();
-        objMember.mb_game_ps_ratio = $("#ps_ratio").val();
     }
     
     if($("#pb_percent").length > 0){
         objMember.mb_game_pb_percent = $("#pb_percent").val();
         objMember.mb_game_pb2_percent = $("#pb2_percent").val();
-        objMember.mb_game_ps_percent = $("#ps_percent").val();
     }
     
-    if($("#bb_ratio").length > 0){
-        objMember.mb_game_bb_ratio = $("#bb_ratio").val();
-        objMember.mb_game_bb2_ratio = $("#bb2_ratio").val();
-        objMember.mb_game_bs_ratio = $("#bs_ratio").val();
-    }
-
-    if($("#bb_percent").length > 0){
-        objMember.mb_game_bb_percent = $("#bb_percent").val();
-        objMember.mb_game_bb2_percent = $("#bb2_percent").val();
-        objMember.mb_game_bs_percent = $("#bs_percent").val();
-    } 
-
-    if($("#eo_ratio").length > 0){
-        objMember.mb_game_eo_ratio = $("#eo_ratio").val();
-        objMember.mb_game_eo2_ratio = $("#eo2_ratio").val();
-    } 
-
-    if($("#eo_percent").length > 0){
-        objMember.mb_game_eo_percent = $("#eo_percent").val();
-        objMember.mb_game_eo2_percent = $("#eo2_percent").val();
-    } 
-
-    if($("#co_ratio").length > 0){
-        objMember.mb_game_co_ratio = $("#co_ratio").val();
-        objMember.mb_game_co2_ratio = $("#co2_ratio").val();
-    }
-
-    if($("#co_percent").length > 0){
-        objMember.mb_game_co_percent = $("#co_percent").val();
-        objMember.mb_game_co2_percent = $("#co2_percent").val();
-    }
-
     if($("#cs_ratio").length > 0){
         objMember.mb_game_cs_ratio = $("#cs_ratio").val();
     } 
@@ -740,6 +667,8 @@ function exportTableToExcel(filename = ''){
         if(objMember.mb_state_active == 1)
             strState = "승인";
         else if(objMember.mb_state_active == 2)
+            strState = "신청";
+        else if(objMember.mb_state_active == 3)
             strState = "대기";
         else if(objMember.mb_state_active == 4)
             strState = "삭제";

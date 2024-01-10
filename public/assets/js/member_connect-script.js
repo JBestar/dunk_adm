@@ -35,7 +35,10 @@ function showMember(arrMember, bFollow=false) {
         strBuf += "<a onclick=' popupMemberEdit(" + arrMember[nRow].sess_mb_fid + ", "+arrMember[nRow].sess_mb_fid+ ")' class='link-member'>"+ arrMember[nRow].sess_mb_uid+ "</a>";
         strBuf += "</td> <td>";
         if(bFollow){
-            strBuf += "<a onclick=' popupMemberFollow(" + arrMember[nRow].sess_mb_fid + ", "+arrMember[nRow].sess_mb_fid+ ")' class='link-member'>"+ arrMember[nRow].mb_nickname+ "</a>";
+            strBuf += "<a onclick=' popupMemberFollow(" + arrMember[nRow].sess_mb_fid + ", "+arrMember[nRow].sess_mb_fid+ ")' class='link-member'>"+ arrMember[nRow].mb_nickname;
+            if(arrMember[nRow].sess_type == 1)
+                strBuf += " ( "+ arrMember[nRow].sess_follows +" )";    
+            strBuf += "</a>";
         }
         else strBuf += arrMember[nRow].mb_nickname;
         strBuf += "</td> <td>";
@@ -43,8 +46,11 @@ function showMember(arrMember, bFollow=false) {
         strBuf += "</td> <td>";
         strBuf += Math.floor(arrMember[nRow].mb_point).toLocaleString();
         strBuf += "</td> <td>";
-        if(arrMember[nRow].sess_type == 1)
+        if(arrMember[nRow].sess_type == 1){
             strBuf += "앱"; 
+            if(arrMember[nRow].sess_spec.length > 0)
+                strBuf += " ( "+arrMember[nRow].sess_spec+" )"; 
+        }
         else 
             strBuf += arrMember[nRow].sess_ip;
         strBuf += "</td> <td>";

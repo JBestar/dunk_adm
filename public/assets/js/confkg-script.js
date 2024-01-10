@@ -1,3 +1,4 @@
+var mGameRanges = null;
 $(document).ready(function() {
 
     addEventListner();
@@ -19,21 +20,23 @@ function addEventListner() {
     });
 }
 
-function showGame(list) {
+function showGame(list, ranges) {
     var html = "";
 
     if (list) {
         var curPage = getActivePage();
         var firstIdx = (curPage - 1) * CountPerPage;
         var nRow = 0;
-        list.forEach((game) => {
+        for(let game of list){
             html += "<tr><td>";
             html += (parseInt(nRow) + firstIdx + 1);
             html += "</td><td>";
-            html += game.vendor_id;
-            html += "</td><td>";
             html += game.name;
             html += "</td><td>";
+            if(ranges !== undefined ){
+                html += getRangeHtml(game.fid, game.key, game.lobby);
+                html += "</td><td>";
+            }
             html += "<select class='' onchange='onChangeHidden(this)' data-fid='" + game.fid + "' ";
             if (game.hidden == 0) {
                 html += " style='color:black'> <option selected='' value='0'>보이기</option><option value='1'>감추기</option></select>";
@@ -49,13 +52,48 @@ function showGame(list) {
             }
             html += "</td><tr>";
             nRow++;
-        });
+        }
         if (html.length < 1) {
             html = "<tr><td colspan='5'>자료가 없습니다.</td></tr>";
         }
     }
     $("#confsite-table-data").html(html);
 
+}
+
+function getRangeHtml(fid, prdKey, gameKey){
+    if(prdKey.indexOf("bota_casino") >= 0){
+        gameKey = prdKey;
+        prdKey = "bota_casino";
+    }
+
+     html = "";
+    if(prdKey in mGameRanges){
+        html = "<select style='width:150px;' onchange='onChangeRange(this)' data-fid='" + fid + "' >";
+        for(let range of mGameRanges[prdKey]){
+            html+=`<option value='${range.key}' ${range.key==gameKey?'selected':''}>${range.value}</option>`;
+        }
+        html += "</select>";
+    }
+    return html;
+
+}
+
+function onChangeRange(objSelect) {
+
+    let gameKey = $(objSelect).val();
+    var jsonData = null;
+    if(gameKey.indexOf("bota_casino") >= 0){
+        jsonData = { "key": gameKey,
+            "fid": $(objSelect).data("fid"),
+        }
+    } else {
+        jsonData = { "lobby": gameKey,
+            "fid": $(objSelect).data("fid"),
+        }
+    } 
+
+    requestGameSet(jsonData);
 }
 
 function onChangeHidden(objSelect) {
@@ -115,7 +153,7 @@ function requestGame() {
             // console.log(jResult);
             $(".loading").hide();
             if (jResult.status == "success") {
-                showGame(jResult.data);
+                showGame(jResult.data, gameId);
             } else if (jResult.status == "fail") {
 
             }
@@ -151,9 +189,10 @@ function requestTotalPage() {
         dataType: 'json',
         type: 'post',
         success: function(jResult) {
-            // console.log(jResult);
+            console.log(jResult);
             if (jResult.status == "success") {
                 TotalCount = jResult.data.count;
+                mGameRanges = jResult.ranges;
                 setFirstPage();
                 requestGame();
             }

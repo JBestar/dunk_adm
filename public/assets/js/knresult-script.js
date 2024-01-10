@@ -14,7 +14,7 @@ function ShowGameResult(arrResult) {
     var elemResultTb = document.getElementById("pbresult-list-table-id");
 
     var strBuf = "";
-
+    let arrNum = null;
     for (nRow in arrResult) {
 
         strBuf += "<tr><td>";
@@ -35,7 +35,8 @@ function ShowGameResult(arrResult) {
             strBuf += "<span class='pbresult-rule-even-span'><i class='glyphicon glyphicon-arrow-up'></i></span>";
         strBuf += "</td><td>";
 
-        strBuf += arrResult[nRow].round_normal;
+        arrNum = getRoundNum(arrResult[nRow]);
+        strBuf += arrNum[2];
         strBuf += "</td><td>";
         if (arrResult[nRow].round_result_3 == 'P')
             strBuf += "<span class='pbresult-rule-odd-span'>홀</span>";
@@ -47,16 +48,24 @@ function ShowGameResult(arrResult) {
         else if (arrResult[nRow].round_result_4 == 'B')
             strBuf += "<span class='pbresult-rule-even-span'><i class='glyphicon glyphicon-arrow-up'></i></span>";
         strBuf += "</td><td>";
-        if (arrResult[nRow].round_result_5 == "S")
-            strBuf += "<span class='pbresult-rule-odd-span'>소</span>";
-        else if (arrResult[nRow].round_result_5 == "M")
-            strBuf += "<span class='pbresult-rule-medium-span'>중</span>";
-        else if (arrResult[nRow].round_result_5 == "L")
-            strBuf += "<span class='pbresult-rule-even-span'>대</span>";
+        strBuf += arrNum[0];
+        strBuf += "</td><td>";
+        if (arrResult[nRow].round_result_5 == 'P')
+            strBuf += "<span class='pbresult-rule-odd-span'>홀</span>";
+        else if (arrResult[nRow].round_result_5 == 'B')
+            strBuf += "<span class='pbresult-rule-even-span'>짝</span>";
+        strBuf += "</td><td>";
+        if (arrResult[nRow].round_result_6 == 'P')
+            strBuf += "<span class='pbresult-rule-odd-span'><i class='glyphicon glyphicon-arrow-down'></i></span>";
+        else if (arrResult[nRow].round_result_6 == 'B')
+            strBuf += "<span class='pbresult-rule-even-span'><i class='glyphicon glyphicon-arrow-up'></i></span>";
         strBuf += "</td><td>";
         if(mGameId == 1){
             strBuf += "<a href='"+FURL+"/result/pbresult_edit/" + arrResult[nRow].round_fid + "' >수정</a>";
             strBuf += "<a href='"+FURL+"/result/pbbetchange/" + arrResult[nRow].round_date + "/" + arrResult[nRow].round_num + "' >적특</a>";
+        } else if(mGameId == 14){
+            strBuf += "<a href='"+FURL+"/result/skresult_edit/" + arrResult[nRow].round_fid + "' >수정</a>";
+            strBuf += "<a href='"+FURL+"/result/skbetchange/" + arrResult[nRow].round_date + "/" + arrResult[nRow].round_num + "' >적특</a>";
         } else if(mGameId == 2){
             strBuf += "<a href='"+FURL+"/result/epresult_edit/" + arrResult[nRow].round_fid + "' >수정</a>";
             strBuf += "<a href='"+FURL+"/result/epbetchange/" + arrResult[nRow].round_date + "/" + arrResult[nRow].round_num + "' >적특</a>";
@@ -87,6 +96,27 @@ function ShowGameResult(arrResult) {
     elemResultTb.innerHTML = strBuf;
 }
 
+function getRoundNum(round) {
+    var sNum = "";
+    var sSum = 0;
+    var sSup = -1;
+    arrNormal = round.round_normal.split(",");
+    if (arrNormal.length >= 5) {
+
+        arrNormal.forEach((num) => {
+            sNum += parseInt(num) + ",";
+            sSum += parseInt(num);
+            if(sSup < 0)
+             sSup = parseInt(num);
+        });
+        sNum += round.round_power;
+    } else {
+        sNum = "-";
+        sSum = "-";
+        sSup = "-";
+    }
+    return [sNum, sSum, sSup];
+}
 
 function addEventListner() {
     $("#pbresult-list-view-but-id").click(function() {

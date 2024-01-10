@@ -31,7 +31,8 @@ function showConfSite(arrData, all) {
     $('#confev-balance-input-id').val('');
     $('#confev-balance-label-id').text('');
 
-    $('#confev-conuser-input-id').text('(접속자수: '+data[14]+")");
+    $('#confev-conuser-span-id').text('접속자수: '+data[14]+"명, ");
+    $('#confev-follower-span-id').text('따라가기: '+data[16]+"명");
     if(parseInt(data[7]) >= 0){
         $('#confev-balance-input-id').val(data[7].toLocaleString());
         setTimeout(() =>{

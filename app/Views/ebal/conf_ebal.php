@@ -58,7 +58,10 @@
 			<div>
 				<p>최대 접속자수:</p> 
 				<input type = "number" class="conf-text-input" min="0" step="1" id="confev-maxuser-input-id"> 명 
-				<span id="confev-conuser-input-id"> </span>
+				<div style="padding-left:150px;">
+					(<span id="confev-conuser-span-id"> </span>
+					<span id="confev-follower-span-id"> </span>)
+				</div>
 			</div>
 			<?php if(array_key_exists('app.sess_act', $_ENV) && $_ENV['app.sess_act'] == 1) :?>
 				<div>

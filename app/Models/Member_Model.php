@@ -12,20 +12,18 @@ class Member_Model extends Model
     protected $noticeTb = 'board_notice';
     private $historyTb = 'money_history_st';
     protected $rewardTb = 'bet_reward_st';
+    protected $rewardMnTb = 'bet_reward_mn_st';
     protected $returnType = 'object'; 
 
     protected $allowedFields = [
         'mb_uid', 'mb_pwd', 'mb_level', 'mb_emp_fid', 'mb_emp_permit', 'mb_nickname', 'mb_email', 'mb_phone',
         'mb_bank_name', 'mb_bank_own', 'mb_bank_num', 'mb_bank_pwd', 'mb_time_join', 'mb_time_last', 'mb_time_bet', 'mb_time_call', 
-        'mb_ip_join', 'mb_ip_last', 'mb_money', 'mb_point', 'mb_money_charge', 'mb_money_exchange',
+        'mb_ip_join', 'mb_ip_last', 'mb_money', 'mb_point', 
         'mb_grade', 'mb_color', 'mb_memo', 'mb_state_active', 'mb_state_bet', 'mb_state_delete', 'mb_state_alarm', 'mb_state_view',
-        'mb_game_pb', 'mb_game_ps', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 'mb_game_eo', 'mb_game_co', 'mb_game_hl',
-        'mb_game_pb_ratio', 'mb_game_pb2_ratio', 'mb_game_ps_ratio', 'mb_game_bb_ratio', 'mb_game_bb2_ratio',
-        'mb_game_bs_ratio', 'mb_game_cs_ratio', 'mb_game_sl_ratio', 'mb_game_eo_ratio', 'mb_game_eo2_ratio',
-        'mb_game_co_ratio', 'mb_game_co2_ratio', 'mb_game_hl_ratio', 
-        'mb_game_pb_percent', 'mb_game_pb2_percent', 'mb_game_ps_percent', 'mb_game_bb_percent', 'mb_game_bb2_percent',
-        'mb_game_bs_percent', 'mb_game_eo_percent', 'mb_game_eo2_percent', 'mb_game_co_percent', 'mb_game_co2_percent',
-        'mb_blank_count', 'mb_range_ev', 'mb_press_ev', 'mb_pressat_ev', 'mb_follow_ev', 
+        'mb_game_pb', 'mb_game_ps', 'mb_game_ks', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 'mb_game_eo', 'mb_game_co', 'mb_game_hl',
+        'mb_game_pb_ratio', 'mb_game_pb2_ratio', 'mb_game_cs_ratio', 'mb_game_sl_ratio', 'mb_game_hl_ratio', 
+        'mb_game_pb_percent', 'mb_game_pb2_percent', 
+        'mb_blank_count', 'mb_range_ev', 'mb_press_ev', 'mb_pressat_ev', 'mb_follow_ev', 'mb_follow_en', 
         'mb_live_id', 'mb_live_uid', 'mb_live_money',
         'mb_slot_uid', 'mb_slot_money',
         'mb_fslot_id', 'mb_fslot_uid', 'mb_fslot_money',
@@ -39,14 +37,12 @@ class Member_Model extends Model
     
     private $getFields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid', 'mb_emp_permit', 'mb_nickname', 
         'mb_email', 'mb_phone', 'mb_bank_name', 'mb_bank_own', 'mb_bank_num', 'mb_bank_pwd',
-        'mb_time_bet', 'mb_ip_join', 'mb_ip_last', 'mb_time_call', 
-        'mb_money', 'mb_point', 'mb_money_charge', 'mb_money_exchange', 'mb_grade', 'mb_color',
+        'mb_time_bet', 'mb_ip_join', 'mb_ip_last', 'mb_time_join', 'mb_time_last', 'mb_time_call', 
+        'mb_money', 'mb_point', 'mb_grade', 'mb_color',
         'mb_state_active', 'mb_state_delete', 'mb_state_alarm', 'mb_state_view',
-        'mb_game_pb', 'mb_game_ps', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 'mb_game_eo', 'mb_game_co', 'mb_game_hl', 
-        'mb_game_pb_ratio', 'mb_game_pb2_ratio','mb_game_ps_ratio', 'mb_game_bb_ratio', 'mb_game_bb2_ratio', 'mb_game_bs_ratio', 'mb_game_cs_ratio', 
-        'mb_game_sl_ratio', 'mb_game_eo_ratio', 'mb_game_eo2_ratio', 'mb_game_co_ratio', 'mb_game_co2_ratio', 'mb_game_hl_ratio', 
-        'mb_game_pb_percent', 'mb_game_pb2_percent', 'mb_game_ps_percent', 'mb_game_bb_percent',
-        'mb_game_bb2_percent', 'mb_game_bs_percent', 'mb_game_eo_percent', 'mb_game_eo2_percent', 'mb_game_co_percent', 'mb_game_co2_percent', 'mb_blank_count',
+        'mb_game_pb', 'mb_game_ps', 'mb_game_ks', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 'mb_game_eo', 'mb_game_co', 'mb_game_hl', 
+        'mb_game_pb_ratio', 'mb_game_pb2_ratio', 'mb_game_cs_ratio', 'mb_game_sl_ratio', 'mb_game_hl_ratio', 
+        'mb_game_pb_percent', 'mb_game_pb2_percent', 'mb_blank_count',
         'mb_live_id', 'mb_live_uid', 'mb_live_money', 
         'mb_slot_uid', 'mb_slot_money', 
         'mb_fslot_id', 'mb_fslot_uid', 'mb_fslot_money',
@@ -56,25 +52,12 @@ class Member_Model extends Model
         'mb_hold_uid', 'mb_hold_money',
     ];
 
+    private $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid','mb_nickname', 'mb_ip_last',
+        'mb_money', 'mb_point', 'mb_grade', 'mb_color', 'mb_state_active', 'mb_state_delete', 'mb_state_alarm', 'mb_state_view',
+        'mb_game_pb', 'mb_game_ps', 'mb_game_ks', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 'mb_game_eo', 'mb_game_co', 'mb_game_hl', 
+        'mb_game_pb_ratio', 'mb_game_pb2_ratio', 'mb_game_cs_ratio', 'mb_game_sl_ratio', 'mb_game_hl_ratio', 
+        'mb_blank_count', 'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money', 'mb_gslot_money', 'mb_hslot_money', 'mb_hold_money' ];
 
-    private $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid', 'mb_emp_permit', 'mb_nickname', 
-        'mb_ip_join', 'mb_ip_last',
-        'mb_money', 'mb_point', 'mb_money_charge', 'mb_money_exchange', 'mb_grade', 
-        'mb_state_active', 'mb_state_delete', 'mb_state_alarm', 'mb_state_view',
-        'mb_game_pb', 'mb_game_ps', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 'mb_game_eo', 'mb_game_co', 'mb_game_hl', 
-        'mb_game_pb_ratio', 'mb_game_pb2_ratio','mb_game_ps_ratio', 'mb_game_bb_ratio', 'mb_game_bb2_ratio', 'mb_game_bs_ratio', 'mb_game_cs_ratio', 
-        'mb_game_sl_ratio', 'mb_game_eo_ratio', 'mb_game_eo2_ratio', 'mb_game_co_ratio', 'mb_game_co2_ratio', 'mb_game_hl_ratio', 
-        'mb_game_pb_percent', 'mb_game_pb2_percent', 'mb_game_ps_percent', 'mb_game_bb_percent',
-        'mb_game_bb2_percent', 'mb_game_bs_percent', 'mb_game_eo_percent', 'mb_game_eo2_percent', 'mb_game_co_percent', 'mb_game_co2_percent', 
-        'mb_live_id', 'mb_live_uid', 'mb_live_money', 
-        'mb_slot_uid', 'mb_slot_money', 
-        'mb_fslot_id', 'mb_fslot_uid', 'mb_fslot_money' ,
-        'mb_kgon_id', 'mb_kgon_uid', 'mb_kgon_money',
-        'mb_gslot_uid', 'mb_gslot_money',
-        'mb_hslot_token', 'mb_hslot_money',
-        'mb_hold_uid', 'mb_hold_money',
-    ];
-        
     
     protected $validationRules = [
         'mb_uid' => 'required|alpha_numeric|is_unique[member.mb_uid, mb_fid, {mb_fid}]',
@@ -139,14 +122,7 @@ class Member_Model extends Model
 
     public function getInfoByUid($strId)
     {
-        $fields = ['mb_fid', 'mb_uid', 'mb_level', 'mb_emp_fid', 'mb_nickname', 
-            'mb_money', 'mb_point', 'mb_money_charge', 'mb_money_exchange', 'mb_grade', 
-            'mb_state_active', 'mb_state_delete', 'mb_state_alarm', 'mb_state_view',
-            'mb_game_pb_ratio', 'mb_game_pb2_ratio','mb_game_ps_ratio', 'mb_game_bb_ratio', 'mb_game_bb2_ratio', 'mb_game_bs_ratio', 'mb_game_cs_ratio', 
-            'mb_game_sl_ratio', 'mb_game_eo_ratio', 'mb_game_eo2_ratio', 'mb_game_co_ratio', 'mb_game_co2_ratio', 'mb_game_hl_ratio', 
-            'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money', 'mb_gslot_money', 'mb_hslot_money', 'mb_hold_money' ];
-
-        return $this->select($fields)->where('mb_uid', $strId)->first();
+        return $this->select($this->fields)->where('mb_uid', $strId)->first();
     }
 
     public function getByNickname($strName)
@@ -162,6 +138,17 @@ class Member_Model extends Model
         return $this->select($this->getFields)->where($where)->first();
     }
 
+    public function getByBankName($bank, $name){
+        
+        $where = "mb_bank_name = '".$bank."' ";
+        $where.= "AND mb_bank_own = '".$name."' ";
+        $where.= "AND mb_state_active != '".PERMIT_DELETE."' ";
+
+        return $this->select($this->getFields)
+                    ->where($where)
+                    ->first(); 
+        
+    }
     public function login($strUserId, $strPwd)
     {
         return $this->where([
@@ -345,82 +332,38 @@ class Member_Model extends Model
         return $this->builder()->update();
     }
 
-     // 배팅금액 (하부포함)
-    //  public function allGameRange(&$arrReqData, $confs)
-    //  {
-        //  writeLog("allGameRange");
-        // if(!$confs['hpg_deny']){
-        //     $arrReqData['hpb_range'] = $this->getBetRangeId($arrReqData, "bet_happyball");
-        // }
-        // if(!$confs['bpg_deny']){
-        //     $arrReqData['bpb_range'] = $this->getBetRangeId($arrReqData, "bet_bogleball");
-        //     $arrReqData['bps_range'] = $this->getBetRangeId($arrReqData, "bet_bogleladder");
-        // }
-        // if(!$confs['eos5_deny']){
-        //     $arrReqData['eos5_range'] = $this->getBetRangeId($arrReqData, "bet_eos5ball");
-        // }
-        // if(!$confs['eos3_deny']){
-        //     $arrReqData['eos3_range'] = $this->getBetRangeId($arrReqData, "bet_eos3ball");
-        // }
-        // if(!$confs['coin5_deny']){
-        //     $arrReqData['coin5_range'] = $this->getBetRangeId($arrReqData, "bet_coin5ball");
-        // }
-        // if(!$confs['coin3_deny']){
-        //     $arrReqData['coin3_range'] = $this->getBetRangeId($arrReqData, "bet_coin3ball");
-        // }
-        // if(!$confs['evol_deny'] || !$confs['cas_deny']){
-        //     if(isEBalMode() && $confs['evol_deny']){
-        //         $tbName = "bet_ebal";
-        //     } else 
-        //         $tbName = "bet_casino";
-        //     $arrReqData['cas_range'] = $this->getBetRangeId($arrReqData, $tbName);
-        // }
-        // if(!$confs['slot_deny']){
-        //     $arrReqData['slot_range'] = $this->getBetRangeId($arrReqData, "bet_slot");
-        // }
-        // if(!$confs['hold_deny']){
-        //     $arrReqData['hold_range'] = $this->getBetRangeId($arrReqData, "bet_holdem");
-        // }
-
-        // $arrReqData['rw_range'] = $this->getRwRangeId($arrReqData, "bet_reward");
-        // writeLog("allGameRange END");
-        
-    //  }
-
      public function gameRange(&$arrReqData, $bRw = true)
      {
-        if ($arrReqData['type'] == GAME_POWER_BALL ) {
-            $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_powerball");
-        } elseif ($arrReqData['type'] == GAME_POWER_LADDER ) {
-            $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_powerladder");
+        if ($arrReqData['type'] == GAME_PBG_BALL || $arrReqData['type'] == GAME_EVOL_BALL ||
+            $arrReqData['type'] == GAME_BOGLE_BALL || $arrReqData['type'] == GAME_BOGLE_LADDER ||
+            $arrReqData['type'] == GAME_EOS5_BALL || $arrReqData['type'] == GAME_EOS3_BALL ||
+            $arrReqData['type'] == GAME_RAND3_BALL || $arrReqData['type'] == GAME_RAND3_BALL || 
+            $arrReqData['type'] == GAME_SPKN_BALL) {
+            $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_pball");
+            if($bRw)
+                $arrReqData['rw_range'] = $this->getRwRangeId($arrReqData, "bet_reward_mn");
         } elseif ($arrReqData['type'] == GAME_CASINO_EVOL ) {
             $tbName = "bet_casino";
             $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, $tbName);
+            if($bRw)
+                $arrReqData['rw_range'] = $this->getRwRangeId($arrReqData, "bet_reward");
         } elseif ($arrReqData['type'] == GAME_AUTO_EVOL ) {
             $tbName = "bet_ebal";
             $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, $tbName);
-        }  elseif ($arrReqData['type'] == GAME_BOGLE_BALL ) {
-            $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_bogleball");
-        } elseif ($arrReqData['type'] == GAME_BOGLE_LADDER ) {
-            $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_bogleladder");
-        } elseif ($arrReqData['type'] == GAME_SLOT_THEPLUS || $arrReqData['type'] == GAME_SLOT_GSPLAY || $arrReqData['type'] == GAME_SLOT_GOLD 
-        || $arrReqData['type'] == GAME_SLOT_KGON || $arrReqData['type'] == GAME_SLOT_STAR || $arrReqData['type'] == GAME_SLOT_ALL ) {
+            if($bRw)
+                $arrReqData['rw_range'] = $this->getRwRangeId($arrReqData, "bet_reward");
+        }  elseif ($arrReqData['type'] == GAME_SLOT_THEPLUS || $arrReqData['type'] == GAME_SLOT_GSPLAY || 
+            $arrReqData['type'] == GAME_SLOT_GOLD || $arrReqData['type'] == GAME_SLOT_KGON || 
+            $arrReqData['type'] == GAME_SLOT_STAR || $arrReqData['type'] == GAME_SLOT_ALL ) {
             $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_slot");
-        } elseif ($arrReqData['type'] == GAME_EOS5_BALL ) {
-            $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_eos5ball");
-        } elseif ($arrReqData['type'] == GAME_EOS3_BALL ) {
-            $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_eos3ball");
-        } elseif ($arrReqData['type'] == GAME_COIN5_BALL ) {
-            $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_coin5ball");
-        } elseif ($arrReqData['type'] == GAME_COIN3_BALL ) {
-            $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_coin3ball");
-        } elseif ($arrReqData['type'] == GAME_HAPPY_BALL ) {
-            $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_happyball");
+            if($bRw)
+                $arrReqData['rw_range'] = $this->getRwRangeId($arrReqData, "bet_reward");
         } elseif ($arrReqData['type'] == GAME_HOLD_CMS ) {
             $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_holdem");
+            if($bRw)
+                $arrReqData['rw_range'] = $this->getRwRangeId($arrReqData, "bet_reward");
         }
-        if($bRw)
-            $arrReqData['rw_range'] = $this->getRwRangeId($arrReqData, "bet_reward");
+        
         
      }
 
@@ -460,29 +403,6 @@ class Member_Model extends Model
         // writeLog($strSQL);
         $objResult = $this->db->query($strSQL)->getRow();
         // writeLog("getBetRangeId END");
-
-        if (!is_null($objResult->min_fid)) {
-            $range[0] = $objResult->min_fid;
-         }
-         
-         return $range;
-     }
-
-     public function getRwMinId($arrReqData){
-        $range = [-1, -1];
-        
-        $strCond = ""; 
-        if (strlen($arrReqData['start']) > 0) {
-            $strCond = " WHERE rw_time >= '".$arrReqData['start']."' " ;
-        }
-        $strSQL = " SELECT MIN(rw_fid) AS min_fid FROM bet_reward";
-        $strSQL.= $strCond; 
-
-        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
-            writeLog($strSQL);
-        $objResult = $this->db->query($strSQL)->getRow();
-        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
-            writeLog("getRwRangeId END");
 
         if (!is_null($objResult->min_fid)) {
             $range[0] = $objResult->min_fid;
@@ -590,52 +510,12 @@ class Member_Model extends Model
         $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
         $strSQL .= $strWhereMem;
 
-        if(!$confs['hpg_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_happyball ';
+        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['rand5_deny'] || !$confs['rand3_deny']){
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_pball ';
             // $strSQL .= " WHERE bet_fid >= ".$arrReqData['hpb_range'][0]." AND bet_fid <= ".$arrReqData['hpb_range'][1];
             $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
             $strSQL .= $strWhereMem." )";
         }
-        if(!$confs['bpg_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleball ';
-            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['bpb_range'][0]." AND bet_fid <= ".$arrReqData['bpb_range'][1];
-            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
-            $strSQL .= $strWhereMem." )";
-
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleladder ';
-            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['bps_range'][0]." AND bet_fid <= ".$arrReqData['bps_range'][1];
-            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
-            $strSQL .= $strWhereMem." )";
-        }
-
-        if(!$confs['eos5_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_eos5ball ';
-            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['eos5_range'][0]." AND bet_fid <= ".$arrReqData['eos5_range'][1];
-            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
-            $strSQL .= $strWhereMem." )";
-        }
-
-        if(!$confs['eos3_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_eos3ball ';
-            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['eos3_range'][0]." AND bet_fid <= ".$arrReqData['eos3_range'][1];
-            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
-            $strSQL .= $strWhereMem." )";
-        }
-
-        if(!$confs['coin5_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_coin5ball ';
-            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['coin5_range'][0]." AND bet_fid <= ".$arrReqData['coin5_range'][1];
-            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
-            $strSQL .= $strWhereMem." )";
-        }
-
-        if(!$confs['coin3_deny']){
-            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_coin3ball ';
-            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['coin3_range'][0]." AND bet_fid <= ".$arrReqData['coin3_range'][1];
-            $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
-            $strSQL .= $strWhereMem." )";
-        }
-
         
         if(isEBalMode()){
             $tbName = "bet_ebal_st";
@@ -658,7 +538,6 @@ class Member_Model extends Model
         
         if(!$confs['hold_deny']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_holdem ';
-            // $strSQL .= " WHERE bet_fid >= ".$arrReqData['hold_range'][0]." AND bet_fid <= ".$arrReqData['hold_range'][1];
             $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
             $strSQL .= $strWhereMem." AND bet_state = 0 )";
         }
@@ -668,13 +547,20 @@ class Member_Model extends Model
         if($arrReqData['rw_blank']){
             $rwPoint = "rw_point-rw_blank";
         }
-        $strSQL .= " UNION ALL ( SELECT SUM(".$rwPoint.") AS result_1, ";
-        $strSQL .= " SUM(CASE WHEN rw_mb_fid = ".$objEmp->mb_fid." THEN ".$rwPoint." ELSE 0 END) AS result_2 FROM ".$this->rewardTb;
 
-        $strSQL .= " WHERE ".getStatRange('rw_start', 'rw_end', $arrReqData, $this->db);
-        // $strSQL .= " WHERE rw_fid >= ".$arrReqData['rw_range'][0]." AND rw_fid <= ".$arrReqData['rw_range'][1];
-        $strSQL .= " AND rw_mb_fid IN (SELECT mb_fid from tbmember) )";
+        $strSQL .= " UNION ALL ( SELECT SUM(result_1) AS result_1, SUM(result_2) AS result_2 FROM (";
         
+        $strSQL .= " SELECT SUM(".$rwPoint.") AS result_1, ";
+        $strSQL .= " SUM(CASE WHEN rw_mb_fid = ".$objEmp->mb_fid." THEN ".$rwPoint." ELSE 0 END) AS result_2 FROM ".$this->rewardTb;
+        $strSQL .= " WHERE ".getStatRange('rw_start', 'rw_end', $arrReqData, $this->db);
+        $strSQL .= " AND rw_mb_fid IN (SELECT mb_fid from tbmember) ";
+        
+        $strSQL .= " UNION ALL SELECT SUM(".$rwPoint.") AS result_1, ";
+        $strSQL .= " SUM(CASE WHEN rw_mb_fid = ".$objEmp->mb_fid." THEN ".$rwPoint." ELSE 0 END) AS result_2 FROM ".$this->rewardMnTb;
+        $strSQL .= " WHERE ".getStatRange('rw_start', 'rw_end', $arrReqData, $this->db);
+        $strSQL .= " AND rw_mb_fid IN (SELECT mb_fid from tbmember) ) AS rewardSumTb";
+        $strSQL .= " ) ";
+
         if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
             writeLog($strSQL);
         $arrResult = $this->db->query($strSQL)->getResult();
@@ -689,34 +575,21 @@ class Member_Model extends Model
 
         $strSQL = $this->calcCommonSql($objEmp, $arrReqData);
         //배팅금액
+        $rewardTb = $this->rewardTb;
         $strSQL .= ' UNION ALL ( SELECT SUM(bet_money) AS result_1, SUM(bet_win_money) AS result_2 FROM ';
-        if ($arrReqData['type'] == GAME_POWER_BALL ) {
-            $strSQL .= ' bet_powerball ';
-        } elseif ($arrReqData['type'] == GAME_POWER_LADDER ) {
-            $strSQL .= ' bet_powerladder ';
+        if ($arrReqData['type'] == GAME_PBG_BALL || $arrReqData['type'] == GAME_EVOL_BALL || $arrReqData['type'] == GAME_BOGLE_BALL ||
+            $arrReqData['type'] == GAME_BOGLE_LADDER || $arrReqData['type'] == GAME_EOS5_BALL || $arrReqData['type'] == GAME_EOS3_BALL ||
+            $arrReqData['type'] == GAME_RAND5_BALL || $arrReqData['type'] == GAME_RAND3_BALL || $arrReqData['type'] == GAME_SPKN_BALL) {
+            $strSQL .= ' bet_pball ';
+            $rewardTb = $this->rewardMnTb;
+
         } elseif ($arrReqData['type'] == GAME_AUTO_EVOL ) {
-            $tbName = "bet_ebal_st";
-            $strSQL .= $tbName;
+            $strSQL .= "bet_ebal_st";
         } elseif ($arrReqData['type'] == GAME_CASINO_EVOL ) {
-            $tbName = "bet_casino";
-            $strSQL .= $tbName;
-        } elseif ($arrReqData['type'] == GAME_BOGLE_BALL ) {
-            $strSQL .= ' bet_bogleball ';
-        } elseif ($arrReqData['type'] == GAME_BOGLE_LADDER ) {
-            $strSQL .= ' bet_bogleladder ';
+            $strSQL .= "bet_casino";
         } elseif ($arrReqData['type'] == GAME_SLOT_THEPLUS || $arrReqData['type'] == GAME_SLOT_GSPLAY || $arrReqData['type'] == GAME_SLOT_GOLD 
-        || $arrReqData['type'] == GAME_SLOT_KGON || $arrReqData['type'] == GAME_SLOT_STAR || $arrReqData['type'] == GAME_SLOT_ALL ) {
+            || $arrReqData['type'] == GAME_SLOT_KGON || $arrReqData['type'] == GAME_SLOT_STAR || $arrReqData['type'] == GAME_SLOT_ALL ) {
             $strSQL .= ' bet_slot ';
-        } elseif ($arrReqData['type'] == GAME_EOS5_BALL ) {
-            $strSQL .= ' bet_eos5ball ';
-        } elseif ($arrReqData['type'] == GAME_EOS3_BALL ) {
-            $strSQL .= ' bet_eos3ball ';
-        } elseif ($arrReqData['type'] == GAME_COIN5_BALL ) {
-            $strSQL .= ' bet_coin5ball ';
-        } elseif ($arrReqData['type'] == GAME_COIN3_BALL ) {
-            $strSQL .= ' bet_coin3ball ';
-        } else if ($arrReqData['type'] == GAME_HAPPY_BALL ) {
-            $strSQL .= ' bet_happyball ';
         } else if ($arrReqData['type'] == GAME_HOLD_CMS ) {
             $strSQL .= ' bet_holdem ';
         } else {
@@ -735,7 +608,11 @@ class Member_Model extends Model
             $strSQL .= " AND bet_money <> bet_win_money ";  //sum without Tie
         } else if($arrReqData['type'] == GAME_HOLD_CMS){
             $strSQL .= " AND bet_state = 0 ";
-        }
+        } else if ($arrReqData['type'] == GAME_PBG_BALL || $arrReqData['type'] == GAME_EVOL_BALL || $arrReqData['type'] == GAME_BOGLE_BALL ||
+            $arrReqData['type'] == GAME_BOGLE_LADDER || $arrReqData['type'] == GAME_EOS5_BALL || $arrReqData['type'] == GAME_EOS3_BALL ||
+            $arrReqData['type'] == GAME_RAND5_BALL || $arrReqData['type'] == GAME_RAND3_BALL || $arrReqData['type'] == GAME_SPKN_BALL) {
+            $strSQL .= " AND bet_game = ".$arrReqData['type'];
+        } 
 
         if($arrReqData['type'] == GAME_AUTO_EVOL){
             $strSQL .= " AND bet_mb_fid IN (SELECT mb_fid from tbmember) ) ";
@@ -748,7 +625,7 @@ class Member_Model extends Model
         }
 
         $strSQL .= " UNION ALL ( SELECT SUM(".$rwPoint.") AS result_1, ";
-        $strSQL .= " SUM(CASE WHEN rw_mb_fid = ".$objEmp->mb_fid." THEN ".$rwPoint." ELSE 0 END) AS result_2 FROM ".$this->rewardTb;
+        $strSQL .= " SUM(CASE WHEN rw_mb_fid = ".$objEmp->mb_fid." THEN ".$rwPoint." ELSE 0 END) AS result_2 FROM ".$rewardTb;
         // $strSQL .= " WHERE rw_fid >= ".$arrReqData['rw_range'][0]." AND rw_fid <= ".$arrReqData['rw_range'][1];
         $strSQL .= " WHERE ".getStatRange('rw_start', 'rw_end', $arrReqData, $this->db);
         $strSQL .= " AND rw_mb_fid IN (SELECT mb_fid from tbmember) ";
@@ -788,35 +665,8 @@ class Member_Model extends Model
         $strSQL .= '  FROM  (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_slot';
         $strSQL .= $strCond;
 
-        if(!$confs['hpg_deny']){
-            $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_happyball ';
-            $strSQL .= $strCond;
-        }
-        if(!$confs['bpg_deny']){
-            $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleball ';
-            $strSQL .= $strCond;
-
-            $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_bogleladder ';
-            $strSQL .= $strCond;
-        }
-
-        if(!$confs['eos5_deny']){
-            $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_eos5ball ';
-            $strSQL .= $strCond;
-        }
-
-        if(!$confs['eos3_deny']){
-            $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_eos3ball ';
-            $strSQL .= $strCond;
-        }
-
-        if(!$confs['coin5_deny']){
-            $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_coin5ball ';
-            $strSQL .= $strCond;
-        }
-
-        if(!$confs['coin3_deny']){
-            $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_coin3ball ';
+        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['rand5_deny'] || !$confs['rand3_deny']){
+            $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_pball ';
             $strSQL .= $strCond;
         }
 
@@ -873,45 +723,12 @@ class Member_Model extends Model
          $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count, bet_game_type  FROM bet_slot ";
 		 $strSQL.= $strCond." group by bet_game_type) AS bet_slot_g JOIN slot_prd on slot_prd.code = bet_slot_g.bet_game_type ";
          
-        if(!$confs['hpg_deny']){
-            $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '해피볼' AS bet_name, '".GAME_HAPPY_BALL."' As bet_kind  From ";
-            $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_happyball  ";
+        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['rand5_deny'] || !$confs['rand3_deny']){
+            $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '미니게임' AS bet_name, '".GAME_SPKN_BALL."' As bet_kind  From ";
+            $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_pball  ";
             $strSQL.= $strCond." ) AS bet_pb_g ";
         }
             
-         if(!$confs['bpg_deny']){
-            $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '보글파워볼' AS bet_name, '".GAME_BOGLE_BALL."' As bet_kind  From ";
-            $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_bogleball  ";
-            $strSQL.= $strCond." ) AS bet_bb_g ";
-	
-            $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '보글사다리' AS bet_name, '".GAME_BOGLE_LADDER."' As bet_kind  From ";
-            $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_bogleladder  ";
-            $strSQL.= $strCond." ) AS bet_bs_g ";
-        }
-
-        if(!$confs['eos5_deny']){
-            $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, 'EOS5분 파워볼' AS bet_name, '".GAME_EOS5_BALL."' As bet_kind  From ";
-            $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_eos5ball  ";
-            $strSQL.= $strCond." ) AS bet_e5_g ";
-        }
-
-        if(!$confs['eos3_deny']){
-            $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, 'EOS3분 파워볼' AS bet_name, '".GAME_EOS3_BALL."' As bet_kind  From ";
-            $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_eos3ball  ";
-            $strSQL.= $strCond." ) AS bet_e3_g ";
-        }
-
-        if(!$confs['coin5_deny']){
-            $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '코인5분 파워볼' AS bet_name, '".GAME_COIN5_BALL."' As bet_kind  From ";
-            $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_coin5ball  ";
-            $strSQL.= $strCond." ) AS bet_c5_g ";
-        }
-
-        if(!$confs['coin3_deny']){
-            $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '코인3분 파워볼' AS bet_name, '".GAME_COIN3_BALL."' As bet_kind  From ";
-            $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_coin3ball  ";
-            $strSQL.= $strCond." ) AS bet_c3_g ";
-        }
         if(!$confs['hold_deny']){
             $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '홀덤' AS bet_name, '".GAME_HOLD_CMS."' As bet_kind  From ";
             $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_holdem  ";
@@ -1035,11 +852,9 @@ class Member_Model extends Model
         } else {
             $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid', 'mb_emp_permit', 'mb_nickname', 'mb_phone', 'mb_money', 'mb_point', 
                 'mb_grade', 'mb_color', 'mb_memo', 'mb_state_active', 'mb_state_delete', 
-                'mb_game_pb_ratio', 'mb_game_pb2_ratio','mb_game_ps_ratio', 'mb_game_bb_ratio', 'mb_game_bb2_ratio', 'mb_game_bs_ratio', 'mb_game_cs_ratio', 
-                'mb_game_sl_ratio', 'mb_game_eo_ratio', 'mb_game_eo2_ratio', 'mb_game_co_ratio', 'mb_game_co2_ratio', 'mb_game_hl_ratio', 
-                'mb_game_pb_percent', 'mb_game_pb2_percent', 'mb_game_ps_percent', 'mb_game_bb_percent',
-                'mb_game_bb2_percent', 'mb_game_bs_percent', 'mb_game_eo_percent', 'mb_game_eo2_percent', 'mb_game_co_percent', 'mb_game_co2_percent', 
-                'mb_range_ev', 'mb_press_ev', 'mb_pressat_ev', 'mb_follow_ev',
+                'mb_game_pb_ratio', 'mb_game_pb2_ratio', 'mb_game_cs_ratio', 'mb_game_sl_ratio', 'mb_game_hl_ratio', 
+                'mb_game_pb_percent', 'mb_game_pb2_percent',  
+                'mb_range_ev', 'mb_press_ev', 'mb_pressat_ev', 'mb_follow_ev', 'mb_follow_en', 
                 'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money', 'mb_gslot_money', 'mb_hslot_money', 'mb_hold_money'
             ]; 
 
@@ -1066,11 +881,8 @@ class Member_Model extends Model
     }
 
     private function getChildsRatio($mbFid){
-        $strSQL = "SELECT MAX(mb_game_pb_ratio) AS mb_game_pb_ratio, MAX(mb_game_pb2_ratio) AS mb_game_pb2_ratio,  MAX(mb_game_ps_ratio) AS mb_game_ps_ratio, ";
-        $strSQL.= "  MAX(mb_game_bb_ratio) AS mb_game_bb_ratio, MAX(mb_game_bb2_ratio) AS mb_game_bb2_ratio, MAX(mb_game_bs_ratio) AS mb_game_bs_ratio, ";
+        $strSQL = "SELECT MAX(mb_game_pb_ratio) AS mb_game_pb_ratio, MAX(mb_game_pb2_ratio) AS mb_game_pb2_ratio, ";
         $strSQL.= "  MAX(mb_game_cs_ratio) AS mb_game_cs_ratio, MAX(mb_game_sl_ratio) AS mb_game_sl_ratio, ";
-        $strSQL.= "  MAX(mb_game_eo_ratio) AS mb_game_eo_ratio, MAX(mb_game_eo2_ratio) AS mb_game_eo2_ratio, ";
-        $strSQL.= "  MAX(mb_game_co_ratio) AS mb_game_co_ratio, MAX(mb_game_co2_ratio) AS mb_game_co2_ratio, ";
         $strSQL.= "  MAX(mb_game_hl_ratio) AS mb_game_hl_ratio ";
         $strSQL.= " FROM ".$this->table." WHERE mb_emp_fid = '".$mbFid."' AND mb_state_active != '".PERMIT_DELETE."' ";
         
@@ -1084,40 +896,16 @@ class Member_Model extends Model
         // 배당율 체크
         if(!is_null($objEmployee)){
             if (array_key_exists('mb_game_pb_ratio', $arrRegData) && $objEmployee->mb_game_pb_ratio < $arrRegData['mb_game_pb_ratio']) {
-                $strError = "해피볼 단폴 배당율이 추천인설정값 ".$objEmployee->mb_game_pb_ratio."보다 클수 없습니다.";
+                $strError = "미니게임 단폴 배당율이 추천인설정값 ".$objEmployee->mb_game_pb_ratio."보다 클수 없습니다.";
                 return 4;
             } elseif (array_key_exists('mb_game_pb2_ratio', $arrRegData) && $objEmployee->mb_game_pb2_ratio < $arrRegData['mb_game_pb2_ratio']) {
-                $strError = "해피볼 조합 배당율이 추천인설정값 ".$objEmployee->mb_game_pb2_ratio."보다 클수 없습니다.";
-                return 4;
-            } elseif (array_key_exists('mb_game_ps_ratio', $arrRegData) && $objEmployee->mb_game_ps_ratio < $arrRegData['mb_game_ps_ratio']) {
-                $strError = "파워사다리 배당율이 추천인설정값 ".$objEmployee->mb_game_ps_ratio."보다 클수 없습니다.";
+                $strError = "미니게임 조합 배당율이 추천인설정값 ".$objEmployee->mb_game_pb2_ratio."보다 클수 없습니다.";
                 return 4;
             } elseif (array_key_exists('mb_game_cs_ratio', $arrRegData) && $objEmployee->mb_game_cs_ratio < $arrRegData['mb_game_cs_ratio']) {
                 $strError = "카지노 배당율이 추천인설정값 ".$objEmployee->mb_game_cs_ratio."보다 클수 없습니다.";
                 return 4;
             } elseif (array_key_exists('mb_game_sl_ratio', $arrRegData) && $objEmployee->mb_game_sl_ratio < $arrRegData['mb_game_sl_ratio']) {
                 $strError = "슬롯 배당율이 추천인설정값 ".$objEmployee->mb_game_sl_ratio."보다 클수 없습니다.";
-                return 4;
-            } elseif (array_key_exists('mb_game_bb_ratio', $arrRegData) && $objEmployee->mb_game_bb_ratio < $arrRegData['mb_game_bb_ratio']) {
-                $strError = "보글볼 단폴 배당율이 추천인설정값 ".$objEmployee->mb_game_bb_ratio."보다 클수 없습니다.";
-                return 4;
-            } elseif (array_key_exists('mb_game_bb2_ratio', $arrRegData) && $objEmployee->mb_game_bb2_ratio < $arrRegData['mb_game_bb2_ratio']) {
-                $strError = "보글볼 조합 배당율이 추천인설정값 ".$objEmployee->mb_game_bb2_ratio."보다 클수 없습니다.";
-                return 4;
-            } elseif (array_key_exists('mb_game_bs_ratio', $arrRegData) && $objEmployee->mb_game_bs_ratio < $arrRegData['mb_game_bs_ratio']) {
-                $strError = "보글사다리 배당율이 추천인설정값 ".$objEmployee->mb_game_bs_ratio."보다 클수 없습니다.";
-                return 4;
-            } elseif (array_key_exists('mb_game_eo_ratio', $arrRegData) && $objEmployee->mb_game_eo_ratio < $arrRegData['mb_game_eo_ratio']) {
-                $strError = "EOS파워볼 단폴 배당율이 추천인설정값 ".$objEmployee->mb_game_eo_ratio."보다 클수 없습니다.";
-                return 4;
-            } elseif (array_key_exists('mb_game_eo2_ratio', $arrRegData) && $objEmployee->mb_game_eo2_ratio < $arrRegData['mb_game_eo2_ratio']) {
-                $strError = "EOS파워볼 조합 배당율이 추천인설정값 ".$objEmployee->mb_game_eo2_ratio."보다 클수 없습니다.";
-                return 4;
-            } elseif (array_key_exists('mb_game_co_ratio', $arrRegData) && $objEmployee->mb_game_co_ratio < $arrRegData['mb_game_co_ratio']) {
-                $strError = "코인파워볼 단폴 배당율이 추천인설정값 ".$objEmployee->mb_game_co_ratio."보다 클수 없습니다.";
-                return 4;
-            } elseif (array_key_exists('mb_game_co2_ratio', $arrRegData) && $objEmployee->mb_game_co2_ratio < $arrRegData['mb_game_co2_ratio']) {
-                $strError = "코인파워볼 조합 배당율이 추천인설정값 ".$objEmployee->mb_game_co2_ratio."보다 클수 없습니다.";
                 return 4;
             } elseif (array_key_exists('mb_game_hl_ratio', $arrRegData) && $objEmployee->mb_game_hl_ratio < $arrRegData['mb_game_hl_ratio']) {
                 $strError = "홀덤 배당율이 추천인설정값 ".$objEmployee->mb_game_hl_ratio."보다 클수 없습니다.";
@@ -1128,40 +916,16 @@ class Member_Model extends Model
             $chRatio = $this->getChildsRatio($arrRegData['mb_fid']);
 
             if (array_key_exists('mb_game_pb_ratio', $arrRegData) && $chRatio->mb_game_pb_ratio != null && $chRatio->mb_game_pb_ratio > $arrRegData['mb_game_pb_ratio']) {
-                $strError = "해피볼 단폴 배당율이 하위설정값 ".$chRatio->mb_game_pb_ratio."보다 작을수 없습니다.";
+                $strError = "미니게임 단폴 배당율이 하위설정값 ".$chRatio->mb_game_pb_ratio."보다 작을수 없습니다.";
                 return 5;
             } elseif (array_key_exists('mb_game_pb2_ratio', $arrRegData) && $chRatio->mb_game_pb2_ratio != null && $chRatio->mb_game_pb2_ratio > $arrRegData['mb_game_pb2_ratio']) {
-                $strError = "해피볼 조합 배당율이 하위설정값 ".$chRatio->mb_game_pb2_ratio."보다 작을수 없습니다.";
-                return 5;
-            } elseif (array_key_exists('mb_game_ps_ratio', $arrRegData) && $chRatio->mb_game_ps_ratio != null && $chRatio->mb_game_ps_ratio > $arrRegData['mb_game_ps_ratio']) {
-                $strError = "파워사다리 배당율이 하위설정값 ".$chRatio->mb_game_ps_ratio."보다 작을수 없습니다.";
+                $strError = "미니게임 조합 배당율이 하위설정값 ".$chRatio->mb_game_pb2_ratio."보다 작을수 없습니다.";
                 return 5;
             } elseif (array_key_exists('mb_game_cs_ratio', $arrRegData) && $chRatio->mb_game_cs_ratio != null && $chRatio->mb_game_cs_ratio > $arrRegData['mb_game_cs_ratio']) {
                 $strError = "카지노 배당율이 하위설정값 ".$chRatio->mb_game_cs_ratio."보다 작을수 없습니다.";
                 return 5;
             } elseif (array_key_exists('mb_game_sl_ratio', $arrRegData) && $chRatio->mb_game_sl_ratio != null && $chRatio->mb_game_sl_ratio > $arrRegData['mb_game_sl_ratio']) {
                 $strError = "슬롯 배당율이 하위설정값 ".$chRatio->mb_game_sl_ratio."보다 작을수 없습니다.";
-                return 5;
-            } elseif (array_key_exists('mb_game_bb_ratio', $arrRegData) && $chRatio->mb_game_bb_ratio != null && $chRatio->mb_game_bb_ratio > $arrRegData['mb_game_bb_ratio']) {
-                $strError = "보글볼 단폴 배당율이 하위설정값 ".$chRatio->mb_game_bb_ratio."보다 작을수 없습니다.";
-                return 5;
-            } elseif (array_key_exists('mb_game_bb2_ratio', $arrRegData) && $chRatio->mb_game_bb2_ratio != null && $chRatio->mb_game_bb2_ratio > $arrRegData['mb_game_bb2_ratio']) {
-                $strError = "보글볼 조합 배당율이 하위설정값 ".$chRatio->mb_game_bb2_ratio."보다 작을수 없습니다.";
-                return 5;
-            } elseif (array_key_exists('mb_game_bs_ratio', $arrRegData) && $chRatio->mb_game_bs_ratio != null && $chRatio->mb_game_bs_ratio > $arrRegData['mb_game_bs_ratio']) {
-                $strError = "보글사다리 배당율이 하위설정값 ".$chRatio->mb_game_bs_ratio."보다 작을수 없습니다.";
-                return 5;
-            } elseif (array_key_exists('mb_game_eo_ratio', $arrRegData) && $chRatio->mb_game_eo_ratio != null && $chRatio->mb_game_eo_ratio > $arrRegData['mb_game_eo_ratio']) {
-                $strError = "EOS파워볼 단폴 배당율이 하위설정값 ".$chRatio->mb_game_eo_ratio."보다 작을수 없습니다.";
-                return 5;
-            } elseif (array_key_exists('mb_game_eo2_ratio', $arrRegData) && $chRatio->mb_game_eo2_ratio != null && $chRatio->mb_game_eo2_ratio > $arrRegData['mb_game_eo2_ratio']) {
-                $strError = "EOS파워볼 배당율이 하위설정값 ".$chRatio->mb_game_eo2_ratio."보다 작을수 없습니다.";
-                return 5;
-            } elseif (array_key_exists('mb_game_co_ratio', $arrRegData) && $chRatio->mb_game_co_ratio != null && $chRatio->mb_game_co_ratio > $arrRegData['mb_game_co_ratio']) {
-                $strError = "코인파워볼 단폴 배당율이 하위설정값 ".$chRatio->mb_game_co_ratio."보다 작을수 없습니다.";
-                return 5;
-            } elseif (array_key_exists('mb_game_co2_ratio', $arrRegData) && $chRatio->mb_game_co2_ratio != null && $chRatio->mb_game_co2_ratio > $arrRegData['mb_game_co2_ratio']) {
-                $strError = "코인파워볼 배당율이 하위설정값 ".$chRatio->mb_game_co2_ratio."보다 작을수 없습니다.";
                 return 5;
             } elseif (array_key_exists('mb_game_hl_ratio', $arrRegData) && $chRatio->mb_game_hl_ratio != null && $chRatio->mb_game_hl_ratio > $arrRegData['mb_game_hl_ratio']) {
                 $strError = "홀덤 배당율이 하위설정값 ".$chRatio->mb_game_hl_ratio."보다 작을수 없습니다.";
@@ -1192,15 +956,6 @@ class Member_Model extends Model
             }
         }
 
-        if(array_key_exists('mb_game_ps_ratio', $arrRegData)){
-            if (strlen($arrRegData['mb_game_ps_ratio']) < 1) {
-                $arrRegData['mb_game_ps_ratio'] = 0;
-            }
-            if (floatval($arrRegData['mb_game_ps_ratio']) < 0) {
-                $arrRegData['mb_game_ps_ratio'] = 0;
-            }
-        }
-
         if(array_key_exists('mb_game_cs_ratio', $arrRegData)){
             if (strlen($arrRegData['mb_game_cs_ratio']) < 1) {
                 $arrRegData['mb_game_cs_ratio'] = 0;
@@ -1216,69 +971,6 @@ class Member_Model extends Model
             }
             if (floatval($arrRegData['mb_game_sl_ratio']) < 0) {
                 $arrRegData['mb_game_sl_ratio'] = 0;
-            }
-        }
-
-        if(array_key_exists('mb_game_bb_ratio', $arrRegData)){
-            if (strlen($arrRegData['mb_game_bb_ratio']) < 1) {
-                $arrRegData['mb_game_bb_ratio'] = 0;
-            }
-            if (floatval($arrRegData['mb_game_bb_ratio']) < 0) {
-                $arrRegData['mb_game_bb_ratio'] = 0;
-            }
-        }
-
-        if(array_key_exists('mb_game_bb2_ratio', $arrRegData)){
-            if (strlen($arrRegData['mb_game_bb2_ratio']) < 1) {
-                $arrRegData['mb_game_bb2_ratio'] = 0;
-            }
-            if (floatval($arrRegData['mb_game_bb2_ratio']) < 0) {
-                $arrRegData['mb_game_bb2_ratio'] = 0;
-            }
-        }
-
-        if(array_key_exists('mb_game_bs_ratio', $arrRegData)){
-            if (strlen($arrRegData['mb_game_bs_ratio']) < 1) {
-                $arrRegData['mb_game_bs_ratio'] = 0;
-            }
-            if (floatval($arrRegData['mb_game_bs_ratio']) < 0) {
-                $arrRegData['mb_game_bs_ratio'] = 0;
-            }
-        }
-
-        if(array_key_exists('mb_game_eo_ratio', $arrRegData)){
-            if (strlen($arrRegData['mb_game_eo_ratio']) < 1) {
-                $arrRegData['mb_game_eo_ratio'] = 0;
-            }
-            if (floatval($arrRegData['mb_game_eo_ratio']) < 0) {
-                $arrRegData['mb_game_eo_ratio'] = 0;
-            }
-        }
-
-        if(array_key_exists('mb_game_eo2_ratio', $arrRegData)){
-            if (strlen($arrRegData['mb_game_eo2_ratio']) < 1) {
-                $arrRegData['mb_game_eo2_ratio'] = 0;
-            }
-            if (floatval($arrRegData['mb_game_eo2_ratio']) < 0) {
-                $arrRegData['mb_game_eo2_ratio'] = 0;
-            }
-        }
-
-        if(array_key_exists('mb_game_co_ratio', $arrRegData)){
-            if (strlen($arrRegData['mb_game_co_ratio']) < 1) {
-                $arrRegData['mb_game_co_ratio'] = 0;
-            }
-            if (floatval($arrRegData['mb_game_co_ratio']) < 0) {
-                $arrRegData['mb_game_co_ratio'] = 0;
-            }
-        }
-
-        if(array_key_exists('mb_game_co2_ratio', $arrRegData)){
-            if (strlen($arrRegData['mb_game_co2_ratio']) < 1) {
-                $arrRegData['mb_game_co2_ratio'] = 0;
-            }
-            if (floatval($arrRegData['mb_game_co2_ratio']) < 0) {
-                $arrRegData['mb_game_co2_ratio'] = 0;
             }
         }
         
@@ -1299,30 +991,6 @@ class Member_Model extends Model
         }
         if (array_key_exists('mb_game_pb2_percent', $arrData) && strlen($arrData['mb_game_pb2_percent']) < 1) {
             $arrData['mb_game_pb2_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_ps_percent', $arrData) && strlen($arrData['mb_game_ps_percent']) < 1) {
-            $arrData['mb_game_ps_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_bb_percent', $arrData) && strlen($arrData['mb_game_bb_percent']) < 1) {
-            $arrData['mb_game_bb_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_bb2_percent', $arrData) && strlen($arrData['mb_game_bb2_percent']) < 1) {
-            $arrData['mb_game_bb2_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_bs_percent', $arrData) && strlen($arrData['mb_game_bs_percent']) < 1) {
-            $arrData['mb_game_bs_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_eo_percent', $arrData) && strlen($arrData['mb_game_eo_percent']) < 1) {
-            $arrData['mb_game_eo_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_eo2_percent', $arrData) && strlen($arrData['mb_game_eo2_percent']) < 1) {
-            $arrData['mb_game_eo2_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_co_percent', $arrData) && strlen($arrData['mb_game_co_percent']) < 1) {
-            $arrData['mb_game_co_percent'] = 0;
-        }
-        if (array_key_exists('mb_game_co2_percent', $arrData) && strlen($arrData['mb_game_co2_percent']) < 1) {
-            $arrData['mb_game_co2_percent'] = 0;
         }
     }
 
@@ -1375,21 +1043,27 @@ class Member_Model extends Model
         $arrRegData['mb_time_join'] = date('Y-m-d H:i:s');
         
         if(!array_key_exists('mb_state_active', $arrRegData)){
-            $arrRegData['mb_state_active'] = PERMIT_WAIT;
+            $arrRegData['mb_state_active'] = PERMIT_REQ;
         }
         if($_ENV['mem.auto_permit']){
             $arrRegData['mb_state_active'] = PERMIT_OK;
         }
 
-        $arrRegData['mb_game_pb'] = 1;
-        $arrRegData['mb_game_ps'] = 1;
-        $arrRegData['mb_game_bb'] = 1;
-        $arrRegData['mb_game_bs'] = 1;
-        $arrRegData['mb_game_cs'] = 1;
-        $arrRegData['mb_game_sl'] = 1;
-        $arrRegData['mb_game_eo'] = 1;
-        $arrRegData['mb_game_co'] = 1;
-        $arrRegData['mb_game_hl'] = 1;
+        $arrRegData['mb_game_pb'] = STATE_ACTIVE;
+        $arrRegData['mb_game_ps'] = STATE_ACTIVE;
+        $arrRegData['mb_game_ks'] = STATE_ACTIVE;
+        $arrRegData['mb_game_bb'] = STATE_ACTIVE;
+        $arrRegData['mb_game_bs'] = STATE_ACTIVE;
+        $arrRegData['mb_game_cs'] = STATE_ACTIVE;
+        $arrRegData['mb_game_sl'] = STATE_ACTIVE;
+        $arrRegData['mb_game_eo'] = STATE_ACTIVE;
+        $arrRegData['mb_game_co'] = STATE_ACTIVE;
+        $arrRegData['mb_game_hl'] = STATE_ACTIVE;
+
+        $objUser = $this->getByBankName($arrData['mb_bank_name'], $arrData['mb_bank_own']);
+        if(!is_null($objUser)){
+            $data['mb_state_delete'] = STATE_ACTIVE;
+        }
 
         $result = $this->insert($arrRegData);
         if (!$result) {
@@ -1402,74 +1076,6 @@ class Member_Model extends Model
     }
 
     // function registerInfo($info, &$strError) {
-
-    //     $emp = trim($info[5]);
-
-    //     $arrRegData['mb_uid'] = trim($info[0]);
-    //     $arrRegData['mb_nickname'] = trim($info[1]);
-
-    //     $objMember = $this->getInfoByUid($arrRegData['mb_uid']);
-    //     if(!is_null($objMember)){
-    //         writeLog("Duplicated-".$arrRegData['mb_uid']);
-    //         return -1;
-    //     }
-
-    //     $arrRegData['mb_emp_fid'] = 0;
-    //     $arrRegData['mb_level'] = LEVEL_COMPANY;
-    //     $objEmployee = $this->getInfoByUid($emp);
-    //     if(!is_null($objEmployee) && $objEmployee->mb_state_active != PERMIT_DELETE){
-    //         $arrRegData['mb_emp_fid'] = $objEmployee->mb_fid;
-    //         $arrRegData['mb_level'] = $objEmployee->mb_level - 1;
-    //         writeLog(">>>>>".$arrRegData['mb_uid']." emp=".$objEmployee->mb_fid);
-    //     } else {
-    //         writeLog(">>>>>".$arrRegData['mb_uid']." emp=null");
-
-    //     }
-        
-    //     $arrRegData['mb_pwd'] = trim($info[2]);
-    //     $arrRegData['mb_bank_pwd'] = trim($info[3]);
-    //     $arrRegData['mb_bank_name'] = trim($info[6]);
-    //     if(strlen($arrRegData['mb_bank_name']) < 1)
-    //         $arrRegData['mb_bank_name'] = "-";
-
-    //     $arrRegData['mb_bank_num'] = trim($info[7]);
-    //     if(strlen($arrRegData['mb_bank_num']) < 1)
-    //         $arrRegData['mb_bank_num'] = "-";
-
-    //     $arrRegData['mb_bank_own'] = trim($info[8]);
-    //     if(strlen($arrRegData['mb_bank_own']) < 1)
-    //         $arrRegData['mb_bank_own'] = "-";
-
-    //     $arrRegData['mb_phone'] = trim($info[9]);
-    //     if(strlen($arrRegData['mb_phone']) < 1)
-    //         $arrRegData['mb_phone'] = "111";
-
-    //     $arrRegData['mb_money'] = floatval($info[10]);
-    //     $arrRegData['mb_point'] = floatval($info[11]);
-
-    //     $arrRegData['mb_time_join'] = date('Y-m-d H:i:s');
-
-    //     $arrRegData['mb_grade'] = 1;
-    //     $arrRegData['mb_color'] = '#ffffff';
-
-    //     $arrRegData['mb_state_active'] = PERMIT_OK;
-    //     $arrRegData['mb_game_pb'] = 1;
-    //     $arrRegData['mb_game_ps'] = 1;
-    //     $arrRegData['mb_game_bb'] = 1;
-    //     $arrRegData['mb_game_bs'] = 1;
-    //     $arrRegData['mb_game_cs'] = 1;
-    //     $arrRegData['mb_game_sl'] = 1;
-    //     $arrRegData['mb_game_eo'] = 1;
-    //     $arrRegData['mb_game_co'] = 1;
-    //     $arrRegData['mb_game_hl'] = 1;
-
-    //     $result = $this->insert($arrRegData);
-    //     if (!$result) {
-    //         $strError = $this->errors();
-    //         return -1;
-    //     }
-    //     return 1;
-    // }
 
     public function modifyMember($objMember, $arrData, &$strError, &$query)
     {
@@ -1583,12 +1189,7 @@ class Member_Model extends Model
         else
             $strSql.=  " mb_level = mb_level - ".abs($diffLv);
         $strSql.=  ", mb_game_pb_ratio = 0, mb_game_pb2_ratio=0, ";
-        $strSql.=  " mb_game_ps_ratio = 0, ";
-        $strSql.=  " mb_game_bb_ratio = 0, mb_game_bb2_ratio=0, ";
-        $strSql.=  " mb_game_bs_ratio = 0, ";
         $strSql.=  " mb_game_cs_ratio = 0, mb_game_sl_ratio=0, ";
-        $strSql.=  " mb_game_eo_ratio = 0, mb_game_eo2_ratio=0, ";
-        $strSql.=  " mb_game_co_ratio = 0, mb_game_co2_ratio=0, ";
         $strSql.=  " mb_game_hl_ratio = 0 ";
 
         $strSql.= " WHERE mb_fid IN (".implode(", ", $fids).")";
@@ -1641,28 +1242,11 @@ class Member_Model extends Model
             $this->builder()->set('mb_game_pb_ratio', $arrRegData['mb_game_pb_ratio']);
         if(array_key_exists('mb_game_pb2_ratio', $arrRegData))
             $this->builder()->set('mb_game_pb2_ratio', $arrRegData['mb_game_pb2_ratio']);
-        if(array_key_exists('mb_game_ps_ratio', $arrRegData))
-            $this->builder()->set('mb_game_ps_ratio', $arrRegData['mb_game_ps_ratio']);
-        
-        if(array_key_exists('mb_game_bb_ratio', $arrRegData))
-            $this->builder()->set('mb_game_bb_ratio', $arrRegData['mb_game_bb_ratio']);
-        if(array_key_exists('mb_game_bb2_ratio', $arrRegData))
-            $this->builder()->set('mb_game_bb2_ratio', $arrRegData['mb_game_bb2_ratio']);
-        if(array_key_exists('mb_game_bs_ratio', $arrRegData))
-            $this->builder()->set('mb_game_bs_ratio', $arrRegData['mb_game_bs_ratio']);
         
         if(array_key_exists('mb_game_cs_ratio', $arrRegData))
             $this->builder()->set('mb_game_cs_ratio', $arrRegData['mb_game_cs_ratio']);
         if(array_key_exists('mb_game_sl_ratio', $arrRegData))
             $this->builder()->set('mb_game_sl_ratio', $arrRegData['mb_game_sl_ratio']);
-        if(array_key_exists('mb_game_eo_ratio', $arrRegData))
-            $this->builder()->set('mb_game_eo_ratio', $arrRegData['mb_game_eo_ratio']);
-        if(array_key_exists('mb_game_eo2_ratio', $arrRegData))
-            $this->builder()->set('mb_game_eo2_ratio', $arrRegData['mb_game_eo2_ratio']);
-        if(array_key_exists('mb_game_co_ratio', $arrRegData))
-            $this->builder()->set('mb_game_co_ratio', $arrRegData['mb_game_co_ratio']);
-        if(array_key_exists('mb_game_co2_ratio', $arrRegData))
-            $this->builder()->set('mb_game_co2_ratio', $arrRegData['mb_game_co2_ratio']);
         if(array_key_exists('mb_game_hl_ratio', $arrRegData))
             $this->builder()->set('mb_game_hl_ratio', $arrRegData['mb_game_hl_ratio']);
 
@@ -1670,22 +1254,6 @@ class Member_Model extends Model
             $this->builder()->set('mb_game_pb_percent', $arrRegData['mb_game_pb_percent']);
         if(array_key_exists('mb_game_pb2_percent', $arrRegData))
             $this->builder()->set('mb_game_pb2_percent', $arrRegData['mb_game_pb2_percent']);
-        if(array_key_exists('mb_game_ps_percent', $arrRegData))
-            $this->builder()->set('mb_game_ps_percent', $arrRegData['mb_game_ps_percent']);
-        if(array_key_exists('mb_game_bb_percent', $arrRegData))
-            $this->builder()->set('mb_game_bb_percent', $arrRegData['mb_game_bb_percent']);
-        if(array_key_exists('mb_game_bb2_percent', $arrRegData))
-            $this->builder()->set('mb_game_bb2_percent', $arrRegData['mb_game_bb2_percent']);
-        if(array_key_exists('mb_game_bs_percent', $arrRegData))
-            $this->builder()->set('mb_game_bs_percent', $arrRegData['mb_game_bs_percent']);
-        if(array_key_exists('mb_game_eo_percent', $arrRegData))
-            $this->builder()->set('mb_game_eo_percent', $arrRegData['mb_game_eo_percent']);
-        if(array_key_exists('mb_game_eo2_percent', $arrRegData))
-            $this->builder()->set('mb_game_eo2_percent', $arrRegData['mb_game_eo2_percent']);
-        if(array_key_exists('mb_game_co_percent', $arrRegData))
-            $this->builder()->set('mb_game_co_percent', $arrRegData['mb_game_co_percent']);
-        if(array_key_exists('mb_game_co2_percent', $arrRegData))
-            $this->builder()->set('mb_game_co2_percent', $arrRegData['mb_game_co2_percent']);
     }
 
     public function updateMemberByFid($arrData, &$query)
@@ -1698,6 +1266,8 @@ class Member_Model extends Model
             $this->builder()->set('mb_game_pb', $arrData['mb_game_pb']);
         } elseif (array_key_exists('mb_game_ps', $arrData)) {
             $this->builder()->set('mb_game_ps', $arrData['mb_game_ps']);
+        } elseif (array_key_exists('mb_game_ks', $arrData)) {
+            $this->builder()->set('mb_game_ks', $arrData['mb_game_ks']);
         } elseif (array_key_exists('mb_game_cs', $arrData)) {
             $this->builder()->set('mb_game_cs', $arrData['mb_game_cs']);
         } elseif (array_key_exists('mb_game_sl', $arrData)) {
@@ -1739,6 +1309,8 @@ class Member_Model extends Model
             $this->builder()->set('mb_range_ev', $arrData['mb_range_ev']);
         } else if (array_key_exists('mb_state_view', $arrData)) {
             $this->builder()->set('mb_state_view', $arrData['mb_state_view']);
+        } else if (array_key_exists('mb_follow_en', $arrData)) {
+            $this->builder()->set('mb_follow_en', $arrData['mb_follow_en']);
         } else return false;
 
         if(count($arrData['mb_fids']) > 0)
@@ -1758,13 +1330,14 @@ class Member_Model extends Model
             
         // 대기중인 회원수
         $strSQL = " SELECT  COUNT(*) AS result_1, 0 AS result_2 FROM ".$this->table;
-            $strSQL .= " WHERE mb_level < '".LEVEL_ADMIN."' AND mb_state_active = '".PERMIT_WAIT."'";
+            $strSQL .= " WHERE mb_level < '".LEVEL_ADMIN."' AND mb_state_active = '".PERMIT_REQ."'";
         //충전대기
         $strSQL .=" UNION ALL SELECT SUM(CASE WHEN charge_action_state = ".STATE_ACTIVE." THEN 1 ELSE 0 END) AS result_1,  SUM(CASE WHEN charge_action_state = ".STATE_WAIT." THEN 1 ELSE 0 END) AS result_2";
-            $strSQL .=" FROM ".$this->chargeTb." JOIN member ON member_charge.charge_mb_uid = member.mb_uid  WHERE charge_state_delete = '0' ";
+            $strSQL .=" FROM ".$this->chargeTb."  WHERE charge_state_delete = '0' ";
+            // $strSQL .=" FROM ".$this->chargeTb." JOIN member ON member_charge.charge_mb_uid = member.mb_uid  WHERE charge_state_delete = '0' ";
         //환전대기
         $strSQL .=" UNION ALL SELECT SUM(CASE WHEN exchange_action_state = ".STATE_ACTIVE." THEN 1 ELSE 0 END) AS result_1,  SUM(CASE WHEN exchange_action_state = ".STATE_WAIT." THEN 1 ELSE 0 END) AS result_2";
-            $strSQL .=" FROM ".$this->exchangeTb." JOIN member ON member_exchange.exchange_mb_uid = member.mb_uid  WHERE exchange_state_delete = '0' ";
+            $strSQL .=" FROM ".$this->exchangeTb." WHERE exchange_state_delete = '0' ";
         //문의대기
         $strSQL .=" UNION ALL SELECT  COUNT(*) AS result_1, 0 AS result_2 FROM ".$this->noticeTb;
         $strSQL .=" WHERE notice_state_delete = '".STATE_DISABLE."' AND notice_type = '".NOTICE_CUSTOMER."' AND notice_read_count = '0' ";
@@ -1911,13 +1484,7 @@ class Member_Model extends Model
 
     public function searchMemberByLevel($arrReqData, $iEmpFid)
     {
-        $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid','mb_nickname', 'mb_ip_last',
-            'mb_money', 'mb_point', 'mb_grade', 'mb_color', 'mb_state_active', 'mb_state_delete', 
-            'mb_game_pb', 'mb_game_ps', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 'mb_game_eo', 'mb_game_co', 'mb_game_hl', 
-            'mb_game_cs_ratio', 'mb_game_sl_ratio', 'mb_game_hl_ratio',
-            'mb_blank_count', 'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money', 'mb_gslot_money', 'mb_hslot_money', 'mb_hold_money' ];
-
-        $strTbColum = " ".implode(", ", $fields);
+        $strTbColum = " ".implode(", ", $this->fields);
         $strTbColum.= ", block_ip, block_state ";
 
         $tbBlock = "block_list";
@@ -1949,7 +1516,7 @@ class Member_Model extends Model
         $strSQL .=" AND mb_state_active != '".PERMIT_DELETE."' ";
         $strSQL.= $where;
 
-        $strSQL .= " ORDER BY (CASE WHEN mb_state_active = 2 THEN 0 ELSE 1 END) ";
+        $strSQL .= " ORDER BY (CASE WHEN mb_state_active = ".PERMIT_REQ." OR mb_state_active = ".PERMIT_WAIT." THEN 0 ELSE 1 END) ";
         $strSQL .= " , mb_uid ASC ";
         
         $nStartRow = ($arrReqData['page'] - 1) * $arrReqData['count'];
@@ -1963,13 +1530,9 @@ class Member_Model extends Model
         {
             return $this->searchMemberByLevel($arrReqData, $iEmpFid);
         } else {
-            $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid', 'mb_nickname', 
-            'mb_money', 'mb_point', 'mb_grade', 'mb_color', 'mb_state_active', 'mb_state_delete', 
-            'mb_blank_count', 'mb_game_cs_ratio', 'mb_game_sl_ratio', 'mb_game_hl_ratio',
-            'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money', 'mb_gslot_money', 'mb_hslot_money', 'mb_hold_money' ];
 
-            $strTbColum = " ".implode(", ", $fields);
-            $strTbRColum = " r.".implode(", r.", $fields);
+            $strTbColum = " ".implode(", ", $this->fields);
+            $strTbRColum = " r.".implode(", r.", $this->fields);
 
             $strSQL = "WITH RECURSIVE tbmember (".$strTbColum.") AS";
             $strSQL .= " ( SELECT ".$strTbColum." FROM ".$this->table." WHERE mb_emp_fid = '".$objUser->mb_fid."'";
@@ -1996,7 +1559,7 @@ class Member_Model extends Model
                 $strSQL .= " AND mb_state_active = ".$this->db->escape($arrReqData['mb_state']);
             }
 
-            $strSQL .= " ORDER BY (CASE WHEN mb_state_active = 2 THEN 0 ELSE 1 END) ";
+            $strSQL .= " ORDER BY (CASE WHEN mb_state_active = ".PERMIT_REQ." OR mb_state_active = ".PERMIT_WAIT." THEN 0 ELSE 1 END) ";
             $strSQL .= " , mb_uid ASC ";
 
             $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
@@ -2018,14 +1581,8 @@ class Member_Model extends Model
             $userFid = 0;
         } 
 
-        $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid','mb_nickname', 'mb_ip_last',
-            'mb_money', 'mb_point', 'mb_grade', 'mb_color', 'mb_state_active', 'mb_state_delete', 
-            'mb_game_pb', 'mb_game_ps', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 'mb_game_eo', 'mb_game_co', 'mb_game_hl', 
-            'mb_game_cs_ratio', 'mb_game_sl_ratio', 'mb_game_hl_ratio',
-            'mb_blank_count', 'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money', 'mb_gslot_money', 'mb_hslot_money', 'mb_hold_money' ];
-
-        $strTbColum = " ".implode(", ", $fields);
-        $strTbRColum = " r.".implode(", r.", $fields);
+        $strTbColum = " ".implode(", ", $this->fields);
+        $strTbRColum = " r.".implode(", r.", $this->fields);
 
         $strSQL = "WITH RECURSIVE tbmember (".$strTbColum.") AS";
         $strSQL .= " ( SELECT ".$strTbColum." FROM ".$this->table." WHERE ";
@@ -2059,15 +1616,11 @@ class Member_Model extends Model
             $userFid = 0;
         } 
 
-        $fields = ['mb_fid', 'mb_uid', 'mb_pwd', 'mb_level','mb_emp_fid','mb_nickname', 'mb_phone',
-            'mb_bank_name', 'mb_bank_own', 'mb_bank_num', 'mb_bank_pwd', 'mb_time_join', 'mb_time_last', 
-            'mb_money', 'mb_point', 'mb_grade', 'mb_color', 'mb_memo', 'mb_state_active', 'mb_state_delete', 
-            'mb_game_pb', 'mb_game_ps', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 'mb_game_eo', 'mb_game_co', 'mb_game_hl', 
-            'mb_game_pb_ratio', 'mb_game_pb2_ratio', 'mb_game_ps_ratio', 'mb_game_bb_ratio', 'mb_game_bb2_ratio', 'mb_game_bs_ratio', 'mb_game_cs_ratio', 
-            'mb_game_sl_ratio', 'mb_game_eo_ratio', 'mb_game_eo2_ratio', 'mb_game_co_ratio', 'mb_game_co2_ratio', 'mb_game_hl_ratio', 
-            'mb_game_pb_percent', 'mb_game_pb2_percent', 'mb_game_ps_percent', 'mb_game_bb_percent', 'mb_game_bb2_percent', 'mb_game_bs_percent', 'mb_game_eo_percent', 'mb_game_eo2_percent',
-            'mb_game_co_percent', 'mb_game_co2_percent', 'mb_blank_count',
-            'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money', 'mb_gslot_money', 'mb_hslot_money', 'mb_hold_money' ];
+        $fields = $this->getFields;
+        if(!in_array("mb_pwd", $fields)){
+            array_push($fields, "mb_pwd");
+            array_push($fields, "mb_memo");
+        }
 
         $strTbColum = " ".implode(", ", $fields);
         $strTbRColum = " r.".implode(", r.", $fields);
@@ -2089,58 +1642,27 @@ class Member_Model extends Model
         $strTbColum.= ' ('.allMoneySql().') as mb_money, ';
         $strTbColum.= ' ('.allEggSql().') as mb_egg, ';
         $strTbColum.= ' mb_point, mb_grade, mb_color, mb_memo, mb_state_active, mb_state_delete, ' ;
-        $strTbColum .= ' mb_game_pb, mb_game_ps, mb_game_bb, mb_game_bs, mb_game_cs, mb_game_sl, mb_game_eo, mb_game_co, mb_game_hl, ';
-        $strTbColum .= ' mb_game_pb_ratio, mb_game_pb2_ratio, mb_game_ps_ratio, mb_game_bb_ratio, mb_game_bb2_ratio, mb_game_bs_ratio, mb_game_cs_ratio, ';
-        $strTbColum .= ' mb_game_sl_ratio, mb_game_eo_ratio, mb_game_eo2_ratio, mb_game_co_ratio, mb_game_co2_ratio, mb_game_hl_ratio, ';
-        $strTbColum .= ' mb_game_pb_percent, mb_game_pb2_percent, mb_game_ps_percent, mb_game_bb_percent, mb_game_bb2_percent, mb_game_bs_percent, mb_game_eo_percent, mb_game_eo2_percent, ';
-        $strTbColum .= ' mb_game_co_percent, mb_game_co2_percent, mb_blank_count ';
-        // $strTbColum .= " bet_sl.bet_sl_m, bet_sl.bet_sl_w, ";
+        $strTbColum .= ' mb_game_pb, mb_game_ps, mb_game_ks, mb_game_bb, mb_game_bs, mb_game_cs, mb_game_sl, mb_game_eo, mb_game_co, mb_game_hl, ';
+        $strTbColum .= ' mb_game_pb_ratio, mb_game_pb2_ratio, mb_game_cs_ratio, ';
+        $strTbColum .= ' mb_game_sl_ratio, mb_game_hl_ratio, ';
+        $strTbColum .= ' mb_game_pb_percent, mb_game_pb2_percent, ';
+        $strTbColum .= ' mb_blank_count ';
         $betSum = " (IFNULL(bet_sl.bet_sl_m, 0)";
         $winSum = " (IFNULL(bet_sl.bet_sl_w, 0)";
 
-        if(!$confs['hpg_deny']){
-            // $strTbColum.= " bet_pb.bet_pb_m, bet_pb.bet_pb_w, ";
+        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['rand5_deny'] || !$confs['rand3_deny']){
             $betSum .= "+IFNULL(bet_pb.bet_pb_m, 0)";
             $winSum .= "+IFNULL(bet_pb.bet_pb_w, 0)";
         }
-        if(!$confs['bpg_deny']){
-            // $strTbColum.= " bet_bb.bet_bb_m, bet_bb.bet_bb_w, "; 
-            // $strTbColum.= " bet_bl.bet_bl_m, bet_bl.bet_bl_w, "; 
-            $betSum .= "+IFNULL(bet_bb.bet_bb_m, 0)+IFNULL(bet_bl.bet_bl_m, 0)";
-            $winSum .= "+IFNULL(bet_bb.bet_bb_w, 0)+IFNULL(bet_bl.bet_bl_w, 0)";
-        }
-        if(!$confs['eos5_deny']){
-            // $strTbColum.= " bet_e5.bet_e5_m, bet_e5.bet_e5_w, "; 
-            $betSum .= "+IFNULL(bet_e5.bet_e5_m, 0)";
-            $winSum .= "+IFNULL(bet_e5.bet_e5_w, 0)";
-        }
-        if(!$confs['eos3_deny']){
-            // $strTbColum.= " bet_e3.bet_e3_m, bet_e3.bet_e3_w, "; 
-            $betSum .= "+IFNULL(bet_e3.bet_e3_m, 0)";
-            $winSum .= "+IFNULL(bet_e3.bet_e3_w, 0)";
-        }
-        if(!$confs['coin5_deny']){
-            // $strTbColum.= " bet_c5.bet_c5_m, bet_c5.bet_c5_w, "; 
-            $betSum .= "+IFNULL(bet_c5.bet_c5_m, 0)";
-            $winSum .= "+IFNULL(bet_c5.bet_c5_w, 0)";
-        }
-        if(!$confs['coin3_deny']){
-            // $strTbColum.= " bet_c3.bet_c3_m, bet_c3.bet_c3_w, "; 
-            $betSum .= "+IFNULL(bet_c3.bet_c3_m, 0)";
-            $winSum .= "+IFNULL(bet_c3.bet_c3_w, 0)";
-        }
         if(!$confs['hold_deny']){
-            // $strTbColum.= " bet_hl.bet_hl_m, bet_hl.bet_hl_w, "; 
             $betSum .= "+IFNULL(bet_hl.bet_hl_m, 0)";
             $winSum .= "+IFNULL(bet_hl.bet_hl_w, 0)";
         }
         if(isEBalMode()){
-            // $strTbColum.= " bet_ev.bet_ev_m, bet_ev.bet_ev_w, "; 
             $betSum .= "+IFNULL(bet_ev.bet_ev_m, 0)";
             $winSum .= "+IFNULL(bet_ev.bet_ev_w, 0)";
         }
         if(!$confs['evol_deny'] || !$confs['cas_deny']){
-            // $strTbColum.= " bet_cs.bet_cs_m, bet_cs.bet_cs_w, "; 
             $betSum .= "+IFNULL(bet_cs.bet_cs_m, 0)";
             $winSum .= "+IFNULL(bet_cs.bet_cs_w, 0)";
         }
@@ -2153,24 +1675,8 @@ class Member_Model extends Model
         $strSQL.= "SELECT ".$strTbColum." FROM ".$tbMember;
         $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_sl_m, sum(bet_win_money) AS bet_sl_w from bet_slot group by bet_mb_uid ) bet_sl ON bet_sl.bet_mb_uid = ".$tbMember.".mb_uid";
 
-        if(!$confs['hpg_deny']){
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_pb_m, sum(bet_win_money) AS bet_pb_w from bet_happyball group by bet_mb_uid ) bet_pb ON bet_pb.bet_mb_uid = ".$tbMember.".mb_uid";
-        }
-        if(!$confs['bpg_deny']){
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_bb_m, sum(bet_win_money) AS bet_bb_w from bet_bogleball group by bet_mb_uid ) bet_bb ON bet_bb.bet_mb_uid = ".$tbMember.".mb_uid";
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_bl_m, sum(bet_win_money) AS bet_bl_w from bet_bogleladder group by bet_mb_uid ) bet_bl ON bet_bl.bet_mb_uid = ".$tbMember.".mb_uid";
-        }
-        if(!$confs['eos5_deny']){
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_e5_m, sum(bet_win_money) AS bet_e5_w from bet_eos5ball group by bet_mb_uid ) bet_e5 ON bet_e5.bet_mb_uid = ".$tbMember.".mb_uid";
-        }
-        if(!$confs['eos3_deny']){
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_e3_m, sum(bet_win_money) AS bet_e3_w from bet_eos3ball group by bet_mb_uid ) bet_e3 ON bet_e3.bet_mb_uid = ".$tbMember.".mb_uid";
-        }
-        if(!$confs['coin5_deny']){
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_c5_m, sum(bet_win_money) AS bet_c5_w from bet_coin5ball group by bet_mb_uid ) bet_c5 ON bet_c5.bet_mb_uid = ".$tbMember.".mb_uid";
-        }
-        if(!$confs['coin3_deny']){
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_c3_m, sum(bet_win_money) AS bet_c3_w from bet_coin3ball group by bet_mb_uid ) bet_c3 ON bet_c3.bet_mb_uid = ".$tbMember.".mb_uid";
+        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['rand5_deny'] || !$confs['rand3_deny']){
+            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_pb_m, sum(bet_win_money) AS bet_pb_w from bet_pball group by bet_mb_uid ) bet_pb ON bet_pb.bet_mb_uid = ".$tbMember.".mb_uid";
         }
         if(!$confs['hold_deny']){
             $strSQL.= " LEFT JOIN ( select bet_mb_fid, sum(bet_money) AS bet_hl_m, sum(bet_win_money) AS bet_hl_w from bet_holdem group by bet_mb_fid ) bet_hl ON bet_hl.bet_mb_fid = ".$tbMember.".mb_fid";
@@ -2178,8 +1684,6 @@ class Member_Model extends Model
         if(isEBalMode()){
             $tbName = "bet_ebal_st";
             $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_ev_m, sum(bet_win_money) AS bet_ev_w from ".$tbName;
-            // $strSQL.= " WHERE company_amount = 0 AND ";
-            // $strSQL.= " point_amount <> ".BET_STATE_TIE;
             $strSQL.= " group by bet_mb_uid ) bet_ev ON bet_ev.bet_mb_uid = ".$tbMember.".mb_uid";
         }
 
@@ -2199,8 +1703,6 @@ class Member_Model extends Model
 
         $strSQL .= " ORDER BY mb_level DESC, mb_fid ASC ";
 
-        // writeLog($strSQL);
-        
         return $this -> db -> query($strSQL)->getResult();
           
     }
@@ -2251,60 +1753,28 @@ class Member_Model extends Model
         $strTbColum.= ' ('.allMoneySql().') as mb_money, ';
         $strTbColum.= ' ('.allEggSql().') as mb_egg, ';
         $strTbColum.= ' mb_point, mb_grade, mb_color, mb_memo, mb_state_active, mb_state_delete, ' ;
-        $strTbColum .= ' mb_game_pb, mb_game_ps, mb_game_bb, mb_game_bs, mb_game_cs, mb_game_sl, mb_game_eo, mb_game_co, mb_game_hl, ';
-        $strTbColum .= ' mb_game_pb_ratio, mb_game_pb2_ratio, mb_game_ps_ratio, mb_game_bb_ratio, mb_game_bb2_ratio, mb_game_bs_ratio, mb_game_cs_ratio, ';
-        $strTbColum .= ' mb_game_sl_ratio, mb_game_eo_ratio, mb_game_eo2_ratio, mb_game_co_ratio, mb_game_co2_ratio, mb_game_hl_ratio, ';
-        $strTbColum .= ' mb_game_pb_percent, mb_game_pb2_percent, mb_game_ps_percent, mb_game_bb_percent, mb_game_bb2_percent, mb_game_bs_percent, mb_game_eo_percent, mb_game_eo2_percent, ';
-        $strTbColum .= ' mb_game_co_percent, mb_game_co2_percent, mb_blank_count';
+        $strTbColum .= ' mb_game_pb, mb_game_ps, mb_game_ks, mb_game_bb, mb_game_bs, mb_game_cs, mb_game_sl, mb_game_eo, mb_game_co, mb_game_hl, ';
+        $strTbColum .= ' mb_game_pb_ratio, mb_game_pb2_ratio, mb_game_cs_ratio, ';
+        $strTbColum .= ' mb_game_sl_ratio, mb_game_hl_ratio, ';
+        $strTbColum .= ' mb_game_pb_percent, mb_game_pb2_percent, mb_blank_count';
 
         if ($arrReqData['mb_grade'] >= 0){
             $betSum = " (IFNULL(bet_sl.bet_sl_m, 0)";
             $winSum = " (IFNULL(bet_sl.bet_sl_w, 0)";
 
-            // $strTbColum .= ", bet_sl.bet_sl_m, bet_sl.bet_sl_w, ";
-            if(!$confs['hpg_deny']){
-                // $strTbColum.= " bet_pb.bet_pb_m, bet_pb.bet_pb_w, ";
+            if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['rand5_deny'] || !$confs['rand3_deny']){
                 $betSum .= "+IFNULL(bet_pb.bet_pb_m, 0)";
                 $winSum .= "+IFNULL(bet_pb.bet_pb_w, 0)";
             }
-            if(!$confs['bpg_deny']){
-                // $strTbColum.= " bet_bb.bet_bb_m, bet_bb.bet_bb_w, "; 
-                // $strTbColum.= " bet_bl.bet_bl_m, bet_bl.bet_bl_w, "; 
-                $betSum .= "+IFNULL(bet_bb.bet_bb_m, 0)+IFNULL(bet_bl.bet_bl_m, 0)";
-                $winSum .= "+IFNULL(bet_bb.bet_bb_w, 0)+IFNULL(bet_bl.bet_bl_w, 0)";
-            }
-            if(!$confs['eos5_deny']){
-                // $strTbColum.= " bet_e5.bet_e5_m, bet_e5.bet_e5_w, "; 
-                $betSum .= "+IFNULL(bet_e5.bet_e5_m, 0)";
-                $winSum .= "+IFNULL(bet_e5.bet_e5_w, 0)";
-            }
-            if(!$confs['eos3_deny']){
-                // $strTbColum.= " bet_e3.bet_e3_m, bet_e3.bet_e3_w, "; 
-                $betSum .= "+IFNULL(bet_e3.bet_e3_m, 0)";
-                $winSum .= "+IFNULL(bet_e3.bet_e3_w, 0)";
-            }
-            if(!$confs['coin5_deny']){
-                // $strTbColum.= " bet_c5.bet_c5_m, bet_c5.bet_c5_w, "; 
-                $betSum .= "+IFNULL(bet_c5.bet_c5_m, 0)";
-                $winSum .= "+IFNULL(bet_c5.bet_c5_w, 0)";
-            }
-            if(!$confs['coin3_deny']){
-                // $strTbColum.= " bet_c3.bet_c3_m, bet_c3.bet_c3_w, "; 
-                $betSum .= "+IFNULL(bet_c3.bet_c3_m, 0)";
-                $winSum .= "+IFNULL(bet_c3.bet_c3_w, 0)";
-            }
             if(!$confs['hold_deny']){
-                // $strTbColum.= " bet_hl.bet_hl_m, bet_hl.bet_hl_w, "; 
                 $betSum .= "+IFNULL(bet_hl.bet_hl_m, 0)";
                 $winSum .= "+IFNULL(bet_hl.bet_hl_w, 0)";
             }
             if(isEBalMode()){
-                // $strTbColum.= " bet_ev.bet_ev_m, bet_ev.bet_ev_w, "; 
                 $betSum .= "+IFNULL(bet_ev.bet_ev_m, 0)";
                 $winSum .= "+IFNULL(bet_ev.bet_ev_w, 0)";
             }
             if(!$confs['evol_deny'] || !$confs['cas_deny']){
-                // $strTbColum.= " bet_cs.bet_cs_m, bet_cs.bet_cs_w, "; 
                 $betSum .= "+IFNULL(bet_cs.bet_cs_m, 0)";
                 $winSum .= "+IFNULL(bet_cs.bet_cs_w, 0)";
             }
@@ -2340,24 +1810,8 @@ class Member_Model extends Model
 
             $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_sl_m, sum(bet_win_money) AS bet_sl_w from bet_slot group by bet_mb_uid ) bet_sl ON bet_sl.bet_mb_uid = member.mb_uid";
 
-            if(!$confs['hpg_deny']){
-                $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_pb_m, sum(bet_win_money) AS bet_pb_w from bet_happyball group by bet_mb_uid ) bet_pb ON bet_pb.bet_mb_uid = member.mb_uid";
-            }
-            if(!$confs['bpg_deny']){
-                $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_bb_m, sum(bet_win_money) AS bet_bb_w from bet_bogleball group by bet_mb_uid ) bet_bb ON bet_bb.bet_mb_uid = member.mb_uid";
-                $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_bl_m, sum(bet_win_money) AS bet_bl_w from bet_bogleladder group by bet_mb_uid ) bet_bl ON bet_bl.bet_mb_uid = member.mb_uid";
-            }
-            if(!$confs['eos5_deny']){
-                $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_e5_m, sum(bet_win_money) AS bet_e5_w from bet_eos5ball group by bet_mb_uid ) bet_e5 ON bet_e5.bet_mb_uid = member.mb_uid";
-            }
-            if(!$confs['eos3_deny']){
-                $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_e3_m, sum(bet_win_money) AS bet_e3_w from bet_eos3ball group by bet_mb_uid ) bet_e3 ON bet_e3.bet_mb_uid = member.mb_uid";
-            }
-            if(!$confs['coin5_deny']){
-                $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_c5_m, sum(bet_win_money) AS bet_c5_w from bet_coin5ball group by bet_mb_uid ) bet_c5 ON bet_c5.bet_mb_uid = member.mb_uid";
-            }
-            if(!$confs['coin3_deny']){
-                $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_c3_m, sum(bet_win_money) AS bet_c3_w from bet_coin3ball group by bet_mb_uid ) bet_c3 ON bet_c3.bet_mb_uid = member.mb_uid";
+            if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['rand5_deny'] || !$confs['rand3_deny']){
+                $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_pb_m, sum(bet_win_money) AS bet_pb_w from bet_pball group by bet_mb_uid ) bet_pb ON bet_pb.bet_mb_uid = member.mb_uid";
             }
             if(!$confs['hold_deny']){
                 $strSQL.= " LEFT JOIN ( select bet_mb_fid, sum(bet_money) AS bet_hl_m, sum(bet_win_money) AS bet_hl_w from bet_holdem group by bet_mb_fid ) bet_hl ON bet_hl.bet_mb_fid = member.mb_fid";
@@ -2382,7 +1836,7 @@ class Member_Model extends Model
             $strSQL .=" AND mb_state_active != '".PERMIT_DELETE."' ";
         $strSQL.= $where;
 
-        $strSQL .= " ORDER BY (CASE WHEN mb_state_active = 2 THEN 0 ELSE 1 END) ";
+        $strSQL .= " ORDER BY (CASE WHEN mb_state_active = ".PERMIT_REQ." OR mb_state_active = ".PERMIT_WAIT." THEN 0 ELSE 1 END) ";
         if (strlen($arrReqData['order']) > 0 && strlen($arrReqData['dir']) > 0) {
             $strSQL .= " , ".$arrReqData['order']." ".$arrReqData['dir']." ";
         }
@@ -2395,18 +1849,36 @@ class Member_Model extends Model
         return $this->db->query($strSQL)->getResult();
     }
 
-    public function searchFollower($followUid)
+    public function searchFollowers($followUid="")
     {
-       
         $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_follow_ev ";
         
+        $search = "";
+        if(strlen($followUid) > 0)
+            $search = $followUid.":";
+
         $strSQL = " SELECT ".$strTbColum." FROM ".$this->table." WHERE ";
-        // $strSQL .= " mb_level < '".$objUser->mb_level."' AND ";
         $strSQL.=" mb_state_active != '".PERMIT_DELETE."' ";
-        $strSQL.=" AND mb_follow_ev LIKE '%".$this->db->escapeLikeString($followUid)."%'";
+        $strSQL.=" AND mb_follow_en = '".STATE_ACTIVE."' ";
+        $strSQL.=" AND mb_follow_ev LIKE '1:".$search."%'";
             
         return $this->db->query($strSQL)->getResult();
     }
 
+    public function autoStop($date){
+
+        $strSQL = "UPDATE ".$this->table." SET mb_state_active = ".PERMIT_CANCEL." WHERE mb_uid IN ( ";
+        $strSQL.= " SELECT mb_uid FROM member WHERE mb_state_active = ".PERMIT_OK." AND mb_level < ".LEVEL_ADMIN." AND ";
+        $strSQL.= " mb_uid NOT IN (SELECT charge_mb_uid FROM member_charge WHERE charge_time_require > '".$date."' AND (charge_action_state = ".STATE_VERIFY." OR charge_action_state = ".STATE_HOT.") GROUP BY charge_mb_uid ";
+        $strSQL.= " UNION ALL SELECT exchange_mb_uid FROM member_exchange WHERE exchange_time_require > '".$date."' AND (exchange_action_state = ".STATE_VERIFY." OR exchange_action_state = ".STATE_HOT.") GROUP BY exchange_mb_uid ";
+        $strSQL.= " UNION ALL SELECT bet_mb_uid FROM bet_ebal_st WHERE bet_start > '".$date."' GROUP BY bet_mb_fid ";
+        $strSQL.= " UNION ALL SELECT bet_mb_uid FROM bet_casino WHERE bet_time > '".$date."' GROUP BY bet_mb_uid ";
+        $strSQL.= " UNION ALL SELECT bet_mb_uid FROM bet_slot WHERE bet_time > '".$date."' GROUP BY bet_mb_uid ";
+        $strSQL.= " UNION ALL SELECT bet_mb_uid FROM bet_pball WHERE bet_time > '".$date."' GROUP BY bet_mb_uid) )";
+
+        $objUpdate = $this->db->query($strSQL);
+        return $objUpdate->connID->affected_rows;
+
+    }
 
 }

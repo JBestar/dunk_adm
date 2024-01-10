@@ -188,14 +188,31 @@ function addButtonElementListener(buttonElement) {
         } else if (this.innerHTML.search("차단") >= 0) {
             jsonData = { "mb_fid": this.name, "mb_state_active": 1 };
             requestUpdateMember(jsonData);
+        } else if (this.innerHTML.search("신청") >= 0) {
+            jsonData = { "mb_fid": this.name, "mb_state_active": 3 };
+            requestWaitToPermit(this, jsonData);
         } else if (this.innerHTML.search("대기") >= 0) {
             jsonData = { "mb_fid": this.name, "mb_state_active": 1 };
             requestWaitToPermit(this, jsonData);
-        } else if (this.innerHTML == "해피볼") {
+        } else if (this.innerHTML == "PBG") {
             if (this.className.search("button-active") >= 0) {
                 jsonData = { "mb_fid": this.name, "mb_game_pb": 0 };
             } else {
                 jsonData = { "mb_fid": this.name, "mb_game_pb": 1 };
+            }
+            requestUpdateMember(jsonData);
+        } else if (this.innerHTML == "에볼파") {
+            if (this.className.search("button-active") >= 0) {
+                jsonData = { "mb_fid": this.name, "mb_game_ps": 0 };
+            } else {
+                jsonData = { "mb_fid": this.name, "mb_game_ps": 1 };
+            }
+            requestUpdateMember(jsonData);
+        } else if (this.innerHTML == "키노") {
+            if (this.className.search("button-active") >= 0) {
+                jsonData = { "mb_fid": this.name, "mb_game_ks": 0 };
+            } else {
+                jsonData = { "mb_fid": this.name, "mb_game_ks": 1 };
             }
             requestUpdateMember(jsonData);
         } else if (this.innerHTML.search("파사달") >= 0) {
@@ -220,7 +237,7 @@ function addButtonElementListener(buttonElement) {
                 jsonData = { "mb_fid": this.name, "mb_game_bs": 1 };
             }
             requestUpdateMember(jsonData);
-        } else if (this.innerHTML.search("코인") >= 0) {
+        } else if (this.innerHTML.search("랜덤파") >= 0) {
             if (this.className.search("button-active") >= 0) {
                 jsonData = { "mb_fid": this.name, "mb_game_co": 0 };
             } else {

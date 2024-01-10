@@ -174,23 +174,6 @@ function showMemberInfo(objUser) {
         strBuf = objUser.mb_game_hl_ratio + " %";
         $("#main-navbar-emp_hlrate-id").text(strBuf);
 
-        strBuf = objUser.mb_game_ps_ratio + " %";
-        $("#main-navbar-emp_psrate-id").text(strBuf);
-
-        strBuf = objUser.mb_game_bb_ratio + " % | ";
-        strBuf += objUser.mb_game_bb2_ratio + " %";
-        $("#main-navbar-emp_bbrate-id").text(strBuf);
-
-        strBuf = objUser.mb_game_bs_ratio + " %";
-        $("#main-navbar-emp_bsrate-id").text(strBuf);
-
-        strBuf = objUser.mb_game_eo_ratio + " % | ";
-        strBuf += objUser.mb_game_eo2_ratio + " %";
-        $("#main-navbar-emp_eorate-id").text(strBuf);
-        
-        strBuf = objUser.mb_game_co_ratio + " % | ";
-        strBuf += objUser.mb_game_co2_ratio + " %";
-        $("#main-navbar-emp_corate-id").text(strBuf);
     } else {
         $("#main-navbar-ip-div-id").text(objUser.mb_ip_login);
     }

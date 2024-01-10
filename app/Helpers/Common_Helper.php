@@ -130,7 +130,7 @@
       //회차 마감시간설정
       $strRoundEnd = $strDate." ".$nHour.":".$nMinute.":"."0";
       $tmRoundEnd = strtotime($strRoundEnd);
-      $tmRoundEnd = strtotime("-".TM_OFFSET." seconds", $tmRoundEnd);
+      // $tmRoundEnd = strtotime("-".TM_OFFSET." seconds", $tmRoundEnd);
       $arrRoundInfo['round_end'] = date("Y-m-d H:i:s", $tmRoundEnd);
       
       //회차 시작시간설정
@@ -142,10 +142,12 @@
 
      
     //회차번호로부터 회차시작시간과 마감시간, 배팅초과시간 계산하는 함수-보글파워볼, 보글사다리
-    function getBRoundInfo($roundMin){
+    function getBRoundInfo($roundMin, $game=0){
 
       $tmNow = time();
-      
+      if($game == GAME_SPKN_BALL)
+        $tmNow += 3*60;
+
       $nHour = date("G",$tmNow);
       $nMin = date("i",$tmNow);
       
@@ -168,6 +170,8 @@
       //회차 마감시간설정
       $strRoundEnd = $strDate." ".$nHour.":".$nMinute.":"."0";
       $tmRoundEnd = strtotime($strRoundEnd);
+      if($game == GAME_SPKN_BALL)
+        $tmRoundEnd -= (3*60); 
       $arrRoundInfo['round_end'] = date("Y-m-d H:i:s", $tmRoundEnd);
       
       //회차 시작시간설정
@@ -179,12 +183,15 @@
 
     
     //배팅시간으로부터 정확한 회차날자 얻기
-    function getRoundDate($strDateTime){
+    function getRoundDate($game, $strDateTime){
       //2021-01-33 23:33:33
       if(strlen($strDateTime) < 1)
         return "";
       
       $tmDate = strtotime($strDateTime);
+      if($game == GAME_SPKN_BALL)
+        $tmDate = strtotime("+3 minutes", $tmDate);
+
       $strDate = date("Y-m-d", $tmDate);
 
       return $strDate;
@@ -237,9 +244,9 @@
     function getStateByGame($objMember, $iGame){
 
       switch($iGame){
-          case GAME_POWER_BALL: 
-          case GAME_HAPPY_BALL: return $objMember->mb_game_pb;
-          case GAME_POWER_LADDER: return $objMember->mb_game_ps;
+          case GAME_PBG_BALL: return $objMember->mb_game_pb;
+          case GAME_EVOL_BALL: return $objMember->mb_game_ps;
+          case GAME_SPKN_BALL: return $objMember->mb_game_ks;
           case GAME_CASINO: return $objMember->mb_game_cs;
           case GAME_BOGLE_BALL: return $objMember->mb_game_bb;
           case GAME_BOGLE_LADDER: return $objMember->mb_game_bs;
@@ -249,6 +256,10 @@
           case GAME_SLOT_KGON: 
           case GAME_SLOT_STAR: return $objMember->mb_game_sl;
           case GAME_HOLD_CMS: return $objMember->mb_game_hl;
+          case GAME_EOS5_BALL: 
+          case GAME_EOS3_BALL:  return $objMember->mb_game_eo;
+          case GAME_RAND5_BALL: 
+          case GAME_RAND3_BALL:  return $objMember->mb_game_co;
           default: break;
       } 
       return 0;
@@ -357,8 +368,92 @@
       return [-1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50];
     }
 
-    function gameKeys(){
+    function getKeyObj($key, $range){
+      $objCas = new \StdClass;
+        
+      $objCas->key = $key;
+      $objCas->value = $range;
+
+      return $objCas;
+    }
+    function getRangeKeys(){
       
+      $arrBatch = array();
+
+      $arrCas = array();
+      array_push($arrCas, getKeyObj("top_games5", "1,000~1,000,000") );
+      array_push($arrCas, getKeyObj("top_games3", "1,000~3,000,000") );
+      array_push($arrCas, getKeyObj("top_games", "1,000~5,000,000") );
+      array_push($arrCas, getKeyObj("top_games2", "1,000~10,000,000") );
+      array_push($arrCas, getKeyObj("top_games4", "1,000~20,000,000") );
+      array_push($arrCas, getKeyObj("top_games6", "1,000~30,000,000") );
+      array_push($arrCas, getKeyObj("top_games7", "1,000~50,000,000") );
+      array_push($arrCas, getKeyObj("top_games8", "1,000~100,000,000") );
+      $arrBatch['evolution_casino'] = $arrCas;
+
+      $arrCas = array();
+      array_push($arrCas, getKeyObj("lobby100", "1,000~1,000,000") );
+      array_push($arrCas, getKeyObj("lobby300", "1,000~3,000,000") );
+      array_push($arrCas, getKeyObj("lobby", "1,000~5,000,000") );
+      array_push($arrCas, getKeyObj("lobby1000", "1,000~10,000,000") );
+      array_push($arrCas, getKeyObj("lobby2000", "1,000~20,000,000") );
+      $arrBatch['dreamgaming_casino'] = $arrCas;
+
+      $arrCas = array();
+      array_push($arrCas, getKeyObj("bota_casino1", "10,000~1,000,000") );
+      array_push($arrCas, getKeyObj("bota_casino2", "10,000~3,000,000") );
+      array_push($arrCas, getKeyObj("bota_casino3", "10,000~5,000,000") );
+      array_push($arrCas, getKeyObj("bota_casino4", "10,000~10,000,000") );
+      array_push($arrCas, getKeyObj("bota_casino6", "10,000~30,000,000") );
+      $arrBatch['bota_casino'] = $arrCas;
+
+      $arrCas = array();
+      array_push($arrCas, getKeyObj("lobby100", "10,000~1,000,000") );
+      array_push($arrCas, getKeyObj("lobby300", "10,000~3,000,000") );
+      array_push($arrCas, getKeyObj("lobby500", "10,000~5,000,000") );
+      array_push($arrCas, getKeyObj("lobby1000", "10,000~10,000,000") );
+      array_push($arrCas, getKeyObj("lobby2000", "10,000~20,000,000") );
+      array_push($arrCas, getKeyObj("lobby3000", "10,000~30,000,000") );
+      array_push($arrCas, getKeyObj("lobby5000", "10,000~50,000,000") );
+      $arrBatch['duwon_casino'] = $arrCas;
+
+      $arrCas = array();
+      array_push($arrCas, getKeyObj("lobby100", "10,000~1,000,000") );
+      array_push($arrCas, getKeyObj("lobby300", "30,000~3,000,000") );
+      array_push($arrCas, getKeyObj("lobby100", "50,000~5,000,000") );
+      array_push($arrCas, getKeyObj("lobby1000", "100,000~10,000,000") );
+      $arrBatch['wm_casino'] = $arrCas;
+    
+      $arrCas = array();
+      array_push($arrCas, getKeyObj("lobby100", "1,000~1,000,000") );
+      array_push($arrCas, getKeyObj("lobby300", "1,000~3,000,000") );
+      array_push($arrCas, getKeyObj("lobby500", "1,000~5,000,000") );
+      array_push($arrCas, getKeyObj("lobby1000", "1,000~10,000,000") );
+      array_push($arrCas, getKeyObj("lobby3000", "1,000~30,000,000") );
+      array_push($arrCas, getKeyObj("lobby5000", "1,000~50,000,000") );
+      $arrBatch['orientalgame_casino'] = $arrCas;
+
+      $arrCas = array();
+      array_push($arrCas, getKeyObj("lobby10", "1,000~100,000") );
+      array_push($arrCas, getKeyObj("lobby50", "2,000~500,000") );
+      array_push($arrCas, getKeyObj("lobby150", "3,000~1,500,000") );
+      array_push($arrCas, getKeyObj("lobby200", "5,000~2,000,000") );
+      array_push($arrCas, getKeyObj("lobby1000", "10,000~10,000,000") );
+      array_push($arrCas, getKeyObj("lobby2000", "20,000~20,000,000") );
+      $arrBatch['bg_casino'] = $arrCas;
+
+      $arrCas = array();
+      array_push($arrCas, getKeyObj("lobby100", "1,000~1,000,000") );
+      array_push($arrCas, getKeyObj("lobby300", "1,000~3,000,000") );
+      array_push($arrCas, getKeyObj("lobby500", "5,000~5,000,000") );
+      array_push($arrCas, getKeyObj("lobby1000", "5,000~10,000,000") );
+      array_push($arrCas, getKeyObj("lobby2000", "10,000~20,000,000") );
+      array_push($arrCas, getKeyObj("lobby3000", "10,000~30,000,000") );
+      array_push($arrCas, getKeyObj("lobby5000", "25,000~50,000,000") );
+      array_push($arrCas, getKeyObj("lobby10000", "50,000~100,000,000") );
+      $arrBatch['vegas_casino'] = $arrCas;
+
+      return $arrBatch;
     }
 
 ?>

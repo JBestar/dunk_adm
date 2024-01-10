@@ -48,38 +48,6 @@ function readConfigToObject() {
         objMember.mb_game_pb2_percent = $("#useredit-pbbetpercent2-input-id").val();
     } 
     
-    if($("#useredit-bbbetrate-input-id").length > 0){
-        objMember.mb_game_bb_ratio = $("#useredit-bbbetrate-input-id").val();
-        objMember.mb_game_bb2_ratio = $("#useredit-bbbetrate2-input-id").val();
-        objMember.mb_game_bs_ratio = $("#useredit-bsbetrate-input-id").val();
-    } 
-
-    if($("#useredit-eobetrate-input-id").length > 0){
-        objMember.mb_game_eo_ratio = $("#useredit-eobetrate-input-id").val();
-        objMember.mb_game_eo2_ratio = $("#useredit-eobetrate2-input-id").val();
-    } 
-
-    if($("#useredit-cobetrate-input-id").length > 0){
-        objMember.mb_game_co_ratio = $("#useredit-cobetrate-input-id").val();
-        objMember.mb_game_co2_ratio = $("#useredit-cobetrate2-input-id").val();
-    } 
-
-    if($("#useredit-bbbetpercent-input-id").length > 0){
-        objMember.mb_game_bb_percent = $("#useredit-bbbetpercent-input-id").val();
-        objMember.mb_game_bb2_percent = $("#useredit-bbbetpercent2-input-id").val();
-        objMember.mb_game_bs_percent = $("#useredit-bsbetpercent-input-id").val();
-    } 
-    
-    if($("#useredit-eobetpercent-input-id").length > 0){
-        objMember.mb_game_eo_percent = $("#useredit-eobetpercent-input-id").val();
-        objMember.mb_game_eo2_percent = $("#useredit-eobetpercent2-input-id").val();
-    } 
-
-    if($("#useredit-cobetpercent-input-id").length > 0){
-        objMember.mb_game_co_percent = $("#useredit-cobetpercent-input-id").val();
-        objMember.mb_game_co2_percent = $("#useredit-cobetpercent2-input-id").val();
-    } 
-
     if($("#useredit-evbetrate-input-id").length > 0){
         objMember.mb_game_cs_ratio = $("#useredit-evbetrate-input-id").val();
     }
@@ -141,6 +109,11 @@ function readConfigToObject() {
         let followPercent = $("#useredit-follow-percent-id").val();
 
         objMember.mb_follow_ev = followEnable + ":" + followId.trim() + ":" + parseInt(followPercent); 
+    }
+    if($("#useredit-followen-check-id").length > 0){
+        let followEnable = $("#useredit-followen-check-id").prop('checked') ? 1 : 0;
+        
+        objMember.mb_follow_en = followEnable; 
     }
 
     let elApps = $("input[name=useredit-auto-apps]");
@@ -443,6 +416,40 @@ function addBtnEvent() {
         let mb_pressat_ev = pressatEnable + ":" + pressatAmount;
         var jsonData = {
             mb_pressat_ev:mb_pressat_ev,
+        }
+        jsonData = JSON.stringify(jsonData);
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: FURL + "/userapi/updatemembers",
+            data: { json_: jsonData },
+            success: function(jResult) {
+                // console.log(jResult);
+                if (jResult.status == "success") {
+                    showAlert("전체 적용되었습니다.")
+                } else if (jResult.status == "logout") {
+                    window.location.replace( FURL +'/');
+                }
+            },
+            error: function(request, status, error) {
+                $(".loading").hide();
+                // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+
+        });
+    });
+    
+    $("#useredit-followen-but-id").click(function() {
+        if($("#useredit-followen-check-id").length < 1)
+            return;
+        
+        if (!confirm("전체 적용하시겠습니까?"))
+            return;
+
+        let followEnable = $("#useredit-followen-check-id").prop('checked') ? 1 : 0;
+
+        var jsonData = {
+            mb_follow_en:followEnable,
         }
         jsonData = JSON.stringify(jsonData);
         $.ajax({

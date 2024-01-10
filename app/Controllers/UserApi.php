@@ -429,7 +429,6 @@ class UserApi extends BaseController
         $arrData = json_decode($jsonData, true);
 
         if (is_login()) {
-            
 
             $strUid = $this->session->user_id;
             $objUser = $this->modelMember->getInfo($strUid);
@@ -437,10 +436,9 @@ class UserApi extends BaseController
 
             $bPermit = false;
             $bResult = false;
-            $iCreated = 0;
 
             if (!is_null($objUser) && !is_null($objReqUser)) {
-                if (2 != $objReqUser->mb_state_active) {
+                if ($objReqUser->mb_state_active != PERMIT_REQ && $objReqUser->mb_state_active != PERMIT_WAIT) {
                     $bPermit = false;
                 }
                 elseif ($objUser->mb_level > $objReqUser->mb_level) {
@@ -449,7 +447,6 @@ class UserApi extends BaseController
             }
 
             if ($bPermit) {
-                1 == $iCreated;
 			    $query = "";
                 $bResult = $this->modelMember->updateMemberByFid($arrData, $query);
 
@@ -457,8 +454,6 @@ class UserApi extends BaseController
                     $this->modelModify->add($this->session->user_id, MOD_MB_STATE, $query, $this->request->getIPAddress());
 
                     $arrResult['status'] = STATUS_SUCCESS;
-                } elseif (0 == $iCreated) {
-                    $arrResult['status'] = 'usererror';
                 } else {
                     $arrResult['status'] = STATUS_FAIL;
                 }
@@ -513,6 +508,37 @@ class UserApi extends BaseController
                 $arrResult['status'] = STATUS_SUCCESS;
             } else if (!is_null($objEmp) && $objEmp->mb_state_active == PERMIT_DELETE) {
                 $arrResult['status'] = 'usererror';
+            } else {
+                $arrResult['status'] = STATUS_NOPERMIT;
+            }
+        } else {
+            $arrResult['status'] = STATUS_LOGOUT;
+        }
+        echo json_encode($arrResult);
+    }
+    
+    public function auto_stop()
+    {
+        if (is_login()) {
+
+            $strUid = $this->session->user_id;
+            $objUser = $this->modelMember->getInfo($strUid);
+
+            $bPermit = false;
+
+            if (!is_null($objUser) && $objUser->mb_level >= LEVEL_ADMIN) {
+                $bPermit = true;
+            }
+
+            if ($bPermit) {
+                $tmNow = time();
+                $tmWeek = strtotime("-1 month", $tmNow);
+                $dtLast = date("Y-m-d", $tmWeek);
+
+                $affectedRows = $this->modelMember->autoStop($dtLast);
+
+                $arrResult['msg'] = $affectedRows."명이 자동차단되었습니다.";
+                $arrResult['status'] = STATUS_SUCCESS;
             } else {
                 $arrResult['status'] = STATUS_NOPERMIT;
             }
@@ -658,79 +684,19 @@ class UserApi extends BaseController
             if ($objUser->mb_level >= LEVEL_ADMIN) {
                 $strDate = date('Y-m-d');
                 $arrReqData['start'] = $strDate.' 00:00:00';
-                // $arrReqData['end'] = $strDate.' 23:59:00';
                 $eggs = $this->modelMember->calcGameEgg();
 
                 $arrSumData = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0] ];
                 
-                $tmNow = microtime(true) * 1000;
-                // writeLog("empbetinfo");
-
-                if(!$siteConfs['hpg_deny']){
+                if(!$siteConfs['pbg_deny'] || !$siteConfs['bpg_deny'] || !$siteConfs['eos5_deny'] || !$siteConfs['eos3_deny']
+                    || !$siteConfs['rand5_deny'] || !$siteConfs['rand3_deny']){
                     $betModel = new PbBet_Model();
-                    $betModel->setType(GAME_HAPPY_BALL);
-
-                    // $objConfPb = $confgameModel->getByIndex(GAME_HAPPY_BALL);
-                    $arrSum = $betModel->getBetSumByDay($arrReqData);
-                    $arrSumData[0][0] += $arrSum[0][0] + $arrSum[1][0];
-                    $arrSumData[0][1] += $arrSum[0][1] + $arrSum[1][1];
-                    // writeLog("hpg_deny");
-                }
-                if(!$siteConfs['bpg_deny']){
-                    $betModel = new PbBet_Model();
-                    $betModel->setType(GAME_BOGLE_BALL);
 
                     $arrSum = $betModel->getBetSumByDay($arrReqData);
                     $arrSumData[0][0] += $arrSum[0][0] + $arrSum[1][0];
                     $arrSumData[0][1] += $arrSum[0][1] + $arrSum[1][1];
-
-                    $betModel = new PsBet_Model();
-                    $betModel->setType(GAME_BOGLE_LADDER);
-                    $arrSum = $betModel->getBetSumByDay($arrReqData);
-                    $arrSumData[0][0] += $arrSum[0];
-                    $arrSumData[0][1] += $arrSum[1];
-                    // writeLog("bpg_deny");
                 }
-                if(!$siteConfs['eos5_deny']){
-                    $betModel = new PbBet_Model();
-                    $betModel->setType(GAME_EOS5_BALL);
-
-                    $arrSum = $betModel->getBetSumByDay($arrReqData);
-                    $arrSumData[0][0] += $arrSum[0][0] + $arrSum[1][0];
-                    $arrSumData[0][1] += $arrSum[0][1] + $arrSum[1][1];
-                    // writeLog("eos5_deny");
-
-                }
-                if(!$siteConfs['eos3_deny']){
-                    $betModel = new PbBet_Model();
-                    $betModel->setType(GAME_EOS3_BALL);
-
-                    $arrSum = $betModel->getBetSumByDay($arrReqData);
-                    $arrSumData[0][0] += $arrSum[0][0] + $arrSum[1][0];
-                    $arrSumData[0][1] += $arrSum[0][1] + $arrSum[1][1];
-                    // writeLog("eos3_deny");
-
-                }
-                if(!$siteConfs['coin5_deny']){
-                    $betModel = new PbBet_Model();
-                    $betModel->setType(GAME_COIN5_BALL);
-
-                    $arrSum = $betModel->getBetSumByDay($arrReqData);
-                    $arrSumData[0][0] += $arrSum[0][0] + $arrSum[1][0];
-                    $arrSumData[0][1] += $arrSum[0][1] + $arrSum[1][1];
-                    // writeLog("coin5_deny");
-
-                }
-                if(!$siteConfs['coin3_deny']){
-                    $betModel = new PbBet_Model();
-                    $betModel->setType(GAME_COIN3_BALL);
-
-                    $arrSum = $betModel->getBetSumByDay($arrReqData);
-                    $arrSumData[0][0] += $arrSum[0][0] + $arrSum[1][0];
-                    $arrSumData[0][1] += $arrSum[0][1] + $arrSum[1][1];
-                    // writeLog("coin3_enable");
-
-                }
+                
                 if(isEBalMode() || !$siteConfs['evol_deny']){
 
                     $arrReqData['type'] = GAME_CASINO_EVOL;
@@ -799,7 +765,6 @@ class UserApi extends BaseController
                         if($agConf != null)
                             $arrSumData[3][2] = $agConf->conf_active;
                     }
-                    // writeLog("slot_deny");
                 }
                 if(!$siteConfs['cas_deny']){
                     $betModel = new CsBet_Model();
@@ -832,8 +797,6 @@ class UserApi extends BaseController
                     $arrSumData[5][3] = $eggs->mb_hold_money;
 
                 }
-                // writeLog("empbetinfo end duration = ".(microtime(true) * 1000 - $tmNow));
-
                 $objResult->data = $arrSumData;
                 $objResult->status = STATUS_SUCCESS;
             } else {
@@ -1486,7 +1449,19 @@ class UserApi extends BaseController
                     if($confFollow != null)
                         $follow_en = intval($confFollow->conf_active) == STATE_ACTIVE ;
                 }
-    			
+                if($follow_en){
+                    foreach($arrData as $objSess){
+                        $cntFollow = 0;
+                        $followers = $this->modelMember->searchFollowers();
+                        foreach($followers as $follower){
+                            
+                            if(strpos($follower->mb_follow_ev, "1:".$objSess->sess_mb_uid) === 0)
+                                $cntFollow ++;
+                        }
+                        $objSess->sess_follows = $cntFollow;
+                    }
+                }
+
                 $arrResult['data'] = $arrData;
                 $arrResult['follow'] = $follow_en;
                 $arrResult['status'] = "success";

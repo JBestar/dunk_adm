@@ -38,31 +38,48 @@
 					<option value="44">에볼적특</option>				
 					<option value="45">에볼정산</option>
 				<?php endif ?> 
-				<?php if(!$hpg_deny) :?>
-					<option value="4">해피볼배팅</option>				
-					<option value="6">해피볼정산</option>
+				<?php if(!$pbg_deny) :?>
+					<option value="4">PBG배팅</option>				
+					<option value="5">PBG배팅취소</option>				
+					<option value="6">PBG정산</option>
+				<?php endif ?>   
+				<?php if(!$evp_deny) :?>
+					<option value="7">에볼파워배팅</option>				
+					<option value="8">에볼파워배팅취소</option>				
+					<option value="9">에볼파워정산</option>
+				<?php endif ?>   
+				<?php if(!$spk_deny) :?>
+					<option value="10">스피드키노배팅</option>				
+					<option value="11">스피드키노배팅취소</option>				
+					<option value="12">스피드키노정산</option>
 				<?php endif ?>   
 				<?php if(!$bpg_deny) :?>
-					<option value="13">보글볼배팅</option>				
+					<option value="13">보글볼배팅</option>	
+					<option value="14">보글볼배팅취소</option>				
 					<option value="15">보글볼정산</option>
 					<option value="16">보사달배팅</option>
+					<option value="17">보사달배팅취소</option>
 					<option value="18">보사달정산</option>
 				<?php endif ?>   
 				<?php if(!$eos5_deny) :?>
 					<option value="31">EOS5분배팅</option>				
+					<option value="32">EOS5분배팅취소</option>				
 					<option value="33">EOS5분정산</option>
 				<?php endif ?> 
 				<?php if(!$eos3_deny) :?>
 					<option value="34">EOS3분배팅</option>				
+					<option value="35">EOS3분배팅취소</option>				
 					<option value="36">EOS3분정산</option>
 				<?php endif ?> 
-				<?php if(!$coin5_deny) :?>
-					<option value="37">코인5분배팅</option>				
-					<option value="39">코인5분정산</option>
+				<?php if(!$rand5_deny) :?>
+					<option value="37">랜덤5분배팅</option>				
+					<option value="38">랜덤5분배팅취소</option>				
+					<option value="39">랜덤5분정산</option>
 				<?php endif ?> 
-				<?php if(!$coin3_deny) :?>
-					<option value="40">코인3분배팅</option>				
-					<option value="42">코인3분정산</option>
+				<?php if(!$rand3_deny) :?>
+					<option value="40">랜덤3분배팅</option>				
+					<option value="41">랜덤3분배팅취소</option>				
+					<option value="42">랜덤3분정산</option>
 				<?php endif ?> 
 			</select>
 

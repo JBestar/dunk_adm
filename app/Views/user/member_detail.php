@@ -185,6 +185,8 @@
                                                 <span class="badge btn-success">승인</span>
                                             <?php elseif ($objMember->mb_state_active == PERMIT_CANCEL) :  ?>
                                                 <span class="badge btn-default">차단</span>
+                                            <?php elseif ($objMember->mb_state_active == PERMIT_REQ) :  ?>
+                                                <span class="badge btn-primary">신청</span>
                                             <?php elseif ($objMember->mb_state_active == PERMIT_WAIT) :  ?>
                                                 <span class="badge btn-primary">대기</span>
                                             <?php endif ?>

@@ -24,21 +24,12 @@ class PsBet_Model extends Model {
         'user_before_money', 
         'user_after_money', 
         'user_view_state', 
-        'account_time', 
+        'acc_time', 
     ];
     protected $primaryKey = 'bet_fid';
     private $mMemberTable = 'member';
-    private $mRewardTable = 'bet_reward';
-    private $mGameId =  GAME_POWER_LADDER;
+    private $mRewardTable = 'bet_reward_mn';
 
-    public function setType($gameId){
-        $this->mGameId = $gameId;
-        switch($gameId){
-            case GAME_POWER_LADDER: $this->table = 'bet_powerladder'; break;
-            case GAME_BOGLE_LADDER: $this->table = 'bet_bogleladder'; break;
-            default: break;
-        }
-    }
     function gets($nCount)
     {
         
@@ -482,7 +473,7 @@ class PsBet_Model extends Model {
         $this->builder()->set('bet_win_money', $objBetInfo->bet_win_money);
         $this->builder()->set('user_after_money', $objBetInfo->user_after_money);
 
-        $this->builder()->set('account_time', 'NOW()', false);
+        $this->builder()->set('acc_time', 'NOW()', false);
         
         $this->builder()->where('bet_fid', $objBetInfo->bet_fid);
         return $this->builder()->update();

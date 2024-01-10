@@ -7,7 +7,7 @@ class CasPrd_Model extends Model {
 
     protected $table      = 'casino_prd';
     protected $primaryKey = 'fid';
-    protected $allowedFields = ['hidden', 'maintain']; 
+    protected $allowedFields = ['key', 'lobby', 'hidden', 'maintain']; 
 
     protected $returnType = 'object'; 
     
@@ -39,11 +39,11 @@ class CasPrd_Model extends Model {
         if(array_key_exists('hidden', $arrReqData)){
             $data['hidden'] =  $arrReqData['hidden'];
             return $this->update($arrReqData['fid'], $data);
-
         } else if(array_key_exists('maintain', $arrReqData)){
             $data['maintain'] =  $arrReqData['maintain'];
             return $this->update($arrReqData['fid'], $data);
-
+        } else if(array_key_exists('key', $arrReqData) || array_key_exists('lobby', $arrReqData)){
+            return $this->update($arrReqData['fid'], $arrReqData);
         } else return false;
     
     }

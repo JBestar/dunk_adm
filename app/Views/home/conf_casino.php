@@ -18,8 +18,10 @@
 			<thead>
 				<tr>
 					<th>번호</th>
-					<th>업체 아이디</th>
 					<th>게임업체</th>
+					<?php if($game_id == GAME_CASINO_KGON):?>
+						<th>게임한도</th>
+					<?php endif?>
 					<th>노출상태</th>
 					<th>운영상태</th>
 				</tr>

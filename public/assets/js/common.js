@@ -168,6 +168,9 @@ function goResultPage(){
     }
 }
 
+function goTabPage(url) {
+    window.open('about:blank').location.href=FURL+url;
+}
 
 function getEvolSide(side) {
     let strSide = '';

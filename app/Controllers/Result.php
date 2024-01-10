@@ -2,7 +2,6 @@
 namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\PbRound_Model;
-use App\Models\PsRound_Model;
 
 class Result extends StdController {
 
@@ -15,11 +14,12 @@ class Result extends StdController {
 		$this->response->redirect( $_ENV['app.furl'].'/result/pbresult');
 		
 	}
-	private function result_edit_page($betModel, $roundFid, $url, $activePage, $userLevel, $arrAddData = null){
+	private function result_edit_page($roundFid, $url, $activePage, $userLevel, $arrAddData = null){
 		if (is_login() === false){
 			return $this->response->redirect( $_ENV['app.furl'].'/pages/login');
 		}
 		$objRound = null;
+		$roundModel = new PbRound_Model();
 		
 		$strUid = $this->session->user_id;
 		$objUser = $this->modelMember->getInfo($strUid);
@@ -27,7 +27,7 @@ class Result extends StdController {
 		{
 			$objRound = null;
 			if($roundFid > 0){
-				$objRound = $betModel->get($roundFid);
+				$objRound = $roundModel->get($roundFid);
 				if(is_null($objRound)){
 					$this->response->redirect( $_ENV['app.furl'].'/pages/nopermit');		
 				}									
@@ -54,8 +54,8 @@ class Result extends StdController {
 	public function pbresult()
 	{	
 		$param = [
-			'game_name' => "해피볼",
-			'game_id' => GAME_HAPPY_BALL,
+			'game_name' => "PBG",
+			'game_id' => GAME_PBG_BALL,
 		];	
 		$this->load_view_page('result/bbresult', 'gameresult', LEVEL_ADMIN, $param);			
 	}
@@ -63,14 +63,11 @@ class Result extends StdController {
 	public function pbresult_edit($strRoundFid)
 	{
 		$param = [
-			'game_name' => "해피볼",
-			'game_id' => GAME_HAPPY_BALL,
+			'game_name' => "PBG",
+			'game_id' => GAME_PBG_BALL,
 		];	
-		$roundModel = new PbRound_Model();
-		$roundModel->setType($param['game_id']);
 
 		$this->result_edit_page(
-			$roundModel, 
 			$strRoundFid, 
 			'result/bbresult_edit', //pbresult_edit 
 			'gameresult',
@@ -80,28 +77,50 @@ class Result extends StdController {
 	}
 
 
-	public function psresult()
+	public function epresult()
 	{
 		$param = [
-			'game_name' => "파워사다리",
-			'game_id' => GAME_POWER_LADDER,
+			'game_name' => "에볼파워볼",
+			'game_id' => GAME_EVOL_BALL,
 		];
-		$this->load_view_page('result/psresult', 'gameresult', LEVEL_ADMIN, $param);	
+		$this->load_view_page('result/bbresult', 'gameresult', LEVEL_ADMIN, $param);	
 	}
 
-	public function psresult_edit($strRoundFid)
+	public function epresult_edit($strRoundFid)
 	{
 		$param = [
-			'game_name' => "파워사다리",
-			'game_id' => GAME_POWER_LADDER,
+			'game_name' => "에볼파워볼",
+			'game_id' => GAME_EVOL_BALL,
 		];	
-		$roundModel = new PsRound_Model();
-		$roundModel->setType($param['game_id']);
 
 		$this->result_edit_page(
-			$roundModel, 
 			$strRoundFid, 
-			'result/psresult_edit', 
+			'result/bbresult_edit', 
+			'gameresult', 
+			LEVEL_ADMIN,
+			$param);	
+	}
+
+	
+	public function skresult()
+	{
+		$param = [
+			'game_name' => "스피드키노",
+			'game_id' => GAME_SPKN_BALL,
+		];
+		$this->load_view_page('result/knresult', 'gameresult', LEVEL_ADMIN, $param);	
+	}
+
+	public function skresult_edit($strRoundFid)
+	{
+		$param = [
+			'game_name' => "스피드키노",
+			'game_id' => GAME_SPKN_BALL,
+		];	
+
+		$this->result_edit_page(
+			$strRoundFid, 
+			'result/knresult_edit', 
 			'gameresult', 
 			LEVEL_ADMIN,
 			$param);	
@@ -122,12 +141,8 @@ class Result extends StdController {
 			'game_name' => "보글볼",
 			'game_id' => GAME_BOGLE_BALL,
 		];
-
-		$roundModel = new PbRound_Model();
-		$roundModel->setType($param['game_id']);
 		
 		$this->result_edit_page(
-			$roundModel, 
 			$strRoundFid, 
 			'result/bbresult_edit', 
 			'gameresult', 
@@ -151,11 +166,8 @@ class Result extends StdController {
 			'game_name' => "보글사다리",
 			'game_id' => GAME_BOGLE_LADDER,
 		];
-		$roundModel = new PsRound_Model();
-		$roundModel->setType($param['game_id']);
 		
 		$this->result_edit_page(
-			$roundModel, 
 			$strRoundFid, 
 			'result/psresult_edit', 
 			'gameresult', 
@@ -179,10 +191,7 @@ class Result extends StdController {
 			'game_id' => GAME_EOS5_BALL,
 		];
 		
-		$roundModel = new PbRound_Model();
-		$roundModel->setType($param['game_id']);
 		$this->result_edit_page(
-			$roundModel, 
 			$strRoundFid, 
 			'result/bbresult_edit', 
 			'gameresult', 
@@ -204,10 +213,8 @@ class Result extends StdController {
 			'game_name' => "EOS3분파워볼",
 			'game_id' => GAME_EOS3_BALL,
 		];
-		$roundModel = new PbRound_Model();
-		$roundModel->setType($param['game_id']);
+
 		$this->result_edit_page(
-			$roundModel, 
 			$strRoundFid, 
 			'result/bbresult_edit', 
 			'gameresult', 
@@ -215,51 +222,46 @@ class Result extends StdController {
 			$param);	
 	}
 
-	public function c5result()
+	public function r5result()
 	{	
 		$param = [
-			'game_name' => "코인5분",
-			'game_id' => GAME_COIN5_BALL,
+			'game_name' => "랜덤5분",
+			'game_id' => GAME_RAND5_BALL,
 		];	
 		$this->load_view_page('result/bbresult', 'gameresult', LEVEL_ADMIN, $param);			
 	}
 
-	public function c5result_edit($strRoundFid)
+	public function r5result_edit($strRoundFid)
 	{
 		$param = [
-			'game_name' => "코인5분파워볼",
-			'game_id' => GAME_COIN5_BALL,
+			'game_name' => "랜덤5분파워볼",
+			'game_id' => GAME_RAND5_BALL,
 		];
 		
-		$roundModel = new PbRound_Model();
-		$roundModel->setType($param['game_id']);
 		$this->result_edit_page(
-			$roundModel, 
 			$strRoundFid, 
 			'result/bbresult_edit', 
 			'gameresult', 
 			LEVEL_ADMIN,
 			$param);	
 	}
-	public function c3result()
+	public function r3result()
 	{	
 		$param = [
-			'game_name' => "코인3분",
-			'game_id' => GAME_COIN3_BALL,
+			'game_name' => "랜덤3분",
+			'game_id' => GAME_RAND3_BALL,
 		];	
 		$this->load_view_page('result/bbresult', 'gameresult', LEVEL_ADMIN, $param);			
 	}
 
-	public function c3result_edit($strRoundFid)
+	public function r3result_edit($strRoundFid)
 	{
 		$param = [
-			'game_name' => "코인3분파워볼",
-			'game_id' => GAME_COIN3_BALL,
+			'game_name' => "랜덤3분파워볼",
+			'game_id' => GAME_RAND3_BALL,
 		];
-		$roundModel = new PbRound_Model();
-		$roundModel->setType($param['game_id']);
+		
 		$this->result_edit_page(
-			$roundModel, 
 			$strRoundFid, 
 			'result/bbresult_edit', 
 			'gameresult', 
@@ -270,19 +272,28 @@ class Result extends StdController {
 	public function pbbetchange($strDate, $strRoundNo)
 	{
 		$param = [
-			'game_name' => "해피볼",
-			'game_id' => GAME_HAPPY_BALL,
+			'game_name' => "PBG",
+			'game_id' => GAME_PBG_BALL,
 		];
 		$this->result_change_page('result/pbbet_change', $strDate, $strRoundNo, $param);				
 	}
 
-	public function psbetchange($strDate, $strRoundNo)
+	public function epbetchange($strDate, $strRoundNo)
 	{
 		$param = [
-			'game_name' => "파워사다리",
-			'game_id' => GAME_POWER_LADDER,
+			'game_name' => "에볼파워볼",
+			'game_id' => GAME_EVOL_BALL,
 		];
-		$this->result_change_page('result/psbet_change', $strDate, $strRoundNo, $param);		
+		$this->result_change_page('result/pbbet_change', $strDate, $strRoundNo, $param);		
+	}
+
+	public function skbetchange($strDate, $strRoundNo)
+	{
+		$param = [
+			'game_name' => "스피드키노",
+			'game_id' => GAME_SPKN_BALL,
+		];
+		$this->result_change_page('result/pbbet_change', $strDate, $strRoundNo, $param);		
 	}
 
 	public function bbbetchange($strDate, $strRoundNo)
@@ -321,20 +332,20 @@ class Result extends StdController {
 		$this->result_change_page('result/pbbet_change', $strDate, $strRoundNo, $param);		
 	}
 	
-	public function c5betchange($strDate, $strRoundNo)
+	public function r5betchange($strDate, $strRoundNo)
 	{
 		$param = [
-			'game_name' => "코인5분",
-			'game_id' => GAME_COIN5_BALL,
+			'game_name' => "랜덤5분",
+			'game_id' => GAME_RAND5_BALL,
 		];	
 		$this->result_change_page('result/pbbet_change', $strDate, $strRoundNo, $param);		
 	}
 
-	public function c3betchange($strDate, $strRoundNo)
+	public function r3betchange($strDate, $strRoundNo)
 	{
 		$param = [
-			'game_name' => "코인3분",
-			'game_id' => GAME_COIN3_BALL,
+			'game_name' => "랜덤3분",
+			'game_id' => GAME_RAND3_BALL,
 		];
 		$this->result_change_page('result/pbbet_change', $strDate, $strRoundNo, $param);		
 	}

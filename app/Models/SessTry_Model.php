@@ -59,7 +59,12 @@ class SessTry_Model extends Model {
                 $strSql.=" AND log_ip = ".$this->db->escape($search);
         }
         $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
-
+        $result = intval($arrReqData['result']);
+        if($result == 0){
+            $strSql.=" AND log_result = 'SUCCESS'";
+        } else if($result == 1){
+            $strSql.=" AND log_result <> 'SUCCESS'";
+        }
         $strSql.=" ORDER BY log_fid DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
         
         $strSql .= ") AS ". $tbSearch." LEFT JOIN member ON ".$tbSearch.".log_uid = member.mb_uid ";
@@ -88,6 +93,12 @@ class SessTry_Model extends Model {
                 $strSql.=" AND log_uid = ".$this->db->escape($search);
             else if($arrReqData['type'] == 1)
                 $strSql.=" AND log_ip = ".$this->db->escape($search);
+        }
+        $result = intval($arrReqData['result']);
+        if($result == 0){
+            $strSql.=" AND log_result = 'SUCCESS'";
+        } else if($result == 1){
+            $strSql.=" AND log_result <> 'SUCCESS'";
         }
         if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
             writeLog($strSql);

@@ -87,10 +87,12 @@ function requestMember() {
     var dtStart = $("#userpanel-datestart-input-id").val();
     var dtEnd = $("#userpanel-dateend-input-id").val();
     var type = $("#userpanel-type-select-id").val();
+    var result = $("#userpanel-result-select-id").val();
     var jsonData = {
         "count": CountPerPage,
         "page": nPage,
         "type": type,
+        "result": result,
         "search": search,
         "start": dtStart,
         "end": dtEnd
@@ -131,11 +133,13 @@ function requestTotalPage() {
     var dtStart = $("#userpanel-datestart-input-id").val();
     var dtEnd = $("#userpanel-dateend-input-id").val();
     var type = $("#userpanel-type-select-id").val();
+    var result = $("#userpanel-result-select-id").val();
 
     var jsonData = {
         "count": CountPerPage,
         "search": search,
         "type": type,
+        "result": result,
         "start": dtStart,
         "end": dtEnd
     };

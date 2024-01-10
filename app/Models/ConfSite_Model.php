@@ -85,10 +85,12 @@ class ConfSite_Model extends Model
         
         $confIds = [CONF_EVOLSITE_1, CONF_EVOLRUN_1, CONF_EVOLSITE_2, CONF_EVOLRUN_2, CONF_EVOLSITE_3, CONF_EVOLRUN_3];  
         $arrConf = $this->find($confIds);
-        
-        $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 20, 50, 0, 0, 0 ];
-        $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0 ];
-        $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0 ];
+        //0-site, 1-id, 2-pwd, 3-permit, 4-type, 5-end time, 6-팅김, 7-money
+        //8-min, 9-max, 10-상태, 11-팅김간격, 12-max user, 13-is signal, 14-connector
+        //15-multi room, 16-follower
+        $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 20, 50, 0, 0, 0, 0 ];
+        $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0,  0,  0, 0, 0, 0 ];
+        $data[] = ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0,  0,  0, 0, 0, 0 ];
 
         $idx = 0;
         foreach($arrConf as $objConf){
@@ -120,7 +122,6 @@ class ConfSite_Model extends Model
                         if(count($info) >= 3){
                             $data[$idx][4] = intval($info[0]);
                             $data[$idx][5] = intval($info[1]);
-                            $data[$idx][6] = intval($info[2]);
                             $data[$idx][6] = intval($info[2]);
                             if(count($info) >= 5 && $idx == 0){
                                 $data[$idx][8] = intval($info[3]);
@@ -490,8 +491,8 @@ class ConfSite_Model extends Model
 
     public function getSiteConf(){
         $confIds = [CONF_SITENAME, CONF_GAMEPER_FULL, CONF_BPG_DENY,  CONF_EVOL_DENY, CONF_SLOT_DENY, 
-            CONF_CAS_DENY, CONF_EOS5_DENY, CONF_EOS3_DENY, CONF_COIN5_DENY, CONF_COIN3_DENY, 
-            CONF_HPG_DENY, CONF_HOLD_DENY, CONF_EVOLFOLLOW];  
+            CONF_CAS_DENY, CONF_EOS5_DENY, CONF_EOS3_DENY, CONF_RAND5_DENY, CONF_RAND3_DENY, 
+            CONF_PBG_DENY, CONF_HOLD_DENY, CONF_EVOLFOLLOW, CONF_EVP_DENY, CONF_SPK_DENY];  
         return $this->find($confIds);
     }
 

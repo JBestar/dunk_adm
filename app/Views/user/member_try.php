@@ -26,11 +26,16 @@
 	<!--Site Setting-->
 	<div class="user-panel">	
 		<div>
-			<select name="pbresult-level" class="pbresult-number-select" id="userpanel-type-select-id" stype="width:80px">
+			<select class="pbresult-number-select" id="userpanel-type-select-id" stype="width:80px">
 				<option value="1">아이피</option>
 				<option value="0">아이디</option>
 			</select>
             <input type="text" class="pbresult-text-input" style="width:150px;" id="userpanel-userid-input-id" >
+			<select class="pbresult-number-select" id="userpanel-result-select-id" style="width:80px; margin-left:5px; margin-right:10px;">
+				<option value="-1">결과</option>
+				<option value="0">성공</option>
+				<option value="1">실패</option>
+			</select>
 			<label>일자</label>
 			<input type="date" id="userpanel-datestart-input-id"  value="<?php echo date('Y-m-d'); ?>">
             <label> ~ </label>

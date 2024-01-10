@@ -40,9 +40,7 @@ function addBtnEvent() {
         });
     
     });
-    // $("#confsite-cancel-btn-id").click(function() {
-    //     window.location.reload();
-    // });
+
     requestDomain();
 }
 
@@ -57,12 +55,11 @@ function showDomain(list) {
             html += (parseInt(nRow) + firstIdx + 1);
             html += "</td><td>";
             html += domain.conf_domain;
-            // html += "</td><td>";
-            // if(domain.conf_status == 1){
-            //     html += "정상";
-            // } else{
-            //     html += "";
-            // }
+            html += "</td><td>";
+            if(domain.conf_active == 1)
+                html += "<button onclick='updateDomain(" + domain.conf_id + ", 0)' class='button-active'>승인</button>";
+            else 
+                html += "<button onclick='updateDomain(" + domain.conf_id + ", 1)' >차단</button>";
             html += "</td><td>";
             html += "<button onclick='deleteDomain(" + domain.conf_id + ")' >삭제</button>";
             html += "</td><tr>";
@@ -114,6 +111,37 @@ function deleteDomain(fid){
         type: "POST",
         dataType: "json",
         url: FURL + "/api/deleteDomain",
+        data: { json_: jsonData },
+        success: function(jResult) {
+            // console.log(jResult);
+            // $(".loading").hide();
+            if (jResult.status == "success") {
+                requestDomain();
+            } else if (jResult.status == "fail") {
+
+            }
+        },
+        error: function(request, status, error) {
+            // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            $(".loading").hide();
+        }
+
+    });
+}
+
+function updateDomain(fid, active){
+    
+    var jsonData = {
+        "conf_id": fid,
+        "conf_active" : active
+    };
+
+    jsonData = JSON.stringify(jsonData);
+    // $(".loading").show();
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: FURL + "/api/updateDomain",
         data: { json_: jsonData },
         success: function(jResult) {
             // console.log(jResult);

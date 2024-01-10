@@ -209,18 +209,30 @@ function ShowBetAccount(arrBetAccount) {
     $("#total-lossmoney-id").text("0");
     $("#total-benefit-id").text("0");
 
-    if (arrBetAccount == null) {
-        $(".pbresult-list-page-div p").css('display', 'none');
+    $(".pbresult-list-page-div p").css('display', 'none');
+
+    if (arrBetAccount == null)
         return;
+        
+    if(arrBetAccount.length > 0){
+        $(".pbresult-list-page-div p:first-child").css('display', 'block');
+        $("#total-betmoney-id").text(parseInt(arrBetAccount[0]).toLocaleString() + " 원");
     }
-    if (arrBetAccount.length != 4) return;
-    $(".pbresult-list-page-div p").css('display', 'block');
 
-    $("#total-betmoney-id").text(parseInt(arrBetAccount[0]).toLocaleString() + " 원");
-    $("#total-winmoney-id").text(parseInt(arrBetAccount[1]).toLocaleString() + " 원");
-    $("#total-lossmoney-id").text(parseInt(arrBetAccount[2]).toLocaleString() + " 원");
-    $("#total-benefit-id").text(parseInt(arrBetAccount[3]).toLocaleString() + " 원");
+    if(arrBetAccount.length > 1){
+        $(".pbresult-list-page-div p:nth-child(2)").css('display', 'block');
+        $("#total-winmoney-id").text(parseInt(arrBetAccount[1]).toLocaleString() + " 원");
+    }
 
+    if(arrBetAccount.length > 2){
+        $(".pbresult-list-page-div p:nth-child(3)").css('display', 'block');
+        $("#total-lossmoney-id").text(parseInt(arrBetAccount[2]).toLocaleString() + " 원");
+    }
+
+    if(arrBetAccount.length > 3){
+        $(".pbresult-list-page-div p:nth-child(4)").css('display', 'block');
+        $("#total-benefit-id").text(parseInt(arrBetAccount[3]).toLocaleString() + " 원");
+    }
 }
 
 
@@ -368,7 +380,7 @@ function requestBetProcess(jsData) {
         success: function(jResult) {
             // console.log(jResult);
             if (jResult.status == "success") {
-                requestBetHistory();
+                requestTotalPage();
             } else if (jResult.status == "logout") {
                 window.location.replace( FURL +'/');
             }

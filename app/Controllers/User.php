@@ -142,22 +142,19 @@ class User extends StdController
 					$chargeModel = new Charge_Model();
             		$exchangeModel = new Exchange_Model();
 
-					$arrReqData['mb_uid'] = $objMember->mb_uid; 
-					$objMember->mb_charge_total = $chargeModel->calcAdminCharge($arrReqData);
-					$objMember->mb_exchange_total = $exchangeModel->calcAdminExchange($arrReqData);
-	
-					$arrReqData['start'] = date('Y-m-d');
-                	$arrReqData['end'] = $arrReqData['start'];
-					$objMember->mb_charge_day = $chargeModel->calcAdminCharge($arrReqData);
-					$objMember->mb_exchange_day = $exchangeModel->calcAdminExchange($arrReqData);
+					$chargeStat = $chargeModel->calcUserChargeStat($objMember->mb_uid);
+					$objMember->mb_charge_yest = $chargeStat[0]->charge_sum != null ? $chargeStat[0]->charge_sum : 0 ;
+					$objMember->mb_charge_today = $chargeStat[1]->charge_sum != null ? $chargeStat[1]->charge_sum : 0 ;
+					$objMember->mb_charge_week = $chargeStat[2]->charge_sum != null ? $chargeStat[2]->charge_sum : 0 ;
+					$objMember->mb_charge_month = $chargeStat[3]->charge_sum != null ? $chargeStat[3]->charge_sum : 0 ;
+					$objMember->mb_charge_total = $chargeStat[4]->charge_sum != null ? $chargeStat[4]->charge_sum : 0 ;
 
-					$arrReqData['start'] = date('Y-m')."-01";
-					$tmStart = strtotime($arrReqData['start']);
-      				$tmStart = strtotime("+1 month", $tmStart);
-                	$arrReqData['end'] = date("Y-m-d", $tmStart);
-
-					$objMember->mb_charge_month = $chargeModel->calcAdminCharge($arrReqData);
-					$objMember->mb_exchange_month = $exchangeModel->calcAdminExchange($arrReqData);
+					$exchangeStat = $exchangeModel->calcUserExchangeStat($objMember->mb_uid);
+					$objMember->mb_exchange_yest = $exchangeStat[0]->exchange_sum != null ? $exchangeStat[0]->exchange_sum : 0 ;
+					$objMember->mb_exchange_today = $exchangeStat[1]->exchange_sum != null ? $exchangeStat[1]->exchange_sum : 0 ;
+					$objMember->mb_exchange_week = $exchangeStat[2]->exchange_sum != null ? $exchangeStat[2]->exchange_sum : 0 ;
+					$objMember->mb_exchange_month = $exchangeStat[3]->exchange_sum != null ? $exchangeStat[3]->exchange_sum : 0 ;
+					$objMember->mb_exchange_total = $exchangeStat[4]->exchange_sum != null ? $exchangeStat[4]->exchange_sum : 0 ;
 
 					if($objMember->mb_level >= LEVEL_ADMIN)
 						$objMember->mb_ip_join = "";
@@ -478,7 +475,7 @@ class User extends StdController
 		$objMaster = $this->modelMember->find($mbFid);
 		if ($objMaster != null && $objMaster->mb_level <= LEVEL_ADMIN){
 
-			$arrMember = $this->modelMember->searchFollower($objMaster->mb_uid);
+			$arrMember = $this->modelMember->searchFollowers($objMaster->mb_uid);
 
 			$followers = [];
 			foreach($arrMember as $objMember){

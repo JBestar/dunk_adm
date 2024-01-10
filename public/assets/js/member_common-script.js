@@ -156,6 +156,34 @@ function requestDeleteRestore(elemBut, jsData) {
     });
 }
 
+function requestAutoStop() {
+
+    if (!confirm("자동차단하시겠습니까?"))
+        return;
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: FURL + "/userapi/auto_stop",
+        success: function(jResult) {
+            //console.log(jResult);
+
+            if (jResult.status == "success") {
+                if(jResult.msg)
+                    showAlert(jResult.msg);
+                requestMember();
+            } else if (jResult.status == "nopermit") {
+                showAlert('변경권한이 없습니다.', 0);
+            } else if (jResult.status == "logout") {
+                location.replace( FURL +'/');
+            }
+        },
+        error: function(request, status, error) {
+            //console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+
+    });
+}
+
 function requestAddBlock(jsData) {
 
     let jsonData = JSON.stringify(jsData);

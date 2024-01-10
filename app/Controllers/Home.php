@@ -77,20 +77,27 @@ class Home extends StdController
 		$confsiteModel = new ConfSite_Model();
 		$confsiteModel->readBetConf();
 		$param = [
-			'game_name' => "해피볼",
-			'game_id' => GAME_HAPPY_BALL
+			'game_name' => "PBG파워볼",
+			'game_id' => GAME_SPKN_BALL
 		];
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);		
 	}
 
-	public function conf_powerladder(){
+	public function conf_evolball(){
 		$param = [
-			'game_name' => "파워사다리",
-			'game_id' => GAME_POWER_LADDER
+			'game_name' => "에볼파워볼",
+			'game_id' => GAME_EVOL_BALL
 		];
-		$this->load_view_page('home/conf_powerladder', 'conf_game', LEVEL_ADMIN, $param);
+		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);
 	}
 
+	public function conf_speedkeno(){
+		$param = [
+			'game_name' => "스피드키노",
+			'game_id' => GAME_SPKN_BALL
+		];
+		$this->load_view_page('home/conf_keno', 'conf_game', LEVEL_ADMIN, $param);
+	}
 
 	public function conf_bogleball(){
 		$confsiteModel = new ConfSite_Model();
@@ -134,24 +141,24 @@ class Home extends StdController
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);
 	}
 
-	public function conf_coin5ball(){
+	public function conf_rand5ball(){
 		$confsiteModel = new ConfSite_Model();
 		$confsiteModel->readBetConf();
 		
 		$param = [
-			'game_name' => "코인5분",
-			'game_id' => GAME_COIN5_BALL
+			'game_name' => "랜덤5분",
+			'game_id' => GAME_RAND5_BALL
 		];
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);
 	}
 
-	public function conf_coin3ball(){
+	public function conf_rand3ball(){
 		$confsiteModel = new ConfSite_Model();
 		$confsiteModel->readBetConf();
 		
 		$param = [
-			'game_name' => "코인3분",
-			'game_id' => GAME_COIN3_BALL
+			'game_name' => "랜덤3분",
+			'game_id' => GAME_RAND3_BALL
 		];
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);
 	}

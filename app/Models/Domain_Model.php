@@ -25,6 +25,12 @@ class Domain_Model extends Model {
 	function deleteByFid($fid){
     	return $this->delete($fid);
     }
+
+    function updateInfo($fid, $arrData){
+
+        return $this->update($fid, $arrData);
+
+    }
     
     function search()
     {

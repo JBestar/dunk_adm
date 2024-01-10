@@ -25,20 +25,29 @@ class Bet extends StdController {
 	public function pbrealtime(){
 		
 		$param = [
-			'game_name' => "해피볼",
-			'game_id' => GAME_HAPPY_BALL,
+			'game_name' => "PBG",
+			'game_id' => GAME_PBG_BALL,
 		];
 
 		$this->load_view_page('bet/pbrealtime', 'bet_realtime', LEVEL_ADMIN, $param);
 	}
 
-	public function psrealtime(){
+	public function eprealtime(){
 		
 		$param = [
-			'game_name' => "파워사다리",
-			'game_id' => GAME_POWER_LADDER,
+			'game_name' => "에볼파워볼",
+			'game_id' => GAME_EVOL_BALL,
 		];
-		$this->load_view_page('bet/psrealtime', 'bet_realtime', LEVEL_ADMIN, $param);
+		$this->load_view_page('bet/pbrealtime', 'bet_realtime', LEVEL_ADMIN, $param);
+	}
+
+	public function skrealtime(){
+		
+		$param = [
+			'game_name' => "스피드키노",
+			'game_id' => GAME_SPKN_BALL,
+		];
+		$this->load_view_page('bet/knrealtime', 'bet_realtime', LEVEL_ADMIN, $param);
 	}
 
 	public function bbrealtime(){
@@ -80,21 +89,21 @@ class Bet extends StdController {
 		$this->load_view_page('bet/pbrealtime', 'bet_realtime', LEVEL_ADMIN, $param);
 	}
 
-	public function c5realtime(){
+	public function r5realtime(){
 		
 		$param = [
-			'game_name' => "코인5분",
-			'game_id' => GAME_COIN5_BALL,
+			'game_name' => "랜덤5분",
+			'game_id' => GAME_RAND5_BALL,
 		];
 
 		$this->load_view_page('bet/pbrealtime', 'bet_realtime', LEVEL_ADMIN, $param);
 	}
 	
-	public function c3realtime(){
+	public function r3realtime(){
 		
 		$param = [
-			'game_name' => "코인3분",
-			'game_id' => GAME_COIN3_BALL,
+			'game_name' => "랜덤3분",
+			'game_id' => GAME_RAND3_BALL,
 		];
 
 		$this->load_view_page('bet/pbrealtime', 'bet_realtime', LEVEL_ADMIN, $param);
@@ -102,20 +111,28 @@ class Bet extends StdController {
 
 	public function pbhistory(){
 		$param = [
-			'game_name' => "해피볼",
-			'game_id' => GAME_HAPPY_BALL,
+			'game_name' => "PBG",
+			'game_id' => GAME_SPKN_BALL,
 		];
 		$this->load_view_page('bet/pbhistory', 'bet_history', LEVEL_MIN, $param);
 	}
 
-	public function pshistory(){
+	public function ephistory(){
 		$param = [
-			'game_name' => "파워사다리",
-			'game_id' => GAME_POWER_LADDER,
+			'game_name' => "에볼파워볼",
+			'game_id' => GAME_EVOL_BALL,
 		];
-		$this->load_view_page('bet/pshistory', 'bet_history', LEVEL_MIN, $param);
+		$this->load_view_page('bet/pbhistory', 'bet_history', LEVEL_MIN, $param);
 	}
 	
+	public function skhistory(){
+		$param = [
+			'game_name' => "스피드키노",
+			'game_id' => GAME_SPKN_BALL,
+		];
+		$this->load_view_page('bet/knhistory', 'bet_history', LEVEL_MIN, $param);
+	}
+
 	public function cshistory(){
 		$modelCasprd = new CasPrd_Model();
 		$arrPrd = [];
@@ -237,21 +254,21 @@ class Bet extends StdController {
 		$this->load_view_page('bet/pbhistory', 'bet_history', LEVEL_MIN, $param);
 	}
 
-	public function c5history(){
+	public function r5history(){
 		
 		$param = [
-			'game_name' => "코인5분",
-			'game_id' => GAME_COIN5_BALL,
+			'game_name' => "랜덤5분",
+			'game_id' => GAME_RAND5_BALL,
 		];
 		$this->load_view_page('bet/pbhistory', 'bet_history', LEVEL_MIN, $param);
 	}
 
 	
-	public function c3history(){
+	public function r3history(){
 		
 		$param = [
-			'game_name' => "코인3분",
-			'game_id' => GAME_COIN3_BALL,
+			'game_name' => "랜덤3분",
+			'game_id' => GAME_RAND3_BALL,
 		];
 		$this->load_view_page('bet/pbhistory', 'bet_history', LEVEL_MIN, $param);
 	}
@@ -331,21 +348,29 @@ class Bet extends StdController {
 	public function pbcalculate(){
 		
 		$param = [
-			'game_name' => "해피볼",
-			'game_id' => GAME_HAPPY_BALL,
+			'game_name' => "PBG",
+			'game_id' => GAME_PBG_BALL,
 		];
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}
 
 
-	public function pscalculate(){
+	public function epcalculate(){
 		$param = [
-			'game_name' => "파워사다리",
-			'game_id' => GAME_POWER_LADDER,
+			'game_name' => "에볼파워볼",
+			'game_id' => GAME_EVOL_BALL,
 		];
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}
 	
+	public function skcalculate(){
+		$param = [
+			'game_name' => "스피드키노",
+			'game_id' => GAME_EVOL_BALL,
+		];
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
+	}
+
 	public function cscalculate(){
 		$param = [
 			'game_name' => "카지노",
@@ -440,18 +465,18 @@ class Bet extends StdController {
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}
 	
-	public function c5calculate(){
+	public function r5calculate(){
 		$param = [
-			'game_name' => "코인5분",
-			'game_id' => GAME_COIN5_BALL,
+			'game_name' => "랜덤5분",
+			'game_id' => GAME_RAND5_BALL,
 		];
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}
 	
-	public function c3calculate(){
+	public function r3calculate(){
 		$param = [
-			'game_name' => "코인3분",
-			'game_id' => GAME_COIN3_BALL,
+			'game_name' => "랜덤3분",
+			'game_id' => GAME_RAND3_BALL,
 		];
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}

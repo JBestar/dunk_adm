@@ -23,7 +23,7 @@ function procMember(tdLevel, empId, bShow){
         if(mArrMember[nRow].mb_emp_fid != empId)
             continue;
 
-        if(mArrMember[nRow].mb_state_active == 2)
+        if(mArrMember[nRow].mb_state_active == 2 || mArrMember[nRow].mb_state_active == 3)
             continue;
 
         subHtml = procMember(mArrMember[nRow].mb_level-1, mArrMember[nRow].mb_fid, true);
@@ -57,7 +57,7 @@ function showMember(arrMember, confs, refresh=true) {
         var strBuf = "";
         for (let objMember of mArrMember) {
             objMember.mb_state_active = parseInt(objMember.mb_state_active);
-            if(objMember.mb_state_active == 2 || !confs.tree){
+            if(objMember.mb_state_active == 2 || objMember.mb_state_active == 3 || !confs.tree){
                 strBuf += getMemberTr(objMember, false, true);
             }
         }
@@ -168,7 +168,7 @@ function subIds(tdLevel, empId, bChild=false, minLevel = 0){
         if(mArrMember[nRow].mb_emp_fid != empId)
             continue;
 
-        if(mArrMember[nRow].mb_state_active == 2)
+        if(mArrMember[nRow].mb_state_active == 2 || mArrMember[nRow].mb_state_active == 3)
             continue;
 
         if(bChild && mArrMember[nRow].mb_level > minLevel)

@@ -119,7 +119,41 @@ class Exchange_Model extends Model {
         if(is_null($objResult->exchange_sum)) return 0;
         else return  $objResult->exchange_sum;        
     }    
+    //유저환전금 통계 
+    function calcUserExchangeStat($uid){
 
+        $strCon=" WHERE (exchange_action_state = '".STATE_VERIFY."' OR exchange_action_state = '".STATE_HOT."') ";
+        $strCon.=" AND exchange_mb_uid = ".$this->db->escape($uid);
+
+        $strSel = "SELECT SUM(exchange_money) AS exchange_sum FROM ".$this->table; //Tom
+
+        $tmNow = time();
+        $strToday = date( 'Y-m-d', $tmNow );
+
+        //Yesterday
+        $tmYesterday = strtotime("-24 hours", $tmNow);
+        $arrReqData['start'] = date("Y-m-d", $tmYesterday);
+        $arrReqData['end'] = $arrReqData['start'];
+        $strSQL = $strSel.$strCon;  
+        $strSQL.= " AND ".getTimeRange("exchange_time_require", $arrReqData, $this->db);
+        //Today
+        $arrReqData['start'] = $strToday;
+        $strSQL.= " UNION ALL ".$strSel.$strCon;  
+        $strSQL.=" AND exchange_time_require >= '".$arrReqData['start']."'";
+        //Week
+        $tmWeek = strtotime("-6 days", $tmNow);
+        $arrReqData['start'] = date("Y-m-d", $tmWeek);
+        $strSQL.= " UNION ALL ".$strSel.$strCon;  
+        $strSQL.=" AND exchange_time_require >= '".$arrReqData['start']."'";
+        //Month
+        $arrReqData['start'] = date('Y-m')."-01";
+        $strSQL.= " UNION ALL ".$strSel.$strCon;  
+        $strSQL.=" AND exchange_time_require >= '".$arrReqData['start']."'";
+        //Total
+        $strSQL.= " UNION ALL ".$strSel.$strCon;  
+
+        return $this->db->query($strSQL)->getResult();       
+    }
     //환전금액 (하부포함)
     function calcExchangeMoney($objEmp, $arrReqData){
 

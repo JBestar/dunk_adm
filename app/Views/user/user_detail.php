@@ -144,6 +144,14 @@
 					<input type="color" value="<?php echo $objMember->mb_color; ?>" id="useredit-color-input-id">
 					<?php } ?>
 				</td>
+				<td>등록번호 </td>
+				<td>
+					<?php if (!is_null($objMember)) :  ?>
+						<?=$objMember->mb_fid?>
+					<?php endif ?>
+				</td>
+			</tr>
+			<tr>
 				<td>
 					<?php if(!$hold_deny) :?>
 					홀덤 배당율(%)<br> <br>
@@ -152,24 +160,24 @@
 					카지노 배당율(%)<br> <br>
 					<?php endif ?> 
 					<?php if(!$slot_deny) :?>
-					슬롯 배당율(%)<br>
+					슬롯 배당율(%)<br> <br>
 					<?php endif ?> 
 				</td>
 				<td>
 					<?php if(!$hold_deny) :?>
 						<?php if(is_null($objMember)) :  ?>
-						<input type = "number" step="0.1" id="useredit-hlbetrate-input-id" value="0" >
+						<input type = "number" step="0.1" id="useredit-hlbetrate-input-id" value="0" ><br>
 						<?php else :?>
-						<input type = "number" step="0.1" id="useredit-hlbetrate-input-id" value="<?=$objMember->mb_game_hl_ratio?>">
+						<input type = "number" step="0.1" id="useredit-hlbetrate-input-id" value="<?=$objMember->mb_game_hl_ratio?>"><br>
 						<?php endif ?>
 						<br>
 					<?php endif ?> 
 
 					<?php if(isEBalMode() || !$evol_deny || !$cas_deny) :?>
 						<?php if(is_null($objMember)) :  ?>
-						<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="0" >
+						<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="0" ><br>
 						<?php else :?>
-						<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="<?=$objMember->mb_game_cs_ratio?>">
+						<input type = "number" step="0.1" id="useredit-evbetrate-input-id" value="<?=$objMember->mb_game_cs_ratio?>"><br>
 						<?php endif ?>
 						<br>
 					<?php endif ?>
@@ -181,7 +189,23 @@
 						<input type = "number" step="0.1" id="useredit-slbetrate-input-id" value="<?=$objMember->mb_game_sl_ratio?>">
 						<?php endif ?>
 					<?php endif ?>
-
+				</td>
+				<td>
+					<?php if(!$pbg_deny || !$bpg_deny || !$eos5_deny || !$rand5_deny) :?>
+					미니게임 단폴 배당율(%)<br>  <br>
+					미니게임 조합 배당율(%)<br>
+					<?php endif ?> 
+				</td>
+				<td>
+					<?php if(!$pbg_deny || !$bpg_deny || !$eos5_deny || !$rand5_deny) :?>
+						<?php if(is_null($objMember)) :  ?>
+						<input type = "number" step="0.1" id="useredit-pbbetrate-input-id" value="0" ><br><br>
+						<input type = "number" step="0.1" id="useredit-pbbetrate2-input-id" value="0" >
+						<?php else :?>
+						<input type = "number" step="0.1" id="useredit-pbbetrate-input-id" value="<?=$objMember->mb_game_pb_ratio?>"><br><br>
+						<input type = "number" step="0.1" id="useredit-pbbetrate2-input-id" value="<?=$objMember->mb_game_pb2_ratio?>">
+						<?php endif ?>
+					<?php endif ?> 
 				</td>
 			</tr>
 
@@ -273,7 +297,31 @@
 			<?php if($follow_en > 0 ) :?>
 				<tr>
 					<td>
-					에볼 따라가기
+					에볼 따라가기 활성
+					</td>
+					<td>
+						<?php if(!is_null($objMember) && $objMember->mb_follow_en == 1) :  ?>
+							<input type="checkbox" id="useredit-followen-check-id" style="zoom:100%; margin-top:10px; margin-right:0; width:20px; height:20px; min-width:30px;" checked>
+						<?php else :  ?>
+							<input type="checkbox" id="useredit-followen-check-id" style="zoom:100%; margin-top:10px; margin-right:0; width:20px; height:20px; min-width:30px;" >
+						<?php endif ?>
+						<button class="pbresult-list-view-but" id="useredit-followen-but-id"  style="margin-left:5px; padding:5px 10px; position:relative; top:-6px;">전체 적용</button>  
+					</td>
+					<td>
+					따라가기 아이디
+					</td>
+					<td>
+						<?php if(is_null($objMember)) : ?>
+						<input type = "text" id="useredit-follow-input-id" value="">
+						<?php else :?>
+						<input type = "text" id="useredit-follow-input-id" value="<?=$objMember->mb_follow_id?>">
+						<?php endif ?>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+					에볼 따라가기 승인
 					</td>
 					<td>
 						<?php if(!is_null($objMember) && $objMember->mb_follow_active == 1) :  ?>
@@ -283,16 +331,10 @@
 						<?php endif ?>
 					</td>
 					<td>
-					따라가기 아이디<br>
 					따라가기금액(%)
 					</td>
 					<td>
-						<?php if(is_null($objMember)) : ?>
-						<input type = "text" id="useredit-follow-input-id" value="">
-						<?php else :?>
-						<input type = "text" id="useredit-follow-input-id" value="<?=$objMember->mb_follow_id?>">
-						<?php endif ?>
-						<select type="text" id="useredit-follow-percent-id">
+						<select type="text" id="useredit-follow-percent-id" style="width:150px;">
 							<?php $rates = followRates(); if (is_null($objMember)) : ?>
 								<?php foreach($rates as $rate):?>
 									<option value="<?=$rate?>" <?=$rate==100?'selected':''?>><?=$rate?> %</option>
@@ -305,6 +347,7 @@
 						</select>
 					</td>
 				</tr>
+
 				<?php endif ?>
 
 			<?php endif ?>
@@ -356,6 +399,8 @@
 							<span class="badge btn-success">승인</span>
 						<?php elseif ($objMember->mb_state_active == PERMIT_CANCEL) :  ?>
 							<span class="badge btn-default">차단</span>
+						<?php elseif ($objMember->mb_state_active == PERMIT_REQ) :  ?>
+							<span class="badge btn-primary">신청</span>
 						<?php elseif ($objMember->mb_state_active == PERMIT_WAIT) :  ?>
 							<span class="badge btn-primary">대기</span>
 						<?php endif ?>
@@ -386,13 +431,33 @@
 				</td>
 			</tr>
 			<tr>
+				<td>전일 입금액 </td>
+				<td>
+					<?=number_format($objMember->mb_charge_yest)?>
+				</td>
+				<td>전일 출금액 </td>
+				<td>
+					<?=number_format($objMember->mb_exchange_yest)?>
+				</td>
+			</tr>
+			<tr>
 				<td>당일 입금액 </td>
 				<td>
-					<?=number_format($objMember->mb_charge_day)?>
+					<?=number_format($objMember->mb_charge_today)?>
 				</td>
 				<td>당일 출금액 </td>
 				<td>
-					<?=number_format($objMember->mb_exchange_day)?>
+					<?=number_format($objMember->mb_exchange_today)?>
+				</td>
+			</tr>
+			<tr>
+				<td>일주일 입금액 </td>
+				<td>
+					<?=number_format($objMember->mb_charge_week)?>
+				</td>
+				<td>일주일 출금액 </td>
+				<td>
+					<?=number_format($objMember->mb_exchange_week)?>
 				</td>
 			</tr>
 			<tr>
@@ -417,7 +482,12 @@
 			</tr>
 			<?php endif?>
 			<tr>
-				<td>메모 </td>
+				<td>메모 
+					<?php if(!is_null($objMember)) :  ?>
+						<br>
+						<button class="pbresult-list-view-but" onclick="goTabPage('/board/message_edit/0/<?=$objMember->mb_fid?>')" style="margin-left:0px; margin-right:0px; margin-top:10px; padding:5px 20px;">쪽지</button>  
+					<?php endif?>
+				</td>
 				<td rowspan="3" colspan="3">
 					<textarea rows="10" id="useredit-memo-text-id" style="width:510px; resize: vertical;" ><?php if(!is_null($objMember)) : echo $objMember->mb_memo ?><?php endif ?></textarea>					
 				</td>
