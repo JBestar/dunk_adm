@@ -1,12 +1,18 @@
 var mObjUser = null;
-var mAudio = null;
+var mUserAudio = null;
+var mChargeAudio = null;
+var mDischarAudio = null;
+var mMessageAudio = null;
 
 $(document).ready(function() {
     initMainNavbar();
 });
 
 function initMainNavbar() {
-    mAudio = new Audio();
+    mUserAudio = new Audio();
+    mChargeAudio = new Audio();
+    mDischarAudio = new Audio();
+    mMessageAudio = new Audio();
     addNavbarButtonEvent();
 
     requestMemberInfo();
@@ -244,53 +250,55 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
     if (nWaitCnt > 0) {
         $("#main-navbar-user_wait-id").addClass("flicker");
         if(bAlarmEnable){
-            mAudio.src = FURL + '/assets/sound/' + arrSoundInfo[0][0];
+            mUserAudio.src = FURL + '/assets/sound/' + arrSoundInfo[0][0];
             if (parseInt(arrSoundInfo[0][1]) <= 100) {
                 nVolume = arrSoundInfo[0][1] / 100.0;
             }
-            bAlarm = true;
+            mUserAudio.volume = nVolume;
+            mUserAudio.load();
+            mUserAudio.play();
         }
 
-    } else if (objEmpInfo.wait_charge > 0) {
+    } 
+    if (objEmpInfo.wait_charge > 0) {
 
         $("#main-navbar-charge_wait-id").addClass("flicker");
         if(bAlarmEnable){
-            mAudio.src = FURL + '/assets/sound/' + arrSoundInfo[1][0];
+            mChargeAudio.src = FURL + '/assets/sound/' + arrSoundInfo[1][0];
             if (parseInt(arrSoundInfo[1][1]) <= 100) {
                 nVolume = arrSoundInfo[1][1] / 100.0;
             }
-            bAlarm = true;
+            mChargeAudio.volume = nVolume;
+            mChargeAudio.load();
+            mChargeAudio.play();
         }
 
-    } else if (objEmpInfo.wait_exchange > 0) {
+    } 
+    if (objEmpInfo.wait_exchange > 0) {
         $("#main-navbar-exchange_wait-id").addClass("flicker");
 
         if(bAlarmEnable){
-            mAudio.src = FURL + '/assets/sound/' + arrSoundInfo[2][0];
+            mDischarAudio.src = FURL + '/assets/sound/' + arrSoundInfo[2][0];
             if (parseInt(arrSoundInfo[2][1]) <= 100) {
                 nVolume = arrSoundInfo[2][1] / 100.0;
             }
-            bAlarm = true;
+            mDischarAudio.volume = nVolume;
+            mDischarAudio.load();
+            mDischarAudio.play();
         }
-    } else if (objEmpInfo.new_message > 0) {
+    } 
+    if (objEmpInfo.new_message > 0) {
         $("#main-navbar-newmessage-id").addClass("flicker");
         if(bAlarmEnable){
-            mAudio.src = FURL + '/assets/sound/' + arrSoundInfo[3][0];
+            mMessageAudio.src = FURL + '/assets/sound/' + arrSoundInfo[3][0];
             if (parseInt(arrSoundInfo[3][1]) <= 100) {
                 nVolume = arrSoundInfo[3][1] / 100.0;
             }
-            bAlarm = true;
+            mMessageAudio.volume = nVolume;
+            mMessageAudio.load();
+            mMessageAudio.play();
         }
     }
-
-    if(bAlarm){
-        mAudio.volume = nVolume;
-        mAudio.load();
-        mAudio.play();
-        // setTimeout(() => mAudio.play(), 1000);
-    }
-
-
 }
 
 
@@ -350,7 +358,10 @@ function addNavbarButtonEvent() {
 
     $("#main-navbar-alarm-check-id").click(function() {
         if (!this.checked) {
-            mAudio.pause();
+            mUserAudio.pause();
+            mChargeAudio.pause();
+            mDischarAudio.pause();
+            mMessageAudio.pause();
         }
         requestAlarmState();
     });

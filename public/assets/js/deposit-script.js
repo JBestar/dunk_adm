@@ -265,8 +265,8 @@ function requestTotalPage() {
 
 
 function requestProcDeposit(jsData) {
-    if (mAudio != undefined && mAudio != null) {
-        mAudio.pause();
+    if (mChargeAudio != undefined && mChargeAudio != null) {
+        mChargeAudio.pause();
     }
     $(".loading").show();
     var jsonData = JSON.stringify(jsData);
@@ -300,8 +300,8 @@ function requestProcDeposit(jsData) {
 }
 
 function requestProcDeposits(jsData) {
-    if (mAudio != undefined && mAudio != null) {
-        mAudio.pause();
+    if (mChargeAudio != undefined && mChargeAudio != null) {
+        mChargeAudio.pause();
     }
     $(".loading").show();
     var jsonData = JSON.stringify(jsData);

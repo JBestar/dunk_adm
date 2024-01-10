@@ -121,8 +121,10 @@ class Notice_Model extends Model {
 
     function searchMessage($arrReqData)
     {
-        $strSql = "SELECT *  FROM ".$this->table;
-        
+        $tbMember = "member";
+
+        $strSql = "SELECT notice_search.*, mb_nickname FROM ( ";
+        $strSql .= "SELECT *  FROM ".$this->table;
 
         if($arrReqData['notice_type'] == 1 ){                           //수신쪽지
 
@@ -149,9 +151,11 @@ class Notice_Model extends Model {
           $strSql.=") ";
         }
 
-
         $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
         $strSql.=" ORDER BY notice_time_create DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
+        $strSql.=" ) notice_search LEFT JOIN ".$tbMember." ON ".$tbMember.".mb_uid = notice_search.notice_mb_uid "; 
+        $strSql.=" ORDER BY notice_time_create DESC";
+
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();
         

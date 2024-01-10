@@ -8,7 +8,7 @@
 	<div class = "sub-navbar">
 		<?php if(is_null($objNotice)) {  ?>
 			<p><i class="glyphicon glyphicon-info-sign"></i> 쪽지 작성</p>		
-		<?php } else if($objNotice->notice_type == 3) {  ?>
+		<?php } else if($objNotice->notice_type == NOTICE_CUSTOMER) {  ?>
 			<p><i class="glyphicon glyphicon-info-sign"></i> 고객문의 회답</p>
 		<?php } else {?>
 			<p><i class="glyphicon glyphicon-info-sign"></i> 쪽지 수정</p>
@@ -51,7 +51,14 @@
 						<label for="notice-mbuid-input-id">전체는 '*'로 입력하세요</label>
 						<input type = "text" id="notice-mbuid-input-id" style="width:250px;" value="<?=$strUserId ?>">
 					<?php else :?>
-						<input type = "text" id="notice-mbuid-input-id" style="width:250px;" value="<?=$objNotice->notice_mb_uid?>" disabled>
+						<input type = "text" id="notice-mbuid-input-id" style="width:250px; cursor:text" value="<?=$objNotice->notice_mb_uid?>" disabled>
+						<?php if($objNotice->notice_type == NOTICE_CUSTOMER) :  ?>
+							<span style="font-size:14px; margin-left:10px; position:relative; top:4px; ">닉네임:
+								<a onclick="popupMemberUid('<?=$senderId?>')" style="color:blue; font-size:16px; cursor:pointer; margin-top:3px;"> <?=$senderName?></a>
+							</span>
+							<!-- <button style="margin-left:3px; padding:3px 15px;" onclick="popupMemberUid('<?=$senderId?>')">회원정보</button> -->
+						<?php endif ?>
+
 					<?php endif ?>
 				</div>
 				<!---->
@@ -59,7 +66,7 @@
 					<p>발송(대기):</p>
 					<?php if(is_null($objNotice)) :  ?>
 					<input type="checkbox" id="notice-state-check-id" name="public" checked>
-					<?php elseif($objNotice->notice_type == 3) :  ?>	
+					<?php elseif($objNotice->notice_type == NOTICE_CUSTOMER) :  ?>	
 					<input type="checkbox" id="notice-state-check-id" name="public" checked>
 					<?php elseif($objNotice->notice_state_active == 0) :  ?>	
 					<input type="checkbox" id="notice-state-check-id" name="public">
@@ -68,7 +75,7 @@
 					<?php endif ?>
 					<label for="public" style="font-size:14px;">발송</label>
 
-					<?php if(is_null($objNotice) || $objNotice->notice_type==0) : ?>
+					<?php if(is_null($objNotice) || $objNotice->notice_type==NOTICE_MSG) : ?>
 						<?php if (array_key_exists('app.lang', $_ENV) && $_ENV['app.lang'] > 0) : ?>
 							<div style="float:right; width:50%;">
 								<label style="float:left; margin-left:115px;">언어별 설정</label>
@@ -88,7 +95,7 @@
 					<input type = "text" id="notice-title-input-id" value="<?=$objNotice->notice_title?>" style="width:550px;">
 					<?php endif ?>
 
-					<?php if(is_null($objNotice) || $objNotice->notice_type==0) : ?>
+					<?php if(is_null($objNotice) || $objNotice->notice_type==NOTICE_MSG) : ?>
 						<?php if (array_key_exists('app.lang', $_ENV) && $_ENV['app.lang'] > 0) : ?>
 							<?php if(is_null($objNotice)) :  ?>	
 							<input type = "text" id="notice-title_cn-input-id" style="width:550px; display:none;">
@@ -101,27 +108,27 @@
 				</div>
 
 				
-			<?php if(!is_null($objNotice) && $objNotice->notice_type == 3) :  ?>
+			<?php if(!is_null($objNotice) && $objNotice->notice_type == NOTICE_CUSTOMER) :  ?>
 				<div class="useredit-text-div">
 					<p>문의내용:</p> 
-					<div class="content" id="custom-content" style="white-space: pre-wrap; width:550px; background-color:white; padding:5px;" ><?=$objNotice->notice_content?></div>	
+					<div class="content" id="custom-content" style="white-space: pre-wrap; width:550px; background-color:white; padding:5px;" ><?=str_replace("&quot;", "'", $objNotice->notice_content)?></div>	
 				</div>
 			
 				<div style="width:100%; clear:both;">
 					<p style="width:100px; float:left; padding:5px;">회답내용:</p> 
 					<form method="post" style="width:550px; float:left;background-color:white;">
-					<textarea id="custom-answer" name="editordata"><?php if(!is_null($objNotice)) : ?><?=$objNotice->notice_answer?><?php endif ?></textarea>
+					<textarea id="custom-answer" name="editordata"><?php if(!is_null($objNotice)) : ?><?=str_replace("&quot;", "'", $objNotice->notice_answer)?><?php endif ?></textarea>
 					</form>	
 				</div>
 			<?php else :?>
 				<div style="width:100%; clear:both;">
 					<p style="width:100px; float:left; padding:5px;">쪽지내용:</p> 
 					<form method="post" id="notice-form" style="width:550px;float:left;background-color:white;">
-						<textarea id="notice-content" name="editordata"><?php if(!is_null($objNotice)) : ?><?=$objNotice->notice_content?><?php endif ?></textarea>
+						<textarea id="notice-content" name="editordata"><?php if(!is_null($objNotice)) : ?><?=str_replace("&quot;", "'", $objNotice->notice_content)?><?php endif ?></textarea>
 					</form>	
 					<?php if (array_key_exists('app.lang', $_ENV) && $_ENV['app.lang'] > 0) : ?>
 						<form method="post" id="notice-form_cn" style="width:550px;float:left;background-color:white;display:none;">
-							<textarea id="notice-content_cn" name="editordata"><?php if(!is_null($objNotice)) : ?><?=$objNotice->notice_content_cn?><?php endif ?></textarea>
+							<textarea id="notice-content_cn" name="editordata"><?php if(!is_null($objNotice)) : ?><?=str_replace("&quot;", "'", $objNotice->notice_content_cn)?><?php endif ?></textarea>
 						</form>
 					<?php endif ?>
 				</div>
@@ -129,7 +136,7 @@
 
 				<div class = "useredit-button-group" style="padding-left:100px">
 					<button class="useredit-cancel-button" id="notice-cancel-btn-id">취소</button>
-					<?php if(is_null($objNotice) || $objNotice->notice_type==0) :  ?>
+					<?php if(is_null($objNotice) || $objNotice->notice_type==NOTICE_MSG) :  ?>
 					<button class="useredit-ok-button"  id="notice-save-btn-id">발송</button>			
 					<?php else :?>
 					<button class="useredit-ok-button"  id="notice-save-btn-id">회답</button>

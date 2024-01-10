@@ -21,6 +21,7 @@
 				<option value="1">충전</option>
 				<option value="23">직충전</option>
 				<option value="2">환전</option>
+				<option value="22">환전취소</option>
 				<option value="26">직환전</option>
 				<option value="3">포인트전환</option>
 				<option value="30">머니전환</option>
@@ -34,6 +35,7 @@
 
 				<?php if(array_key_exists('app.ebal', $_ENV) && $_ENV['app.ebal'] > 0) :  ?>
 					<option value="43">에볼배팅</option>				
+					<option value="44">에볼적특</option>				
 					<option value="45">에볼정산</option>
 				<?php endif ?> 
 				<?php if(!$hpg_deny) :?>

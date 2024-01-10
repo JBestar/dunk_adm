@@ -36,7 +36,11 @@ function showMoneyHistory(jsonBetData) {
         strBuf += "</td><td>";
         switch (parseInt(jsonBetData[nRow].money_change_type)) {
             case 1 : strBuf += "충전"; break;
-            case 2: strBuf += "환전"; break;
+            case 2: 
+                if(parseInt(jsonBetData[nRow].money_bet_mode) == 1)
+                    strBuf += "환전"; 
+                else strBuf += "환전요청"; 
+                break;
             case 3: strBuf += "포인트 전환"; break;
             case 4: strBuf += "해피볼 배팅"; break;
             case 5: strBuf += "해피볼 배팅취소"; break;
@@ -75,7 +79,7 @@ function showMoneyHistory(jsonBetData) {
             case 41: strBuf += "코인3분파워볼 배팅취소"; break;
             case 42: strBuf += "코인3분파워볼 정산"; break;
             case 43: strBuf += "에볼 배팅"; break;
-            case 44: strBuf += "에볼 배팅취소"; break;
+            case 44: strBuf += "에볼 적특"; break;
             case 45: strBuf += "에볼 정산"; break;
             default:break;
         } 
@@ -90,7 +94,7 @@ function showMoneyHistory(jsonBetData) {
             }
         } else if (jsonBetData[nRow].money_change_type == 19 || jsonBetData[nRow].money_change_type == 20 ||
             jsonBetData[nRow].money_change_type == 27 || jsonBetData[nRow].money_change_type == 28) {
-            if(mObjUser && mObjUser.mb_level > LEVEL_ADMIN){
+            if(mObjUser && mObjUser.mb_level >= LEVEL_ADMIN){
                 strBuf += "<a onclick='popupMemberUid(\"" + jsonBetData[nRow].money_bet_target + "\")' class='link-member'>"+ jsonBetData[nRow].money_bet_target+ "</a>";
             } else 
                 strBuf += jsonBetData[nRow].money_bet_target;

@@ -64,6 +64,11 @@ class Home extends StdController
 		$this->load_view_page('home/conf_message', 'conf_site', LEVEL_ADMIN);	
 	}
 
+	public function conf_domain(){
+		
+		$this->load_view_page('home/conf_domain', 'conf_site', LEVEL_ADMIN);	
+	}
+
 	public function conf_clean(){
 		$this->load_view_page('home/conf_clean', 'conf_site', LEVEL_ADMIN);	
 	}
@@ -170,7 +175,7 @@ class Home extends StdController
 	public function conf_ebal(){
 		$arrType = [
 			"10"=> "EVOL365",
-			"11"=> "LUCKY",
+			// "11"=> "LUCKY",
 			"12"=> "VEDA",
 			"1"=> "NINE",
 			"2"=> "AMAZON",
@@ -183,13 +188,15 @@ class Home extends StdController
 			"9"=> "투다리",
 			"13"=> "로이스",
 			"14"=> "MISSION",
-			"15"=> "MONEY",
+			// "15"=> "MONEY",
 			"16"=> "알로하",
 			"17"=> "KING",
 			"18"=> "글로리",
 			"19"=> "제로",
 			// "20"=> "LUX",
 			"21"=> "비네티안",
+			"22"=> "드래곤",
+			"23"=> "STAR",
 		];
 		$confsiteModel = new ConfSite_Model();
 

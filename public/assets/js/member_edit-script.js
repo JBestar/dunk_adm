@@ -125,6 +125,16 @@ function readConfigToObject() {
         }
     }
 
+    if($("#useredit-pressat-check-id").length > 0){
+        let pressatEnable = 0;
+        let pressatAmount = 0;
+        pressatEnable = $("#useredit-pressat-check-id").prop('checked') ? 1 : 0;
+        pressatAmount = parseInt($("#useredit-pressat-input-id").val().replace(/,/g, ""));
+        if(pressatAmount < 0) pressatAmount = 0;
+
+        objMember.mb_pressat_ev = pressatEnable + ":" + pressatAmount; 
+    }
+
     if($("#useredit-follow-check-id").length > 0){
         let followEnable = $("#useredit-follow-check-id").prop('checked') ? 1 : 0;
         let followId = $("#useredit-follow-input-id").val();
@@ -148,6 +158,9 @@ function readConfigToObject() {
     }
     if($("#useredit-transfer-subs-id").length > 0){
         objMember.mb_transfer_subs = $("#useredit-transfer-subs-id").prop('checked') ? 1 : 0;
+    }
+    if($("#useredit-recommender-deny-id").length > 0){
+        objMember.mb_recommender_deny = $("#useredit-recommender-deny-id").prop('checked') ? 1 : 0;
     }
     return objMember;
 
@@ -391,6 +404,45 @@ function addBtnEvent() {
         }
         var jsonData = {
             mb_press_ev:mb_press_ev,
+        }
+        jsonData = JSON.stringify(jsonData);
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: FURL + "/userapi/updatemembers",
+            data: { json_: jsonData },
+            success: function(jResult) {
+                // console.log(jResult);
+                if (jResult.status == "success") {
+                    showAlert("전체 적용되었습니다.")
+                } else if (jResult.status == "logout") {
+                    window.location.replace( FURL +'/');
+                }
+            },
+            error: function(request, status, error) {
+                $(".loading").hide();
+                // console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+
+        });
+    });
+
+    $("#useredit-pressat-but-id").click(function() {
+        if($("#useredit-pressat-check-id").length < 1)
+            return;
+        
+        if (!confirm("전체 적용하시겠습니까?"))
+            return;
+
+        let pressatEnable = 0;
+        let pressatAmount = 0;
+        pressatEnable = $("#useredit-pressat-check-id").prop('checked') ? 1 : 0;
+        pressatAmount = parseInt($("#useredit-pressat-input-id").val().replace(/,/g, ""));
+        if(pressatAmount < 0) pressatAmount = 0;
+
+        let mb_pressat_ev = pressatEnable + ":" + pressatAmount;
+        var jsonData = {
+            mb_pressat_ev:mb_pressat_ev,
         }
         jsonData = JSON.stringify(jsonData);
         $.ajax({

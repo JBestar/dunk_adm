@@ -59,6 +59,15 @@ class User extends StdController
 						if(count($info) >= 3)
 							$objMember->mb_press_count = intval($info[2]) ;
 					}
+
+					$objMember->mb_pressat_active = false;
+					$objMember->mb_pressat_amount = 0;
+					$info = explode(":", $objMember->mb_pressat_ev);
+					if(count($info) >= 2){
+						$objMember->mb_pressat_active = intval($info[0]) == STATE_ACTIVE;
+						$objMember->mb_pressat_amount = intval($info[1]) ;
+					}
+
 					$objMember->mb_follow_active = false;
 					$objMember->mb_follow_id = "";
 					$objMember->mb_follow_percent = 100;
@@ -172,10 +181,12 @@ class User extends StdController
 						$arrAppInfo = [];
 						$arrChargeInfo = [];
 						$objMember->mb_transfer_subs = STATE_DISABLE;
+						$objMember->mb_recommender_deny = STATE_DISABLE;
 						if(!is_null($memConf) ){
 							$arrAppInfo = explode('#', $memConf->conf_str_1);
 							$arrChargeInfo = explode('#', $memConf->conf_str_5);
 							$objMember->mb_transfer_subs = $memConf->conf_num_1;
+							$objMember->mb_recommender_deny = $memConf->conf_num_2;
 						}
 
 						$confAutoapp = $confsiteModel->getConf(CONF_AUTOAPPS);

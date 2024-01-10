@@ -55,8 +55,16 @@ class UserApi extends BaseController
                 if(array_key_exists('app.level_limit', $_ENV) && intval($_ENV['app.level_limit']) > 0 ){
                     $minLevel = LEVEL_MAX - intval($_ENV['app.level_limit']);
                 }
+        		$recommenderDeny = false;
+                if(!is_null($objEmp) && array_key_exists('app.sess_act', $_ENV) && $_ENV['app.sess_act'] == 1){
+                    $memConfModel = new MemConf_Model();
+                    $memConf = $memConfModel->getByMember($objEmp->mb_fid);
+                    if(!is_null($memConf) ){
+                        $recommenderDeny = $memConf->conf_num_2 == STATE_ACTIVE;
+                    }
+                }
 
-                if ($objEmp == null || $objEmp->mb_level <= $minLevel){
+                if ($objEmp == null || $objEmp->mb_level <= $minLevel || $recommenderDeny){
                     $arrResult['status'] = 'employee_error';
                     echo json_encode($arrResult);
                     return;
@@ -141,7 +149,17 @@ class UserApi extends BaseController
             $arrData['mb_emp_fid'] = 0;
             if ($objAdmin->mb_level >= LEVEL_ADMIN && strlen($arrData['mb_emp_uid']) > 0){
                 $objEmp = $this->modelMember->getInfo($arrData['mb_emp_uid']);
-                if ($objEmp == null){
+
+                $recommenderDeny = false;
+                if(!is_null($objEmp) && $objEmp->mb_fid != $objReqUser->mb_emp_fid && array_key_exists('app.sess_act', $_ENV) && $_ENV['app.sess_act'] == 1){
+                    $memConfModel = new MemConf_Model();
+                    $memConf = $memConfModel->getByMember($objEmp->mb_fid);
+                    if(!is_null($memConf) ){
+                        $recommenderDeny = $memConf->conf_num_2 == STATE_ACTIVE;
+                    }
+                }
+
+                if ($objEmp == null || $recommenderDeny){
                     $arrResult['status'] = 'employee_error';
                     echo json_encode($arrResult);
                     return;
@@ -197,6 +215,7 @@ class UserApi extends BaseController
                             if(!is_null($memConf) ){
                                 $data =[
                                     'conf_num_1' => $arrData['mb_transfer_subs'],
+                                    'conf_num_2' => $arrData['mb_recommender_deny'],
                                     'conf_str_1' => $arrData['mb_autoapps'],
                                     'conf_str_5' => $arrData['mb_charge_info'],
                                 ];
@@ -206,6 +225,7 @@ class UserApi extends BaseController
                                     'conf_mb_fid' => $objReqUser->mb_fid,
                                     'conf_mb_uid' => $objReqUser->mb_uid,
                                     'conf_num_1' => $arrData['mb_transfer_subs'],
+                                    'conf_num_2' => $arrData['mb_recommender_deny'],
                                     'conf_str_1' => $arrData['mb_autoapps'],
                                     'conf_str_5' => $arrData['mb_charge_info'],
                                 ];

@@ -274,8 +274,8 @@ function requestTotalPage() {
 
 function requestProcWithdraw(jsData) {
 
-    if (mAudio != undefined && mAudio != null) {
-        mAudio.pause();
+    if (mDischarAudio != undefined && mDischarAudio != null) {
+        mDischarAudio.pause();
     }
 
     var jsonData = JSON.stringify(jsData);
@@ -308,8 +308,8 @@ function requestProcWithdraw(jsData) {
 }
 
 function requestProcWithdraws(jsData) {
-    if (mAudio != undefined && mAudio != null) {
-        mAudio.pause();
+    if (mDischarAudio != undefined && mDischarAudio != null) {
+        mDischarAudio.pause();
     }
     $(".loading").show();
     var jsonData = JSON.stringify(jsData);

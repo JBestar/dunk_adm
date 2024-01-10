@@ -16,8 +16,8 @@ function calcAmount(elemName){
 
 function requestWaitToPermit(elemBut, jsData) {
 
-    if (mAudio != undefined && mAudio != null) {
-        mAudio.pause();
+    if (mUserAudio != undefined && mUserAudio != null) {
+        mUserAudio.pause();
     }
 
     $(elemBut).attr('disabled', true);
@@ -422,7 +422,7 @@ function reqMemSave(objMember, closeDlg = null){
                 } else if (jResult.status == "ratio_error") {
                     showAlert(jResult.error, 0);
                 } else if (jResult.status == "employee_error") {
-                    showAlert("추천인 아이디가 존재하지 않습니다.", 0);
+                    showAlert("추천인이 존재하지 않습니다.", 0);
                 }
             },
             error: function(request, status, error) {
@@ -473,7 +473,7 @@ function reqMemSave(objMember, closeDlg = null){
                 } else if (jResult.status == "ratio_error") {
                     showAlert(jResult.error, 0);
                 } else if (jResult.status == "employee_error") {
-                    showAlert("추천인 아이디가 존재하지 않습니다.", 0);
+                    showAlert("추천인이 존재하지 않습니다.", 0);
                 }
             },
             error: function(request, status, error) {
@@ -523,7 +523,7 @@ function create(objMember, closeDlg){
                 } else if (jResult.status == "ratio_error") {
                     showAlert(jResult.error, 0);
                 } else if (jResult.status == "employee_error") {
-                    showAlert("추천인 아이디가 존재하지 않습니다.", 0);
+                    showAlert("추천인이 존재하지 않습니다.", 0);
                 }
             },
             error: function(request, status, error) {

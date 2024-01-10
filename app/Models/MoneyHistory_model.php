@@ -72,8 +72,33 @@ class MoneyHistory_Model extends Model
         
         return $this->builder()->insert();
     }
-
     
+    function updateExchange($objUser, $objExchange, $admin){
+
+        if(is_null($objUser)) return false;    
+        if(is_null($objExchange)) return false;
+
+        $strSql2 = "UPDATE ".$this->table." SET ";
+        $strSql2.= " money_update_time='".date("Y-m-d H:i:s")."'";
+        $strSql2.= ", money_bet_mode=".STATE_ACTIVE;
+        $strSql2.= ", money_bet_target='".$admin."'";
+
+        $strSql2.= " WHERE money_update_time >= '".$objExchange->exchange_time_require."'";
+        $strSql2.= " AND money_mb_fid=".$objUser->mb_fid;
+        $strSql2.= " AND money_change_type = ".MONEYCHANGE_EXCHANGE;
+        $strSql2.= " AND money_amount = ".((-1) * $objExchange->exchange_money);
+
+        $objUpdate = $this->db->query($strSql2);
+        $affectedRows = $objUpdate->connID->affected_rows;
+
+        $bResult = false;
+        if($affectedRows > 0)
+            $bResult = true;
+
+        return $bResult;
+    }
+
+
     function cancelExchange($objUser, $nExchangeMoney)
     {
         if(is_null($objUser)) return false;    

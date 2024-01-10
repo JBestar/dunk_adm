@@ -37,15 +37,17 @@ class SessTry_Model extends Model {
     function search($arrReqData, $mbLevel)
     {
         $tbBlock = "block_list";
+        $tbSearch = "tbSearch";
 
         $fields = "log_uid, log_ip, log_result, log_type, log_time";
         if($mbLevel > LEVEL_ADMIN + 1)
             $fields = "log_uid, log_pwd, log_ip, log_result, log_type, log_time";
 
-        $strSql = "SELECT ".$fields.", member.mb_level, block_ip, block_state FROM ".$this->table;
-        $strSql .= " LEFT JOIN member ON ".$this->table.".log_uid = member.mb_uid ";
-        $strSql .= ' LEFT JOIN '.$tbBlock.' ON '.$this->table.'.log_ip = '.$tbBlock.'.block_ip ';
-        $strSql .= " WHERE (mb_level IS NULL OR mb_level <= ".$mbLevel.") " ;
+        $strSql = "SELECT ".$fields.", member.mb_level, block_ip, block_state FROM ( ";
+
+        $strSql.= " SELECT * FROM ".$this->table;
+        $strSql.=" WHERE log_uid NOT IN ( SELECT mb_uid FROM member WHERE mb_level > ".$mbLevel." ) ";
+
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
             $strSql.=" AND log_time >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND log_time <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
         }
@@ -59,6 +61,11 @@ class SessTry_Model extends Model {
         $nStartRow = ($arrReqData['page']-1) * $arrReqData['count'] ;
 
         $strSql.=" ORDER BY log_fid DESC LIMIT ".$nStartRow.", ".$arrReqData['count'];
+        
+        $strSql .= ") AS ". $tbSearch." LEFT JOIN member ON ".$tbSearch.".log_uid = member.mb_uid ";
+        $strSql .= ' LEFT JOIN '.$tbBlock.' ON '.$tbSearch.'.log_ip = '.$tbBlock.'.block_ip ';
+        $strSql.=" ORDER BY log_fid DESC";
+
 
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();
@@ -70,8 +77,8 @@ class SessTry_Model extends Model {
     function searchCount($arrReqData, $mbLevel)
     {
         $strSql = "SELECT count(*) as count FROM ".$this->table;
-        $strSql .= " LEFT JOIN member ON ".$this->table.".log_uid = member.mb_uid ";
-        $strSql .= " WHERE (mb_level IS NULL OR mb_level <= ".$mbLevel.") " ;
+        $strSql.=" WHERE log_uid NOT IN ( SELECT mb_uid FROM member WHERE mb_level > ".$mbLevel." ) ";
+
         if(strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0 ){
             $strSql.=" AND log_time >= ".$this->db->escape($arrReqData['start']." 00:00:00")." AND log_time <= ".$this->db->escape($arrReqData['end']." 23:59:59") ; 
         }
@@ -82,6 +89,9 @@ class SessTry_Model extends Model {
             else if($arrReqData['type'] == 1)
                 $strSql.=" AND log_ip = ".$this->db->escape($search);
         }
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog($strSql);
+
         $query = $this -> db -> query($strSql);
         $result = $query -> getRow();
         

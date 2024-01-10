@@ -32,8 +32,6 @@ function showGame(list) {
             html += "</td><td>";
             html += game.vendor_id;
             html += "</td><td>";
-            html += game.key;
-            html += "</td><td>";
             html += game.name;
             html += "</td><td>";
             html += "<select class='' onchange='onChangeHidden(this)' data-fid='" + game.fid + "' ";

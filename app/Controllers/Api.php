@@ -25,6 +25,7 @@ use App\Models\Ebalance_Model;
 use App\Models\Eorder_Model;
 use App\Models\EbalLog_Model;
 use App\Models\ConfMsg_Model;
+use App\Models\Domain_Model;
 
 use App\Libraries\ApiCas_Lib;
 use App\Libraries\ApiSlot_Lib;
@@ -968,14 +969,23 @@ class Api extends BaseController{
 						
 					}
 					else if($arrReqData['process'] == 1){		//승인
+						$iResult = 1;
+						// if(floatval($objUser->mb_money) < $objExchange->exchange_money){
+						// 	$iResult = $this->alltoGame($objUser); 
+						// } 
+						if($iResult == 1 && ($objExchange->exchange_action_state == 1 || $objExchange->exchange_action_state == 3  || $objExchange->exchange_action_state == 4) ){ //대기이거나 거절된 상태에서만 진행
+							// if($this->modelMember->updateAssets($objUser, 0-$objExchange->exchange_money, 0, MONEYCHANGE_EXCHANGE)){
 
-						if($objExchange->exchange_action_state == 1 || $objExchange->exchange_action_state == 3  || $objExchange->exchange_action_state == 4){ //대기이거나 거절된 상태에서만 진행
-							//moneyhistory Table
-							// $moneyhistoryModel->registerExchange($objUser, $objExchange);
-							//exchange Table 
-							$objExchange->exchange_action_state = 2;
-							$objExchange->exchange_action_uid = $strUid;
-							$bResult = $exchangeModel->permit($objExchange);
+							if($moneyhistoryModel->updateExchange($objUser, $objExchange, $objAdmin->mb_uid)){
+								//moneyhistory Table
+								// $moneyhistoryModel->registerExchange($objUser, $objExchange);
+								//exchange Table 
+								$objExchange->exchange_action_state = 2;
+								$objExchange->exchange_action_uid = $strUid;
+								// $objExchange->exchange_money_before = $objUser->mb_money;
+								// $objExchange->exchange_money_after = allMoney($objUser) - $objExchange->exchange_money;
+								$bResult = $exchangeModel->permit($objExchange);
+							}
 						}
 					} else if($arrReqData['process'] == 2){					//거절
 						if($objExchange->exchange_action_state == 1 || $objExchange->exchange_action_state == 4 ){		//대기상태에서만 진행
@@ -1050,14 +1060,21 @@ class Api extends BaseController{
 								
 							}
 							else if($arrReqData['process'] == 1){		//승인
-
-								if($objExchange->exchange_action_state == 1 || $objExchange->exchange_action_state == 3  || $objExchange->exchange_action_state == 4){ //대기이거나 거절된 상태에서만 진행
-									//moneyhistory Table
-									$moneyhistoryModel->registerExchange($objUser, $objExchange);
-									//exchange Table 
-									$objExchange->exchange_action_state = 2;
-									$objExchange->exchange_action_uid = $strUid;
-									$bResult = $exchangeModel->permit($objExchange);
+								$iResult = 1;
+								// if(floatval($objUser->mb_money) < $objExchange->exchange_money){
+								// 	$iResult = $this->alltoGame($objUser); 
+								// } 
+								if($iResult == 1 && ($objExchange->exchange_action_state == 1 || $objExchange->exchange_action_state == 3  || $objExchange->exchange_action_state == 4) ){ //대기이거나 거절된 상태에서만 진행
+									// if($this->modelMember->updateAssets($objUser, 0-$objExchange->exchange_money, 0, MONEYCHANGE_EXCHANGE)){
+									if($moneyhistoryModel->updateExchange($objUser, $objExchange, $objAdmin->mb_uid)){
+										//moneyhistory Table
+										// $moneyhistoryModel->registerExchange($objUser, $objExchange);
+										//exchange Table 
+										$objExchange->exchange_action_state = 2;
+										$objExchange->exchange_action_uid = $strUid;
+										// $objExchange->exchange_money_after = allMoney($objUser) - $objExchange->exchange_money;
+										$bResult = $exchangeModel->permit($objExchange);
+									}
 								}
 							} else if($arrReqData['process'] == 2){					//거절
 								if($objExchange->exchange_action_state == 1 || $objExchange->exchange_action_state == 4 ){		//대기상태에서만 진행
@@ -1440,14 +1457,14 @@ class Api extends BaseController{
 		            $objCalc['mb_charge'] = $arrResult[3]->result_1 != null ? $arrResult[3]->result_1 : 0 ;         //충전금액합산
 		            $objCalc['mb_exchange'] = $arrResult[4]->result_1 != null ? $arrResult[4]->result_1 : 0;     	//환전금액합산
 		            $objCalc['mb_charge_benefit'] = $objCalc['mb_charge'] - $objCalc['mb_exchange'];  				//충환손익
-					$objCalc['mb_give'] = $arrResult[5]->result_1 != null ? $arrResult[5]->result_1 : 0 ;         //충전금액합산
+					$objCalc['mb_give'] = $arrResult[5]->result_1 != null ? $arrResult[5]->result_1 : 0 ;         	//충전금액합산
 		            $objCalc['mb_withdraw'] = $arrResult[5]->result_2 != null ? $arrResult[5]->result_2 : 0;     	//환전금액합산
 			        $objCalc['mb_bet_money'] = $arrResult[6]->result_1 != null ? $arrResult[6]->result_1 : 0;		//배팅머니
 					$objCalc['mb_bet_win_money'] = $arrResult[6]->result_2 != null ? $arrResult[6]->result_2 : 0;	//적중머니
          			$objCalc['mb_bet_benefit_money'] = $objCalc['mb_bet_money'] - $objCalc['mb_bet_win_money'];  	//배팅손익
          			$objCalc['mb_rate_all'] =   $arrResult[7]->result_1 != null ? $arrResult[7]->result_1 : 0;		//수수료 합산
          			$objCalc['mb_rate_single'] =   $arrResult[7]->result_2 != null ? $arrResult[7]->result_2 : 0;	//수수료 개별
-         			$objCalc['mb_last_money'] = $objCalc['mb_bet_benefit_money'] - $objCalc['mb_rate_single'] ; 	//최종손익
+         			$objCalc['mb_last_money'] = $objCalc['mb_bet_benefit_money'] - $objCalc['mb_rate_all'] ; 		//최종손익
 
 		            $arrData[] = $objCalc;
             		
@@ -2421,6 +2438,74 @@ class Api extends BaseController{
 
 		}
 		echo json_encode($objResult);
+	}
+
+	public function domainlist(){
+
+		$objResult = new \StdClass;
+		if(is_login()) {
+			//model
+			$domainModel = new Domain_Model();
+			
+			$strUid = $this->session->user_id;
+			$objAdmin = $this->modelMember->getInfo($strUid);
+			if($objAdmin->mb_level < LEVEL_ADMIN){
+				$objResult->status = "fail";
+			} else {
+				$objResult->status = "success";
+				$objResult->data = $domainModel->search();
+			}
+		}
+		else{
+			$objResult->status = "logout";
+
+		}
+		echo json_encode($objResult);
+
+	}
+
+	public function addDomain(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrGetData = json_decode($jsonData, true);
+		if(is_login()) {
+            $this->sess_action();                
+			//model
+			$domainModel = new Domain_Model();
+
+			$domainModel->add($arrGetData);
+		
+			$objResult = new \StdClass;
+			$objResult->status = "success";
+		
+			echo json_encode($objResult);
+		}
+		else{
+		
+			$arrResult['status'] = "logout";
+			echo json_encode($arrResult);	
+		} 		
+	}
+
+	public function deleteDomain(){ 
+		$jsonData = $_REQUEST['json_'];
+		$arrGetData = json_decode($jsonData, true);
+		if(is_login()) {
+            $this->sess_action();                
+			//model
+			$domainModel = new Domain_Model();
+			$arrResult = $domainModel->delete($arrGetData['conf_id']);
+		
+			$objResult = new \StdClass;
+			$objResult->status = "success";
+			$objResult->data = $arrResult;
+		
+			echo json_encode($objResult);
+		}
+		else{
+		
+			$arrResult['status'] = "logout";
+			echo json_encode($arrResult);	
+		} 		
 	}
 
 	//DB 정리

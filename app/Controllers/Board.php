@@ -49,23 +49,35 @@ class Board extends StdController {
 			return $this->response->redirect( $_ENV['app.furl'].'/pages/login');
 		}
 		$objNotice = null;
+		$strSenderName = "";
+		$strSenderId = "";
 		if($strNoticeFid > 0)
 		{
 			$noticeModel = new Notice_Model();
 			$objNotice = $noticeModel->getMessageByFid($strNoticeFid);
 
-			if(!is_null($objNotice) && $objNotice->notice_type == 3 && $objNotice->notice_read_count == 0)
-				$noticeModel->setNoticeRead($objNotice);
+			if(!is_null($objNotice) && $objNotice->notice_type == NOTICE_CUSTOMER){
+				if($objNotice->notice_read_count == 0)
+					$noticeModel->setNoticeRead($objNotice);
+				$objSender = $this->modelMember->getInfoByUid($objNotice->notice_mb_uid); 
+				if(!is_null($objSender)){
+					$strSenderId = $objSender->mb_uid;
+					$strSenderName = $objSender->mb_nickname;
+				}
+			}
 		}
 		$strUserId = '*';
-		
 		$objUser = null;
 		if($strUserFid > 0)
 			$objUser = $this->modelMember->getInfoByFid($strUserFid);
-		if(!is_null($objUser)) $strUserId = $objUser->mb_uid;
+		if(!is_null($objUser)){
+			$strUserId = $objUser->mb_uid;
+		} 
 		$this->load_view_page('board/message_edit', 'board_message', LEVEL_ADMIN, [
 			'objNotice' => $objNotice, 
-			'strUserId' => $strUserId
+			'strUserId' => $strUserId,
+			'senderName' => $strSenderName,
+			'senderId' => $strSenderId
 		]);		
 	}
 }

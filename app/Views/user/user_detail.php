@@ -225,7 +225,7 @@
 							<input type="checkbox" id="useredit-press-check-id" style="zoom:100%; margin-top:4px; margin-right:0; height:20px;" >
 						<?php endif ?>
 					</td>
-					<td colspan="2">
+					<td colspan="2"  style="text-align:left; padding-left:25px;">
 						<?php if(is_null($objMember)) :  ?>
 						<input type = "text" id="useredit-press-input-id" value="0" style="margin-right:5px">
 						<?php else :?>
@@ -251,6 +251,24 @@
 					</td>
 				</tr>
 			<?php endif ?>
+			<tr>
+				<td>에볼 자동누르기</td>
+					<td><?php if(!is_null($objMember) && $objMember->mb_pressat_active == 1) :  ?>
+						<input type="checkbox" id="useredit-pressat-check-id" style="zoom:100%; margin-top:4px; margin-right:0; width:20px;height:20px;" checked>
+					<?php else :  ?>
+						<input type="checkbox" id="useredit-pressat-check-id" style="zoom:100%; margin-top:4px; margin-right:0; width:20px;height:20px;" >
+					<?php endif ?>
+				</td>
+				<td colspan="2"  style="text-align:left; padding-left:25px;">
+				<?php if(is_null($objMember)) :  ?>
+					<input type = "text" id="useredit-pressat-input-id" value="0" style="margin-right:5px">
+					<?php else :?>
+					<input type = "text" id="useredit-pressat-input-id" value="<?=number_format($objMember->mb_pressat_amount)?>" style="margin-right:5px">
+					<?php endif ?>
+					<label style="width:48px;">이하</label>
+					<button class="pbresult-list-view-but" id="useredit-pressat-but-id"  style="margin-left:5px; padding:5px 10px;">전체 적용</button>  
+				</td>
+			</tr>
 
 			<?php if($follow_en > 0 ) :?>
 				<tr>
@@ -313,10 +331,11 @@
 					<td>하부회원 머니환수 </td>
 					<td>
 						<input type="checkbox" id="useredit-transfer-subs-id"  style="zoom:100%; width:20px; height:20px; min-width:20px;" <?=$objMember->mb_transfer_subs==1?'checked':''?> >
-						<!-- <span style="margin-right:20px; position:relative; top:-5px;"></span> -->
 					</td>
-					<td>등록번호</td>
-					<td><?=$objMember->mb_fid?></td>
+					<td>추천인 사용불가</td>
+					<td>
+					<input type="checkbox" id="useredit-recommender-deny-id"  style="zoom:100%; width:20px; height:20px; min-width:20px;" <?=$objMember->mb_recommender_deny==1?'checked':''?> >
+					</td>
 				</tr>
 			<?php endif ?>
 			<tr>
@@ -330,7 +349,7 @@
 				</td>
 				<?php if(!is_null($objMember)) :  ?>
 
-					<td>계정상태 </td>
+					<td>계정상태</td>
 					<td>
 						<label style="font-size:16px;">
 						<?php if ($objMember->mb_state_active == PERMIT_OK) :  ?>
