@@ -71,166 +71,62 @@
 				</div>
 			<?php endif ?>
 		</div>
-
-		<!-- 보험계정 1 -->
-		<div class="confsite-game-text-div">
-  			<p style="font-size: 16px; font-weight: bold;">보험계정 1</p>
-  		</div>
-		<div class="confsite-game-text-div">
-			<div>
-				<p>보험배팅승인:</p> 
-				<input type="checkbox" id="confev-bet-check-id" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 배팅승인</label>
+		<?php for($i = 1 ; $i <= $ebal_cnt ; $i ++):?>
+			<!-- 보험계정 1 -->
+			<div class="confsite-game-text-div">
+				<p style="font-size: 16px; font-weight: bold;">보험계정 <?=($i)?></p>
 			</div>
-			<div>
-				<p>팅김방지 배팅:</p> 
-				<input type="checkbox" id="confev-conbet-check-id" style="zoom:120%; margin-top:5px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 배팅승인</label>
+			<div class="confsite-game-text-div">
+				<div>
+					<p>보험배팅승인:</p> 
+					<input type="checkbox" id="confev-bet-check-id<?=($i)?>" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 배팅승인</label>
+				</div>
+				<div>
+					<p>팅김방지 배팅:</p> 
+					<input type="checkbox" id="confev-conbet-check-id<?=($i)?>" style="zoom:120%; margin-top:5px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 배팅승인</label>
+				</div>
 			</div>
-		</div>
-		<div class="confsite-game-text-div">
-			<div>
-				<p> 보험타입</p>			
-				<select name="pbresult-number" class="" id="confev-bettype-select-id" style="padding:5px; width: 200px; margin-left:0px;">
-					<?php foreach($gamd_types as $type=>$name):?>
-						<option value="<?=$type?>" ><?=$name?></option>
-					<?php endforeach?>
-				</select>
+			<div class="confsite-game-text-div">
+				<div>
+					<p> 보험타입</p>			
+					<select name="pbresult-number" class="" id="confev-bettype-select-id<?=($i)?>" style="padding:5px; width: 200px; margin-left:0px;">
+						<?php foreach($gamd_types as $type=>$name):?>
+							<option value="<?=$type?>" ><?=$name?></option>
+						<?php endforeach?>
+					</select>
+				</div>
+				<div>
+					<p>사이트 주소:</p> 
+					<input type = "text" class="conf-text-input" id="confev-betsite-input-id<?=($i)?>">
+				</div>
 			</div>
-			<div>
-				<p>사이트 주소:</p> 
-				<input type = "text" class="conf-text-input" id="confev-betsite-input-id">
+			<div class="confsite-game-text-div">
+				<div>
+					<p>계정 아이디:</p> 
+					<input type = "text" class="conf-text-input"  id="confev-userid-input-id<?=($i)?>">
+				</div>
+				<div>
+					<p>계정 비밀번호:</p> 
+					<input type = "text" class="conf-text-input"  id="confev-userpwd-input-id<?=($i)?>">
+				</div>
 			</div>
-		</div>
-		<div class="confsite-game-text-div">
-			<div>
-				<p>계정 아이디:</p> 
-				<input type = "text" class="conf-text-input"  id="confev-userid-input-id">
+			
+			<div class="confsite-game-text-div">
+				<div>
+					<p>보험알:</p> 
+					<input type = "text" class="conf-text-input"  id="confev-balance-input-id<?=($i)?>" disabled> 
+					<label style="font-size:14px; font-weight:normal; padding-top:0px; min-width:100px;"  id="confev-balance-label-id<?=($i)?>"></label>
+				</div>
+				<div>
+					<p>계정타입:</p> 
+					<input type="checkbox" id="confev-signal-check-id<?=($i)?>" style="zoom:120%; margin-top:5px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호값용</label>
+					<input type="checkbox" id="confev-multiroom-check-id<?=($i)?>" style="zoom:120%; margin-top:5px; margin-left:30px;" <?=$mb_level<LEVEL_ADMIN+2?'hidden':''?>>
+					<label style="font-size:14px; font-weight:normal; padding-top:0px;" <?=$mb_level < LEVEL_ADMIN+2?'hidden':''?>> 멀티방</label>
+				</div>
 			</div>
-			<div>
-				<p>계정 비밀번호:</p> 
-				<input type = "text" class="conf-text-input"  id="confev-userpwd-input-id">
-			</div>
-		</div>
+		<?php endfor?>
+	<?php endif ?>
 		
-		<div class="confsite-game-text-div">
-			<div>
-				<p>보험알:</p> 
-				<input type = "text" class="conf-text-input"  id="confev-balance-input-id" disabled> 
-				<label style="font-size:14px; font-weight:normal; padding-top:0px; min-width:100px;"  id="confev-balance-label-id"></label>
-			</div>
-			<div>
-				<p>계정타입:</p> 
-				<input type="checkbox" id="confev-signal-check-id" style="zoom:120%; margin-top:5px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호값용</label>
-				<input type="checkbox" id="confev-multiroom-check-id" style="zoom:120%; margin-top:5px; margin-left:30px;" <?=$mb_level<LEVEL_ADMIN+2?'hidden':''?>>
-				<label style="font-size:14px; font-weight:normal; padding-top:0px;" <?=$mb_level < LEVEL_ADMIN+2?'hidden':''?>> 멀티방</label>
-			</div>
-		</div>
-		
-		<!-- 보험계정 2 -->
-		<div class="confsite-game-text-div">
-  			<p style="font-size: 16px; font-weight: bold;">보험계정 2</p>
-  		</div>
-		<div class="confsite-game-text-div">
-			<div>
-				<p>보험배팅승인:</p> 
-				<input type="checkbox" id="confev-bet-check-id2" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 배팅승인</label>
-			</div>
-			<div>
-				<p>팅김방지 배팅:</p> 
-				<input type="checkbox" id="confev-conbet-check-id2" style="zoom:120%; margin-top:5px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 배팅승인</label>
-			</div>
-		</div>
-		<div class="confsite-game-text-div">
-			<div>
-				<p> 보험타입</p>			
-				<select name="pbresult-number" class="" id="confev-bettype-select-id2" style="padding:5px; width: 200px; margin-left:0px;">
-					<?php foreach($gamd_types as $type=>$name):?>
-						<option value="<?=$type?>" ><?=$name?></option>
-					<?php endforeach?>
-				</select>
-			</div>
-			<div>
-				<p>사이트 주소:</p> 
-				<input type = "text" class="conf-text-input" id="confev-betsite-input-id2">
-			</div>
-		</div>
-		<div class="confsite-game-text-div">
-			<div>
-				<p>계정 아이디:</p> 
-				<input type = "text" class="conf-text-input"  id="confev-userid-input-id2">
-			</div>
-			<div>
-				<p>계정 비밀번호:</p> 
-				<input type = "text" class="conf-text-input"  id="confev-userpwd-input-id2">
-			</div>
-		</div>
-		
-		<div class="confsite-game-text-div">
-			<div>
-				<p>보험알:</p> 
-				<input type = "text" class="conf-text-input"  id="confev-balance-input-id2" disabled> 
-				<label style="font-size:14px; font-weight:normal; padding-top:0px; min-width:100px;"  id="confev-balance-label-id2"></label>
-			</div>
-			<div>
-				<p>계정타입:</p> 
-				<input type="checkbox" id="confev-signal-check-id2" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호값용</label>
-				<input type="checkbox" id="confev-multiroom-check-id2" style="zoom:120%; margin-top:5px; margin-left:30px;" <?=$mb_level<LEVEL_ADMIN+2?'hidden':''?>>
-				<label style="font-size:14px; font-weight:normal; padding-top:0px;" <?=$mb_level<LEVEL_ADMIN+2?'hidden':''?>> 멀티방</label>
-			</div>
-		</div>
-		<!-- 보험계정 3 -->
-		<div class="confsite-game-text-div">
-  			<p style="font-size: 16px; font-weight: bold;">보험계정 3</p>
-  		</div>
-		<div class="confsite-game-text-div">
-			<div>
-				<p>보험배팅승인:</p> 
-				<input type="checkbox" id="confev-bet-check-id3" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 배팅승인</label>
-			</div>
-			<div>
-				<p>팅김방지 배팅:</p> 
-				<input type="checkbox" id="confev-conbet-check-id3" style="zoom:120%; margin-top:5px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 배팅승인</label>
-			</div>
-		</div>
-		<div class="confsite-game-text-div">
-			<div>
-				<p> 보험타입</p>			
-				<select name="pbresult-number" class="" id="confev-bettype-select-id3" style="padding:5px; width: 200px; margin-left:0px;">
-					<?php foreach($gamd_types as $type=>$name):?>
-						<option value="<?=$type?>" ><?=$name?></option>
-					<?php endforeach?>
-				</select>
-			</div>
-			<div>
-				<p>사이트 주소:</p> 
-				<input type = "text" class="conf-text-input" id="confev-betsite-input-id3">
-			</div>
-		</div>
-		<div class="confsite-game-text-div">
-			<div>
-				<p>계정 아이디:</p> 
-				<input type = "text" class="conf-text-input"  id="confev-userid-input-id3">
-			</div>
-			<div>
-				<p>계정 비밀번호:</p> 
-				<input type = "text" class="conf-text-input"  id="confev-userpwd-input-id3">
-			</div>
-		</div>
-		
-		<div class="confsite-game-text-div">
-			<div>
-				<p>보험알:</p> 
-				<input type = "text" class="conf-text-input"  id="confev-balance-input-id3" disabled> 
-				<label style="font-size:14px; font-weight:normal; padding-top:0px; min-width:100px;"  id="confev-balance-label-id3"></label>
-			</div>
-			<div>
-				<p>계정타입:</p> 
-				<input type="checkbox" id="confev-signal-check-id3" style="zoom:120%; margin-top:0px;"><label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호값용</label>
-				<input type="checkbox" id="confev-multiroom-check-id3" style="zoom:120%; margin-top:5px; margin-left:30px;" <?=$mb_level<LEVEL_ADMIN+2?'hidden':''?>>
-				<label style="font-size:14px; font-weight:normal; padding-top:0px;" <?=$mb_level<LEVEL_ADMIN+2?'hidden':''?>> 멀티방</label>
-			</div>
-		</div>
-		<?php endif ?>
-
 		<div class = "confsite-button-group">
 			<button class="confsite-cancel-button"  id="confsite-cancel-btn-id">취소</button>
 			<button class="confsite-ok-button" id="confsite-ok-btn-id">저장</button>

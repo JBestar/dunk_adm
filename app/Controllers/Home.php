@@ -213,6 +213,7 @@ class Home extends StdController
 			'game_name' => "밸런스설정",
 			'game_id' => GAME_CASINO_EVOL,
 			'gamd_types' => $arrType,
+			'ebal_cnt' => $_ENV['app.ebal'],
 			'evpress' => $confsiteModel->getEvpressState(),
 		];
 		$this->load_view_page('ebal/conf_ebal', 'conf_ebal', LEVEL_ADMIN, $param);	

@@ -180,6 +180,11 @@ defined('CONF_EVOLPRESS')       || define('CONF_EVOLPRESS', 67);         //에�
 defined('CONF_EVOLFOLLOW')      || define('CONF_EVOLFOLLOW', 70);         //에볼루션 따라가기 상태
 defined('CONF_EVP_DENY')       || define('CONF_EVP_DENY', 74); //Evo Powerball
 defined('CONF_SPK_DENY')       || define('CONF_SPK_DENY', 75); //Speed Keno
+defined('CONF_EVOLSITE_4')      || define('CONF_EVOLSITE_4', 76);         //에볼루션 밸런스 계정4
+defined('CONF_EVOLRUN_4')       || define('CONF_EVOLRUN_4', 77);         //에볼루션 밸런스 상태4
+defined('CONF_EVOLSITE_5')      || define('CONF_EVOLSITE_5', 78);         //에볼루션 밸런스 계정5
+defined('CONF_EVOLRUN_5')       || define('CONF_EVOLRUN_5', 79);         //에볼루션 밸런스 상태5
+
 
 defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);
 defined('LEVEL_MASTER')        || define('LEVEL_MASTER', 101);
