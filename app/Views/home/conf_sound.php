@@ -67,7 +67,22 @@
 			  <source id="confsound-alarm4-source-id" >
 			  Your browser does not support the audio element.
 			</audio>
-			
+		</div>
+
+		
+		<div class="confother-sound-div">
+			<label>에볼루션 알림음:</label> 
+			<select name="pbresult-number" class="pbresult-number-select" id="confsound-alarm5-select-id" style="width: 150px; float: left;">
+				<option value="sound_msg.mp3">신규알림음</option>
+				<?php foreach($sounds as $fName=>$sName):?>
+					<option value="<?=$fName?>" ><?=$sName?></option>
+				<?php endforeach?>	
+			</select>
+			<audio id="confsound-alarm5-audio-id" controls>
+			  
+			  <source id="confsound-alarm5-source-id" >
+			  Your browser does not support the audio element.
+			</audio>
 		</div>
 
 		<div class = "confsite-button-group">

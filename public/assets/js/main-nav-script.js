@@ -3,6 +3,7 @@ var mUserAudio = null;
 var mChargeAudio = null;
 var mDischarAudio = null;
 var mMessageAudio = null;
+var mEvolAudio = null;
 
 $(document).ready(function() {
     initMainNavbar();
@@ -13,6 +14,7 @@ function initMainNavbar() {
     mChargeAudio = new Audio();
     mDischarAudio = new Audio();
     mMessageAudio = new Audio();
+    mEvolAudio = new Audio();
     addNavbarButtonEvent();
 
     requestMemberInfo();
@@ -187,6 +189,7 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
     if (objEmpInfo == undefined || objEmpInfo == null)
         return;
     $("#main-navbar-table-id td a").removeClass("flicker");
+    $("#main-navbar-bettable-id td a").removeClass("flicker");
 
     var strBuf = objEmpInfo.new_message + " 신청";
     $("#main-navbar-newmessage-id").text(strBuf);
@@ -282,6 +285,19 @@ function showEmpInfo(objEmpInfo, arrSoundInfo) {
             mMessageAudio.play();
         }
     }
+    if (objEmpInfo.evol_captcha > 0) {
+        $("#main-navbar-evol_wait-id").addClass("flicker");
+        if(bAlarmEnable){
+            mEvolAudio.src = FURL + '/assets/sound/' + arrSoundInfo[4][0];
+            if (parseInt(arrSoundInfo[4][1]) <= 100) {
+                nVolume = arrSoundInfo[4][1] / 100.0;
+            }
+            mEvolAudio.volume = nVolume;
+            mEvolAudio.load();
+            mEvolAudio.play();
+        }
+    }
+    
 }
 
 

@@ -188,6 +188,7 @@ defined('CONF_EVOLSITE_6')      || define('CONF_EVOLSITE_6', 82);         //에�
 defined('CONF_EVOLRUN_6')       || define('CONF_EVOLRUN_6', 83);         //에볼루션 밸런스 상태6
 defined('CONF_EVOLSITE_7')      || define('CONF_EVOLSITE_7', 84);         //에볼루션 밸런스 계정7
 defined('CONF_EVOLRUN_7')       || define('CONF_EVOLRUN_7', 85);         //에볼루션 밸런스 상태7
+defined('CONF_SOUND_5')        || define('CONF_SOUND_5', 88);           //에볼루션 알람
 
 
 defined('LEVEL_MAX')           || define('LEVEL_MAX', 100);

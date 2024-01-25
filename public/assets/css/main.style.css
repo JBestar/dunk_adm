@@ -287,12 +287,21 @@ tr {
 }
 
 .main-navbar-info-table td a:hover {
-    /* color: var(--span-font-color); */
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.main-navbar-betinfo-table td a:hover {
     font-weight: bold;
     text-decoration: underline;
 }
 
 .main-navbar-info-table td a.flicker {
+    animation: flicker 1s linear infinite;
+    font-weight: bold;
+}
+
+.main-navbar-betinfo-table td a.flicker {
     animation: flicker 1s linear infinite;
     font-weight: bold;
 }

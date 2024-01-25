@@ -33,9 +33,20 @@ function showConfSite(arrData, all) {
             } else if( i == 2){
                 $("#confev-betmode-select-id").val(data[5]);
             }
+
+            //captcha code
+            $('#confev-captcha-input-id'+i).val(data[18]);
             
         }
         
+        $('#confev-captcha-div-id'+i).hide();
+
+        if(data[4] == 23 && data[17].length > 0){
+            $('#confev-captcha-img-id'+i).attr('src', data[17]); //captcha image
+            $('#confev-captcha-div-id'+i).show();
+        }
+
+
         if( i == 1){
             $('#confev-conuser-span-id').text('접속자수: '+data[14]+"명, ");
             $('#confev-follower-span-id').text('따라가기: '+data[16]+"명");
@@ -276,3 +287,33 @@ function requestUpdateMember(data){
     });
 }
 
+function saveCaptcha(i){
+
+    let code = $('#confev-captcha-input-id'+i).val();
+
+    objData = {index:i, code:code}
+    let jsonData = JSON.stringify(objData);
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        data: { json_: jsonData },
+        url: FURL + "/api/setEvolCaptcha",
+        success: function(jResult) {
+            // console.log(jResult);
+            if (jResult.status == "success") {
+                showAlert("저장되었니다.");
+                requestEmployeeInfo();
+            } else if (jResult.status == "logout") {
+                window.location.replace( FURL +'/');
+            } else if (jResult.status == "nopermit") {
+                showAlert("권한이 없습니다.", 0);
+            }
+        },
+        error: function(request, status, error) {
+            // console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+
+    });
+
+}

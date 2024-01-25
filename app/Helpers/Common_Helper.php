@@ -464,4 +464,16 @@
       return $arrBatch;
     }
 
+    function getConfById($arrConf, $configId){
+      
+      $objConfig = null;
+      foreach($arrConf as $objConf){
+        if($objConf->conf_id == $configId){
+          $objConfig = $objConf;
+          break;
+        }
+      }
+      return $objConfig;
+    }
+
 ?>

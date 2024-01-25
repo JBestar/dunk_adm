@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 class ConfSite_Model extends Model 
 {
     protected $table = 'conf_site';
-    protected $allowedFields = ['conf_memo', 'conf_content', 'conf_active', 'conf_update', 'conf_idx'];
+    protected $allowedFields = ['conf_memo', 'conf_content', 'conf_content_cn', 'conf_active', 'conf_update', 'conf_idx'];
     protected $primaryKey = 'conf_id';
     protected $returnType = 'object'; 
 
@@ -89,15 +89,15 @@ class ConfSite_Model extends Model
         $arrConf = $this->find($confIds);
         //0-site, 1-id, 2-pwd, 3-permit, 4-type, 5-end time, 6-팅김, 7-money
         //8-min, 9-max, 10-상태, 11-팅김간격, 12-max user, 13-is signal, 14-connector
-        //15-multi room, 16-follower
+        //15-multi room, 16-follower, 17-captcha 18-code
         $data = array();
-        array_push($data, ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 20, 50, 0, 0, 0, 0 ]);
-        array_push($data, ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0, 0 ]);
-        array_push($data, ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0, 0 ]);
-        array_push($data, ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0, 0 ]);
-        array_push($data, ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0, 0 ]);
-        array_push($data, ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0, 0 ]);
-        array_push($data, ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0, 0 ]);
+        array_push($data, ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 20, 50, 0, 0, 0, 0, "", "" ]);
+        array_push($data, ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0, 0, "", "" ]);
+        array_push($data, ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0, 0, "", "" ]);
+        array_push($data, ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0, 0, "", "" ]);
+        array_push($data, ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0, 0, "", "" ]);
+        array_push($data, ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0, 0, "", "" ]);
+        array_push($data, ["", "", "", 0, 0, 0, 0, 0, 0, 0, "", 0, 0, 0, 0, 0, 0, "", "" ]);
         
         $idx = 0;
         foreach($arrConf as $objConf){
@@ -154,6 +154,7 @@ class ConfSite_Model extends Model
                                 $data[$idx][15] = intval($info[8]);
                         }
                     }
+                    $data[$idx][17] = $objConf->conf_content_cn;
 					break;
 				case CONF_EVOLRUN_1:	
 				case CONF_EVOLRUN_2:	
@@ -178,6 +179,7 @@ class ConfSite_Model extends Model
                         $idx = 6;	
                     $data[$idx][3] = $objConf->conf_active;
                     $data[$idx][10] = $objConf->conf_idx;
+                    $data[$idx][18] = $objConf->conf_content_cn;
 					break;
 
                 default:break;
@@ -250,6 +252,47 @@ class ConfSite_Model extends Model
         return  $this->builder()->updateBatch($arrBatch, 'conf_id');
     }
     
+    public function getCaptchaAlarm(){
+
+        $confIds = [CONF_EVOLSITE_1, CONF_EVOLRUN_1, CONF_EVOLSITE_2, CONF_EVOLRUN_2, CONF_EVOLSITE_3, CONF_EVOLRUN_3,
+                CONF_EVOLSITE_4, CONF_EVOLRUN_4, CONF_EVOLSITE_5, CONF_EVOLRUN_5, CONF_EVOLSITE_6, CONF_EVOLRUN_6,
+                CONF_EVOLSITE_7, CONF_EVOLRUN_7];  
+        $arrConf = $this->find($confIds);
+
+        $bAlarm = STATE_DISABLE;
+        foreach($arrConf as $objConf){
+            $confRunId  = 0;
+
+            if($objConf->conf_id == CONF_EVOLSITE_1){
+                $confRunId = CONF_EVOLRUN_1;
+            } else if($objConf->conf_id == CONF_EVOLSITE_2){
+                $confRunId = CONF_EVOLRUN_2;
+            } else if($objConf->conf_id == CONF_EVOLSITE_3){
+                $confRunId = CONF_EVOLRUN_3;
+            } else if($objConf->conf_id == CONF_EVOLSITE_4){
+                $confRunId = CONF_EVOLRUN_4;
+            } else if($objConf->conf_id == CONF_EVOLSITE_5){
+                $confRunId = CONF_EVOLRUN_5;
+            } else if($objConf->conf_id == CONF_EVOLSITE_6){
+                $confRunId = CONF_EVOLRUN_6;
+            } else if($objConf->conf_id == CONF_EVOLSITE_7){
+                $confRunId = CONF_EVOLRUN_7;
+            } 
+            if($confRunId == 0)
+                continue;
+            $confRun = getConfById($arrConf, $confRunId);
+            if(is_null($confRun))
+                continue;
+
+            if(strpos($objConf->conf_idx, "23#") !== false && strlen($objConf->conf_content_cn) > 0 && strlen($confRun->conf_content_cn) == 0 ){
+                $bAlarm = STATE_ACTIVE;
+                break;
+            }
+		}
+
+        return $bAlarm;
+    }
+
     public function saveData($arrData){
 
         if($arrData == null) return false;
@@ -459,7 +502,7 @@ class ConfSite_Model extends Model
 
     public function getSoundConf(){
 
-        $confIds = [CONF_SOUND_1, CONF_SOUND_2, CONF_SOUND_3, CONF_SOUND_4];  
+        $confIds = [CONF_SOUND_1, CONF_SOUND_2, CONF_SOUND_3, CONF_SOUND_4, CONF_SOUND_5];  
         $arrConf = $this->find($confIds);
 
         $arrSoundData = array();
@@ -474,7 +517,7 @@ class ConfSite_Model extends Model
     }
 
     public function saveSoundConf($arrSoundData){
-        if(count($arrSoundData) != 4)
+        if(count($arrSoundData) < 5)
             return false;
         
         $arrBatch = array();
@@ -490,6 +533,12 @@ class ConfSite_Model extends Model
             
         }
        
+        $arrUpdateData = array();   
+        $arrUpdateData['conf_id'] = CONF_SOUND_5;
+        $arrUpdateData['conf_content'] = $arrSoundData[4][0];
+        $arrUpdateData['conf_active'] = $arrSoundData[4][1];
+        array_push($arrBatch, $arrUpdateData);
+        
         return  $this->builder()->updateBatch($arrBatch, 'conf_id');
             
     }
@@ -510,6 +559,13 @@ class ConfSite_Model extends Model
         return $this->builder()->update();
     }
 
+    public function setConfContentCn($confId, $content){
+        
+        $this->builder()->set('conf_content_cn', $content);
+        $this->builder()->where('conf_id', $confId);
+        
+        return $this->builder()->update();
+    }
     
     public function IsMultiLogin(){
 

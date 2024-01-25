@@ -651,6 +651,7 @@ class UserApi extends BaseController
                     $arrEmpInfo['emp_money_exchange'] = $arrResult[6]->result_1 != null ? $arrResult[6]->result_1 : 0 ;		//환전금액
                     $arrEmpInfo['emp_money_give'] = $arrResult[7]->result_1 != null ? $arrResult[7]->result_1 : 0 ;     //지급
                     $arrEmpInfo['emp_money_withdraw'] = $arrResult[7]->result_2 != null ? $arrResult[7]->result_2 : 0 ;		//회수
+                    $arrEmpInfo['evol_captcha'] = $confsiteModel->getCaptchaAlarm();		//회수
                 }
 
                 $arrSoundInfo = $confsiteModel->getSoundConf();

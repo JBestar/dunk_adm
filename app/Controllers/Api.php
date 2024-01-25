@@ -195,7 +195,7 @@ class Api extends BaseController{
 	}
 
 
-	//본사설정 보관 
+	//본사설정
 	public function saveconfsite(){
 		$jsonData = $_REQUEST['json_'];
 		$arrData = json_decode($jsonData, true);
@@ -229,7 +229,7 @@ class Api extends BaseController{
 	}
 
 	
-	//점검설정 보관 
+	//점검설정
 	public function saveconfmaintain(){
 		$jsonData = $_REQUEST['json_'];
 		$arrData = json_decode($jsonData, true);
@@ -263,7 +263,7 @@ class Api extends BaseController{
 	}
 
 
-	//게임설정 보관 
+	//게임설정
 	public function saveconfgame(){
 		$jsonData = $_REQUEST['json_'];
 		$arrData = json_decode($jsonData, true);		
@@ -453,6 +453,39 @@ class Api extends BaseController{
 
 	}
 
+	public function setEvolCaptcha(){
+		$jsonData = $_REQUEST['json_'];
+		$arrData = json_decode($jsonData, true);		
+		if(is_login())
+		{
+            $this->sess_action();                
+			
+			$confsiteModel = new ConfSite_Model();
+			$strUid = $this->session->user_id;
+			$objAdmin = $this->modelMember->getInfo($strUid);
+			if($objAdmin->mb_level >= LEVEL_ADMIN){
+				$confId = CONF_EVOLRUN_1;
+				if($arrData['index'] == 2){
+					$confId = CONF_EVOLRUN_2;
+				} else if($arrData['index'] == 3){
+					$confId = CONF_EVOLRUN_3;
+				} else if($arrData['index'] == 4){
+					$confId = CONF_EVOLRUN_4;
+				} else if($arrData['index'] == 5){
+					$confId = CONF_EVOLRUN_5;
+				} 
+
+				$confsiteModel->setConfContentCn($confId, $arrData['code']);
+				$arrResult['status'] = "success";
+			} else $arrResult['status'] = "nopermit";
+
+		} else {
+			$arrResult['status'] = "logout";			
+		}
+		echo json_encode($arrResult);	
+
+	}
+
 	public function getsoundconf(){
 		if(is_login())
 		{
@@ -571,7 +604,7 @@ class Api extends BaseController{
 		}
 		echo json_encode($arrResult);	
 	}
-	//게임설정 보관 
+	//게임설정
 	public function changealarmstate(){
 		$jsonData = $_REQUEST['json_'];
 		$arrData = json_decode($jsonData, true);		
