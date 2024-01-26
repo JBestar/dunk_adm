@@ -25,6 +25,9 @@ class Ebalance_Model extends Model
         'bet_banker',
         'bet_balance',
         'bet_type',
+        'bet_mode',
+        'bet_err',
+        'bet_fail',
 
     ];
     protected $primaryKey = 'bet_id';
@@ -32,10 +35,12 @@ class Ebalance_Model extends Model
     
     function getBetAccount($reqData){
         
+        if(array_key_exists("state", $reqData) && $reqData['state'] > 0)
+            return null;
+
         $where = ""  ;
-
         $where.=" WHERE ".getTimeRange('bet_tm_req', $reqData, $this->db);
-
+        $where.=" AND bet_fail = 0 ";
         if(strlen($reqData['user']) > 0){
             $where.=" AND bet_site_uid = ".$this->db->escape($reqData['user']);
         }
@@ -64,7 +69,7 @@ class Ebalance_Model extends Model
         $strSql .= $where;
         $objResult = $this -> db -> query($strSql)->getRow();
         
-        writeLog($strSql);
+        // writeLog($strSql);
         //Total Betting money
         $nSum = 0;
         if(!is_null($objResult->bet_amount_sum)) {
@@ -119,6 +124,12 @@ class Ebalance_Model extends Model
         if(strlen($reqData['user']) > 0){
             $where.=" AND bet_site_uid = ".$this->db->escape($reqData['user']);
         }
+        if(array_key_exists("state", $reqData)){
+            if($reqData['state'] == 0)
+                $where.=" AND bet_fail = 0 "; //정상
+            else
+                $where.=" AND bet_fail <> 0 "; //실패
+        }
         if(strlen(trim($reqData['room'])) > 0){
             $where.=" AND bet_table_name LIKE '%".trim($reqData['room'])."%' ";
         }
@@ -144,6 +155,12 @@ class Ebalance_Model extends Model
         }
         if(strlen($reqData['user']) > 0){
             $where.=" AND bet_site_uid = ".$this->db->escape($reqData['user']);
+        }
+        if(array_key_exists("state", $reqData)){
+            if($reqData['state'] == 0)
+                $where.=" AND bet_fail = 0 "; //정상
+            else
+                $where.=" AND bet_fail <> 0 "; //실패
         }
         if(strlen(trim($reqData['room'])) > 0){
             $where.=" AND bet_table_name LIKE '%".trim($reqData['room'])."%' ";

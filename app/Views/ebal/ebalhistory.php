@@ -14,6 +14,10 @@
 				<option value="1">밸런스</option>
 				<option value="2">팅김방지</option>
 			</select>
+			<select name="pbresult-number" class="pbresult-number-select" id="pbhistory-state-select-id" style="width:80px; margin-left:10px;">
+				<option value="0">성공</option>
+				<option value="1">실패</option>
+			</select>
             <select name="pbresult-number" class="pbresult-number-select" id="pbhistory-number-select-id" style="width:70px; margin-left:10px;">
 				<?php foreach($select_nums as $num=>$select):?>
 					<option value="<?=$num?>" <?=$select?>><?=$num?>개</option>
@@ -23,7 +27,7 @@
 		</div>
 		<Table class="bet-table">
 			<thead>
-				<tr>
+				<tr >
 					<th>ID</th>
 					<th>계정</th>
 					<th>배팅시간</th>
@@ -34,7 +38,7 @@
 					<th>배팅금(차액)</th>
 					<th>배팅선택</th>
 					<th>경기결과</th>
-					<th>적중금</th>
+					<th  id="pbbet-table-th-state-id">적중금</th>
 					<th>보유금</th>
 					<th>수익</th>
 				</tr>
