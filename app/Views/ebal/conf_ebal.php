@@ -119,8 +119,8 @@
 				<div>
 					<p>로그인 코드:</p> 
 					<img  id="confev-captcha-img-id<?=($i)?>" src="" style="width: 120px;">
-					<input type = "text" style="min-width:50px; width:75px;" class="conf-text-input"  id="confev-captcha-input-id<?=($i)?>">
-					<button class="confsite-cancel-button" style="margin-left:0px; padding:3px 10px; float:none;" onclick="saveCaptcha(<?=($i)?>)">저장</button>
+					<input type = "text" style="margin-left:5px; min-width:50px; width:70px;" class="conf-text-input"  id="confev-captcha-input-id<?=($i)?>">
+					<button class="confsite-cancel-button" style="margin-left:3px; padding:3px 10px; float:none;  margin-bottom:12px;" onclick="saveCaptcha(<?=($i)?>)">저장</button>
 				</div>
 			</div>
 			<div class="confsite-game-text-div">
