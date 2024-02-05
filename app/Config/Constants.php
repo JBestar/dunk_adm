@@ -263,6 +263,7 @@ defined('GAME_SLOT_STAR')      || define('GAME_SLOT_STAR', 16);  //STAR slot
 defined('GAME_CASINO_STAR')    || define('GAME_CASINO_STAR', 17);  //STAR casino
 defined('GAME_HOLD_CMS')       || define('GAME_HOLD_CMS', 18);  //Cms Holdem
 defined('GAME_AUTO_EVOL')      || define('GAME_AUTO_EVOL', 101);
+defined('GAME_AUTO_PRAG')      || define('GAME_AUTO_PRAG', 102);
 
 defined('ROUND_5MIN')    || define('ROUND_5MIN', 5);
 defined('ROUND_3MIN')    || define('ROUND_3MIN', 3);

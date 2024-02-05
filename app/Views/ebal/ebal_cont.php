@@ -9,7 +9,7 @@
             <a href="<?php echo site_furl('home/conf_epress');?>" class="sub-navbar-a" >누르기설정</a>
             <a href="<?php echo site_furl('home/conf_epresslog');?>" class="sub-navbar-a" >누르기내역</a>
         <?php endif ?>  
-        <a href="<?php echo site_furl('bet/eordroom');?>" class="sub-navbar-a" >실시간</a>
+        <!-- <a href="<?php echo site_furl('bet/eordroom');?>" class="sub-navbar-a" >실시간</a> -->
         <a href="<?php echo site_furl('bet/ebalhistory');?>" class="sub-navbar-a" >밸런스내역</a>
         <a href="<?php echo site_furl('bet/ebethistory');?>" class="sub-navbar-a" >배팅내역</a>
 	</div>
