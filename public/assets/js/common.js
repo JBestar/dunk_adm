@@ -174,13 +174,13 @@ function goTabPage(url) {
 
 function getEvolSide(side) {
     let strSide = '';
-    switch(side){
-        case "Player": strSide = "<span class='pb-home-odd-span'>플</span>"; break;
-        case "Banker": strSide = "<span class = 'pb-home-even-span'>뱅</span>"; break;
-        case "Tie": strSide = "<span class = 'pb-home-mid-span'>타이</span>"; break;
-        case "Betting.Player": strSide = "<div class='pb-home-odd-span'>플</div>"; break;
-        case "Betting.Banker": strSide = "<span class = 'pb-home-even-span'>뱅</span>"; break;
-        case "Betting.Tie": strSide = "<span class = 'pb-home-mid-span'>타이</span>"; break;
+    switch(side.toLowerCase()){
+        case "player": strSide = "<span class='pb-home-odd-span'>플</span>"; break;
+        case "banker": strSide = "<span class = 'pb-home-even-span'>뱅</span>"; break;
+        case "tie": strSide = "<span class = 'pb-home-mid-span'>타이</span>"; break;
+        case "betting.player": strSide = "<div class='pb-home-odd-span'>플</div>"; break;
+        case "betting.banker": strSide = "<span class = 'pb-home-even-span'>뱅</span>"; break;
+        case "betting.tie": strSide = "<span class = 'pb-home-mid-span'>타이</span>"; break;
         default:break;
     }
     return strSide;

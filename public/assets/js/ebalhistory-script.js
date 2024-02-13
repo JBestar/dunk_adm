@@ -171,6 +171,7 @@ function requestBetHistory() {
         "room": strRoom,
         "bet": strbet,
         "state":state,
+        "game":mGameId,
     };
     jsonData = JSON.stringify(jsonData);
     $(".loading").show();
@@ -216,6 +217,7 @@ function requestTotalPage() {
         "room": strRoom,
         "bet": strbet,
         "state":state,
+        "game":mGameId,
     };
     jsonData = JSON.stringify(jsonData);
 

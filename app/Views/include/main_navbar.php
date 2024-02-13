@@ -76,10 +76,17 @@
 						<td style=""><a style="font-weight: bold; color: #0090ff; font-size: 14px;" href="<?php echo site_furl('/home/conf_ebal');?>" id="main-navbar-evol_wait-id">에볼루션:</a></td>
 						<td>배팅<span id="main-navbar-evbet-id">0 원</span></td>
 						<td>적중<span id="main-navbar-evbetearn-id">0 원</span></td>
-						<td>보유알<span id="main-navbar-evuser-id">0 원</span><span>|</span><span id="main-navbar-evegg-id">0 원</span></td>
 					</tr>
 					<?php endif ?>   
 					
+					<?php if(isPBalMode()) :?>
+					<tr>
+						<td style=""><a style="font-weight: bold; color: #0090ff; font-size: 14px;" href="<?php echo site_furl('/home/conf_pbal');?>" id="main-navbar-evol_wait-id">프라그마틱:</a></td>
+						<td>배팅<span id="main-navbar-prbet-id">0 원</span></td>
+						<td>적중<span id="main-navbar-prbetearn-id">0 원</span></td>
+					</tr>
+					<?php endif ?> 
+
 					<?php if(!$slot_deny) :?>
 						<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_3) :?>
 						<tr>

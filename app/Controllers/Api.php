@@ -418,10 +418,12 @@ class Api extends BaseController{
 				$confId = CONF_AUTOAPPS;
 				if($arrData['game'] == GAME_AUTO_PRAG)
 					$confId = CONF_PRAGRUN_ALL;
+				writeLog("confId=".$confId);
 
 				$objConfig = $confsiteModel->getConf($confId);
 				if(!is_null($objConfig)){
 					$state = $objConfig->conf_active;
+					writeLog("confId=".$state);
 				}
 				$arrResult['data'] = $state;
 				$arrResult['status'] = "success";
@@ -1628,6 +1630,16 @@ class Api extends BaseController{
 			//model
 			if(array_key_exists('game', $arrGetData) && $arrGetData['game'] == GAME_AUTO_EVOL && isEBalMode()){
 				$csbetModel = new EbalBet_Model();
+				$csbetModel->setType($arrGetData['game']);
+				if(strlen($arrGetData['user']) > 0){
+					$objUser = $this->modelMember->getInfo(trim($arrGetData['user']));
+					if(!is_null($objUser))
+						$arrGetData['user'] = $objUser->mb_fid;
+					else $arrGetData['user'] = 0;
+				}
+			} else if(array_key_exists('game', $arrGetData) && $arrGetData['game'] == GAME_AUTO_PRAG && isPBalMode()){
+				$csbetModel = new EbalBet_Model();
+				$csbetModel->setType($arrGetData['game']);
 				if(strlen($arrGetData['user']) > 0){
 					$objUser = $this->modelMember->getInfo(trim($arrGetData['user']));
 					if(!is_null($objUser))
@@ -1673,6 +1685,16 @@ class Api extends BaseController{
 			//model
 			if(array_key_exists('game', $arrGetData) && $arrGetData['game'] == GAME_AUTO_EVOL && isEBalMode()){
 				$csbetModel = new EbalBetSt_Model();
+				$csbetModel->setType($arrGetData['game']);
+				if(strlen($arrGetData['user']) > 0){
+					$objUser = $this->modelMember->getInfo(trim($arrGetData['user']));
+					if(!is_null($objUser))
+						$arrGetData['user'] = $objUser->mb_fid;
+					else $arrGetData['user'] = 0;
+				}
+			} else if(array_key_exists('game', $arrGetData) && $arrGetData['game'] == GAME_AUTO_PRAG && isPBalMode()){
+				$csbetModel = new EbalBetSt_Model();
+				$csbetModel->setType($arrGetData['game']);
 				if(strlen($arrGetData['user']) > 0){
 					$objUser = $this->modelMember->getInfo(trim($arrGetData['user']));
 					if(!is_null($objUser))
@@ -1720,6 +1742,7 @@ class Api extends BaseController{
             $this->sess_action();                
 			//model
 			$ebetModel = new Ebalance_Model();
+			$ebetModel->setType($arrGetData['game']);
 			
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
@@ -1753,7 +1776,8 @@ class Api extends BaseController{
 		if(is_login()) {
 			//model
 			$ebetModel = new Ebalance_Model();
-			
+			$ebetModel->setType($arrGetData['game']);
+
 			$strUid = $this->session->user_id;
 			$objAdmin = $this->modelMember->getInfo($strUid);
 			

@@ -30,6 +30,12 @@ class EbalBetSt_Model extends Model
     // protected $primaryKey = 'bet_fid';
     private $mMemberTable = 'member';
 
+    public function setType($gameId){
+        if($gameId == GAME_AUTO_PRAG)
+            $this->table = 'bet_prbal_st';
+        else $this->table = 'bet_ebal_st';
+    }
+
     function getBetAccount($objEmp, $arrReqData){
         
         // if(array_key_exists("state", $arrReqData) && $arrReqData['state'] > 0)

@@ -338,6 +338,9 @@ defined('MONEYCHANGE_WIN_RD3')    || define('MONEYCHANGE_WIN_RD3', 42);
 defined('MONEYCHANGE_BET_EBAL')   || define('MONEYCHANGE_BET_EBAL', 43);
 defined('MONEYCHANGE_DENY_EBAL')  || define('MONEYCHANGE_DENY_EBAL', 44);
 defined('MONEYCHANGE_WIN_EBAL')   || define('MONEYCHANGE_WIN_EBAL', 45);
+defined('MONEYCHANGE_BET_PBAL')   || define('MONEYCHANGE_BET_PBAL', 46);
+defined('MONEYCHANGE_DENY_PBAL')  || define('MONEYCHANGE_DENY_PBAL', 47);
+defined('MONEYCHANGE_WIN_PBAL')   || define('MONEYCHANGE_WIN_PBAL', 48);
 
 //money transfer type
 defined('TRANS_SITE_EVOL')      || define('TRANS_SITE_EVOL', 1);  

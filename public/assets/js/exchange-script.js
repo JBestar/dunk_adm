@@ -84,6 +84,9 @@ function showMoneyHistory(jsonBetData) {
             case 43: strBuf += "에볼 배팅"; break;
             case 44: strBuf += "에볼 적특"; break;
             case 45: strBuf += "에볼 정산"; break;
+            case 46: strBuf += "프라그 배팅"; break;
+            case 47: strBuf += "프라그 적특"; break;
+            case 48: strBuf += "프라그 정산"; break;
             default:break;
         } 
         strBuf += "</td><td>";

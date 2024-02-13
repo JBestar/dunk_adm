@@ -689,7 +689,7 @@ class UserApi extends BaseController
                 $arrReqData['start'] = $strDate.' 00:00:00';
                 $eggs = $this->modelMember->calcGameEgg();
 
-                $arrSumData = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0] ];
+                $arrSumData = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0] ];
                 
                 if(!$siteConfs['pbg_deny'] || !$siteConfs['bpg_deny'] || !$siteConfs['eos5_deny'] || !$siteConfs['eos3_deny']
                     || !$siteConfs['rand5_deny'] || !$siteConfs['rand3_deny']){
@@ -702,13 +702,15 @@ class UserApi extends BaseController
                 
                 if(isEBalMode() || !$siteConfs['evol_deny']){
 
-                    $arrReqData['type'] = GAME_CASINO_EVOL;
                     if(isEBalMode()){
+                        $arrReqData['type'] = GAME_AUTO_EVOL;
                         $betModel = new EbalBetSt_Model();
+                        $betModel->setType($arrReqData['type']);
                         $arrSum = $betModel->getBetSumByDay($arrReqData);
                         $arrSumData[1][0] = $arrSum[0];
                         $arrSumData[1][1] = $arrSum[1];
                     } else {
+                        $arrReqData['type'] = GAME_CASINO_EVOL;
                         $betModel = new CsBet_Model();
                         $arrReqData['gm_range'] = $this->modelMember->getBetMinId($arrReqData, $betModel->table);
                         $objConfPb = $confgameModel->getByIndex($arrReqData['type']);
@@ -799,6 +801,17 @@ class UserApi extends BaseController
                         $arrSumData[5][2] = $agConf->conf_active;
                     $arrSumData[5][3] = $eggs->mb_hold_money;
 
+                }
+                if(isPBalMode()){
+
+                    $arrReqData['type'] = GAME_AUTO_PRAG;
+                    if(isEBalMode()){
+                        $betModel = new EbalBetSt_Model();
+                        $betModel->setType($arrReqData['type']);
+                        $arrSum = $betModel->getBetSumByDay($arrReqData);
+                        $arrSumData[6][0] = $arrSum[0];
+                        $arrSumData[6][1] = $arrSum[1];
+                    } 
                 }
                 $objResult->data = $arrSumData;
                 $objResult->status = STATUS_SUCCESS;

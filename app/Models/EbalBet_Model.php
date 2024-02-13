@@ -35,9 +35,17 @@ class EbalBet_Model extends Model
     ];
     protected $primaryKey = 'bet_fid';
     private $mMemberTable = 'member';
-    private $mGameTable = 'casino_game';
-    private $mPrdTable = 'casino_prd';
     private $mRewardTable = 'bet_reward';
+
+    public function setType($gameId){
+        if($gameId == GAME_AUTO_PRAG){
+            $this->table = 'bet_prbal';
+            $this->mRewardTable = 'bet_reward_pr';
+        } else {
+            $this->table = 'bet_ebal';
+            $this->mRewardTable = 'bet_reward';
+        }
+    }
 
     function getBetAccount($objEmp, $arrReqData){
         

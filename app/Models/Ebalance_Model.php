@@ -32,7 +32,12 @@ class Ebalance_Model extends Model
     ];
     protected $primaryKey = 'bet_id';
 
-    
+    public function setType($gameId){
+        if($gameId == GAME_AUTO_PRAG)
+            $this->table = 'bet_balance_pr';
+        else $this->table = 'bet_balance';
+    }
+
     function getBetAccount($reqData){
         
         if(array_key_exists("state", $reqData) && $reqData['state'] > 0)

@@ -184,13 +184,13 @@ function addButtonElementListener(buttonElement) {
 
         let tHtml = this.innerHTML; 
         if (tHtml.search("미적중") >= 0) {
-            var jsonData = {"data":[fid], "state":2};
+            var jsonData = {"game":mGameId, "data":[fid], "state":2};
             requestBetProcess(jsonData);
         } else  if (tHtml.search("적중") >= 0) {
-            var jsonData = {"data":[fid], "state":3};
+            var jsonData = {"game":mGameId, "data":[fid], "state":3};
             requestBetProcess(jsonData);
         } else  if (tHtml.search("타이") >= 0) {
-            var jsonData = {"data":[fid], "state":4};
+            var jsonData = {"game":mGameId, "data":[fid], "state":4};
             requestBetProcess(jsonData);
         }
     });

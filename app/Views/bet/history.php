@@ -11,7 +11,10 @@
 		<?php endif ?>
 		<?php if(isEBalMode()) :?>
 			<a href="<?php echo site_furl('bet/evhistory');?>" class="sub-navbar-a" >에볼루션</a>
-			<?php endif ?> 
+		<?php endif ?>
+		<?php if(isPBalMode()) :?>
+			<a href="<?php echo site_furl('bet/prhistory');?>" class="sub-navbar-a" >프라그마틱</a>
+		<?php endif ?> 
 		<?php if(!$slot_deny) :?>
 			<?php if($mb_level >= LEVEL_ADMIN) :  ?>
 				<?php if($_ENV['app.type'] == APP_TYPE_1 || $_ENV['app.type'] == APP_TYPE_3) :?>

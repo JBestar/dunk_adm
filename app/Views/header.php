@@ -32,7 +32,7 @@
         <?php endif ?>
     </script>
 
-    <script src="<?php echo site_furl('assets/js/common.js?v=1');?>"></script>
+    <script src="<?php echo site_furl('assets/js/common.js?v=2');?>"></script>
 	<script src="<?php echo site_furl('assets/js/worker.js?v=1');?>"></script>
 
     <?php if(array_key_exists("app.produce", $_ENV)) :?>

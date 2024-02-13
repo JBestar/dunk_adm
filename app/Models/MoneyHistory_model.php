@@ -295,7 +295,9 @@ class MoneyHistory_Model extends Model
                 MONEYCHANGE_BET_EO3, MONEYCHANGE_DENY_EO3, MONEYCHANGE_WIN_EO3,
                 MONEYCHANGE_BET_RD5, MONEYCHANGE_DENY_RD5, MONEYCHANGE_WIN_RD5, 
                 MONEYCHANGE_BET_RD3, MONEYCHANGE_DENY_RD5, MONEYCHANGE_WIN_RD3, 
-                MONEYCHANGE_BET_EBAL, MONEYCHANGE_WIN_EBAL];
+                MONEYCHANGE_BET_EBAL, MONEYCHANGE_WIN_EBAL,
+                MONEYCHANGE_BET_PBAL, MONEYCHANGE_WIN_PBAL,
+            ];
                 $strModes = implode(", ", $modes);
                 $strSql.=" AND money_change_type IN (".$strModes." )";
             }
@@ -354,7 +356,9 @@ class MoneyHistory_Model extends Model
                 MONEYCHANGE_BET_EO3, MONEYCHANGE_DENY_EO3, MONEYCHANGE_WIN_EO3,
                 MONEYCHANGE_BET_RD5, MONEYCHANGE_DENY_RD5, MONEYCHANGE_WIN_RD5, 
                 MONEYCHANGE_BET_RD3, MONEYCHANGE_DENY_RD5, MONEYCHANGE_WIN_RD3, 
-                MONEYCHANGE_BET_EBAL, MONEYCHANGE_WIN_EBAL];
+                MONEYCHANGE_BET_EBAL, MONEYCHANGE_WIN_EBAL,
+                MONEYCHANGE_BET_PBAL, MONEYCHANGE_WIN_PBAL
+            ];
                 for($i=0; $i<count($modes); $i++){
                     if($i > 0)
                         $strMode.="+";

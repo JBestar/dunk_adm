@@ -177,6 +177,22 @@ class Bet extends StdController {
 		$this->load_view_page('bet/cshistory', 'bet_history', 0, $param);
 	}
 
+	public function prhistory(){
+		$modelCasprd = new CasPrd_Model();
+		$arrPrd = [];
+
+		$confsiteModel = new ConfSite_Model();
+		$confs = $this->getSiteConf($confsiteModel);
+		$arrPrd +=  $modelCasprd->gets(GAME_CASINO_EVOL);
+
+		$param = [
+			'prds' => $arrPrd,
+			'game_name' => "프라그마틱",
+			'game_id' => GAME_AUTO_PRAG,
+		];
+		$this->load_view_page('bet/cshistory', 'bet_history', 0, $param);
+	}
+
 	public function ebalhistory(){
 		$confsiteModel = new ConfSite_Model();
 
@@ -410,6 +426,14 @@ class Bet extends StdController {
 		$param = [
 			'game_name' => "에볼루션",
 			'game_id' => GAME_AUTO_EVOL,
+		];
+		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
+	}
+
+	public function prcalculate(){
+		$param = [
+			'game_name' => "프라그마틱",
+			'game_id' => GAME_AUTO_PRAG,
 		];
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}

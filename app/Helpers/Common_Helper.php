@@ -315,6 +315,12 @@
       return false;
     }
 
+    function isPBalMode($cnt = 0){
+      if(array_key_exists('app.pbal', $_ENV) && $_ENV['app.pbal'] > $cnt )
+        return true;
+      return false;
+    }
+
     function calcDate($days=0){
       $tmNow = time();
 

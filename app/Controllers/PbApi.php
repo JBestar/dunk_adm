@@ -474,6 +474,10 @@ class PbApi extends BaseController {
 			$bResult = false;
 			// $moneyhistoryModel = new MoneyHistory_Model();
 			$csbetModel = new EbalBet_Model();
+			$csbetModel->setType($arrReqData['game']);
+			$iChangeType = MONEYCHANGE_WIN_EBAL;
+			if($arrReqData['game'] == GAME_AUTO_PRAG)
+				$iChangeType = MONEYCHANGE_WIN_PBAL;
 
 			$strUid = $this->session->user_id;
 			$objUser = $this->modelMember->getInfo($strUid);
@@ -531,7 +535,7 @@ class PbApi extends BaseController {
 					if(is_null($objBetUser))
 						continue;
 
-					if($this->modelMember->updateAssets($objBetUser, $dtMoney, 0, MONEYCHANGE_WIN_EBAL)){
+					if($this->modelMember->updateAssets($objBetUser, $dtMoney, 0, $iChangeType)){
 						
 						$objBet->bet_win_money = $winMoney;
 						$objBet->point_amount = $state;

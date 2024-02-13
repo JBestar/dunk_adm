@@ -13,6 +13,7 @@ class Member_Model extends Model
     private $historyTb = 'money_history_st';
     protected $rewardTb = 'bet_reward_st';
     protected $rewardMnTb = 'bet_reward_mn_st';
+    protected $rewardPrTb = 'bet_reward_pr_st';
     protected $returnType = 'object'; 
 
     protected $allowedFields = [
@@ -526,6 +527,15 @@ class Member_Model extends Model
             $strSQL .= $strWhereMem2." )";
         }
 
+        if(isPBalMode()){
+            $tbName = "bet_prbal_st";
+            $strWhereMem2= " AND bet_mb_fid IN (SELECT mb_fid from tbmember) ";
+            
+            $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM '.$tbName;
+            $strSQL .= " WHERE ".getStatRange('bet_start', 'bet_end', $arrReqData, $this->db);
+            $strSQL .= $strWhereMem2." )";
+        }
+
         if(!$confs['evol_deny'] || !$confs['cas_deny']){
             $tbName = "bet_casino";
             $strWhereMem2= $strWhereMem;
@@ -556,9 +566,14 @@ class Member_Model extends Model
         $strSQL .= " AND rw_mb_fid IN (SELECT mb_fid from tbmember) ";
         
         $strSQL .= " UNION ALL SELECT SUM(".$rwPoint.") AS result_1, ";
+        $strSQL .= " SUM(CASE WHEN rw_mb_fid = ".$objEmp->mb_fid." THEN ".$rwPoint." ELSE 0 END) AS result_2 FROM ".$this->rewardPrTb;
+        $strSQL .= " WHERE ".getStatRange('rw_start', 'rw_end', $arrReqData, $this->db);
+        $strSQL .= " AND rw_mb_fid IN (SELECT mb_fid from tbmember) ) AS rewardPrTb";
+
+        $strSQL .= " UNION ALL SELECT SUM(".$rwPoint.") AS result_1, ";
         $strSQL .= " SUM(CASE WHEN rw_mb_fid = ".$objEmp->mb_fid." THEN ".$rwPoint." ELSE 0 END) AS result_2 FROM ".$this->rewardMnTb;
         $strSQL .= " WHERE ".getStatRange('rw_start', 'rw_end', $arrReqData, $this->db);
-        $strSQL .= " AND rw_mb_fid IN (SELECT mb_fid from tbmember) ) AS rewardSumTb";
+        $strSQL .= " AND rw_mb_fid IN (SELECT mb_fid from tbmember) ) AS rewardMnTb";
         $strSQL .= " ) ";
 
         if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
@@ -585,6 +600,9 @@ class Member_Model extends Model
 
         } elseif ($arrReqData['type'] == GAME_AUTO_EVOL ) {
             $strSQL .= "bet_ebal_st";
+        } elseif ($arrReqData['type'] == GAME_AUTO_PRAG ) {
+            $strSQL .= "bet_prbal_st";
+            $rewardTb = $this->rewardPrTb;
         } elseif ($arrReqData['type'] == GAME_CASINO_EVOL ) {
             $strSQL .= "bet_casino";
         } elseif ($arrReqData['type'] == GAME_SLOT_THEPLUS || $arrReqData['type'] == GAME_SLOT_GSPLAY || $arrReqData['type'] == GAME_SLOT_GOLD 
@@ -595,13 +613,13 @@ class Member_Model extends Model
         } else {
             return null;
         }
-        if ($arrReqData['type'] == GAME_AUTO_EVOL ){
+        if ($arrReqData['type'] == GAME_AUTO_EVOL || $arrReqData['type'] == GAME_AUTO_PRAG){
             $strSQL .= " WHERE ".getStatRange('bet_start', 'bet_end', $arrReqData, $this->db);
         } else $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
         // else $strSQL .= " WHERE bet_fid >= ".$arrReqData['gm_range'][0]." AND bet_fid <= ".$arrReqData['gm_range'][1];
         if ($arrReqData['type'] == GAME_SLOT_THEPLUS || $arrReqData['type'] == GAME_SLOT_GSPLAY || $arrReqData['type'] == GAME_SLOT_GOLD || $arrReqData['type'] == GAME_SLOT_KGON || $arrReqData['type'] == GAME_SLOT_STAR){
             $strSQL .= " AND bet_game_id = '".$arrReqData['type']."' ";
-        } else if ($arrReqData['type'] == GAME_AUTO_EVOL ) {
+        } else if ($arrReqData['type'] == GAME_AUTO_EVOL || $arrReqData['type'] == GAME_AUTO_PRAG ) {
             
         } else if ($arrReqData['type'] == GAME_CASINO_EVOL ) {
             $strSQL .= " AND company_amount = 0 ";
@@ -614,7 +632,7 @@ class Member_Model extends Model
             $strSQL .= " AND bet_game = ".$arrReqData['type'];
         } 
 
-        if($arrReqData['type'] == GAME_AUTO_EVOL){
+        if($arrReqData['type'] == GAME_AUTO_EVOL || $arrReqData['type'] == GAME_AUTO_PRAG){
             $strSQL .= " AND bet_mb_fid IN (SELECT mb_fid from tbmember) ) ";
         } else
             $strSQL .= " AND bet_mb_uid IN (SELECT mb_uid from tbmember) ) ";
@@ -686,6 +704,17 @@ class Member_Model extends Model
             $strSQL .= $strCond2;
         }
 
+        if(isPBalMode()){
+            $strCond2 = " WHERE bet_mb_uid = '".$arrReqData['mb_uid']."' ";
+            if (array_key_exists('start', $arrReqData) && strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
+                $strCond2 .= " AND ".getStatRange('bet_start', 'bet_end', $arrReqData, $this->db);
+            }
+            
+            $tbName = "bet_prbal_st";
+            $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM '.$tbName;
+            $strSQL .= $strCond2;
+        }
+
         if(!$confs['evol_deny'] || !$confs['cas_deny']){
             $tbName = "bet_casino";
             $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM '.$tbName;
@@ -741,6 +770,20 @@ class Member_Model extends Model
                 $strCond2 .= " AND ".getStatRange('bet_start', 'bet_end', $arrReqData, $this->db);
             }
             $tbName = "bet_ebal_st";
+            // $strCond.= " AND company_amount = 0 AND ";
+            // $strCond .= " point_amount <> ".BET_STATE_TIE;
+            $strSQL.= " UNION All SELECT bet_money, bet_win_money, bet_count, bet_name, '".GAME_CASINO_EVOL."' As bet_kind From ";
+            $strSQL.= " (SELECT bet_casino_g.*, name_ko AS bet_name from (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, SUM(bet_cnt) AS bet_count, 0 AS bet_game_id FROM ".$tbName;
+            $strSQL.=  $strCond2.") AS bet_casino_g ";
+            $strSQL.= " JOIN casino_prd on casino_prd.vendor_id = bet_casino_g.bet_game_id ) AS bet_casino_g ";
+        }
+
+        if(isPBalMode()){
+            $strCond2 = " WHERE bet_mb_uid = '".$arrReqData['mb_uid']."' ";
+            if (array_key_exists('start', $arrReqData) && strlen($arrReqData['start']) > 0 && strlen($arrReqData['end']) > 0) {
+                $strCond2 .= " AND ".getStatRange('bet_start', 'bet_end', $arrReqData, $this->db);
+            }
+            $tbName = "bet_prbal_st";
             // $strCond.= " AND company_amount = 0 AND ";
             // $strCond .= " point_amount <> ".BET_STATE_TIE;
             $strSQL.= " UNION All SELECT bet_money, bet_win_money, bet_count, bet_name, '".GAME_CASINO_EVOL."' As bet_kind From ";
@@ -1696,6 +1739,10 @@ class Member_Model extends Model
             $betSum .= "+IFNULL(bet_ev.bet_ev_m, 0)";
             $winSum .= "+IFNULL(bet_ev.bet_ev_w, 0)";
         }
+        if(isPBalMode()){
+            $betSum .= "+IFNULL(bet_ev.bet_ev_m, 0)";
+            $winSum .= "+IFNULL(bet_ev.bet_ev_w, 0)";
+        }
         if(!$confs['evol_deny'] || !$confs['cas_deny']){
             $betSum .= "+IFNULL(bet_cs.bet_cs_m, 0)";
             $winSum .= "+IFNULL(bet_cs.bet_cs_w, 0)";
@@ -1720,7 +1767,11 @@ class Member_Model extends Model
             $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_ev_m, sum(bet_win_money) AS bet_ev_w from ".$tbName;
             $strSQL.= " group by bet_mb_uid ) bet_ev ON bet_ev.bet_mb_uid = ".$tbMember.".mb_uid";
         }
-
+        if(isPBalMode()){
+            $tbName = "bet_prbal_st";
+            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_ev_m, sum(bet_win_money) AS bet_ev_w from ".$tbName;
+            $strSQL.= " group by bet_mb_uid ) bet_ev ON bet_ev.bet_mb_uid = ".$tbMember.".mb_uid";
+        }
         if(!$confs['evol_deny'] || !$confs['cas_deny']){
             $tbName = "bet_casino";
 
@@ -1808,6 +1859,10 @@ class Member_Model extends Model
                 $betSum .= "+IFNULL(bet_ev.bet_ev_m, 0)";
                 $winSum .= "+IFNULL(bet_ev.bet_ev_w, 0)";
             }
+            if(isPBalMode()){
+                $betSum .= "+IFNULL(bet_ev.bet_ev_m, 0)";
+                $winSum .= "+IFNULL(bet_ev.bet_ev_w, 0)";
+            }
             if(!$confs['evol_deny'] || !$confs['cas_deny']){
                 $betSum .= "+IFNULL(bet_cs.bet_cs_m, 0)";
                 $winSum .= "+IFNULL(bet_cs.bet_cs_w, 0)";
@@ -1852,6 +1907,11 @@ class Member_Model extends Model
             }
             if(isEBalMode()){
                 $tbName = "bet_ebal_st";
+                $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_ev_m, sum(bet_win_money) AS bet_ev_w from ".$tbName;
+                $strSQL.= " group by bet_mb_uid ) bet_ev ON bet_ev.bet_mb_uid = member.mb_uid";
+            }
+            if(isPBalMode()){
+                $tbName = "bet_prbal_st";
                 $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_ev_m, sum(bet_win_money) AS bet_ev_w from ".$tbName;
                 $strSQL.= " group by bet_mb_uid ) bet_ev ON bet_ev.bet_mb_uid = member.mb_uid";
             }
