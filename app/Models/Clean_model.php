@@ -102,6 +102,8 @@ class Clean_Model extends Model {
             $this->db->query("TRUNCATE bet_reward_st");
             $this->db->query("TRUNCATE bet_reward_mn");
             $this->db->query("TRUNCATE bet_reward_mn_st");
+            $this->db->query("TRUNCATE bet_reward_pr");
+            $this->db->query("TRUNCATE bet_reward_pr_st");
             $this->db->query("TRUNCATE money_history");
             $this->db->query("TRUNCATE money_history_st");
             $this->db->query("TRUNCATE money_transfer");
@@ -133,6 +135,15 @@ class Clean_Model extends Model {
             $this->dropPartitions($table, $partName);
 
             $table = "bet_reward_mn";
+            $this->dropPartitions($table, $partName);
+            
+            $table = "bet_prbal";
+            $this->dropPartitions($table, $partName);
+
+            $table = "bet_balance_pr";
+            $this->dropPartitions($table, $partName);
+
+            $table = "bet_reward_pr";
             $this->dropPartitions($table, $partName);
 
             $table = "money_history";
