@@ -568,7 +568,7 @@ class Member_Model extends Model
         $strSQL .= " UNION ALL SELECT SUM(".$rwPoint.") AS result_1, ";
         $strSQL .= " SUM(CASE WHEN rw_mb_fid = ".$objEmp->mb_fid." THEN ".$rwPoint." ELSE 0 END) AS result_2 FROM ".$this->rewardPrTb;
         $strSQL .= " WHERE ".getStatRange('rw_start', 'rw_end', $arrReqData, $this->db);
-        $strSQL .= " AND rw_mb_fid IN (SELECT mb_fid from tbmember) ) AS rewardPrTb";
+        $strSQL .= " AND rw_mb_fid IN (SELECT mb_fid from tbmember) ";
 
         $strSQL .= " UNION ALL SELECT SUM(".$rwPoint.") AS result_1, ";
         $strSQL .= " SUM(CASE WHEN rw_mb_fid = ".$objEmp->mb_fid." THEN ".$rwPoint." ELSE 0 END) AS result_2 FROM ".$this->rewardMnTb;
