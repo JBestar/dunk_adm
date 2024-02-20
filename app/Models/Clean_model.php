@@ -57,6 +57,8 @@ class Clean_Model extends Model {
         $this->db->query("TRUNCATE bet_reward_st");
         $this->db->query("TRUNCATE bet_reward_mn");
         $this->db->query("TRUNCATE bet_reward_mn_st");
+        $this->db->query("TRUNCATE bet_reward_pr");
+        $this->db->query("TRUNCATE bet_reward_pr_st");
         $this->db->query("TRUNCATE bet_follow");
         $this->db->query("TRUNCATE block_list");
         $this->db->query("TRUNCATE member_charge");
@@ -73,7 +75,9 @@ class Clean_Model extends Model {
         $this->db->query("TRUNCATE captcha");
         $this->db->query("TRUNCATE bet_ebal");
         $this->db->query("TRUNCATE bet_ebal_st");
-        $this->db->query("TRUNCATE bet_balance");
+        $this->db->query("TRUNCATE bet_prbal");
+        $this->db->query("TRUNCATE bet_prbal_st");
+        $this->db->query("TRUNCATE bet_balance_pr");
 
         $tmNow = time();
         $strDate = date('Y-m-d', strtotime("-2 months", $tmNow));

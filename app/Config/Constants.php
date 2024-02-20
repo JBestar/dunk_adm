@@ -250,7 +250,8 @@ defined('STATUS_NOPERMIT')     || define('STATUS_NOPERMIT', 'nopermit');
 defined('TM_OFFSET')    	   || define('TM_OFFSET', 0);
 
 defined('SESS_TYPE_SITE')       || define('SESS_TYPE_SITE', 0);
-defined('SESS_TYPE_APP')       || define('SESS_TYPE_APP', 1);
+defined('SESS_TYPE_EVOL')       || define('SESS_TYPE_EVOL', 1);
+defined('SESS_TYPE_PRAG')       || define('SESS_TYPE_PRAG', 2);
 
 defined('LOG_WRITE')            || define('LOG_WRITE', true);
 defined('LOG_FILE')             || define('LOG_FILE', ROOTPATH."logs".DIRECTORY_SEPARATOR);

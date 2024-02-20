@@ -353,7 +353,10 @@ class Api extends BaseController{
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 
 				$arrResult['data'] = $confsiteModel->getEvolSite($arrData['game']);
-				$arrReqData['type'] = SESS_TYPE_APP;
+				if($arrData['game'] == GAME_AUTO_PRAG)
+					$arrReqData['type'] = SESS_TYPE_PRAG;
+				else 
+					$arrReqData['type'] = SESS_TYPE_EVOL;
 				$arrReqData['mb_uid'] = "";
 				$arrReqData['page'] = 1;
 				$arrReqData['count'] = 1000;

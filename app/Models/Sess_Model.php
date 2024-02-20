@@ -146,7 +146,7 @@ class Sess_Model extends Model {
         $strSql = "SELECT ".$this->table.".*, member.mb_nickname, member.mb_level, ";
         $strSql .= " member.mb_money, member.mb_point, member.mb_state_view FROM ".$this->table;
         $strSql .= " JOIN member ON ".$this->table.".sess_mb_fid = member.mb_fid ";
-        $strSql .= " WHERE mb_level < '".$mbLv."' AND sess_type = ".SESS_TYPE_APP;
+        $strSql .= " WHERE mb_level < '".$mbLv."' AND sess_type <> ".SESS_TYPE_SITE;
         
         $strSql.=" ORDER BY sess_join ASC ";
 
