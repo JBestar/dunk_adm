@@ -4,13 +4,16 @@
 
 	<div class="confsite-site-panel">
 		<h4><i class="glyphicon glyphicon-hand-right"></i> 누르기 설정</h4>
+		<div class="pbresult-list-div" style="padding-left:20px;" <?=$mb_level < LEVEL_ADMIN+2?'hidden':''?>>
+			<input type="checkbox" id="confev-forcepress-check-id" style="zoom:130%; margin-top:0px;">
+			<label style="font-size:14px; padding-left:3px; position:relative; top:-3px;"> 강제누르기</label>
+		</div>
 
 		<div class="pbresult-list-div" style="padding-left:20px;">
 			<input type="checkbox" id="confev-autopress-check-id" style="zoom:130%; margin-top:0px;">
 			<label style="font-size:14px; padding-left:3px; position:relative; top:-3px;"> 자동누르기</label>
 			<label style="margin-left:40px; width:70px;">보유금액:</label> 
 			<input type = "number" class="conf-text-input" style="width:80px;" id="confev-autopercent-input-id" min="0" step="1">&nbsp;&nbsp;%이하
-		
 		</div>
 
 		<div class="pbresult-list-div" style="padding-left:20px;">

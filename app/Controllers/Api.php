@@ -1796,7 +1796,7 @@ class Api extends BaseController{
 			$arrRoom = null;
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 				
-				$arrRoom = $casRoomModel->gets();	
+				$arrRoom = $casRoomModel->gets(GAME_AUTO_EVOL);	
 			}
 
 			$objResult = new \StdClass;
