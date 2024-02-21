@@ -46,7 +46,7 @@ function showMember(arrMember, bFollow=false) {
         strBuf += "</td> <td>";
         strBuf += Math.floor(arrMember[nRow].mb_point).toLocaleString();
         strBuf += "</td> <td>";
-        if(arrMember[nRow].sess_type == 1){
+        if(arrMember[nRow].sess_type == 1 || arrMember[nRow].sess_type == 2){
             strBuf += "앱"; 
             if(arrMember[nRow].sess_spec.length > 0)
                 strBuf += " ( "+arrMember[nRow].sess_spec+" )"; 

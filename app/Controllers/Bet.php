@@ -259,7 +259,7 @@ class Bet extends StdController {
 			'game_id' => GAME_AUTO_PRAG,
 			'evpress' => $confsiteModel->getEvpressState(),
 		];
-		$this->load_view_page('ebal/ebethistory', 'conf_ebal', LEVEL_ADMIN, $param);
+		$this->load_view_page('ebal/ebethistory', 'conf_pbal', LEVEL_ADMIN, $param);
 	}
 
 	public function bbhistory(){

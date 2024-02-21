@@ -25,7 +25,7 @@ function showMember(arrMember) {
         strBuf += "</td> <td>";
         strBuf += arrMember[nRow].mb_nickname;
         strBuf += "</td> <td>";
-        if(parseInt(arrMember[nRow].log_type) == 1)
+        if(parseInt(arrMember[nRow].log_type) == 1 || parseInt(arrMember[nRow].log_type) == 2)
             strBuf += "앱";
         else 
             strBuf += arrMember[nRow].log_ip;
