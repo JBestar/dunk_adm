@@ -410,7 +410,7 @@ class Api extends BaseController{
 			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 				$state = false;
-				if(array_key_exists('app.ebal', $_ENV) && $_ENV['app.ebal'] > 2 )
+				if(isEBalMode(2) )
 					$objConfig = $confsiteModel->getConf(CONF_AUTOAPPS);
 				else $objConfig = $confsiteModel->getConf(CONF_EVOLRUN_1);
 				if(!is_null($objConfig)){
@@ -439,7 +439,7 @@ class Api extends BaseController{
 			$objAdmin = $this->modelMember->getInfo($strUid);
 			if($objAdmin->mb_level >= LEVEL_ADMIN){
 				$confId = CONF_EVOLRUN_1;
-				if(array_key_exists('app.ebal', $_ENV) && $_ENV['app.ebal'] > 2 )
+				if( isEBalMode(2) )
 					$confId = CONF_AUTOAPPS;
 
 				$confsiteModel->setConfActive($confId, $arrData['active_ev']);

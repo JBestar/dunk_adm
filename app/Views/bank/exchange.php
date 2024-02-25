@@ -33,7 +33,7 @@
 				<option value="27">하부환수</option>
 				<option value="28">상부환수</option>
 
-				<?php if(array_key_exists('app.ebal', $_ENV) && $_ENV['app.ebal'] > 0) :  ?>
+				<?php if(isEBalMode()) :  ?>
 					<option value="43">에볼배팅</option>				
 					<option value="44">에볼적특</option>				
 					<option value="45">에볼정산</option>

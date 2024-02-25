@@ -67,8 +67,12 @@ function ShowBetHistory(jsonBetData) {
                 strBuf += parseInt(jsonBetData[nRow].bet_money-jsonBetData[nRow].bet_balance).toLocaleString() + "원";
             } else if(type == 1){       //넘기기
                 strBuf += parseInt(jsonBetData[nRow].bet_balance).toLocaleString() + "원";
-            } else 
+            } else {
                 strBuf += parseInt(jsonBetData[nRow].bet_money).toLocaleString() + "원";
+                if(jsonBetData[nRow].bet_balance > 0)
+                    strBuf += "( " +  parseInt(jsonBetData[nRow].bet_balance).toLocaleString() + " )";
+
+            }
             
             strBuf += "</td>";
             if(type == 0){
@@ -79,7 +83,10 @@ function ShowBetHistory(jsonBetData) {
             } else if(type == 1){
                 strBuf += "<td  class = 'pb-home-table-betstate-loss'>넘기기";
                 if(mObjUser && mObjUser.mb_level >= LEVEL_ADMIN && jsonBetData[nRow].bet_balance_no > 0){
-                    strBuf += " ("+ jsonBetData[nRow].bet_balance_no + ")";
+                    strBuf += " ("+ jsonBetData[nRow].bet_balance_no; 
+                    if(jsonBetData[nRow].bet_balance_rate > 0 && jsonBetData[nRow].bet_balance_rate < 1)
+                        strBuf += "=>" + (parseFloat(jsonBetData[nRow].bet_balance_rate)*100) + "%" ;
+                    strBuf += ")";
                 }
             } else {
                 if(parseInt(jsonBetData[nRow].bet_type) == 0) {
@@ -90,7 +97,10 @@ function ShowBetHistory(jsonBetData) {
                 } else {
                     strBuf += "<td  class = 'pb-home-table-betstate-loss'>넘기기";
                     if(mObjUser && mObjUser.mb_level >= LEVEL_ADMIN && jsonBetData[nRow].bet_balance_no > 0){
-                        strBuf += " ("+ jsonBetData[nRow].bet_balance_no + ")";
+                        strBuf += " ("+ jsonBetData[nRow].bet_balance_no; 
+                        if(jsonBetData[nRow].bet_balance_rate > 0 && jsonBetData[nRow].bet_balance_rate < 1)
+                            strBuf += "=>" + (parseFloat(jsonBetData[nRow].bet_balance_rate)*100) + "%" ;
+                        strBuf += ")";
                     }
                 }
             }

@@ -19,7 +19,7 @@
     <div class="confsite-site-panel">
     <h4><i class="glyphicon glyphicon-hand-right"></i> 에볼루션 보험계정</h4>
 	
-	<?php if(array_key_exists('app.ebal', $_ENV) && $_ENV['app.ebal'] > 0 ) :?>
+	<?php if(isEBalMode()) :?>
 
 		<div class="confsite-game-text-div">
 			<div>
