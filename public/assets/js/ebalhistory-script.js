@@ -34,7 +34,7 @@ function ShowBetHistory(jsonBetData) {
         strBuf += "<tr><td>";
         strBuf += (parseInt(nRow) + firstIdx + 1);
         strBuf += "</td><td>";
-        if(mObjUser && mObjUser.mb_level >= LEVEL_ADMIN && jsonBetData[nRow].bet_mode > 0){
+        if(jsonBetData[nRow].bet_mode > 0){
             strBuf += jsonBetData[nRow].bet_mode + ". ";
         }
         strBuf += jsonBetData[nRow].bet_site_name + "<br>" + jsonBetData[nRow].bet_site_uid ;
