@@ -139,6 +139,11 @@ class EbalBet_Model extends Model
         }
 
         $gameId = GAME_AUTO_EVOL;
+        $gameName = '에볼루션';
+        if($this->table == 'bet_prbal'){
+            $gameId = GAME_AUTO_PRAG;
+            $gameName = '프라그마틱';
+        }
 
         $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_live_id ";
         $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid, r.mb_nickname, r.mb_live_id ";
@@ -173,7 +178,7 @@ class EbalBet_Model extends Model
         $strSql = "";
         $strSql .= "SELECT bet_fid, bet_idx, bet_mb_uid, bet_round_no, bet_time, bet_money, bet_win_money, bet_player_id, bet_game_id, bet_game_type, bet_table_code, ";
         $strSql .= " bet_type, bet_choice, bet_result, bet_balance, bet_win_balance, point_amount, company_amount, obj_id, bet_follow, bet_balance_no, bet_auto_press, ";
-        $strSql .= " bet_balance_rate, bet_table_name as game_name, rw_mb_uid, rw_point, '에볼루션' as prd_name";
+        $strSql .= " bet_balance_rate, bet_table_name as game_name, rw_mb_uid, rw_point, '".$gameName."' as prd_name";
         $strSql .= " FROM ( ";
 
         $tbBetSearch = "bet_search";
