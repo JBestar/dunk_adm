@@ -1740,8 +1740,8 @@ class Member_Model extends Model
             $winSum .= "+IFNULL(bet_ev.bet_ev_w, 0)";
         }
         if(isPBalMode()){
-            $betSum .= "+IFNULL(bet_ev.bet_ev_m, 0)";
-            $winSum .= "+IFNULL(bet_ev.bet_ev_w, 0)";
+            $betSum .= "+IFNULL(bet_prg.bet_prg_m, 0)";
+            $winSum .= "+IFNULL(bet_prg.bet_prg_w, 0)";
         }
         if(!$confs['evol_deny'] || !$confs['cas_deny']){
             $betSum .= "+IFNULL(bet_cs.bet_cs_m, 0)";
@@ -1769,8 +1769,8 @@ class Member_Model extends Model
         }
         if(isPBalMode()){
             $tbName = "bet_prbal_st";
-            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_ev_m, sum(bet_win_money) AS bet_ev_w from ".$tbName;
-            $strSQL.= " group by bet_mb_uid ) bet_ev ON bet_ev.bet_mb_uid = ".$tbMember.".mb_uid";
+            $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_prg_m, sum(bet_win_money) AS bet_prg_w from ".$tbName;
+            $strSQL.= " group by bet_mb_uid ) bet_prg ON bet_prg.bet_mb_uid = ".$tbMember.".mb_uid";
         }
         if(!$confs['evol_deny'] || !$confs['cas_deny']){
             $tbName = "bet_casino";
@@ -1860,8 +1860,8 @@ class Member_Model extends Model
                 $winSum .= "+IFNULL(bet_ev.bet_ev_w, 0)";
             }
             if(isPBalMode()){
-                $betSum .= "+IFNULL(bet_ev.bet_ev_m, 0)";
-                $winSum .= "+IFNULL(bet_ev.bet_ev_w, 0)";
+                $betSum .= "+IFNULL(bet_prg.bet_prg_m, 0)";
+                $winSum .= "+IFNULL(bet_prg.bet_prg_w, 0)";
             }
             if(!$confs['evol_deny'] || !$confs['cas_deny']){
                 $betSum .= "+IFNULL(bet_cs.bet_cs_m, 0)";
@@ -1912,8 +1912,8 @@ class Member_Model extends Model
             }
             if(isPBalMode()){
                 $tbName = "bet_prbal_st";
-                $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_ev_m, sum(bet_win_money) AS bet_ev_w from ".$tbName;
-                $strSQL.= " group by bet_mb_uid ) bet_ev ON bet_ev.bet_mb_uid = member.mb_uid";
+                $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_prg_m, sum(bet_win_money) AS bet_prg_w from ".$tbName;
+                $strSQL.= " group by bet_mb_uid ) bet_prg ON bet_prg.bet_mb_uid = member.mb_uid";
             }
             if(!$confs['evol_deny'] || !$confs['cas_deny']){
                 $tbName = "bet_casino";
