@@ -82,7 +82,9 @@
     <a href="<?php echo siteFurl().'bank/deposit';?>" class="<?=$bank_deposit?>"><i class="glyphicon glyphicon-plus-sign"></i>  충전관리</a>
     <a href="<?php echo siteFurl().'bank/withdraw';?>" class="<?=$bank_withdraw?>"><i class="glyphicon glyphicon-minus-sign"></i>  환전관리</a>
     <?php endif ?>
+    <?php if($mb_level >= LEVEL_ADMIN || $_ENV['app.name'] != APP_DUNK) :?>
     <a href="<?php echo siteFurl().'bank/exchange';?>" class="<?=$bank_exchange?>"><i class="glyphicon glyphicon-ok-sign"></i> 머니거래내역</a>
+    <?php endif ?>
     <a href="<?php echo siteFurl().'bank/transfer';?>" class="<?=$bank_transfer?>"><i class="glyphicon glyphicon-transfer"></i>  머니이동내역</a>
   </div>
 

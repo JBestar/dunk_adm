@@ -71,6 +71,7 @@ defined('ENV_DEVELOPMENT')  || define('ENV_DEVELOPMENT', 'development');
 defined('APP_LUCKYONE')     || define('APP_LUCKYONE', 'Luckyone');
 defined('APP_AMADAS')       || define('APP_AMADAS', 'Amadas');
 defined('APP_VEGAS')        || define('APP_VEGAS', 'Vegas');
+defined('APP_DUNK')          || define('APP_DUNK', 'DUNK');
 
 defined('APP_TYPE_1')        || define('APP_TYPE_1', 1);      //Slot + FSlot
 defined('APP_TYPE_2')        || define('APP_TYPE_2', 2);      //FSlot

@@ -28,7 +28,9 @@ function showMember(arrMember) {
         strBuf += arrMember[nRow].mb_fid;
         strBuf += "</td> <td>";
         if(parseInt(arrMember[nRow].log_type) == 1)
-            strBuf += "앱";
+            strBuf += "에볼앱";
+        else if(parseInt(arrMember[nRow].log_type) == 2)
+            strBuf += "프라그앱";
         else 
             strBuf += arrMember[nRow].log_ip;
         strBuf += "</td> <td>";

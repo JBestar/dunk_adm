@@ -47,7 +47,11 @@ function showMember(arrMember, bFollow=false) {
         strBuf += Math.floor(arrMember[nRow].mb_point).toLocaleString();
         strBuf += "</td> <td>";
         if(arrMember[nRow].sess_type == 1 || arrMember[nRow].sess_type == 2){
-            strBuf += "앱"; 
+            if(arrMember[nRow].sess_type == 1)
+                strBuf += "에볼앱";
+            else 
+                strBuf += "프라그앱";
+
             if(arrMember[nRow].sess_spec.length > 0)
                 strBuf += " ( "+arrMember[nRow].sess_spec+" )"; 
         }
