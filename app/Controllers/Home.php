@@ -184,28 +184,10 @@ class Home extends StdController
 			"10"=> "EVOL365",
 			// "11"=> "LUCKY",
 			"12"=> "VEDA",
-			// "1"=> "NINE",
-			// "2"=> "AMAZON",
-			// "3"=> "AIRLINE",
-			// "4"=> "NINEBAR",
-			// "5"=> "CHROMA",
-			// "6"=> "CITY",
-			// "7"=> "CJ",
-			// "8"=> "K-82",
-			// "9"=> "투다리",
-			// "13"=> "로이스",
-			// "14"=> "MISSION",
-			// "15"=> "MONEY",
-			// "16"=> "알로하",
-			// "17"=> "KING",
-			// "18"=> "글로리",
-			// "19"=> "제로",
-			// "20"=> "LUX",
-			// "21"=> "비네티안",
-			// "22"=> "드래곤",
+			// "1"=> "스타벅스",
+			"2"=> "왕 카지노",
 			// "23"=> "STAR",
 			// "24"=> "편집샵",
-			// "25"=> "라방",
 		];
 		$confsiteModel = new ConfSite_Model();
 
@@ -270,6 +252,7 @@ class Home extends StdController
 			"23"=> "STAR",
 			"24"=> "편집샵",
 			"26"=> "크래커",
+			"1"=> "스타벅스",
 		];
 		$confsiteModel = new ConfSite_Model();
 
