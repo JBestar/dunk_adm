@@ -188,6 +188,7 @@ class Home extends StdController
 			"2"=> "왕 카지노",
 			// "23"=> "STAR",
 			// "24"=> "편집샵",
+			"3"=> "SUGAR",
 		];
 		$confsiteModel = new ConfSite_Model();
 
@@ -253,6 +254,7 @@ class Home extends StdController
 			"24"=> "편집샵",
 			"26"=> "크래커",
 			"1"=> "스타벅스",
+			"3"=> "SUGAR",
 		];
 		$confsiteModel = new ConfSite_Model();
 
