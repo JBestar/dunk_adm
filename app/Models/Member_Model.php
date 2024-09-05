@@ -1106,7 +1106,7 @@ class Member_Model extends Model
         $arrRegData['mb_game_co'] = STATE_ACTIVE;
         $arrRegData['mb_game_hl'] = STATE_ACTIVE;
 
-        $objUser = $this->getByBankName($arrData['mb_bank_name'], $arrData['mb_bank_own']);
+        $objUser = $this->getByBankName($arrRegData['mb_bank_name'], $arrRegData['mb_bank_own']);
         if(!is_null($objUser)){
             $data['mb_state_delete'] = STATE_ACTIVE;
         }
