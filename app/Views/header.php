@@ -12,7 +12,30 @@
     <?php endif ?>
 	<!-- Bootstrap 3.3.7 -->
   	<link rel="stylesheet" href="<?php echo site_furl('assets/bootstrap/css/bootstrap.min.css');?>">
-	<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=21');?>">
+	<style>
+		:root {
+			<?php if(array_key_exists('css.main-bg-color', $_ENV)) :?> 
+				--main-bg-color: <?=$_ENV['css.main-bg-color']?>;
+			<?php else: ?>
+				--main-bg-color: white;
+			<?php endif ?>
+			
+			<?php if(array_key_exists('css.bar-bg-color', $_ENV)) :?> 
+				--bar-bg-color: <?=$_ENV['css.bar-bg-color']?>;
+			<?php else: ?>
+				--bar-bg-color: #dee1e6;
+			<?php endif ?>
+			--bar-font-color: black;
+			--span-font-color: #0090ff;
+			--main-button-color: #ffda3d;
+			<?php if(array_key_exists('css.table-th-color', $_ENV)) :?> 
+				--table-th-color: <?=$_ENV['css.table-th-color']?>;
+			<?php else: ?>
+				--table-th-color: #dee1e6;
+			<?php endif ?>
+		}
+	</style>
+	<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=22');?>">
 
 	<!-- JQuery 1.12.1 -->
 	<link rel="stylesheet" href="<?php echo site_furl('assets/js/jquery-ui-1.12.1.min.css'); ?>">
