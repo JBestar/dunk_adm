@@ -31,11 +31,11 @@
 			<?php if(array_key_exists('css.table-th-color', $_ENV)) :?> 
 				--table-th-color: <?=$_ENV['css.table-th-color']?>;
 			<?php else: ?>
-				--table-th-color: #dee1e6;
+				--table-th-color: #333;
 			<?php endif ?>
 		}
 	</style>
-	<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=22');?>">
+	<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=23');?>">
 
 	<!-- JQuery 1.12.1 -->
 	<link rel="stylesheet" href="<?php echo site_furl('assets/js/jquery-ui-1.12.1.min.css'); ?>">

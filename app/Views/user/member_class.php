@@ -111,6 +111,7 @@
 						<th></th>
 						<th></th>
 						<th></th>
+
 						<th></th>
 						<th></th>
 						<th></th>
@@ -127,8 +128,6 @@
 						<th id="sumOfWin"></th>
 						<th id="sumOfRwPt"></th>
 						<th id="sumOfChgpt"></th>
-						<th></th>
-						<th></th>
 						<th></th>
 						<th></th>
 						<th></th>
