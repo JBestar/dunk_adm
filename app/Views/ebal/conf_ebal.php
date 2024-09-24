@@ -85,10 +85,18 @@
 					<p style="padding:5px 5px 0 5px; margin:0;">보험배팅승인:</p> 
 					<input type="checkbox" id="confev-bet-check-id<?=($i)?>" style="zoom:120%; margin-top:0px;">
 					<label style="font-size:14px; font-weight:normal; padding-top:0px; position:relative; top:-3px;"> 배팅승인</label>
-					<input type="checkbox" id="confev-signal-check-id<?=($i)?>" style="zoom:120%; margin-top:5px; margin-left:22px;">
+					<input type="checkbox" id="confev-signal-check-id<?=($i)?>" style="zoom:120%; margin-top:5px; margin-left:18px;">
 					<label style="font-size:14px; font-weight:normal; padding-top:0px;"> 신호값용</label>
-					<input type="checkbox" id="confev-multiroom-check-id<?=($i)?>" style="zoom:120%; margin-top:5px; margin-left:10px;" <?=$mb_level<LEVEL_ADMIN+3?'hidden':''?>>
-					<label style="font-size:14px; font-weight:normal; padding-top:0px;" <?=$mb_level < LEVEL_ADMIN+3?'hidden':''?>> 멀티방</label>
+					
+						<!-- <input type="checkbox" id="confev-multiroom-check-id<?=($i)?>" style="zoom:120%; margin-top:5px; margin-left:10px;" <?=$mb_level<LEVEL_ADMIN+2?'hidden':''?>>
+						<label style="font-size:14px; font-weight:normal; padding-top:0px;" <?=$mb_level < LEVEL_ADMIN+2?'hidden':''?>> 멀티방</label> -->
+
+						<select name="pbresult-number" class="" id="confev-multiroom-check-id<?=($i)?>" style="padding:2px; width: 70px; margin-left:0px;">
+							<option value="0" >개별방</option>
+							<option value="1" >멀티방</option>
+							<option value="2" >혼합방</option>
+						</select>
+
 				</div>
 				<div>
 					<p style="padding:5px 5px 0 5px; margin:0;">팅김방지 배팅:</p> 
@@ -156,7 +164,7 @@
 <?php if(array_key_exists("app.produce", $_ENV)) :?>
     <script src="<?php echo site_furl('/assets/js/conf_ebal-script.js?t='.time());?>"></script>
 <?php else : ?>
-    <script src="<?php echo site_furl('/assets/js/conf_ebal-script.js?v=1');?>"></script>
+    <script src="<?php echo site_furl('/assets/js/conf_ebal-script.js?v=2');?>"></script>
 <?php endif ?>
 
 <?= $this->endSection() ?>
