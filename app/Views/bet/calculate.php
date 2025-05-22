@@ -90,12 +90,12 @@
 <!--main_navbar.php-main-container-->
 </div>
 <script> var mGameId = <?=$game_id?>; </script>
-<?php if(array_key_exists("app.produce", $_ENV)) :?>
-    <script src="<?php echo site_furl('/assets/js/page.js?t='.time());?>"></script>
-	<script src="<?php echo site_furl('/assets/js/calculate-script.js?t='.time());?>"></script>
-<?php else : ?>
+<?php if($_ENV['CI_ENVIRONMENT'] == ENV_PRODUCTION) :?>
     <script src="<?php echo site_furl('/assets/js/page.js?v=1');?>"></script>
 	<script src="<?php echo site_furl('/assets/js/calculate-script.js?v=2');?>"></script>
+<?php else : ?>
+    <script src="<?php echo site_furl('/assets/js/page.js?t='.time());?>"></script>
+	<script src="<?php echo site_furl('/assets/js/calculate-script.js?t='.time());?>"></script>
 <?php endif ?>
 
 <?= $this->renderSection("calculate-script")?>

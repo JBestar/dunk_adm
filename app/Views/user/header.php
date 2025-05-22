@@ -25,6 +25,13 @@
 			<?php else: ?>
 				--bar-bg-color: #dee1e6;
 			<?php endif ?>
+			
+			<?php if(array_key_exists('css.menu-bg-color', $_ENV)) :?> 
+				--menu-bg-color: <?=$_ENV['css.menu-bg-color']?>;
+			<?php else: ?>
+				--menu-bg-color: #dee1e6;
+			<?php endif ?>
+
 			--bar-font-color: black;
 			--span-font-color: #0090ff;
 			--main-button-color: #ffda3d;
@@ -36,7 +43,7 @@
 		}
 	</style>
 
-	<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=23');?>">
+	<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=24');?>">
 
 	<!-- JQuery 1.12.1 -->
 	<link rel="stylesheet" href="<?php echo site_furl('assets/js/jquery-ui-1.12.1.min.css'); ?>">

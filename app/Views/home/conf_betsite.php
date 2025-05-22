@@ -42,7 +42,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('confsite-script') ?>
-<?php if(array_key_exists("app.produce", $_ENV)) :?>
+<?php if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT) :?>
     <script src="<?php echo site_furl('/assets/js/conf_betsite-script.js?t='.time());?>"></script>
 <?php else : ?>
     <script src="<?php echo site_furl('/assets/js/conf_betsite-script.js?v=1');?>"></script>

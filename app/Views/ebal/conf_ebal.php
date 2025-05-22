@@ -161,10 +161,10 @@
 <!--main_navbar.php-main-container-->
 </div>
 
-<?php if(array_key_exists("app.produce", $_ENV)) :?>
-    <script src="<?php echo site_furl('/assets/js/conf_ebal-script.js?t='.time());?>"></script>
-<?php else : ?>
+<?php if($_ENV['CI_ENVIRONMENT'] == ENV_PRODUCTION) :?>
     <script src="<?php echo site_furl('/assets/js/conf_ebal-script.js?v=2');?>"></script>
+<?php else : ?>
+    <script src="<?php echo site_furl('/assets/js/conf_ebal-script.js?t='.time());?>"></script>
 <?php endif ?>
 
 <?= $this->endSection() ?>

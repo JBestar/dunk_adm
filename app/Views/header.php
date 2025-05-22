@@ -25,6 +25,13 @@
 			<?php else: ?>
 				--bar-bg-color: #dee1e6;
 			<?php endif ?>
+
+			<?php if(array_key_exists('css.menu-bg-color', $_ENV)) :?> 
+				--menu-bg-color: <?=$_ENV['css.menu-bg-color']?>;
+			<?php else: ?>
+				--menu-bg-color: #dee1e6;
+			<?php endif ?>
+			
 			--bar-font-color: black;
 			--span-font-color: #0090ff;
 			--main-button-color: #ffda3d;
@@ -35,7 +42,11 @@
 			<?php endif ?>
 		}
 	</style>
-	<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=23');?>">
+	<?php if($_ENV['CI_ENVIRONMENT'] == ENV_PRODUCTION) :?>
+		<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=24');?>">
+    <?php else : ?>
+		<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?t='.time());?>">
+    <?php endif ?>
 
 	<!-- JQuery 1.12.1 -->
 	<link rel="stylesheet" href="<?php echo site_furl('assets/js/jquery-ui-1.12.1.min.css'); ?>">
@@ -58,10 +69,10 @@
     <script src="<?php echo site_furl('assets/js/common.js?v=2');?>"></script>
 	<script src="<?php echo site_furl('assets/js/worker.js?v=1');?>"></script>
 
-    <?php if(array_key_exists("app.produce", $_ENV)) :?>
-        <script src="<?php echo site_furl('assets/js/main-script.js?t='.time());?>"></script>
-    <?php else : ?>
+	<?php if($_ENV['CI_ENVIRONMENT'] == ENV_PRODUCTION) :?>
         <script src="<?php echo site_furl('assets/js/main-script.js?v=1');?>"></script>
+    <?php else : ?>
+        <script src="<?php echo site_furl('assets/js/main-script.js?t='.time());?>"></script>
     <?php endif ?>
 
 </head>

@@ -608,7 +608,7 @@
 <!--main_navbar.php-->
 </div>
 
-<?php if(array_key_exists("app.produce", $_ENV)) :?>
+<?php if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT) :?>
     <script src="<?php echo site_furl('/assets/js/member_common-script.js?t='.time());?>"></script>
 	<script src="<?php echo site_furl('/assets/js/member_edit-script.js?t='.time());?>"></script>
 <?php else : ?>

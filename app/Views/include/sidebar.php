@@ -1,7 +1,7 @@
 <div class="main-sidebar" id = "main-sidebar-id">
   
   <button class="main-dropdown-btn <?=$confdropdownbtn?>"><i class="glyphicon glyphicon-home"></i>  기본설정
-    <i class="glyphicon glyphicon-chevron-right" style = "float:right; padding-right: 10px; font-size: 10px"></i>
+    <i class="glyphicon glyphicon-chevron-right" style = "float:right; padding-top: 3px; font-size: 10px"></i>
   </button>
   <div class="main-dropdown-container" <?=$confdropdown?> >
     <?php if($mb_level >= LEVEL_ADMIN) {  ?>
@@ -45,7 +45,7 @@
   </div>
   
   <button class="main-dropdown-btn <?=$userdropdownbtn?>"><i class="glyphicon glyphicon-user"></i>  회원관리
-    <i class="glyphicon glyphicon-chevron-right" style = "float:right; padding-right: 10px; font-size: 10px"></i>
+    <i class="glyphicon glyphicon-chevron-right" style = "float:right; padding-top: 3px; font-size: 10px"></i>
   </button>
   <div class="main-dropdown-container" <?=$userdropdown?>>
 
@@ -75,7 +75,7 @@
   </div>
   
   <button class="main-dropdown-btn <?=$bankdropdownbtn?>"><i class="glyphicon glyphicon-usd"></i>  충환전관리
-    <i class="glyphicon glyphicon-chevron-right" style = "float:right; padding-right: 10px; font-size: 10px"></i>
+    <i class="glyphicon glyphicon-chevron-right" style = "float:right; padding-top: 3px; font-size: 10px"></i>
   </button>
   <div class="main-dropdown-container" <?=$bankdropdown?>>
     <?php if($mb_level >= LEVEL_ADMIN) :  ?>
@@ -92,7 +92,7 @@
     <?php if(!$pbg_deny || !$bpg_deny || !$eos5_deny || !$eos3_deny || !$rand5_deny || !$rand3_deny) :?>
       <?php if($mb_level >= LEVEL_ADMIN) {  ?>
       <button class="main-dropdown-btn  <?=$resultdropdownbtn?>"><i class="glyphicon glyphicon-th-list"></i>  게임관리
-        <i class="glyphicon glyphicon-chevron-right" style = "float:right; padding-right: 10px; font-size: 10px"></i>
+        <i class="glyphicon glyphicon-chevron-right" style = "float:right; padding-top: 3px; font-size: 10px"></i>
       </button>
       <div class="main-dropdown-container" <?=$resultdropdown?>>
           <?php if(!$pbg_deny) :?>
@@ -120,7 +120,7 @@
   <?php endif ?>   
 
   <button class="main-dropdown-btn  <?=$betdropdownbtn?>"><i class="glyphicon glyphicon-refresh"></i>  배팅
-    <i class="glyphicon glyphicon-chevron-right" style = "float:right; padding-right: 10px; font-size: 10px"></i>
+    <i class="glyphicon glyphicon-chevron-right" style = "float:right; padding-top: 3px; font-size: 10px"></i>
   </button>
   <div class="main-dropdown-container" <?=$betdropdown?>>
 
@@ -175,7 +175,7 @@
   </div>
   <?php if($mb_level >= LEVEL_ADMIN) {  ?>
   <button class="main-dropdown-btn  <?=$boarddropdownbtn?>" ><i class="glyphicon glyphicon-envelope"></i>  게시판
-    <i class="glyphicon glyphicon-chevron-right" style = "float:right; padding-right: 10px; font-size: 10px"></i>
+    <i class="glyphicon glyphicon-chevron-right" style = "float:right; padding-top: 3px; font-size: 10px"></i>
   </button>  
   <div class="main-dropdown-container" <?=$boarddropdown?>>
     <a href="<?php echo siteFurl().'board/notice';?>" class="<?=$board_notice?>"><i class="glyphicon glyphicon-info-sign"></i>  공지사항</a>

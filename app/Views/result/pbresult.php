@@ -18,7 +18,7 @@
 	<th>게임관리</th>				
 <?= $this->endSection() ?>
 <?= $this->section('bet-result-script') ?>
-<?php if(array_key_exists("app.produce", $_ENV)) :?>
+<?php if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT) :?>
 	<script src="<?php echo site_furl('/assets/js/pbresult-script.js?t='.time());?>"></script>
 <?php else : ?>
 	<script src="<?php echo site_furl('/assets/js/pbresult-script.js?v=1');?>"></script>

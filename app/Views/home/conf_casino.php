@@ -82,7 +82,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('confgame-script') ?>
-<?php if(array_key_exists("app.produce", $_ENV)) :?>
+<?php if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT) :?>
     <script src="<?php echo site_furl('/assets/js/confcs-script.js?t='.time());?>"></script>
     <script src="<?php echo site_furl('/assets/js/confkg-script.js?t='.time());?>"></script>
 <?php else : ?>

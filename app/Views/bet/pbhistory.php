@@ -31,9 +31,9 @@
 	
 <?= $this->endSection() ?>
 <?= $this->section('history_script') ?>
-	<?php if(array_key_exists("app.produce", $_ENV)) :?>
-		<script src="<?php echo site_furl('/assets/js/pbhistory-script.js?t='.time());?>"></script>
-	<?php else : ?>
+	<?php if($_ENV['CI_ENVIRONMENT'] == ENV_PRODUCTION) :?>
 		<script src="<?php echo site_furl('/assets/js/pbhistory-script.js?v=1');?>"></script>
+	<?php else : ?>
+		<script src="<?php echo site_furl('/assets/js/pbhistory-script.js?t='.time());?>"></script>
 	<?php endif ?>
 <?= $this->endSection() ?>

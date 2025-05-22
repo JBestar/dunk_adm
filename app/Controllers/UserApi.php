@@ -2365,17 +2365,17 @@ class UserApi extends BaseController
                             writeLog("<RAVE> Recovery Uid=".$objMember->mb_uid." Balance=".$objMember->mb_rave_money);
                             if(diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
                                 $iResult = 2;
-                            } else $iResult = $this->kgtoMb($objMember);
+                            } else $iResult = $this->rvtoMb($objMember);
                             if($iResult == 0)
                                 break;
                             else usleep(500000);
                         } 
                     }
                     
-                    $arrResult = $this->libApiKgon->getAgentInfo();
+                    $arrResult = $this->libApiRave->getAgentInfo();
                     if($arrResult['status'] == 1){
-                        $confsiteModel->setConfActive(CONF_API_KGON, $arrResult['balance']);
-                        writeLog("<KGON> AGENT Egg = ".$arrResult['balance']);
+                        $confsiteModel->setConfActive(CONF_API_RAVE, $arrResult['balance']);
+                        writeLog("<RAVE> AGENT Egg = ".$arrResult['balance']);
                         $balance = $arrResult['balance'];
                     }
                 }

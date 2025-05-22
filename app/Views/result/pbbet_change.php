@@ -15,7 +15,7 @@
 	<th>처리</th>
 <?= $this->endSection() ?>
 <?= $this->section('bet-change-script') ?>
-	<?php if(array_key_exists("app.produce", $_ENV)) :?>
+	<?php if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT) :?>
 		<script src="<?php echo site_furl('/assets/js/pbbet_change-script.js?t='.time());?>"></script>
 	<?php else : ?>
 		<script src="<?php echo site_furl('/assets/js/pbbet_change-script.js?v=1');?>"></script>
