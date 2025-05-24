@@ -56,7 +56,7 @@
 		}
 	</style>
 	<?php if($_ENV['CI_ENVIRONMENT'] == ENV_PRODUCTION) :?>
-		<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=25');?>">
+		<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=26');?>">
     <?php else : ?>
 		<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?t='.time());?>">
     <?php endif ?>

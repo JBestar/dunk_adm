@@ -173,7 +173,7 @@ button[disabled], html input[disabled], select[disabled] {
 
 .main-sidebar .sidebar-a-active {
     color: black;
-    background-color: #88cbff;
+    background-color: var(--dropdown-font-color);
     /*box-shadow:0px 2px 5px #88cbff;*/
     z-index: 1;
 }
