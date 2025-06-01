@@ -357,7 +357,7 @@ class Home extends StdController
 			'game_id' => $gameId,
 		];
 		if($_ENV['app.type'] == APP_TYPE_1){
-			$param['game_prds'] = $slprdModel->getByCode($gameId);
+			$param['game_prds'] = $slprdModel->getByCode($gameId, "idx<5");
 			$this->load_view_page('home/conf_fslot', 'conf_game', LEVEL_ADMIN, $param);	
 		}
 		else if($_ENV['app.type'] == APP_TYPE_2)

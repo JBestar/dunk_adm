@@ -21,8 +21,12 @@ class SlotPrd_Model extends Model {
                     ->findAll(); 
     }
 
-    public function getByCode($cat, $bGroup = false){
+    public function getByCode($cat, $where="", $order = ""){
         $strSql = "SELECT  * FROM ".$this->table." WHERE cat = '".$cat."' AND maintain = '0' ";
+        if(strlen($where) > 0)
+            $strSql.=" AND ".$where; 
+        if(strlen($order) > 0)
+            $strSql.=" ORDER BY ".$order; 
 
         $query = $this -> db -> query($strSql);
         $result = $query -> getResult();
