@@ -101,7 +101,7 @@ button[disabled], html input[disabled], select[disabled] {
 /* Handle */
 
 .main-sidebar::-webkit-scrollbar-thumb {
-    background: #4f5377;
+    background: var(--scroll-bg-color);;
     border-radius: 5px;
 }
 
@@ -109,7 +109,7 @@ button[disabled], html input[disabled], select[disabled] {
 /* Handle on hover */
 
 .main-sidebar::-webkit-scrollbar-thumb:hover {
-    background: #4f5377;
+    background: var(--scroll-bg-color);;
 }
 
 

@@ -44,6 +44,12 @@
 				--menu-font-color: black;
 			<?php endif ?>
 
+			<?php if(array_key_exists('css.scroll-bg-color', $_ENV)) :?> 
+				--scroll-bg-color: <?=$_ENV['css.scroll-bg-color']?>;
+			<?php else: ?>
+				--scroll-bg-color: #4f5377;
+			<?php endif ?>
+
 			--bar-font-color: black;
 			--span-font-color: #0090ff;
 			--main-button-color: #ffda3d;
@@ -55,7 +61,7 @@
 		}
 	</style>
 
-	<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=26');?>">
+	<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=27');?>">
 
 	<!-- JQuery 1.12.1 -->
 	<link rel="stylesheet" href="<?php echo site_furl('assets/js/jquery-ui-1.12.1.min.css'); ?>">

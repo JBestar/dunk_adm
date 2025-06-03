@@ -37,12 +37,17 @@
 			<?php else: ?>
 				--dropdown-font-color: #0017b9;
 			<?php endif ?>
-			
 
 			<?php if(array_key_exists('css.menu-font-color', $_ENV)) :?> 
 				--menu-font-color: <?=$_ENV['css.menu-font-color']?>;
 			<?php else: ?>
 				--menu-font-color: black;
+			<?php endif ?>
+
+			<?php if(array_key_exists('css.scroll-bg-color', $_ENV)) :?> 
+				--scroll-bg-color: <?=$_ENV['css.scroll-bg-color']?>;
+			<?php else: ?>
+				--scroll-bg-color: #4f5377;
 			<?php endif ?>
 
 			--bar-font-color: black;
@@ -56,7 +61,7 @@
 		}
 	</style>
 	<?php if($_ENV['CI_ENVIRONMENT'] == ENV_PRODUCTION) :?>
-		<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=26');?>">
+		<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?v=27');?>">
     <?php else : ?>
 		<link rel="stylesheet" href="<?php echo site_furl('assets/css/main.style.css?t='.time());?>">
     <?php endif ?>
