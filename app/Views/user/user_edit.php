@@ -112,7 +112,7 @@
 		<?php }?>
         <?= $this->renderSection('user-edit-form-section2') ?>
 		
-		<?php if(!$pbg_deny || !$bpg_deny || !$rand5_deny || !$rand3_deny || !$eos5_deny || !$eos3_deny) :?>
+		<?php if(!$pbg_deny || !$bpg_deny || !$coin5_deny || !$coin3_deny || !$eos5_deny || !$eos3_deny) :?>
 
 			<div class="useredit-percent-div">
 				<p>미니게임 단폴:</p> 

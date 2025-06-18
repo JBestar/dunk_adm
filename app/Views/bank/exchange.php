@@ -76,15 +76,15 @@
 					<option value="35">EOS3분배팅취소</option>				
 					<option value="36">EOS3분정산</option>
 				<?php endif ?> 
-				<?php if(!$rand5_deny) :?>
-					<option value="37">랜덤5분배팅</option>				
-					<option value="38">랜덤5분배팅취소</option>				
-					<option value="39">랜덤5분정산</option>
+				<?php if(!$coin5_deny) :?>
+					<option value="37">코인5분배팅</option>				
+					<option value="38">코인5분배팅취소</option>				
+					<option value="39">코인5분정산</option>
 				<?php endif ?> 
-				<?php if(!$rand3_deny) :?>
-					<option value="40">랜덤3분배팅</option>				
-					<option value="41">랜덤3분배팅취소</option>				
-					<option value="42">랜덤3분정산</option>
+				<?php if(!$coin3_deny) :?>
+					<option value="40">코인3분배팅</option>				
+					<option value="41">코인3분배팅취소</option>				
+					<option value="42">코인3분정산</option>
 				<?php endif ?> 
 			</select>
 

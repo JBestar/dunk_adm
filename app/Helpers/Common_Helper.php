@@ -259,8 +259,8 @@
           case GAME_HOLD_CMS: return $objMember->mb_game_hl;
           case GAME_EOS5_BALL: 
           case GAME_EOS3_BALL:  return $objMember->mb_game_eo;
-          case GAME_RAND5_BALL: 
-          case GAME_RAND3_BALL:  return $objMember->mb_game_co;
+          case GAME_COIN5_BALL: 
+          case GAME_COIN3_BALL:  return $objMember->mb_game_co;
           default: break;
       } 
       return 0;

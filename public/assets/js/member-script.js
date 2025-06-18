@@ -147,11 +147,11 @@ function showMember(arrMember, confs) {
                     strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >EOS</button>";
                 }
             }
-            if(!confs.rand5_deny || !confs.rand3_deny){
+            if(!confs.coin5_deny || !confs.coin3_deny){
                 if (arrMember[nRow].mb_game_co == 1) {
-                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>랜덤파</button>";
+                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "'  class='button-active'>코인파</button>";
                 } else {
-                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >랜덤파</button>";
+                    strBuf += "<button name='" + arrMember[nRow].mb_fid + "' >코인파</button>";
                 }
             }
             if(!confs.evol_deny || !confs.cas_deny){
@@ -373,7 +373,7 @@ function addButtonElementListener(buttonElement) {
                 jsonData = { "mb_fid": this.name, "mb_game_bs": 1 };
             }
             requestUpdateMember(jsonData);
-        } else if (this.innerHTML.search("랜덤파") >= 0) {
+        } else if (this.innerHTML.search("코인파") >= 0) {
             if (this.className.search("button-active") >= 0) {
                 jsonData = { "mb_fid": this.name, "mb_game_co": 0 };
             } else {

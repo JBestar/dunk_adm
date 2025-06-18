@@ -240,7 +240,7 @@ function addButtonElementListener(buttonElement) {
                 jsonData = { "mb_fid": this.name, "mb_game_bs": 1 };
             }
             requestUpdateMember(jsonData);
-        } else if (this.innerHTML.search("랜덤파") >= 0) {
+        } else if (this.innerHTML.search("코인파") >= 0) {
             if (this.className.search("button-active") >= 0) {
                 jsonData = { "mb_fid": this.name, "mb_game_co": 0 };
             } else {

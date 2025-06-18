@@ -693,7 +693,7 @@ class UserApi extends BaseController
                 $arrSumData = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0] ];
                 
                 if(!$siteConfs['pbg_deny'] || !$siteConfs['bpg_deny'] || !$siteConfs['eos5_deny'] || !$siteConfs['eos3_deny']
-                    || !$siteConfs['rand5_deny'] || !$siteConfs['rand3_deny']){
+                    || !$siteConfs['coin5_deny'] || !$siteConfs['coin3_deny']){
                     $betModel = new PbBet_Model();
 
                     $arrSum = $betModel->getBetSumByDay($arrReqData);

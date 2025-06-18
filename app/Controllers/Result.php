@@ -225,8 +225,8 @@ class Result extends StdController {
 	public function r5result()
 	{	
 		$param = [
-			'game_name' => "랜덤5분",
-			'game_id' => GAME_RAND5_BALL,
+			'game_name' => "코인5분",
+			'game_id' => GAME_COIN5_BALL,
 		];	
 		$this->load_view_page('result/bbresult', 'gameresult', LEVEL_ADMIN, $param);			
 	}
@@ -234,8 +234,8 @@ class Result extends StdController {
 	public function r5result_edit($strRoundFid)
 	{
 		$param = [
-			'game_name' => "랜덤5분파워볼",
-			'game_id' => GAME_RAND5_BALL,
+			'game_name' => "코인5분파워볼",
+			'game_id' => GAME_COIN5_BALL,
 		];
 		
 		$this->result_edit_page(
@@ -248,8 +248,8 @@ class Result extends StdController {
 	public function r3result()
 	{	
 		$param = [
-			'game_name' => "랜덤3분",
-			'game_id' => GAME_RAND3_BALL,
+			'game_name' => "코인3분",
+			'game_id' => GAME_COIN3_BALL,
 		];	
 		$this->load_view_page('result/bbresult', 'gameresult', LEVEL_ADMIN, $param);			
 	}
@@ -257,8 +257,8 @@ class Result extends StdController {
 	public function r3result_edit($strRoundFid)
 	{
 		$param = [
-			'game_name' => "랜덤3분파워볼",
-			'game_id' => GAME_RAND3_BALL,
+			'game_name' => "코인3분파워볼",
+			'game_id' => GAME_COIN3_BALL,
 		];
 		
 		$this->result_edit_page(
@@ -335,8 +335,8 @@ class Result extends StdController {
 	public function r5betchange($strDate, $strRoundNo)
 	{
 		$param = [
-			'game_name' => "랜덤5분",
-			'game_id' => GAME_RAND5_BALL,
+			'game_name' => "코인5분",
+			'game_id' => GAME_COIN5_BALL,
 		];	
 		$this->result_change_page('result/pbbet_change', $strDate, $strRoundNo, $param);		
 	}
@@ -344,8 +344,8 @@ class Result extends StdController {
 	public function r3betchange($strDate, $strRoundNo)
 	{
 		$param = [
-			'game_name' => "랜덤3분",
-			'game_id' => GAME_RAND3_BALL,
+			'game_name' => "코인3분",
+			'game_id' => GAME_COIN3_BALL,
 		];
 		$this->result_change_page('result/pbbet_change', $strDate, $strRoundNo, $param);		
 	}

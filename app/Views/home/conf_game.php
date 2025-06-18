@@ -39,11 +39,11 @@
 		<?php if(!$eos3_deny) :?>
 			<a href="<?php echo site_furl('home/conf_eos3ball');?>" class="sub-navbar-a" >EOS3분</a>
    		<?php endif ?>  
-		<?php if(!$rand5_deny) :?>
-			<a href="<?php echo site_furl('home/conf_rand5ball');?>" class="sub-navbar-a" >랜덤5분</a>
+		<?php if(!$coin5_deny) :?>
+			<a href="<?php echo site_furl('home/conf_coin5ball');?>" class="sub-navbar-a" >코인5분</a>
    		<?php endif ?>  
-		<?php if(!$rand3_deny) :?>
-			<a href="<?php echo site_furl('home/conf_rand3ball');?>" class="sub-navbar-a" >랜덤3분</a>
+		<?php if(!$coin3_deny) :?>
+			<a href="<?php echo site_furl('home/conf_coin3ball');?>" class="sub-navbar-a" >코인3분</a>
    		<?php endif ?>  
 		 
 	</div>

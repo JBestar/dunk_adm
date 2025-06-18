@@ -254,7 +254,7 @@
 									</div>
 								</div>
 							</div>
-					<?php if(!$pbg_deny || !$bpg_deny || !$eos5_deny || !$eos3_deny || !$rand5_deny || !$rand3_deny) :?>
+					<?php if(!$pbg_deny || !$bpg_deny || !$eos5_deny || !$eos3_deny || !$coin5_deny || !$coin3_deny) :?>
 							<div class="col-md-12">
 								<div class="row">
 									<div class="col-md-2">미니게임 단폴 배당율 (%)</div>

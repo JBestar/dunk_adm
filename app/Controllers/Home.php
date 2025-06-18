@@ -141,24 +141,24 @@ class Home extends StdController
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);
 	}
 
-	public function conf_rand5ball(){
+	public function conf_coin5ball(){
 		$confsiteModel = new ConfSite_Model();
 		$confsiteModel->readBetConf();
 		
 		$param = [
-			'game_name' => "랜덤5분",
-			'game_id' => GAME_RAND5_BALL
+			'game_name' => "코인5분",
+			'game_id' => GAME_COIN5_BALL
 		];
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);
 	}
 
-	public function conf_rand3ball(){
+	public function conf_coin3ball(){
 		$confsiteModel = new ConfSite_Model();
 		$confsiteModel->readBetConf();
 		
 		$param = [
-			'game_name' => "랜덤3분",
-			'game_id' => GAME_RAND3_BALL
+			'game_name' => "코인3분",
+			'game_id' => GAME_COIN3_BALL
 		];
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);
 	}

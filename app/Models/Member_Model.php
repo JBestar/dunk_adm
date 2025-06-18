@@ -340,7 +340,7 @@ class Member_Model extends Model
         if ($arrReqData['type'] == GAME_PBG_BALL || $arrReqData['type'] == GAME_EVOL_BALL ||
             $arrReqData['type'] == GAME_BOGLE_BALL || $arrReqData['type'] == GAME_BOGLE_LADDER ||
             $arrReqData['type'] == GAME_EOS5_BALL || $arrReqData['type'] == GAME_EOS3_BALL ||
-            $arrReqData['type'] == GAME_RAND3_BALL || $arrReqData['type'] == GAME_RAND3_BALL || 
+            $arrReqData['type'] == GAME_COIN5_BALL || $arrReqData['type'] == GAME_COIN3_BALL || 
             $arrReqData['type'] == GAME_SPKN_BALL) {
             $arrReqData['gm_range'] = $this->getBetRangeId($arrReqData, "bet_pball");
             if($bRw)
@@ -513,7 +513,7 @@ class Member_Model extends Model
         $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
         $strSQL .= $strWhereMem;
 
-        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['rand5_deny'] || !$confs['rand3_deny']){
+        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['coin5_deny'] || !$confs['coin3_deny']){
             $strSQL .= 'UNION ALL (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_pball ';
             // $strSQL .= " WHERE bet_fid >= ".$arrReqData['hpb_range'][0]." AND bet_fid <= ".$arrReqData['hpb_range'][1];
             $strSQL .= " WHERE ".getBetTimeRange($arrReqData, $this->db);
@@ -596,7 +596,7 @@ class Member_Model extends Model
         $strSQL .= ' UNION ALL ( SELECT SUM(bet_money) AS result_1, SUM(bet_win_money) AS result_2 FROM ';
         if ($arrReqData['type'] == GAME_PBG_BALL || $arrReqData['type'] == GAME_EVOL_BALL || $arrReqData['type'] == GAME_BOGLE_BALL ||
             $arrReqData['type'] == GAME_BOGLE_LADDER || $arrReqData['type'] == GAME_EOS5_BALL || $arrReqData['type'] == GAME_EOS3_BALL ||
-            $arrReqData['type'] == GAME_RAND5_BALL || $arrReqData['type'] == GAME_RAND3_BALL || $arrReqData['type'] == GAME_SPKN_BALL) {
+            $arrReqData['type'] == GAME_COIN5_BALL || $arrReqData['type'] == GAME_COIN3_BALL || $arrReqData['type'] == GAME_SPKN_BALL) {
             $strSQL .= ' bet_pball ';
             $rewardTb = $this->rewardMnTb;
 
@@ -631,7 +631,7 @@ class Member_Model extends Model
             $strSQL .= " AND bet_state = 0 ";
         } else if ($arrReqData['type'] == GAME_PBG_BALL || $arrReqData['type'] == GAME_EVOL_BALL || $arrReqData['type'] == GAME_BOGLE_BALL ||
             $arrReqData['type'] == GAME_BOGLE_LADDER || $arrReqData['type'] == GAME_EOS5_BALL || $arrReqData['type'] == GAME_EOS3_BALL ||
-            $arrReqData['type'] == GAME_RAND5_BALL || $arrReqData['type'] == GAME_RAND3_BALL || $arrReqData['type'] == GAME_SPKN_BALL) {
+            $arrReqData['type'] == GAME_COIN5_BALL || $arrReqData['type'] == GAME_COIN3_BALL || $arrReqData['type'] == GAME_SPKN_BALL) {
             $strSQL .= " AND bet_game = ".$arrReqData['type'];
         } 
 
@@ -688,7 +688,7 @@ class Member_Model extends Model
         $strSQL .= '  FROM  (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_slot';
         $strSQL .= $strCond;
 
-        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['rand5_deny'] || !$confs['rand3_deny']){
+        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['coin5_deny'] || !$confs['coin3_deny']){
             $strSQL .= 'UNION ALL SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money FROM bet_pball ';
             $strSQL .= $strCond;
         }
@@ -757,7 +757,7 @@ class Member_Model extends Model
          $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count, bet_game_type  FROM bet_slot ";
 		 $strSQL.= $strCond." group by bet_game_type) AS bet_slot_g JOIN slot_prd on slot_prd.code = bet_slot_g.bet_game_type ";
          
-        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['rand5_deny'] || !$confs['rand3_deny']){
+        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['coin5_deny'] || !$confs['coin3_deny']){
             $strSQL.= " UNION ALL SELECT bet_money, bet_win_money, bet_count, '미니게임' AS bet_name, '".GAME_PBG_BALL."' As bet_kind  From ";
             $strSQL.= " (SELECT SUM(bet_money) AS bet_money, SUM(bet_win_money) AS bet_win_money, COUNT(*) AS bet_count FROM bet_pball  ";
             $strSQL.= $strCond." ) AS bet_pb_g ";
@@ -1742,7 +1742,7 @@ class Member_Model extends Model
         $betSum = " (IFNULL(bet_sl.bet_sl_m, 0)";
         $winSum = " (IFNULL(bet_sl.bet_sl_w, 0)";
 
-        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['rand5_deny'] || !$confs['rand3_deny']){
+        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['coin5_deny'] || !$confs['coin3_deny']){
             $betSum .= "+IFNULL(bet_pb.bet_pb_m, 0)";
             $winSum .= "+IFNULL(bet_pb.bet_pb_w, 0)";
         }
@@ -1771,7 +1771,7 @@ class Member_Model extends Model
         $strSQL.= "SELECT ".$strTbColum." FROM ".$tbMember;
         $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_sl_m, sum(bet_win_money) AS bet_sl_w from bet_slot group by bet_mb_uid ) bet_sl ON bet_sl.bet_mb_uid = ".$tbMember.".mb_uid";
 
-        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['rand5_deny'] || !$confs['rand3_deny']){
+        if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['coin5_deny'] || !$confs['coin3_deny']){
             $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_pb_m, sum(bet_win_money) AS bet_pb_w from bet_pball group by bet_mb_uid ) bet_pb ON bet_pb.bet_mb_uid = ".$tbMember.".mb_uid";
         }
         if(!$confs['hold_deny']){
@@ -1862,7 +1862,7 @@ class Member_Model extends Model
             $betSum = " (IFNULL(bet_sl.bet_sl_m, 0)";
             $winSum = " (IFNULL(bet_sl.bet_sl_w, 0)";
 
-            if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['rand5_deny'] || !$confs['rand3_deny']){
+            if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['coin5_deny'] || !$confs['coin3_deny']){
                 $betSum .= "+IFNULL(bet_pb.bet_pb_m, 0)";
                 $winSum .= "+IFNULL(bet_pb.bet_pb_w, 0)";
             }
@@ -1914,7 +1914,7 @@ class Member_Model extends Model
 
             $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_sl_m, sum(bet_win_money) AS bet_sl_w from bet_slot group by bet_mb_uid ) bet_sl ON bet_sl.bet_mb_uid = member.mb_uid";
 
-            if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['rand5_deny'] || !$confs['rand3_deny']){
+            if(!$confs['pbg_deny'] || !$confs['bpg_deny'] || !$confs['eos5_deny'] || !$confs['eos3_deny'] || !$confs['coin5_deny'] || !$confs['coin3_deny']){
                 $strSQL.= " LEFT JOIN ( select bet_mb_uid, sum(bet_money) AS bet_pb_m, sum(bet_win_money) AS bet_pb_w from bet_pball group by bet_mb_uid ) bet_pb ON bet_pb.bet_mb_uid = member.mb_uid";
             }
             if(!$confs['hold_deny']){

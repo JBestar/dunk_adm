@@ -199,10 +199,10 @@ class PbApi extends BaseController {
 				$betModel = new PbBet_Model();
 				$arrRoundInfo = getBRoundInfo(ROUND_3MIN);
 				$arrBetSum = $betModel->getBetSumByMode($arrRoundInfo, $objConf);
-			} else if($arrReqData['game'] >= GAME_EOS5_BALL && $arrReqData['game'] <= GAME_RAND3_BALL){
+			} else if($arrReqData['game'] >= GAME_EOS5_BALL && $arrReqData['game'] <= GAME_COIN3_BALL){
 
 				$betModel = new PbBet_Model();
-				if($arrReqData['game'] == GAME_EOS5_BALL || $arrReqData['game'] == GAME_RAND5_BALL)
+				if($arrReqData['game'] == GAME_EOS5_BALL || $arrReqData['game'] == GAME_COIN5_BALL)
 					$arrRoundInfo = getBRoundInfo(ROUND_5MIN);
 				else $arrRoundInfo = getBRoundInfo(ROUND_3MIN);
 				$arrBetSum = $betModel->getBetSumByMode($arrRoundInfo, $objConf);
@@ -329,10 +329,10 @@ class PbApi extends BaseController {
 				$iChangeType = MONEYCHANGE_WIN_EO5;
 			} else if($arrReqData['game'] == GAME_EOS3_BALL){
 				$iChangeType = MONEYCHANGE_WIN_EO3;
-			} else if($arrReqData['game'] == GAME_RAND5_BALL){
-				$iChangeType = MONEYCHANGE_WIN_RD5;
-			} else if($arrReqData['game'] == GAME_RAND3_BALL){
-				$iChangeType = MONEYCHANGE_WIN_RD3;
+			} else if($arrReqData['game'] == GAME_COIN5_BALL){
+				$iChangeType = MONEYCHANGE_WIN_CO5;
+			} else if($arrReqData['game'] == GAME_COIN3_BALL){
+				$iChangeType = MONEYCHANGE_WIN_CO3;
 			} else $bResult = false;
 			
 			if($bResult){
@@ -407,10 +407,10 @@ class PbApi extends BaseController {
 				$iChangeType = MONEYCHANGE_WIN_EO5;
 			} else if($arrReqData['game'] == GAME_EOS3_BALL){
 				$iChangeType = MONEYCHANGE_WIN_EO3;
-			} else if($arrReqData['game'] == GAME_RAND5_BALL){
-				$iChangeType = MONEYCHANGE_WIN_RD5;
-			} else if($arrReqData['game'] == GAME_RAND3_BALL){
-				$iChangeType = MONEYCHANGE_WIN_RD3;
+			} else if($arrReqData['game'] == GAME_COIN5_BALL){
+				$iChangeType = MONEYCHANGE_WIN_CO5;
+			} else if($arrReqData['game'] == GAME_COIN3_BALL){
+				$iChangeType = MONEYCHANGE_WIN_CO3;
 			} else $bResult = false;
 				
 			if($bResult){

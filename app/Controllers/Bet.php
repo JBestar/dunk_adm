@@ -92,8 +92,8 @@ class Bet extends StdController {
 	public function r5realtime(){
 		
 		$param = [
-			'game_name' => "랜덤5분",
-			'game_id' => GAME_RAND5_BALL,
+			'game_name' => "코인5분",
+			'game_id' => GAME_COIN5_BALL,
 		];
 
 		$this->load_view_page('bet/pbrealtime', 'bet_realtime', LEVEL_ADMIN, $param);
@@ -102,8 +102,8 @@ class Bet extends StdController {
 	public function r3realtime(){
 		
 		$param = [
-			'game_name' => "랜덤3분",
-			'game_id' => GAME_RAND3_BALL,
+			'game_name' => "코인3분",
+			'game_id' => GAME_COIN3_BALL,
 		];
 
 		$this->load_view_page('bet/pbrealtime', 'bet_realtime', LEVEL_ADMIN, $param);
@@ -311,8 +311,8 @@ class Bet extends StdController {
 	public function r5history(){
 		
 		$param = [
-			'game_name' => "랜덤5분",
-			'game_id' => GAME_RAND5_BALL,
+			'game_name' => "코인5분",
+			'game_id' => GAME_COIN5_BALL,
 		];
 		$this->load_view_page('bet/pbhistory', 'bet_history', LEVEL_MIN, $param);
 	}
@@ -321,8 +321,8 @@ class Bet extends StdController {
 	public function r3history(){
 		
 		$param = [
-			'game_name' => "랜덤3분",
-			'game_id' => GAME_RAND3_BALL,
+			'game_name' => "코인3분",
+			'game_id' => GAME_COIN3_BALL,
 		];
 		$this->load_view_page('bet/pbhistory', 'bet_history', LEVEL_MIN, $param);
 	}
@@ -535,16 +535,16 @@ class Bet extends StdController {
 	
 	public function r5calculate(){
 		$param = [
-			'game_name' => "랜덤5분",
-			'game_id' => GAME_RAND5_BALL,
+			'game_name' => "코인5분",
+			'game_id' => GAME_COIN5_BALL,
 		];
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}
 	
 	public function r3calculate(){
 		$param = [
-			'game_name' => "랜덤3분",
-			'game_id' => GAME_RAND3_BALL,
+			'game_name' => "코인3분",
+			'game_id' => GAME_COIN3_BALL,
 		];
 		$this->load_view_page('bet/calculate_game', 'bet_calculate', LEVEL_MIN, $param);
 	}

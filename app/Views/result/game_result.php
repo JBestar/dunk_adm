@@ -22,11 +22,11 @@
 		<?php if(!$eos3_deny) :?>
 			<a href="<?php echo siteFurl().'result/e3result';?>" class="sub-navbar-a" >EOS3분</a>
 		<?php endif ?>
-		<?php if(!$rand5_deny) :?>
-			<a href="<?php echo siteFurl().'result/r5result';?>" class="sub-navbar-a" >랜덤5분</a>
+		<?php if(!$coin5_deny) :?>
+			<a href="<?php echo siteFurl().'result/r5result';?>" class="sub-navbar-a" >코인5분</a>
 		<?php endif ?>   
-		<?php if(!$rand3_deny) :?>
-			<a href="<?php echo siteFurl().'result/r3result';?>" class="sub-navbar-a" >랜덤3분</a>
+		<?php if(!$coin3_deny) :?>
+			<a href="<?php echo siteFurl().'result/r3result';?>" class="sub-navbar-a" >코인3분</a>
 		<?php endif ?>      
 	</div>
 

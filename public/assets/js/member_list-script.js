@@ -61,7 +61,7 @@ function getMemberTr(objMember, bChild = false, bShow=false){
         strBuf += "<span style='word-break: keep-all;'>카지노:" + objMember.mb_game_cs_ratio + "</span><br>" ;
     if (!mConfs.hold_deny)
         strBuf += "<span style='word-break: keep-all;'>홀덤:" + objMember.mb_game_hl_ratio + "</span><br>" ;
-    if (!mConfs.pbg_deny || !mConfs.bpg_deny || !mConfs.eos5_deny || !mConfs.rand5_deny){
+    if (!mConfs.pbg_deny || !mConfs.bpg_deny || !mConfs.eos5_deny || !mConfs.coin5_deny){
         strBuf += "<span style='word-break: keep-all;'>미니단폴:" + objMember.mb_game_pb_ratio + "</span><br>" ;
         strBuf += "<span style='word-break: keep-all;'>미니조합:" + objMember.mb_game_pb2_ratio + "</span><br>" ;
     }
@@ -142,11 +142,11 @@ function getMemberTr(objMember, bChild = false, bShow=false){
                 strBuf += "<button name='" + objMember.mb_fid + "' >EOS</button>";
             }
         }
-        if(!mConfs.rand5_deny || !mConfs.rand3_deny){
+        if(!mConfs.coin5_deny || !mConfs.coin3_deny){
             if (objMember.mb_game_co == 1) {
-                strBuf += "<button name='" + objMember.mb_fid + "'  class='button-active'>랜덤파워</button>";
+                strBuf += "<button name='" + objMember.mb_fid + "'  class='button-active'>코인파워</button>";
             } else {
-                strBuf += "<button name='" + objMember.mb_fid + "' >랜덤파워</button>";
+                strBuf += "<button name='" + objMember.mb_fid + "' >코인파워</button>";
             }
         }
         if(!mConfs.evol_deny || !mConfs.cas_deny){
@@ -305,7 +305,7 @@ function addButtonElementListener(buttonElement) {
                 jsonData = { "mb_fid": this.name, "mb_game_bs": 1 };
             }
             requestUpdateMember(jsonData);
-        } else if (this.innerHTML.search("랜덤") >= 0) {
+        } else if (this.innerHTML.search("코인") >= 0) {
             if (this.className.search("button-active") >= 0) {
                 jsonData = { "mb_fid": this.name, "mb_game_co": 0 };
             } else {

@@ -17,7 +17,7 @@
 					<?php if(isEBalMode() || !$evol_deny || !$cas_deny) :?>
 						<td>카지노<span id="main-navbar-emp_evrate-id">0 %</span></td>
 					<?php endif ?>
-					<?php if(!$pbg_deny || !$bpg_deny || !$rand5_deny || !$rand3_deny || !$eos5_deny || !$eos3_deny) :?>
+					<?php if(!$pbg_deny || !$bpg_deny || !$coin5_deny || !$coin3_deny || !$eos5_deny || !$eos3_deny) :?>
 						<td>미니게임<span id="main-navbar-emp_pbrate-id">0 % | 0 %</span></td>
 					<?php endif ?>  
 				<?php else : ?>
@@ -115,7 +115,7 @@
 					<?php endif ?>  
 					
 					<?php if(array_key_exists('app.site', $_ENV) && $_ENV['app.site'] == 2 ) :?>
-						<?php if(!$bpg_deny || !$pbg_deny || !$eos5_deny || !$eos3_deny || !$rand5_deny || !$rand3_deny) :?>
+						<?php if(!$bpg_deny || !$pbg_deny || !$eos5_deny || !$eos3_deny || !$coin5_deny || !$coin3_deny) :?>
 							<tr>
 								<td style="font-weight: bold; color: #0090ff; font-size: 14px;">미니게임:</td>
 								<td style="vertical-align:top;">배팅<span id="main-navbar-minibet-id">0 원</span></td>
@@ -128,7 +128,7 @@
 			<?php endif ?>     
 			
 				<?php if(!array_key_exists('app.site', $_ENV) || $_ENV['app.site'] != 2 ) :?>
-					<?php if(!$bpg_deny || !$pbg_deny || !$eos5_deny || !$eos3_deny || !$rand5_deny || !$rand3_deny) :?>
+					<?php if(!$bpg_deny || !$pbg_deny || !$eos5_deny || !$eos3_deny || !$coin5_deny || !$coin3_deny) :?>
 						<Table class="main-navbar-betinfo-table" style="">
 							<tr>
 								<td style="font-weight: bold; color: #0090ff; font-size: 14px; vertical-align:top;">미니게임:</td>

@@ -49,11 +49,11 @@
 		<?php if(!$eos3_deny) :?>
 			<a href="<?php echo site_furl('bet/e3history');?>" class="sub-navbar-a" >EOS3분</a>
 		<?php endif ?>  
-		<?php if(!$rand5_deny) :?>
-			<a href="<?php echo site_furl('bet/r5history');?>" class="sub-navbar-a" >랜덤5분</a>
+		<?php if(!$coin5_deny) :?>
+			<a href="<?php echo site_furl('bet/r5history');?>" class="sub-navbar-a" >코인5분</a>
 		<?php endif ?>  
-		<?php if(!$rand3_deny) :?>
-			<a href="<?php echo site_furl('bet/r3history');?>" class="sub-navbar-a" >랜덤3분</a>
+		<?php if(!$coin3_deny) :?>
+			<a href="<?php echo site_furl('bet/r3history');?>" class="sub-navbar-a" >코인3분</a>
 		<?php endif ?> 
 	</div>
 

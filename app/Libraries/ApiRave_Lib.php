@@ -38,6 +38,7 @@ class ApiRave_Lib  {
         if(strlen($this->mHost) < 1){
             return array('status' => 0, 'error'=>INTERNAL_ERROR);
         }
+        $logHead = "<ApiRave_Lib> getAgentInfo() ";
 
         $url = $this->mHost."/agent";
 
@@ -60,9 +61,10 @@ class ApiRave_Lib  {
                 // "message": "Error message",
                 // "timestamp": "Server response time"
                 // 
-                if(array_key_exists('body', $curlResult) && strlen($curlResult['body']) > 0){
-                    $arrResult = json_decode($curlResult['body'], true);
-                }
+                writeLog($logHead."Error result=".json_encode($curlResult));
+                // if(array_key_exists('body', $curlResult) && strlen($curlResult['body']) > 0){
+                //     $arrResult = json_decode($curlResult['body'], true);
+                // }
                 $arrResult['status'] = 0;
             }
 		} else {
@@ -113,9 +115,10 @@ class ApiRave_Lib  {
                 // "message": "Error message",
                 // "timestamp": "Server response time"
                 // 
-                if(array_key_exists('body', $curlResult) && strlen($curlResult['body']) > 0){
-                    $arrResult = json_decode($curlResult['body'], true);
-                }
+                writeLog($logHead."Error result=".json_encode($curlResult));
+                // if(array_key_exists('body', $curlResult) && strlen($curlResult['body']) > 0){
+                //     $arrResult = json_decode($curlResult['body'], true);
+                // }
                 $arrResult['status'] = 0;
             }
 		} else {
@@ -132,6 +135,7 @@ class ApiRave_Lib  {
         if(strlen($this->mHost) < 1){
             return array('status' => 0, 'error'=>INTERNAL_ERROR);
         }
+        $logHead = "<ApiRave_Lib> getUserInfo() ";
 
         $url = $this->mHost."/user?username=".$id;
 
@@ -156,9 +160,10 @@ class ApiRave_Lib  {
                 // "message": "Error message",
                 // "timestamp": "Server response time"
                 // 
-                if(array_key_exists('body', $curlResult) && strlen($curlResult['body']) > 0){
-                    $arrResult = json_decode($curlResult['body'], true);
-                }
+                writeLog($logHead."Error result=".json_encode($curlResult));
+                // if(array_key_exists('body', $curlResult) && strlen($curlResult['body']) > 0){
+                //     $arrResult = json_decode($curlResult['body'], true);
+                // }
                 $arrResult['status'] = 0;
             }
 		} else {
@@ -203,9 +208,10 @@ class ApiRave_Lib  {
                 // "message": "Error message",
                 // "timestamp": "Server response time"
                 // 
-                if(array_key_exists('body', $curlResult) && strlen($curlResult['body']) > 0){
-                    $arrResult = json_decode($curlResult['body'], true);
-                }
+                writeLog($logHead."Error result=".json_encode($curlResult));
+                // if(array_key_exists('body', $curlResult) && strlen($curlResult['body']) > 0){
+                //     $arrResult = json_decode($curlResult['body'], true);
+                // }
                 $arrResult['status'] = 0;
             }
 		} else {
@@ -251,9 +257,10 @@ class ApiRave_Lib  {
                 // "message": "Error message",
                 // "timestamp": "Server response time"
                 // 
-                if(array_key_exists('body', $curlResult) && strlen($curlResult['body']) > 0){
-                    $arrResult = json_decode($curlResult['body'], true);
-                }
+                writeLog($logHead."Error result=".json_encode($curlResult));
+                // if(array_key_exists('body', $curlResult) && strlen($curlResult['body']) > 0){
+                //     $arrResult = json_decode($curlResult['body'], true);
+                // }
                 $arrResult['status'] = 0;
             }
 		} else {
@@ -305,9 +312,10 @@ class ApiRave_Lib  {
                 // "message": "Error message",
                 // "timestamp": "Server response time"
                 // 
-                if(array_key_exists('body', $curlResult) && strlen($curlResult['body']) > 0){
-                    $arrResult = json_decode($curlResult['body'], true);
-                }
+                writeLog($logHead."Error result=".json_encode($curlResult));
+                // if(array_key_exists('body', $curlResult) && strlen($curlResult['body']) > 0){
+                //     $arrResult = json_decode($curlResult['body'], true);
+                // }
                 $arrResult['status'] = 0;
             }
 		} else {
@@ -362,9 +370,10 @@ class ApiRave_Lib  {
                 // "message": "Error message",
                 // "timestamp": "Server response time"
                 // 
-                if(array_key_exists('body', $curlResult) && strlen($curlResult['body']) > 0){
-                    $arrResult = json_decode($curlResult['body'], true);
-                }
+                writeLog($logHead."Error result=".json_encode($curlResult));
+                // if(array_key_exists('body', $curlResult) && strlen($curlResult['body']) > 0){
+                //     $arrResult = json_decode($curlResult['body'], true);
+                // }
                 $arrResult['status'] = 0;
             }
 		} else {

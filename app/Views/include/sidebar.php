@@ -20,9 +20,9 @@
       <a href="<?php echo siteFurl().'home/conf_eos5ball';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
     <?php elseif(!$eos3_deny) :?>
       <a href="<?php echo siteFurl().'home/conf_eos3ball';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
-    <?php elseif(!$rand5_deny) :?>
+    <?php elseif(!$coin5_deny) :?>
       <a href="<?php echo siteFurl().'home/conf_coin5ball';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
-    <?php elseif(!$rand3_deny) :?>
+    <?php elseif(!$coin3_deny) :?>
       <a href="<?php echo siteFurl().'home/conf_coin3ball';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
     <?php elseif(!$hold_deny) :?>
       <a href="<?php echo siteFurl().'home/conf_hold';?>" class="<?=$conf_game?>"><i class="glyphicon glyphicon-play-circle"></i>  게임설정</a>
@@ -89,7 +89,7 @@
   </div>
 
   <?php if(!array_key_exists('app.hold', $_ENV) || $_ENV['app.hold'] == 0) :?>
-    <?php if(!$pbg_deny || !$bpg_deny || !$eos5_deny || !$eos3_deny || !$rand5_deny || !$rand3_deny) :?>
+    <?php if(!$pbg_deny || !$bpg_deny || !$eos5_deny || !$eos3_deny || !$coin5_deny || !$coin3_deny) :?>
       <?php if($mb_level >= LEVEL_ADMIN) {  ?>
       <button class="main-dropdown-btn  <?=$resultdropdownbtn?>"><i class="glyphicon glyphicon-th-list"></i>  게임관리
         <i class="glyphicon glyphicon-chevron-right" style = "float:right; padding-top: 3px; font-size: 10px"></i>
@@ -107,7 +107,7 @@
           <?php elseif(!$eos3_deny) :?>
             <a href="<?php echo siteFurl().'result/e3result';?>" class="<?=$gameresult?>"><i class="glyphicon glyphicon-book"></i>  게임결과</a>
             <a href="<?php echo siteFurl().'result/e3betchange/0/0';?>" class="<?=$gameedit?>"><i class="glyphicon glyphicon-tag"></i>  적중특례</a>
-          <?php elseif(!$rand5_deny) :?>
+          <?php elseif(!$coin5_deny) :?>
             <a href="<?php echo siteFurl().'result/c5result';?>" class="<?=$gameresult?>"><i class="glyphicon glyphicon-book"></i>  게임결과</a>
             <a href="<?php echo siteFurl().'result/c5betchange/0/0';?>" class="<?=$gameedit?>"><i class="glyphicon glyphicon-tag"></i>  적중특례</a>
           <?php else :?>
@@ -125,7 +125,7 @@
   <div class="main-dropdown-container" <?=$betdropdown?>>
 
   <?php if(!array_key_exists('app.hold', $_ENV) || $_ENV['app.hold'] == 0) :?>
-    <?php if(!$pbg_deny || !$bpg_deny || !$eos5_deny || !$eos3_deny || !$rand5_deny || !$rand3_deny) :?>
+    <?php if(!$pbg_deny || !$bpg_deny || !$eos5_deny || !$eos3_deny || !$coin5_deny || !$coin3_deny) :?>
       <?php if($mb_level >= LEVEL_ADMIN) {  ?>
         <?php if(!$pbg_deny) :?>
           <a href="<?php echo siteFurl().'bet/pbrealtime';?>" class="<?=$bet_realtime?>"><i class="glyphicon glyphicon-dashboard"></i>  실시간배팅</a>
@@ -135,7 +135,7 @@
           <a href="<?php echo siteFurl().'bet/e5realtime';?>" class="<?=$bet_realtime?>"><i class="glyphicon glyphicon-dashboard"></i>  실시간배팅</a>
         <?php elseif(!$eos3_deny) :?>
           <a href="<?php echo siteFurl().'bet/e3realtime';?>" class="<?=$bet_realtime?>"><i class="glyphicon glyphicon-dashboard"></i>  실시간배팅</a>
-        <?php elseif(!$rand5_deny) :?>
+        <?php elseif(!$coin5_deny) :?>
           <a href="<?php echo siteFurl().'bet/c5realtime';?>" class="<?=$bet_realtime?>"><i class="glyphicon glyphicon-dashboard"></i>  실시간배팅</a>
         <?php else:?>
           <a href="<?php echo siteFurl().'bet/c3realtime';?>" class="<?=$bet_realtime?>"><i class="glyphicon glyphicon-dashboard"></i>  실시간배팅</a>
@@ -158,9 +158,9 @@
     <a href="<?php echo siteFurl().'bet/e5history';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>
     <?php elseif(!$eos3_deny) :?>
     <a href="<?php echo siteFurl().'bet/e3history';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>
-    <?php elseif(!$rand5_deny) :?>
+    <?php elseif(!$coin5_deny) :?>
     <a href="<?php echo siteFurl().'bet/c5history';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>
-    <?php elseif(!$rand3_deny) :?>
+    <?php elseif(!$coin3_deny) :?>
     <a href="<?php echo siteFurl().'bet/c3history';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>
     <?php elseif(!$slot_deny) :?>
     <a href="<?php echo siteFurl().'bet/slhistory';?>" class="<?=$bet_history?>"><i class="glyphicon glyphicon-book"></i>  배팅내역</a>

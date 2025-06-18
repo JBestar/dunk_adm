@@ -208,13 +208,13 @@
 					<?php endif ?>
 				</td>
 				<td>
-					<?php if(!$pbg_deny || !$bpg_deny || !$eos5_deny || !$rand5_deny) :?>
+					<?php if(!$pbg_deny || !$bpg_deny || !$eos5_deny || !$coin5_deny) :?>
 					미니게임 단폴 배당율(%)<br>  <br>
 					미니게임 조합 배당율(%)<br>
 					<?php endif ?> 
 				</td>
 				<td>
-					<?php if(!$pbg_deny || !$bpg_deny || !$eos5_deny || !$rand5_deny) :?>
+					<?php if(!$pbg_deny || !$bpg_deny || !$eos5_deny || !$coin5_deny) :?>
 						<?php if(is_null($objMember)) :  ?>
 						<input type = "number" step="0.1" id="useredit-pbbetrate-input-id" value="0" ><br><br>
 						<input type = "number" step="0.1" id="useredit-pbbetrate2-input-id" value="0" >
@@ -299,11 +299,11 @@
 							<select type="text" id="useredit-press-count-id">
 							<?php $counts = pressCounts(); if (is_null($objMember)) : ?>
 								<?php foreach($counts as $count):?>
-									<option value="<?=$count?>" <?=$count==1?'selected':''?>><?=$count==-1?'랜덤':$count.'회'?></option>
+									<option value="<?=$count?>" <?=$count==1?'selected':''?>><?=$count==-1?'코인':$count.'회'?></option>
 								<?php endforeach?>
 							<?php else :?>
 								<?php foreach($counts as $count):?>
-									<option value="<?=$count?>" <?=$objMember->mb_press_count==$count?'selected':''?>><?=$count==-1?'랜덤':$count.'회'?></option>
+									<option value="<?=$count?>" <?=$objMember->mb_press_count==$count?'selected':''?>><?=$count==-1?'코인':$count.'회'?></option>
 								<?php endforeach?>
 							<?php endif?>
 							</select>
