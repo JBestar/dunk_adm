@@ -182,7 +182,7 @@ class Home extends StdController
 	public function conf_ebal(){
 		$arrType = [
 			"10"=> "EVOL365",
-			// "11"=> "LUCKY",
+			"11"=> "LOCAL",
 			"12"=> "VEDA",
 			// "1"=> "스타벅스",
 			"2"=> "왕 카지노",
