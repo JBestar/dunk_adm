@@ -78,7 +78,6 @@ class PbBet_Model extends Model
             $strSql .= " AND bet_mode='".$iMode."' AND bet_target='P' GROUP BY bet_mb_uid ";
             $strSql .= " ) tb_sum ";            
             $objResult = $this -> db -> query($strSql)->getRow();
-            writeLog($strSql);
             //유저별 배팅결과 합
             $nSum = 0;
             if(!is_null($objResult->bet_money_allsum)) {
