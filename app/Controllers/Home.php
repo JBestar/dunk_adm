@@ -77,7 +77,7 @@ class Home extends StdController
 		$confsiteModel = new ConfSite_Model();
 		$confsiteModel->readBetConf();
 		$param = [
-			'game_name' => "PBG파워볼",
+			'game_name' => "PBG",
 			'game_id' => GAME_PBG_BALL
 		];
 		$this->load_view_page('home/conf_powerball', 'conf_game', LEVEL_ADMIN, $param);		

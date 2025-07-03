@@ -21,7 +21,7 @@
 			<a href="<?php echo siteFurl().'home/conf_hold';?>" class="sub-navbar-a" >홀덤</a>
 		<?php endif ?>
 		<?php if(!$pbg_deny) :?>
-			<a href="<?php echo siteFurl().'home/conf_powerball';?>" class="sub-navbar-a" >PBG파워볼</a>
+			<a href="<?php echo siteFurl().'home/conf_powerball';?>" class="sub-navbar-a" >PBG</a>
 		<?php endif ?>  
 		<?php if(!$dhp_deny) :?>
 			<a href="<?php echo site_furl('home/conf_dhpball');?>" class="sub-navbar-a" >동행볼</a>
