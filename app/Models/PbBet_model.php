@@ -142,7 +142,7 @@ class PbBet_Model extends Model
         $strSql = " SELECT SUM(bet_money) AS bet_money_sum, SUM(bet_win_money) AS win_money_sum  FROM ".$this->table;
         $strSql .= " WHERE bet_time >= '".$arrReqInfo['start']."' "; //"' AND bet_time <= '".$arrReqInfo['end'].
         $strSql .= " AND bet_mode>='1' AND bet_mode<='4' AND bet_state <> ".BET_STATE_TIE;
-        $strSql .= " AND bet_mb_uid NOT IN (SELECT mb_uid FROM ".$this->mMemberTable." WHERE mb_level >= ".LEVEL_ADMIN.") ";
+        $strSql .= " AND bet_mb_uid NOT IN (SELECT mb_uid FROM ".$this->mMemberTable." WHERE mb_level >= ".LEVEL_ADMIN." OR mb_state_test = ".STATE_ACTIVE.") ";
         $objResult = $this -> db -> query($strSql)->getRow();
 
         $nSum = 0;
@@ -162,7 +162,7 @@ class PbBet_Model extends Model
         $strSql = " SELECT SUM(bet_money) AS bet_money_sum, SUM(bet_win_money) AS win_money_sum  FROM ".$this->table;
         $strSql .= " WHERE bet_time > '".$arrReqInfo['start']."' "; //AND bet_time < '".$arrReqInfo['end']."' "
         $strSql .= " AND bet_mode>='5' AND bet_mode<='38'  AND bet_state <> ".BET_STATE_TIE;
-        $strSql .= " AND bet_mb_uid NOT IN (SELECT mb_uid FROM ".$this->mMemberTable." WHERE mb_level >= ".LEVEL_ADMIN.") ";
+        $strSql .= " AND bet_mb_uid NOT IN (SELECT mb_uid FROM ".$this->mMemberTable." WHERE mb_level >= ".LEVEL_ADMIN." OR mb_state_test = ".STATE_ACTIVE.") ";
         $objResult = $this -> db -> query($strSql)->getRow();
 
         $nSum = 0;
