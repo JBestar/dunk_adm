@@ -50,7 +50,7 @@
 		<div class="confsite-game-text-div">
 			<p>유저 게임승인:</p> 
 			<input type="checkbox" id="confpb-bet-check-id" style="zoom:120%; margin-top:4px;">
-			<label style="font-size:13px; font-weight:normal; padding-top:0px;"> 유저게임승인</label>
+			<label style="font-size:13px; font-weight:normal; top:-3px; position:relative;"> 유저게임승인</label>
 		</div>
 		<div class="confsite-game-text-div">
 			<p>에이젼트 코드:</p> 
@@ -68,10 +68,27 @@
 			<button class="refresh_btn" title="조회" id="refresh_useregg" style="margin-left:5px; margin-top:5px;"></button>
 			<button class="recovery_btn" title="회수" id="recovery_useregg" style="margin-left:10px; margin-top:2px;"></button>
 		</div>
+
+		<div class="confsite-game-text-div">
+			<p>정산설정:</p> 
+			<input type="checkbox" id="conf-account-check-id" style="zoom:120%; margin-top:4px;" onchange="onChangeElement();">
+			<label style="font-size:13px; font-weight:normal; top:-3px; position:relative;"> 정산 시 머니회수</label>
+		</div>
+		<div class="confsite-game-text-div" style="margin-left:20px;">
+			<p></p> 
+			<input type="checkbox" name="account-setting" id="conf-accwin-check-id" style="zoom:120%; margin-top:0px;">
+			<label style="font-size:13px; font-weight:normal; top:-3px; position:relative;"> 적중 시 머니회수</label>
+		</div>
+		<div class="confsite-game-text-div" style="margin-left:20px;">
+			<p></p> 
+			<input type="checkbox" name="account-setting" id="conf-accpl-check-id" style="zoom:120%; margin-top:0px;">
+			<label style="font-size:13px; font-weight:normal; top:-3px; position:relative;"> 플레이어적중 시 머니회수</label>
+		</div>
+
+
 		<div class="confsite-game-text-div">
 			<p>에이젼트 페이지:</p>
 			<button class="confsite-cancel-button" id="confsite-agent-btn-id" style="margin-bottom:20px; width:200px;">바로 가기</button>
-
 		</div>
 		<div class = "confsite-button-group" style="margin-top:20px;">
 			<button class="confsite-cancel-button" id="confsite-cancel-btn-id">취소</button>

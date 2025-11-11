@@ -2,6 +2,7 @@ $(document).ready(function() {
     setNavBarElement();
     requestConfGame();
     addBtnEvent();
+    // onChangeElement();
 });
 
 function showConfGame(objConfig, objAgent) {
@@ -9,6 +10,13 @@ function showConfGame(objConfig, objAgent) {
     if (objConfig.game_bet_permit == 1)
         $("#confpb-bet-check-id").prop('checked', true);
     else $("#confpb-bet-check-id").prop('checked', false);
+
+    if($("#conf-account-check-id").length > 0){
+        $("#conf-account-check-id").prop('checked', objConfig.game_percent_1 == 1);
+        $("#conf-accwin-check-id").prop('checked', objConfig.game_percent_2 == 1);
+        $("#conf-accpl-check-id").prop('checked', objConfig.game_percent_3 == 1);
+        onChangeElement();
+    }
 
     if (objAgent != null) {
         $("#confpb-agent-code-id").val(objAgent.code);
@@ -18,6 +26,15 @@ function showConfGame(objConfig, objAgent) {
             $("#confpb-user-egg-id").val(parseInt(objAgent.useregg).toLocaleString());
         else $("#confpb-user-egg-id").val(0);
     }
+}
+
+function onChangeElement(){
+
+    if($("#conf-account-check-id").length > 0){
+        checked = $("#conf-account-check-id").prop('checked');
+        $("input[name=account-setting]").prop('disabled', !checked);
+    }
+    
 }
 
 function requestConfGame() {
@@ -92,7 +109,11 @@ function readConfigToObject() {
     var jsonData = new Object();
     jsonData.game_index = $(".confsite-game-panel").attr('id');;
     jsonData.game_bet_permit = $("#confpb-bet-check-id").prop('checked') ? 1 : 0;
-    // jsonData.game_min_bet_money = $("#confpb-minmoney-input-id").val();
+    if($("#conf-account-check-id").length > 0){
+        jsonData.game_percent_1 = $("#conf-account-check-id").prop('checked') ? 1 : 0;
+        jsonData.game_percent_2 = $("#conf-accwin-check-id").prop('checked') ? 1 : 0;
+        jsonData.game_percent_3 = $("#conf-accpl-check-id").prop('checked') ? 1 : 0;
+    }
 
     return jsonData;
 
