@@ -82,6 +82,7 @@ defined('APP_SLOT_KGON')     || define('APP_SLOT_KGON', 2);
 defined('APP_SLOT_STAR')     || define('APP_SLOT_STAR', 3); 
 defined('APP_SLOT_RAVE')     || define('APP_SLOT_RAVE', 4); 
 defined('APP_SLOT_TREEM')     || define('APP_SLOT_TREEM', 5); 
+defined('APP_SLOT_SIGMA')     || define('APP_SLOT_SIGMA', 6); 
 
 //Natural 
 defined('APP_FSLOT_GSPLAY')  || define('APP_FSLOT_GSPLAY', 1); 
@@ -92,6 +93,7 @@ defined('APP_CASINO_KGON')      || define('APP_CASINO_KGON', 2);
 defined('APP_CASINO_STAR')     || define('APP_CASINO_STAR', 3); 
 defined('APP_CASINO_RAVE')     || define('APP_CASINO_RAVE', 4); 
 defined('APP_CASINO_TREEM')     || define('APP_CASINO_TREEM', 5); 
+defined('APP_CASINO_SIGMA')     || define('APP_CASINO_SIGMA', 6); 
 
 defined('EXIT_SUCCESS')        || define('EXIT_SUCCESS', 0);        // no errors
 defined('EXIT_ERROR')          || define('EXIT_ERROR', 1);          // generic error
@@ -135,9 +137,10 @@ defined('CONF_API_HPPLAY')     || define('CONF_API_HPPLAY', 21);
 defined('CONF_API_THEPLUS')    || define('CONF_API_THEPLUS', 22);
 defined('CONF_API_GSPLAY')     || define('CONF_API_GSPLAY', 23);
 defined('CONF_API_STAR')       || define('CONF_API_STAR', 30);
-defined('CONF_API_HOLD')        || define('CONF_API_HOLD', 68);
+defined('CONF_API_HOLD')       || define('CONF_API_HOLD', 68);
 defined('CONF_API_RAVE')       || define('CONF_API_RAVE', 89);
-defined('CONF_API_TREEM')       || define('CONF_API_TREEM', 112);
+defined('CONF_API_TREEM')      || define('CONF_API_TREEM', 112);
+defined('CONF_API_SIGMA')      || define('CONF_API_SIGMA', 113);
 
 defined('CONF_CHARGE_MANUAL')  || define('CONF_CHARGE_MANUAL', 24);
 defined('CONF_DISCHA_MANUAL')  || define('CONF_DISCHA_MANUAL', 25);
@@ -291,7 +294,9 @@ defined('GAME_SLOT_RAVE')      || define('GAME_SLOT_RAVE', 19);  //RAVE slot
 defined('GAME_CASINO_RAVE')    || define('GAME_CASINO_RAVE', 20);  //RAVE casino
 defined('GAME_SLOT_TREEM')     || define('GAME_SLOT_TREEM', 21);  //TREEM slot
 defined('GAME_CASINO_TREEM')   || define('GAME_CASINO_TREEM', 22);  //TREEM casino
-defined('GAME_EVOL_BALL')      || define('GAME_EVOL_BALL', 23);
+defined('GAME_SLOT_SIGMA')     || define('GAME_SLOT_SIGMA', 23);  //SIGMA slot
+defined('GAME_CASINO_SIGMA')   || define('GAME_CASINO_SIGMA', 24);  //TREEM casino
+defined('GAME_EVOL_BALL')      || define('GAME_EVOL_BALL', 25);
 defined('GAME_AUTO_EVOL')      || define('GAME_AUTO_EVOL', 101);
 defined('GAME_AUTO_PRAG')      || define('GAME_AUTO_PRAG', 102);
 
@@ -377,6 +382,8 @@ defined('TRANS_RAVE_SITE')      || define('TRANS_RAVE_SITE', 16);
 defined('TRANS_SITE_TREEM')     || define('TRANS_SITE_TREEM', 17); 
 defined('TRANS_TREEM_SITE')     || define('TRANS_TREEM_SITE', 18); 
 defined('RECOVER_EGG')          || define('RECOVER_EGG', 19); 
+defined('TRANS_SITE_SIGMA')     || define('TRANS_SITE_SIGMA', 20); 
+defined('TRANS_SIGMA_SITE')     || define('TRANS_SIGMA_SITE', 21);
 
 defined('NOTICE_MSG')            || define('NOTICE_MSG', 0);
 defined('NOTICE_BOARD')          || define('NOTICE_BOARD', 1);   

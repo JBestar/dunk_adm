@@ -274,18 +274,22 @@
 
       $nMoney = floatval($member->mb_money) + $member->mb_live_money + $member->mb_slot_money + $member->mb_fslot_money
          + $member->mb_kgon_money + $member->mb_gslot_money + $member->mb_hslot_money + $member->mb_hold_money 
-         + $member->mb_rave_money + $member->mb_treem_money;
+         + $member->mb_rave_money + $member->mb_treem_money + $member->mb_sigma_money;
       return floor($nMoney); // round($nMoney, NUM_POINT_CNT);
     }
     function allMoneySql($table=""){
       if(strlen($table) > 0)
         $table .= '.';
-      return $table."mb_money+".$table."mb_live_money+".$table."mb_slot_money+".$table."mb_fslot_money+".$table."mb_kgon_money+".$table."mb_gslot_money+".$table."mb_hslot_money+".$table."mb_hold_money+".$table."mb_rave_money+".$table."mb_treem_money";
+      return $table."mb_money+".$table."mb_live_money+".$table."mb_slot_money+".$table."mb_fslot_money+"
+        .$table."mb_kgon_money+".$table."mb_gslot_money+".$table."mb_hslot_money+".$table."mb_hold_money+"
+        .$table."mb_rave_money+".$table."mb_treem_money+".$table."mb_sigma_money";
     }
     function allEggSql($table=""){
       if(strlen($table) > 0)
         $table .= '.';
-      return $table."mb_live_money+".$table."mb_slot_money+".$table."mb_fslot_money+".$table."mb_kgon_money+".$table."mb_gslot_money+".$table."mb_hslot_money+".$table."mb_hold_money+".$table."mb_rave_money+".$table."mb_treem_money";
+      return $table."mb_live_money+".$table."mb_slot_money+".$table."mb_fslot_money+".$table."mb_kgon_money+"
+        .$table."mb_gslot_money+".$table."mb_hslot_money+".$table."mb_hold_money+".$table."mb_rave_money+"
+        .$table."mb_treem_money+".$table."mb_sigma_money";
     }
     function allEgg($member){
       $nMoney = 0;
@@ -485,6 +489,32 @@
         }
       }
       return $objConfig;
+    }
+
+    function generateString($length, $seed)  
+    {  
+        // $characters  = "0123456789";  
+        $characters = "abcdefghijklmnopqrstuvwxyz";  
+        // $characters .= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";  
+        
+        $randStr = "";  
+        $nmr_loops = $length;  
+        
+        while ($nmr_loops--)  
+        {  
+            mt_srand($seed++);
+            $randStr .= $characters[mt_rand(0, strlen($characters) - 1)];  
+        }  
+        
+        return $randStr;  
+    }  
+    
+    function generateExtId(){
+      $seed = microtime(true); //1709876543.123456 - 16 digits
+      
+      $randStr = generateString(48, $seed);
+      $secs = intval($seed);
+      return $randStr.intval($seed).intval(($seed-$secs)*1000000);
     }
 
 ?>

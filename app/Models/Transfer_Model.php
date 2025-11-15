@@ -35,8 +35,13 @@ class Transfer_Model extends Model {
 
     function search($objEmp, $arrReqData)
     {
-        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_money, mb_live_money, mb_slot_money, mb_fslot_money, mb_kgon_money, mb_gslot_money, mb_hslot_money, mb_hold_money, mb_rave_money, mb_treem_money ";
-        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid , r.mb_nickname, r.mb_money, r.mb_live_money, r.mb_slot_money, r.mb_fslot_money, r.mb_kgon_money, r.mb_gslot_money, r.mb_hslot_money, r.mb_hold_money, r.mb_rave_money, r.mb_treem_money ";
+        $strTbColum = " mb_fid, mb_uid, mb_level, mb_emp_fid, mb_nickname, mb_money, mb_live_money,";
+        $strTbColum.= " mb_slot_money, mb_fslot_money, mb_kgon_money, mb_gslot_money, mb_hslot_money,";
+        $strTbColum.= " mb_hold_money, mb_rave_money, mb_treem_money, mb_sigma_money ";
+        $strTbRColum = " r.mb_fid, r.mb_uid, r.mb_level, r.mb_emp_fid , r.mb_nickname, r.mb_money,";
+        $strTbRColum.= " r.mb_live_money, r.mb_slot_money, r.mb_fslot_money, r.mb_kgon_money,";
+        $strTbRColum.= " r.mb_gslot_money, r.mb_hslot_money, r.mb_hold_money, r.mb_rave_money,";
+        $strTbRColum.= " r.mb_treem_money, r.mb_sigma_money ";
 
         $strSql = "";
         if($objEmp->mb_level < LEVEL_ADMIN){
@@ -60,9 +65,9 @@ class Transfer_Model extends Model {
         }
         if(intval($arrReqData['mode']) > 0){
             if(intval($arrReqData['mode']) == 1){
-                $strSql.=" AND trans_type IN (".TRANS_SITE_EVOL.", ".TRANS_SITE_KGON.", ".TRANS_SITE_RAVE.", ".TRANS_SITE_TREEM.")";
+                $strSql.=" AND trans_type IN (".TRANS_SITE_EVOL.", ".TRANS_SITE_KGON.", ".TRANS_SITE_RAVE.", ".TRANS_SITE_TREEM.", ".TRANS_SITE_SIGMA.")";
             } else if(intval($arrReqData['mode']) == 2){
-                $strSql.=" AND trans_type IN (".TRANS_EVOL_SITE.", ".TRANS_KGON_SITE.", ".TRANS_RAVE_SITE.", ".TRANS_TREEM_SITE.")";
+                $strSql.=" AND trans_type IN (".TRANS_EVOL_SITE.", ".TRANS_KGON_SITE.", ".TRANS_RAVE_SITE.", ".TRANS_TREEM_SITE.", ".TRANS_SIGMA_SITE.")";
             } else if(intval($arrReqData['mode']) == 3){
                 $strSql.=" AND trans_type IN (".TRANS_SITE_PLUS.", ".TRANS_SITE_GSPL.", ".TRANS_SITE_GOLD.", ".TRANS_SITE_STAR.")";
             } else if(intval($arrReqData['mode']) == 4){
@@ -111,9 +116,9 @@ class Transfer_Model extends Model {
         }
         if(intval($arrReqData['mode']) > 0){
             if(intval($arrReqData['mode']) == 1){
-                $strSql.=" AND trans_type IN (".TRANS_SITE_EVOL.", ".TRANS_SITE_KGON.", ".TRANS_SITE_RAVE.", ".TRANS_SITE_TREEM.")";
+                $strSql.=" AND trans_type IN (".TRANS_SITE_EVOL.", ".TRANS_SITE_KGON.", ".TRANS_SITE_RAVE.", ".TRANS_SITE_TREEM.", ".TRANS_SITE_SIGMA.")";
             } else if(intval($arrReqData['mode']) == 2){
-                $strSql.=" AND trans_type IN (".TRANS_EVOL_SITE.", ".TRANS_KGON_SITE.", ".TRANS_RAVE_SITE.", ".TRANS_TREEM_SITE.")";
+                $strSql.=" AND trans_type IN (".TRANS_EVOL_SITE.", ".TRANS_KGON_SITE.", ".TRANS_RAVE_SITE.", ".TRANS_TREEM_SITE.", ".TRANS_SIGMA_SITE.")";
             } else if(intval($arrReqData['mode']) == 3){
                 $strSql.=" AND trans_type IN (".TRANS_SITE_PLUS.", ".TRANS_SITE_GSPL.", ".TRANS_SITE_GOLD.", ".TRANS_SITE_STAR.")";
             } else if(intval($arrReqData['mode']) == 4){

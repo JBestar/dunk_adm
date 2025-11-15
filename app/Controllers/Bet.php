@@ -167,6 +167,8 @@ class Bet extends StdController {
 				$gameId = GAME_CASINO_RAVE;
 			else if($_ENV['app.casino'] == APP_CASINO_TREEM)
 				$gameId = GAME_CASINO_TREEM;
+			else if($_ENV['app.casino'] == APP_CASINO_SIGMA)
+				$gameId = GAME_CASINO_SIGMA;
 
 			$arrKgon =  $modelCasprd->gets($gameId);
 			foreach($arrKgon as $objPrd){
@@ -357,6 +359,8 @@ class Bet extends StdController {
 			$gameId = GAME_SLOT_RAVE;
 		else if($_ENV['app.slot'] == APP_SLOT_TREEM)
 			$gameId = GAME_SLOT_TREEM;
+		else if($_ENV['app.slot'] == APP_SLOT_SIGMA)
+			$gameId = GAME_SLOT_SIGMA;
 		$arrPrd = $modelSlotprd->gets($gameId);
 
 		$param = [
@@ -408,6 +412,8 @@ class Bet extends StdController {
 				$arrPrd = $modelSlotprd->gets(GAME_SLOT_RAVE);
 			else if($_ENV['app.slot'] == APP_SLOT_TREEM)
 				$arrPrd = $modelSlotprd->gets(GAME_SLOT_TREEM);
+			else if($_ENV['app.slot'] == APP_SLOT_SIGMA)
+				$arrPrd = $modelSlotprd->gets(GAME_SLOT_SIGMA);
 		}
 
 		$param = [
@@ -493,6 +499,8 @@ class Bet extends StdController {
 			$gameId = GAME_SLOT_RAVE;
 		else if($_ENV['app.slot'] == APP_SLOT_TREEM)
 			$gameId = GAME_SLOT_TREEM;
+		else if($_ENV['app.slot'] == APP_SLOT_SIGMA)
+			$gameId = GAME_SLOT_SIGMA;
 
 		$param = [
 			'game_name' => "정품슬롯",

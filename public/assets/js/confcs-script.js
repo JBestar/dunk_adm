@@ -193,6 +193,8 @@ function addBtnEvent() {
             openWindow.location.href = "https://backoffice.rave-games.com/";
         } else if(gameId == GAME_CASINO_TREEM || gameId == GAME_SLOT_TREEM){
             openWindow.location.href = "https://backoffice.honorlink.org/";
+        } else if(gameId == GAME_CASINO_SIGMA || gameId == GAME_SLOT_SIGMA){
+            openWindow.location.href = "https://xsigma-gaming.com/";
         } else if(gameId == GAME_SLOT_GOLD){
             openWindow.location.href = "https://goldslot-link.com/";
         } 

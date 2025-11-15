@@ -190,6 +190,17 @@ class Api extends BaseController{
 					} else $errMsg = "접속불가";
 				}
 				$agConf = $confsiteModel->getConf(CONF_API_TREEM);
+			} else if($gameId == GAME_CASINO_SIGMA || $gameId == GAME_SLOT_SIGMA){
+				$arrResult = $this->libApiSigma->getAgentInfo();
+				if($arrResult['status'] == 1){
+					$confsiteModel->setConfActive(CONF_API_SIGMA, $arrResult['balance']);
+					writeLog("<SIGMA> AGENT Egg = ".$arrResult['balance']);
+				} else {
+					if(array_key_exists('message', $arrResult)){
+						$errMsg = $arrResult['message'];
+					} else $errMsg = "접속불가";
+				}
+				$agConf = $confsiteModel->getConf(CONF_API_SIGMA);
 			}
 			
 			$agInfo = null;

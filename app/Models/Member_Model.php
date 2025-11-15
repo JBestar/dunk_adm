@@ -34,6 +34,7 @@ class Member_Model extends Model
         'mb_hold_uid', 'mb_hold_money',
         'mb_rave_id', 'mb_rave_uid', 'mb_rave_money',
         'mb_treem_uid', 'mb_treem_money',
+        'mb_sigma_uid', 'mb_sigma_money',
     ];
 
     protected $primaryKey = 'mb_fid';
@@ -55,6 +56,7 @@ class Member_Model extends Model
         'mb_hold_uid', 'mb_hold_money',
         'mb_rave_id', 'mb_rave_uid', 'mb_rave_money',
         'mb_treem_uid', 'mb_treem_money',
+        'mb_sigma_uid', 'mb_sigma_money',
     ];
 
     private $fields = ['mb_fid', 'mb_uid', 'mb_level','mb_emp_fid','mb_nickname', 'mb_ip_last',
@@ -62,7 +64,7 @@ class Member_Model extends Model
         'mb_game_pb', 'mb_game_ps', 'mb_game_ks', 'mb_game_bb', 'mb_game_bs', 'mb_game_cs', 'mb_game_sl', 'mb_game_eo', 'mb_game_co', 'mb_game_hl', 
         'mb_game_pb_ratio', 'mb_game_pb2_ratio', 'mb_game_cs_ratio', 'mb_game_sl_ratio', 'mb_game_hl_ratio', 
         'mb_blank_count', 'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money', 'mb_gslot_money', 'mb_hslot_money', 'mb_hold_money', 
-        'mb_rave_money', 'mb_treem_money' ];
+        'mb_rave_money', 'mb_treem_money', 'mb_sigma_money' ];
 
     
     protected $validationRules = [
@@ -463,7 +465,7 @@ class Member_Model extends Model
 
         $getFields = ['mb_fid', 'mb_uid', 'mb_level', 'mb_emp_fid', 'mb_state_active', 'mb_money', 'mb_point', 
             'mb_live_money', 'mb_slot_money', 'mb_fslot_money', 'mb_kgon_money', 'mb_gslot_money', 'mb_hslot_money', 
-            'mb_hold_money', 'mb_rave_money', 'mb_treem_money'];
+            'mb_hold_money', 'mb_rave_money', 'mb_treem_money', 'mb_sigma_money'];
         $strTbColum = " ".implode(", ", $getFields);
         $strTbRColum = " r.".implode(", r.", $getFields);
   
@@ -892,6 +894,13 @@ class Member_Model extends Model
     public function updateTreemMoney($member){
         $data = [
             'mb_treem_money' => $member->mb_treem_money,
+        ];
+        return $this->update($member->mb_fid, $data);
+    }
+
+    public function updateSigmaMoney($member){
+        $data = [
+            'mb_sigma_money' => $member->mb_sigma_money,
         ];
         return $this->update($member->mb_fid, $data);
     }
@@ -1515,6 +1524,9 @@ class Member_Model extends Model
         } else if($iGame == GAME_CASINO_TREEM || $iGame == GAME_SLOT_TREEM){
             $strSQL = 'SELECT SUM(mb_treem_money) AS mb_game_money FROM '.$this->table;
             $strSQL .= ' WHERE LENGTH(mb_treem_uid) > 0 ';
+        } else if($iGame == GAME_CASINO_SIGMA || $iGame == GAME_SLOT_SIGMA){
+            $strSQL = 'SELECT SUM(mb_sigma_money) AS mb_game_money FROM '.$this->table;
+            $strSQL .= ' WHERE LENGTH(mb_sigma_uid) > 0 ';
         } else if($iGame == 0) {
             $strSQL = 'SELECT SUM(CASE WHEN mb_live_id > 0 THEN mb_live_money ELSE 0 END ) AS mb_live_money, ';
             $strSQL.= 'SUM(CASE WHEN mb_kgon_id > 0 THEN mb_kgon_money ELSE 0 END ) AS mb_kgon_money, ';
@@ -1524,7 +1536,8 @@ class Member_Model extends Model
             $strSQL.= 'SUM(CASE WHEN LENGTH(mb_hslot_token) > 0 THEN mb_hslot_money ELSE 0 END ) AS mb_hslot_money, ';
             $strSQL.= 'SUM(CASE WHEN LENGTH(mb_hold_uid) > 0 THEN mb_hold_money ELSE 0 END ) AS mb_hold_money, ';
             $strSQL.= 'SUM(CASE WHEN mb_rave_id > 0 THEN mb_rave_money ELSE 0 END ) AS mb_rave_money, ';
-            $strSQL.= 'SUM(CASE WHEN LENGTH(mb_treem_uid) > 0 THEN mb_treem_money ELSE 0 END ) AS mb_treem_money ';
+            $strSQL.= 'SUM(CASE WHEN LENGTH(mb_treem_uid) > 0 THEN mb_treem_money ELSE 0 END ) AS mb_treem_money, ';
+            $strSQL.= 'SUM(CASE WHEN LENGTH(mb_sigma_uid) > 0 THEN mb_sigma_money ELSE 0 END ) AS mb_sigma_money ';
             $strSQL.= ' FROM '.$this->table;
 
             return $this->db->query($strSQL)->getRow();

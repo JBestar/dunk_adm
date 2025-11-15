@@ -749,6 +749,10 @@ class UserApi extends BaseController
                             $gameId = GAME_SLOT_TREEM;
                             $confId = CONF_API_TREEM;
                             $arrSumData[2][3] = $eggs->mb_treem_money;
+                        } else if($_ENV['app.slot'] == APP_SLOT_SIGMA){
+                            $gameId = GAME_SLOT_SIGMA;
+                            $confId = CONF_API_SIGMA;
+                            $arrSumData[2][3] = $eggs->mb_sigma_money;
                         }
 
                         $objConfPb = $confgameModel->getByIndex($gameId);
@@ -796,6 +800,8 @@ class UserApi extends BaseController
                         $confId = CONF_API_RAVE;
                     else if($_ENV['app.casino'] == APP_CASINO_TREEM)
                         $confId = CONF_API_TREEM;
+                    else if($_ENV['app.casino'] == APP_CASINO_SIGMA)
+                        $confId = CONF_API_SIGMA;
                     
                     $agConf = $confsiteModel->getConf($confId);
                     if($agConf != null)
@@ -2397,10 +2403,29 @@ class UserApi extends BaseController
                         } 
                     }
                     
-                    $arrResult = $this->libApiRave->getAgentInfo();
+                    $arrResult = $this->libApiTreem->getAgentInfo();
                     if($arrResult['status'] == 1){
                         $confsiteModel->setConfActive(CONF_API_TREEM, $arrResult['balance']);
                         writeLog("<TREEM> AGENT Egg = ".$arrResult['balance']);
+                        $balance = $arrResult['balance'];
+                    }
+                } else if($gameId == GAME_CASINO_SIGMA || $gameId == GAME_SLOT_SIGMA){
+                    foreach($arrMember as $objMember){
+                        if(strlen($objMember->mb_sigma_uid) > 0 && $objMember->mb_sigma_money > 0 ){
+                            writeLog("<SIGMA> Recovery Uid=".$objMember->mb_uid." Balance=".$objMember->mb_sigma_money);
+                            if(diffDt(date('Y-m-d H:i:s'), $objMember->mb_time_bet) < $_ENV['mem.delay_play']){
+                                $iResult = 2;
+                            } else $iResult = $this->sgtoMb($objMember);
+                            if($iResult == 0)
+                                break;
+                            else usleep(500000);
+                        } 
+                    }
+                    
+                    $arrResult = $this->libApiSigma->getAgentInfo();
+                    if($arrResult['status'] == 1){
+                        $confsiteModel->setConfActive(CONF_API_SIGMA, $arrResult['balance']);
+                        writeLog("<SIGMA> AGENT Egg = ".$arrResult['balance']);
                         $balance = $arrResult['balance'];
                     }
                 }
