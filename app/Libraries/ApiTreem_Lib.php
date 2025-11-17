@@ -120,6 +120,57 @@ class ApiTreem_Lib  {
         return $arrResult;
     }
 
+    public function getUserList()
+    {
+        if(strlen($this->mHost) < 1){
+            return array('status' => 0, 'error'=>INTERNAL_ERROR);
+        }
+        $logHead = "<ApiTreem_Lib> getUserList() ";
+
+        $url = $this->mHost."/user-list";
+
+        $header =  $this->getHeader();
+
+        $curlResult = getCurlRequestWithProxy($url, $header);
+        
+		if(!is_null($curlResult) && array_key_exists("code", $curlResult)) {
+			if($curlResult['code'] == HTTP_CODE_200){
+                // $curlResult['body'] =>
+                // [
+                //     {
+                //         "id": 1,
+                //         "username": "test123",
+                //         "nickname": "test123",
+                //         "token": null,
+                //         "balance": 0,
+                //         "last_access_at": null
+                //     },
+                //     {
+                //         "id": 2,
+                //         "username": "test1234",
+                //         "nickname": "test1234",
+                //         "token": null,
+                //         "balance": 0,
+                //         "last_access_at": null
+                //     }
+                // ]
+                $arrUser = json_decode($curlResult['body'], true);
+                $arrResult['users'] = $arrUser;
+                $arrResult['status'] = 1;
+            } else { //
+                // $curlResult['body'] =>
+                writeLog($logHead."Error result=".json_encode($curlResult));
+                $arrResult['status'] = 0;
+            }
+		} else {
+            $arrResult['status'] = 0;
+            $arrResult['error'] = CONNECT_ERROR;
+        }
+
+        // writeLog($logHead."result=".json_encode($arrResult));
+        return $arrResult;
+    }
+
     public function createUser($fid, $nickname)
     {
         if(strlen($this->mHost) < 1){

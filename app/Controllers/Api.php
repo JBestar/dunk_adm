@@ -84,6 +84,7 @@ class Api extends BaseController{
 			
 			$errMsg = "";
 			$agConf = null;
+			$agUserEgg = -1;
 			if($gameId == GAME_CASINO_EVOL){
 				$arrResult = $this->libApiCas->getAgentInfo();
 				if($arrResult['status'] == 1){
@@ -180,26 +181,33 @@ class Api extends BaseController{
 				}
 				$agConf = $confsiteModel->getConf(CONF_API_RAVE);
 			} else if($gameId == GAME_CASINO_TREEM || $gameId == GAME_SLOT_TREEM){
-				// $arrResult = $this->libApiTreem->getAgentInfo();
-				// if($arrResult['status'] == 1){
-				// 	$confsiteModel->setConfActive(CONF_API_TREEM, $arrResult['balance']);
-				// 	writeLog("<TREEM> AGENT Egg = ".$arrResult['balance']);
-				// } else {
-				// 	if(array_key_exists('message', $arrResult)){
-				// 		$errMsg = $arrResult['message'];
-				// 	} else $errMsg = "접속불가";
-				// }
+				$arrResult = $this->libApiTreem->getAgentInfo();
+				if($arrResult['status'] == 1){
+					$confsiteModel->setConfActive(CONF_API_TREEM, $arrResult['balance']);
+					writeLog("<TREEM> AGENT Egg = ".$arrResult['balance']);
+
+					$usersInfo = $this->libApiTreem->getUserList();
+					if($usersInfo['status'] == 1){
+						$updatedRows = $this->modelMember->updateTreemUsers($usersInfo['users']);
+						writeLog("<TREEM> Users UpdatedRows = ".$updatedRows);
+					}
+				} else {
+					if(array_key_exists('message', $arrResult)){
+						$errMsg = $arrResult['message'];
+					} else $errMsg = "접속불가";
+				}
 				$agConf = $confsiteModel->getConf(CONF_API_TREEM);
+				
 			} else if($gameId == GAME_CASINO_SIGMA || $gameId == GAME_SLOT_SIGMA){
-				// $arrResult = $this->libApiSigma->getAgentInfo();
-				// if($arrResult['status'] == 1){
-				// 	$confsiteModel->setConfActive(CONF_API_SIGMA, $arrResult['balance']);
-				// 	writeLog("<SIGMA> AGENT Egg = ".$arrResult['balance']);
-				// } else {
-				// 	if(array_key_exists('message', $arrResult)){
-				// 		$errMsg = $arrResult['message'];
-				// 	} else $errMsg = "접속불가";
-				// }
+				$arrResult = $this->libApiSigma->getAgentInfo();
+				if($arrResult['status'] == 1){
+					$confsiteModel->setConfActive(CONF_API_SIGMA, $arrResult['balance']);
+					writeLog("<SIGMA> AGENT Egg = ".$arrResult['balance']);
+				} else {
+					if(array_key_exists('message', $arrResult)){
+						$errMsg = $arrResult['message'];
+					} else $errMsg = "접속불가";
+				}
 				$agConf = $confsiteModel->getConf(CONF_API_SIGMA);
 			}
 			
@@ -209,7 +217,9 @@ class Api extends BaseController{
 				if(count($arrInfo) >= 3){ //0-host, 1-ag_code, 2-ag_token
 					$agInfo['code'] = $arrInfo[1];
 					$agInfo['egg'] = $agConf->conf_active;
-					$agInfo['useregg'] = $this->modelMember->calcGameEgg($gameId);
+					if($agUserEgg >= 0)
+						$agInfo['useregg'] = $agUserEgg;	
+					else $agInfo['useregg'] = $this->modelMember->calcGameEgg($gameId);
 				}	
 				
 			}

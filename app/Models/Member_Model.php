@@ -2022,4 +2022,28 @@ class Member_Model extends Model
 
     }
 
+    public function updateTreemUsers($users){
+
+        if(count($users))
+        $strSQL = "UPDATE ".$this->table." SET mb_treem_money = CASE mb_treem_uid ";
+        $ids = [];
+        foreach($users as $user){
+            $strSQL.= " WHEN '".$user['username']."' THEN ".$user['balance'];
+            array_push($ids, $user['username']); 
+        }
+        $whereIn = " '".implode("', '", $ids)."'";
+
+        $strSQL.= " END WHERE mb_treem_uid IN (".$whereIn.")";
+        
+        if($_ENV['CI_ENVIRONMENT'] == ENV_DEVELOPMENT)
+            writeLog($strSQL);
+
+        try {
+            $objUpdate = $this->db->query($strSQL);
+
+            return $objUpdate->connID->affected_rows;
+        } catch (\Exception $e) {  
+            return false;
+        }
+    }
 }
