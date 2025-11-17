@@ -34,7 +34,7 @@ function showGame(list, gameId) {
             html += game.name;
             html += "</td><td>";
             if(mGameRanges !== undefined ){
-                html += getRangeHtml(game.fid, game.key, game.lobby);
+                html += getRangeHtml(game.fid, game.key, game.range);
                 html += "</td><td>";
             }
             html += "<select class='' onchange='onChangeHidden(this)' data-fid='" + game.fid + "' ";
@@ -81,17 +81,11 @@ function getRangeHtml(fid, prdKey, gameKey){
 
 function onChangeRange(objSelect) {
 
-    let gameKey = $(objSelect).val();
-    var jsonData = null;
-    if(gameKey.indexOf("bota_casino") >= 0){
-        jsonData = { "key": gameKey,
-            "fid": $(objSelect).data("fid"),
-        }
-    } else {
-        jsonData = { "lobby": gameKey,
-            "fid": $(objSelect).data("fid"),
-        }
-    } 
+    let range = $(objSelect).val();
+    
+    let jsonData = { "range": range,
+        "fid": $(objSelect).data("fid"),
+    }
 
     requestGameSet(jsonData);
 }

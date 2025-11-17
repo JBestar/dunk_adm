@@ -19,7 +19,7 @@
 				<tr>
 					<th>번호</th>
 					<th>게임업체</th>
-					<?php if($game_id == GAME_CASINO_KGON):?>
+					<?php if($game_id == GAME_CASINO_KGON || $game_id == GAME_CASINO_TREEM):?>
 						<th>게임한도</th>
 					<?php endif?>
 					<th>노출상태</th>
@@ -103,6 +103,6 @@
     <script src="<?php echo site_furl('/assets/js/confkg-script.js?t='.time());?>"></script>
 <?php else : ?>
     <script src="<?php echo site_furl('/assets/js/confcs-script.js?v=5');?>"></script>
-    <script src="<?php echo site_furl('/assets/js/confkg-script.js?v=1');?>"></script>
+    <script src="<?php echo site_furl('/assets/js/confkg-script.js?v=2');?>"></script>
 <?php endif ?>
 <?= $this->endSection() ?>

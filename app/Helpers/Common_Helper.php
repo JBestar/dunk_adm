@@ -402,80 +402,98 @@
 
       return $objCas;
     }
-    function getRangeKeys(){
+    function getRangeKeys($gameId){
       
       $arrBatch = array();
 
-      $arrCas = array();
-      array_push($arrCas, getKeyObj("top_games", "1,000~5,000,000") );
-      array_push($arrCas, getKeyObj("top_games2", "1,000~10,000,000") );
-      array_push($arrCas, getKeyObj("top_games3", "1,000~30,000,000") );
-      array_push($arrCas, getKeyObj("top_games4", "1,000~50,000,000") );
-      array_push($arrCas, getKeyObj("top_games5", "1,000~100,000,000") );
-      $arrBatch['evolution_casino'] = $arrCas;
+      if($gameId == GAME_CASINO_KGON){
+        $arrCas = array();
+        array_push($arrCas, getKeyObj("top_games", "1,000~5,000,000") );
+        array_push($arrCas, getKeyObj("top_games2", "1,000~10,000,000") );
+        array_push($arrCas, getKeyObj("top_games3", "1,000~30,000,000") );
+        array_push($arrCas, getKeyObj("top_games4", "1,000~50,000,000") );
+        array_push($arrCas, getKeyObj("top_games5", "1,000~100,000,000") );
+        $arrBatch['evolution_casino'] = $arrCas;
 
-      $arrCas = array();
-      array_push($arrCas, getKeyObj("lobby100", "1,000~1,000,000") );
-      array_push($arrCas, getKeyObj("lobby300", "1,000~3,000,000") );
-      array_push($arrCas, getKeyObj("lobby", "1,000~5,000,000") );
-      array_push($arrCas, getKeyObj("lobby1000", "1,000~10,000,000") );
-      array_push($arrCas, getKeyObj("lobby2000", "1,000~20,000,000") );
-      $arrBatch['dreamgaming_casino'] = $arrCas;
+        $arrCas = array();
+        array_push($arrCas, getKeyObj("lobby100", "1,000~1,000,000") );
+        array_push($arrCas, getKeyObj("lobby300", "1,000~3,000,000") );
+        array_push($arrCas, getKeyObj("lobby", "1,000~5,000,000") );
+        array_push($arrCas, getKeyObj("lobby1000", "1,000~10,000,000") );
+        array_push($arrCas, getKeyObj("lobby2000", "1,000~20,000,000") );
+        $arrBatch['dreamgaming_casino'] = $arrCas;
 
-      $arrCas = array();
-      array_push($arrCas, getKeyObj("bota_casino1", "10,000~1,000,000") );
-      array_push($arrCas, getKeyObj("bota_casino2", "10,000~3,000,000") );
-      array_push($arrCas, getKeyObj("bota_casino3", "10,000~5,000,000") );
-      array_push($arrCas, getKeyObj("bota_casino4", "10,000~10,000,000") );
-      array_push($arrCas, getKeyObj("bota_casino6", "10,000~30,000,000") );
-      $arrBatch['bota_casino'] = $arrCas;
+        $arrCas = array();
+        array_push($arrCas, getKeyObj("bota_casino1", "10,000~1,000,000") );
+        array_push($arrCas, getKeyObj("bota_casino2", "10,000~3,000,000") );
+        array_push($arrCas, getKeyObj("bota_casino3", "10,000~5,000,000") );
+        array_push($arrCas, getKeyObj("bota_casino4", "10,000~10,000,000") );
+        array_push($arrCas, getKeyObj("bota_casino6", "10,000~30,000,000") );
+        $arrBatch['bota_casino'] = $arrCas;
 
-      $arrCas = array();
-      array_push($arrCas, getKeyObj("lobby100", "10,000~1,000,000") );
-      array_push($arrCas, getKeyObj("lobby300", "10,000~3,000,000") );
-      array_push($arrCas, getKeyObj("lobby500", "10,000~5,000,000") );
-      array_push($arrCas, getKeyObj("lobby1000", "10,000~10,000,000") );
-      array_push($arrCas, getKeyObj("lobby2000", "10,000~20,000,000") );
-      array_push($arrCas, getKeyObj("lobby3000", "10,000~30,000,000") );
-      array_push($arrCas, getKeyObj("lobby5000", "10,000~50,000,000") );
-      $arrBatch['duwon_casino'] = $arrCas;
+        $arrCas = array();
+        array_push($arrCas, getKeyObj("lobby100", "10,000~1,000,000") );
+        array_push($arrCas, getKeyObj("lobby300", "10,000~3,000,000") );
+        array_push($arrCas, getKeyObj("lobby500", "10,000~5,000,000") );
+        array_push($arrCas, getKeyObj("lobby1000", "10,000~10,000,000") );
+        array_push($arrCas, getKeyObj("lobby2000", "10,000~20,000,000") );
+        array_push($arrCas, getKeyObj("lobby3000", "10,000~30,000,000") );
+        array_push($arrCas, getKeyObj("lobby5000", "10,000~50,000,000") );
+        $arrBatch['duwon_casino'] = $arrCas;
 
-      $arrCas = array();
-      array_push($arrCas, getKeyObj("lobby100", "10,000~1,000,000") );
-      array_push($arrCas, getKeyObj("lobby300", "30,000~3,000,000") );
-      array_push($arrCas, getKeyObj("lobby100", "50,000~5,000,000") );
-      array_push($arrCas, getKeyObj("lobby1000", "100,000~10,000,000") );
-      $arrBatch['wm_casino'] = $arrCas;
-    
-      $arrCas = array();
-      array_push($arrCas, getKeyObj("lobby100", "1,000~1,000,000") );
-      array_push($arrCas, getKeyObj("lobby300", "1,000~3,000,000") );
-      array_push($arrCas, getKeyObj("lobby500", "1,000~5,000,000") );
-      array_push($arrCas, getKeyObj("lobby1000", "1,000~10,000,000") );
-      array_push($arrCas, getKeyObj("lobby3000", "1,000~30,000,000") );
-      array_push($arrCas, getKeyObj("lobby5000", "1,000~50,000,000") );
-      $arrBatch['orientalgame_casino'] = $arrCas;
+        $arrCas = array();
+        array_push($arrCas, getKeyObj("lobby100", "10,000~1,000,000") );
+        array_push($arrCas, getKeyObj("lobby300", "30,000~3,000,000") );
+        array_push($arrCas, getKeyObj("lobby100", "50,000~5,000,000") );
+        array_push($arrCas, getKeyObj("lobby1000", "100,000~10,000,000") );
+        $arrBatch['wm_casino'] = $arrCas;
+      
+        $arrCas = array();
+        array_push($arrCas, getKeyObj("lobby100", "1,000~1,000,000") );
+        array_push($arrCas, getKeyObj("lobby300", "1,000~3,000,000") );
+        array_push($arrCas, getKeyObj("lobby500", "1,000~5,000,000") );
+        array_push($arrCas, getKeyObj("lobby1000", "1,000~10,000,000") );
+        array_push($arrCas, getKeyObj("lobby3000", "1,000~30,000,000") );
+        array_push($arrCas, getKeyObj("lobby5000", "1,000~50,000,000") );
+        $arrBatch['orientalgame_casino'] = $arrCas;
 
-      $arrCas = array();
-      array_push($arrCas, getKeyObj("lobby10", "1,000~100,000") );
-      array_push($arrCas, getKeyObj("lobby50", "2,000~500,000") );
-      array_push($arrCas, getKeyObj("lobby150", "3,000~1,500,000") );
-      array_push($arrCas, getKeyObj("lobby200", "5,000~2,000,000") );
-      array_push($arrCas, getKeyObj("lobby1000", "10,000~10,000,000") );
-      array_push($arrCas, getKeyObj("lobby2000", "20,000~20,000,000") );
-      $arrBatch['bg_casino'] = $arrCas;
+        $arrCas = array();
+        array_push($arrCas, getKeyObj("lobby10", "1,000~100,000") );
+        array_push($arrCas, getKeyObj("lobby50", "2,000~500,000") );
+        array_push($arrCas, getKeyObj("lobby150", "3,000~1,500,000") );
+        array_push($arrCas, getKeyObj("lobby200", "5,000~2,000,000") );
+        array_push($arrCas, getKeyObj("lobby1000", "10,000~10,000,000") );
+        array_push($arrCas, getKeyObj("lobby2000", "20,000~20,000,000") );
+        $arrBatch['bg_casino'] = $arrCas;
 
-      $arrCas = array();
-      array_push($arrCas, getKeyObj("lobby100", "1,000~1,000,000") );
-      array_push($arrCas, getKeyObj("lobby300", "1,000~3,000,000") );
-      array_push($arrCas, getKeyObj("lobby500", "5,000~5,000,000") );
-      array_push($arrCas, getKeyObj("lobby1000", "5,000~10,000,000") );
-      array_push($arrCas, getKeyObj("lobby2000", "10,000~20,000,000") );
-      array_push($arrCas, getKeyObj("lobby3000", "10,000~30,000,000") );
-      array_push($arrCas, getKeyObj("lobby5000", "25,000~50,000,000") );
-      array_push($arrCas, getKeyObj("lobby10000", "50,000~100,000,000") );
-      $arrBatch['vegas_casino'] = $arrCas;
+        $arrCas = array();
+        array_push($arrCas, getKeyObj("lobby100", "1,000~1,000,000") );
+        array_push($arrCas, getKeyObj("lobby300", "1,000~3,000,000") );
+        array_push($arrCas, getKeyObj("lobby500", "5,000~5,000,000") );
+        array_push($arrCas, getKeyObj("lobby1000", "5,000~10,000,000") );
+        array_push($arrCas, getKeyObj("lobby2000", "10,000~20,000,000") );
+        array_push($arrCas, getKeyObj("lobby3000", "10,000~30,000,000") );
+        array_push($arrCas, getKeyObj("lobby5000", "25,000~50,000,000") );
+        array_push($arrCas, getKeyObj("lobby10000", "50,000~100,000,000") );
+        $arrBatch['vegas_casino'] = $arrCas;
 
+      } else if($gameId == GAME_CASINO_TREEM){
+        $arrCas = array();
+        array_push($arrCas, getKeyObj("2", "10,000~10,000,000") );
+        array_push($arrCas, getKeyObj("1", "10,000~20,000,000") );
+        array_push($arrCas, getKeyObj("6", "10,000~40,000,000") );
+        array_push($arrCas, getKeyObj("7", "10,000~60,000,000") );
+        array_push($arrCas, getKeyObj("8", "10,000~100,000,000") );
+        array_push($arrCas, getKeyObj("9", "10,000~200,000,000") );
+        $arrBatch['evolution'] = $arrCas;
+
+        $arrCas = array();
+        array_push($arrCas, getKeyObj("pp20", "1,000~20,000,000") );
+        array_push($arrCas, getKeyObj("pp50", "1,000~50,000,000") );
+        array_push($arrCas, getKeyObj("pp100", "1,000~100,000,000") );
+        $arrBatch['PragmaticPlay Live'] = $arrCas;
+      }
+      
       return $arrBatch;
     }
 
