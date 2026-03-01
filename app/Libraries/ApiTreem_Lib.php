@@ -67,7 +67,6 @@ class ApiTreem_Lib  {
             $arrResult['status'] = 0;
             $arrResult['error'] = CONNECT_ERROR;
         }
-
         return $arrResult;
     }
 

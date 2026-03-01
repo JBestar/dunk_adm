@@ -86,14 +86,18 @@ class ConfGame_Model extends Model {
     }
 
     public function saveData($arrData, &$query){
-
+        $logHead = "<Model ConfGame saveData()>";
+        writeLog($logHead." started.");
         if($arrData == null) return false;
+        //writeLog($logHead." 1");
         if (!array_key_exists("game_index", $arrData)) return false;
+        //writeLog($logHead." 2");
         if (!array_key_exists("game_bet_permit", $arrData)) return false;
-                
+        //writeLog($logHead." 3");        
         $bResult =  $this->update($arrData['game_index'], $arrData);
         if($bResult){
             $query = $this->db->getLastQuery();
+            //writeLog($logHead." 4"); 
         }
         return $bResult;
     }
